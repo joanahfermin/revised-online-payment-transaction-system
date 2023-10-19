@@ -17,5 +17,9 @@ namespace Revised_OPTS.Service
             return businessRepository.retrieveBySearchKeyword(mpNum);
         }
 
+        public void Insert(Business business)
+        {
+            businessRepository.Insert(business);
+        }
     }
 }

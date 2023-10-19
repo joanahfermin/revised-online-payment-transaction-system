@@ -11,7 +11,7 @@ namespace Revised_OPTS.DAL
     {
         public List<Rpt> retrieveBySearchKeyword(string tdn)
         {
-            return dbSet.Where(t => t.TaxDec.Contains(tdn)).ToList();
+            return dbSet.Where(t => t.TaxDec.Contains(tdn)).OrderByDescending(t => t.EncodedDate).ToList();
         }
     }
 }

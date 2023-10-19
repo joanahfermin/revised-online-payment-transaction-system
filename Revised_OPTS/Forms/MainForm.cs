@@ -13,7 +13,7 @@ namespace Revised_OPTS
         IBusinessService businessService = ServiceFactory.Instance.GetBusinessService();
 
         private Image originalBackgroundImage;
-
+        public static MainForm Instance;
 
         Dictionary<string, string> RPT_DG_COLUMNS = new Dictionary<string, string>
         {
@@ -53,8 +53,8 @@ namespace Revised_OPTS
         public MainForm()
         {
             InitializeComponent();
-            //InitializeData();
             DataGridUI();
+            Instance = this;
         }
 
         public void InitializeData()
@@ -121,8 +121,11 @@ namespace Revised_OPTS
 
         private void tbSearch_KeyDown(object sender, KeyEventArgs e)
         {
-            string searchRecordinDB = tbSearch.Text;
+            Search(tbSearch.Text);
+        }
 
+        public void Search(string searchRecordinDB)
+        {
             if (isTDN(searchRecordinDB))
             {
                 ShowDataInDataGridView<Rpt>(RPT_DG_COLUMNS, rptService.RetrieveBySearchKeyword(searchRecordinDB));

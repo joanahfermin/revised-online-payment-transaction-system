@@ -11,5 +11,7 @@ namespace Revised_OPTS.Service
     {
         List<Business> RetrieveBySearchKeyword(string mpNum);
 
+        void Insert(Business business);
+
     }
 }
