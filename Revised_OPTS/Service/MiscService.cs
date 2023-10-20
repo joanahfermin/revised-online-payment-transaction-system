@@ -5,17 +5,26 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Transactions;
 
 namespace Revised_OPTS.Service
 {
     internal class MiscService : IMiscService
     {
-        IMiscRepository rptRepository = RepositoryFactory.Instance.GetMiscRepository();
+        IMiscRepository miscRepository = RepositoryFactory.Instance.GetMiscRepository();
 
         public List<Miscellaneous> RetrieveBySearchKeyword(string opNum)
         {
-            return rptRepository.retrieveBySearchKeyword(opNum);
+            return miscRepository.retrieveBySearchKeyword(opNum);
         }
 
+        public void Insert(Miscellaneous misc)
+        {
+            using (var scope = new TransactionScope())
+            {
+                misc.ExcessShort = misc.TransferredAmount - misc.AmountToBePaid;
+            }
+            miscRepository.Insert(misc);
+        }
     }
 }

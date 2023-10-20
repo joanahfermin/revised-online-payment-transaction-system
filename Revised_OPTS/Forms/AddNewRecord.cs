@@ -20,6 +20,7 @@ namespace Revised_OPTS.Forms
     {
         IRptService rptService = ServiceFactory.Instance.GetRptService();
         IBusinessService businessService = ServiceFactory.Instance.GetBusinessService();
+        IMiscService miscService = ServiceFactory.Instance.GetMiscService();
 
         private List<Label> dynamicLabelList = new List<Label>();
         private List<Control> dynamicControlList = new List<Control>();
@@ -63,65 +64,92 @@ namespace Revised_OPTS.Forms
             List<Bank> bankList = rptService.GetAllBanks();
             string[] bankNames = bankList.Select(bank => bank.BankName).ToList().ToArray();
 
+            //COMMON LABEL AND CONTROL
             DynamicControlInfo[] commonInfo = new DynamicControlInfo[]
                 {
                     new DynamicControlInfo{PropertyName = "RequestingParty", Label = "Email Address:", ControlType = ControlType.TextBox},
                     new DynamicControlInfo{PropertyName = "Status", Label = "Status: ", ControlType = ControlType.ComboBox, ComboboxChoices = TaxStatus.STATUS, Enabled = false, InitialValue = TaxStatus.ForPaymentVerification},
                 };
 
+            //RPT
             dynamicPropertyMapping.Add(TaxTypeUtil.REALPROPERTYTAX, new DynamicControlInfo[]
                 {
                     new DynamicControlInfo{PropertyName = "TaxDec", Label = "TDN:", ControlType = ControlType.TextBox},
                     new DynamicControlInfo{PropertyName = "TaxPayerName", Label = "TaxPayer's Name:", ControlType = ControlType.TextBox},
                     new DynamicControlInfo{PropertyName = "AmountToPay", Label = "Bill Amount:", ControlType = ControlType.TextBox},
-                    new DynamicControlInfo{PropertyName = "RPTremarks", Label = "Remarks:", ControlType = ControlType.TextBox},
-                    new DynamicControlInfo{PropertyName = "YearQuarter", Label = "Year:", ControlType = ControlType.TextBox},
-                    new DynamicControlInfo{PropertyName = "Bank", Label = "Bank: ", ControlType = ControlType.ComboBox, ComboboxChoices = bankNames},
-                    new DynamicControlInfo{PropertyName = "Quarter", Label = "Quarter: ", ControlType = ControlType.ComboBox, ComboboxChoices = Quarter.ALL_QUARTER},
-                    new DynamicControlInfo{PropertyName = "PaymentDate", Label = "Payment Date: ", ControlType = ControlType.DatePicker},
                     new DynamicControlInfo{PropertyName = "AmountTransferred", Label = "Transferred Amount:", ControlType = ControlType.TextBox},
+                    new DynamicControlInfo{PropertyName = "Bank", Label = "Bank: ", ControlType = ControlType.ComboBox, ComboboxChoices = bankNames},
+                    new DynamicControlInfo{PropertyName = "PaymentDate", Label = "Payment Date: ", ControlType = ControlType.DatePicker},
+                    new DynamicControlInfo{PropertyName = "YearQuarter", Label = "Year:", ControlType = ControlType.TextBox},
+                    new DynamicControlInfo{PropertyName = "Quarter", Label = "Quarter: ", ControlType = ControlType.ComboBox, ComboboxChoices = Quarter.ALL_QUARTER},
+                    new DynamicControlInfo{PropertyName = "RPTremarks", Label = "Remarks:", ControlType = ControlType.TextBox},
                 }.Concat(commonInfo).ToArray());
 
+            //BUSINESS
             dynamicPropertyMapping.Add(TaxTypeUtil.BUSINESS,
                 new DynamicControlInfo[]
                 {
                     new DynamicControlInfo{PropertyName = "Business_Type", Label = "Business Type: ", ControlType = ControlType.ComboBox, ComboboxChoices = BusinessUtil.BUSINESS_TYPE },
+                    new DynamicControlInfo{PropertyName = "BillNumber", Label = "Bill Number: ", ControlType = ControlType.TextBox},
                     new DynamicControlInfo{PropertyName = "TaxpayersName", Label = "TaxPayer's Name:", ControlType = ControlType.TextBox},
                     new DynamicControlInfo{PropertyName = "MP_Number", Label = "M.P Number:", ControlType = ControlType.TextBox},
                     new DynamicControlInfo{PropertyName = "BusinessName", Label = "Business Name: ", ControlType = ControlType.TextBox},
-                    new DynamicControlInfo{PropertyName = "BillNumber", Label = "Bill Number: ", ControlType = ControlType.TextBox},
                     new DynamicControlInfo{PropertyName = "BillAmount", Label = "Bill Amount:", ControlType = ControlType.TextBox},
                     new DynamicControlInfo{PropertyName = "TotalAmount", Label = "Transferred Amount:", ControlType = ControlType.TextBox},
-                    new DynamicControlInfo{PropertyName = "Year", Label = "Year:", ControlType = ControlType.TextBox},
-                    new DynamicControlInfo{PropertyName = "MiscFees", Label = "Misc. Fees: ", ControlType = ControlType.TextBox},
                     new DynamicControlInfo{PropertyName = "PaymentChannel", Label = "Bank: ", ControlType = ControlType.ComboBox, ComboboxChoices = bankNames},
-                    new DynamicControlInfo{PropertyName = "BussinessRemarks", Label = "Remarks:", ControlType = ControlType.TextBox},
-                    new DynamicControlInfo{PropertyName = "Qtrs", Label = "Quarter: ", ControlType = ControlType.ComboBox, ComboboxChoices = Quarter.ALL_QUARTER},
                     new DynamicControlInfo{PropertyName = "DateOfPayment", Label = "Payment Date: ", ControlType = ControlType.DatePicker},
+                    new DynamicControlInfo{PropertyName = "Year", Label = "Year:", ControlType = ControlType.TextBox},
+                    new DynamicControlInfo{PropertyName = "Qtrs", Label = "Quarter: ", ControlType = ControlType.ComboBox, ComboboxChoices = Quarter.ALL_QUARTER},
+                    new DynamicControlInfo{PropertyName = "MiscFees", Label = "Misc. Fees: ", ControlType = ControlType.TextBox},
+                    new DynamicControlInfo{PropertyName = "BussinessRemarks", Label = "Remarks:", ControlType = ControlType.TextBox},
                 }.Concat(commonInfo).ToArray());
 
+            //OCCUPERMIT AND OVR
+            DynamicControlInfo[] OccuPermitAndOVRInfo = new DynamicControlInfo[]
+                {
+                    new DynamicControlInfo{PropertyName = "OrderOfPaymentNum", Label = "Bill Number:", ControlType = ControlType.TextBox},
+                    new DynamicControlInfo{PropertyName = "TaxpayersName", Label = "TaxPayer's Name:", ControlType = ControlType.TextBox},
+                    new DynamicControlInfo{PropertyName = "OPATrackingNum", Label = "OPA Tracking No.: ", ControlType = ControlType.TextBox},
+                    new DynamicControlInfo{PropertyName = "AmountToBePaid", Label = "Bill Amount: ", ControlType = ControlType.TextBox},
+                    new DynamicControlInfo{PropertyName = "TransferredAmount", Label = "Transferred Amount:", ControlType = ControlType.TextBox},
+                    new DynamicControlInfo{PropertyName = "ModeOfPayment", Label = "Bank:", ControlType = ControlType.ComboBox, ComboboxChoices = bankNames},
+                    new DynamicControlInfo{PropertyName = "PaymentDate", Label = "Payment Date: ", ControlType = ControlType.DatePicker},
+                    new DynamicControlInfo{PropertyName = "Remarks", Label = "Remarks: ", ControlType = ControlType.TextBox},
+                }.Concat(commonInfo).ToArray();
 
-            /*
-            dynamicPropertyLabelMapping.Add(TaxTypeUtil.REALPROPERTYTAX, new string[] { "TDN: ", "TaxPayer's Name: ", "Bill Amount: ",
-                "Transferred Amount:", "Year:", "Email Address:", "Remarks:" });
-            dynamicPropertyNameMapping.Add(TaxTypeUtil.REALPROPERTYTAX, new string[] { "TaxDec", "TaxPayerName", "AmountToPay",
-                "AmountTransferred", "YearQuarter", "RequestingParty", "RPTremarks"});
+            dynamicPropertyMapping.Add(TaxTypeUtil.MISCELLANEOUS_OCCUPERMIT, OccuPermitAndOVRInfo);
+            dynamicPropertyMapping.Add(TaxTypeUtil.MISCELLANEOUS_OVR, OccuPermitAndOVRInfo);
 
-            dynamicPropertyComboBoxLabelMapping.Add(TaxTypeUtil.REALPROPERTYTAX, new string[] { "Bank: ", "Status: ", "Quarter: " });
-            dynamicPropertyComboBoxNameMapping.Add(TaxTypeUtil.REALPROPERTYTAX, new string[] { "Bank", "Status", "Quarter" });
-            dynamicPropertyDateTimeLabelMapping.Add(TaxTypeUtil.REALPROPERTYTAX, new Dictionary<string, Type> {{ "Payment Date: ", typeof(DateTime) }});
+            //MARKET AND ZONING
+            DynamicControlInfo[] marketAndZoningInfo = new DynamicControlInfo[]
+            {
+                    new DynamicControlInfo{PropertyName = "TaxpayersName", Label = "TaxPayer's Name:", ControlType = ControlType.TextBox},
+                    new DynamicControlInfo{PropertyName = "OrderOfPaymentNum", Label = "Bill Number:", ControlType = ControlType.TextBox},
+                    new DynamicControlInfo{PropertyName = "AmountToBePaid", Label = "Bill Amount: ", ControlType = ControlType.TextBox},
+                    new DynamicControlInfo{PropertyName = "TransferredAmount", Label = "Transferred Amount:", ControlType = ControlType.TextBox},
+                    new DynamicControlInfo{PropertyName = "ModeOfPayment", Label = "Bank:", ControlType = ControlType.ComboBox, ComboboxChoices = bankNames},
+                    new DynamicControlInfo{PropertyName = "PaymentDate", Label = "Payment Date: ", ControlType = ControlType.DatePicker},
+                    new DynamicControlInfo{PropertyName = "Remarks", Label = "Remarks: ", ControlType = ControlType.TextBox},
+            }.Concat(commonInfo).ToArray();
 
-            dynamicPropertyLabelMapping.Add(TaxTypeUtil.BUSINESS, new string[] { "M.P Number", "TaxPayer's Name: ", "Business Name: ",
-                "Bill Number: ", "Bill Amount: ", "Misc. Fees: ", "Transferred Amount: ", "Email Address: ", "Contact Number: ", "Remarks:" });
-            dynamicPropertyNameMapping.Add(TaxTypeUtil.BUSINESS, new string[] { "MP_Number", "TaxpayersName", "BusinessName", "BillNumber",
-                "BillAmount", "MiscFees", "TotalAmount", "RequestingParty", "ContactNumber", "BussinessRemarks"});
-            dynamicPropertyComboBoxLabelMapping.Add(TaxTypeUtil.BUSINESS, new string[] { "Bank: ", "Status: ", "Quarter: " });
-            dynamicPropertyComboBoxNameMapping.Add(TaxTypeUtil.BUSINESS, new string[] { "Bank", "Status", "Quarter" });
-            dynamicPropertyDateTimeLabelMapping.Add(TaxTypeUtil.BUSINESS, new Dictionary<string, Type> { { "Payment Date: ", typeof(DateTime) } });
-            */
+            dynamicPropertyMapping.Add(TaxTypeUtil.MISCELLANEOUS_MARKET, marketAndZoningInfo);
+            dynamicPropertyMapping.Add(TaxTypeUtil.MISCELLANEOUS_ZONING, marketAndZoningInfo);
 
-            //dynamicPropertyLabelMapping.Add(TaxTypeUtil.MISCELLANEOUS, new string[] { "O.P Number:", "OPA Tracking No.:", "Requesting Party:", "Remarks:" });
-            //dynamicPropertyNameMapping.Add(Misc_Type.LIQUOR, new string[] { "OrderOfPaymentNum", "OPATrackingNum", "RequestingParty", "Remarks" });
+            //LIQUOR
+            dynamicPropertyMapping.Add(TaxTypeUtil.MISCELLANEOUS_LIQUOR,
+                new DynamicControlInfo[]
+                {
+                    new DynamicControlInfo{PropertyName = "BillNumber", Label = "Bill Number: ", ControlType = ControlType.TextBox},
+                    new DynamicControlInfo{PropertyName = "MP_Number", Label = "M.P Number:", ControlType = ControlType.TextBox},
+                    new DynamicControlInfo{PropertyName = "TaxpayersName", Label = "TaxPayer's Name:", ControlType = ControlType.TextBox},
+                    new DynamicControlInfo{PropertyName = "BillAmount", Label = "Bill Amount:", ControlType = ControlType.TextBox},
+                    new DynamicControlInfo{PropertyName = "TotalAmount", Label = "Transferred Amount:", ControlType = ControlType.TextBox},
+                    new DynamicControlInfo{PropertyName = "PaymentChannel", Label = "Bank: ", ControlType = ControlType.ComboBox, ComboboxChoices = bankNames},
+                    new DynamicControlInfo{PropertyName = "DateOfPayment", Label = "Payment Date: ", ControlType = ControlType.DatePicker},
+                    new DynamicControlInfo{PropertyName = "Year", Label = "Year:", ControlType = ControlType.TextBox},
+                    new DynamicControlInfo{PropertyName = "Qtrs", Label = "Quarter: ", ControlType = ControlType.ComboBox, ComboboxChoices = Quarter.ALL_QUARTER},
+                    new DynamicControlInfo{PropertyName = "BussinessRemarks", Label = "Remarks:", ControlType = ControlType.TextBox},
+                }.Concat(commonInfo).ToArray());
         }
 
         private void RemoveAllDynamicControls()
@@ -229,18 +257,26 @@ namespace Revised_OPTS.Forms
             {
                 Rpt rpt = new Rpt();
                 CopyDynamicProperties(rpt, dynamicPropertyInfos);
-
                 rptService.Insert(rpt);
                 searchKeyword = rpt.TaxDec;
                 MainForm.Instance.Search(searchKeyword);
             }
-            else
+            else if (taxType == TaxTypeUtil.BUSINESS)
             {
                 Business business = new Business();
                 CopyDynamicProperties(business, dynamicPropertyInfos);
-
                 businessService.Insert(business);
                 searchKeyword = business.MP_Number;
+                MainForm.Instance.Search(searchKeyword);
+            }
+            else
+            {
+                Miscellaneous misc = new Miscellaneous();
+                CopyDynamicProperties(misc, dynamicPropertyInfos);
+                string miscType = cbTaxType.Text;
+                misc.MiscType = miscType;
+                miscService.Insert(misc);
+                searchKeyword = misc.OrderOfPaymentNum;
                 MainForm.Instance.Search(searchKeyword);
             }
             MessageBox.Show("Record successfully saved.");
