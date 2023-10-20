@@ -1,4 +1,5 @@
-﻿using Revised_OPTS.DAL;
+﻿using Inventory_System.Exception;
+using Revised_OPTS.DAL;
 using Revised_OPTS.Model;
 using System;
 using System.Collections.Generic;
@@ -34,8 +35,8 @@ namespace Revised_OPTS.Service
             using (var scope = new TransactionScope())
             {
                 rpt.ExcessShortAmount = rpt.AmountTransferred - rpt.AmountToPay;
+                rptRepository.Insert(rpt);
             }
-            rptRepository.Insert(rpt);
         }
     }
 }

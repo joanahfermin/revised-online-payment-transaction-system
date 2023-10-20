@@ -1,4 +1,5 @@
-﻿using Inventory_System.Utilities;
+﻿using Inventory_System.Exception;
+using Inventory_System.Utilities;
 using Revised_OPTS.DAL;
 using Revised_OPTS.Model;
 using Revised_OPTS.Service;
@@ -74,13 +75,13 @@ namespace Revised_OPTS.Forms
             //RPT
             dynamicPropertyMapping.Add(TaxTypeUtil.REALPROPERTYTAX, new DynamicControlInfo[]
                 {
-                    new DynamicControlInfo{PropertyName = "TaxDec", Label = "TDN:", ControlType = ControlType.TextBox},
-                    new DynamicControlInfo{PropertyName = "TaxPayerName", Label = "TaxPayer's Name:", ControlType = ControlType.TextBox},
-                    new DynamicControlInfo{PropertyName = "AmountToPay", Label = "Bill Amount:", ControlType = ControlType.TextBox},
-                    new DynamicControlInfo{PropertyName = "AmountTransferred", Label = "Transferred Amount:", ControlType = ControlType.TextBox},
-                    new DynamicControlInfo{PropertyName = "Bank", Label = "Bank: ", ControlType = ControlType.ComboBox, ComboboxChoices = bankNames},
-                    new DynamicControlInfo{PropertyName = "PaymentDate", Label = "Payment Date: ", ControlType = ControlType.DatePicker},
-                    new DynamicControlInfo{PropertyName = "YearQuarter", Label = "Year:", ControlType = ControlType.TextBox},
+                    new DynamicControlInfo{PropertyName = "TaxDec", Label = "*TDN:", ControlType = ControlType.TextBox, isRequired = true},
+                    new DynamicControlInfo{PropertyName = "TaxPayerName", Label = "*TaxPayer's Name:", ControlType = ControlType.TextBox, isRequired = true},
+                    new DynamicControlInfo{PropertyName = "AmountToPay", Label = "*Bill Amount:", ControlType = ControlType.TextBox, InitialValue = "0.00", isRequired = true},
+                    new DynamicControlInfo{PropertyName = "AmountTransferred", Label = "*Transferred Amount:", ControlType = ControlType.TextBox, InitialValue = "0.00", isRequired = true},
+                    new DynamicControlInfo{PropertyName = "Bank", Label = "*Bank: ", ControlType = ControlType.ComboBox, ComboboxChoices = bankNames, isRequired = true},
+                    new DynamicControlInfo{PropertyName = "PaymentDate", Label = "Payment Date: ", ControlType = ControlType.DatePicker, isRequired = true},
+                    new DynamicControlInfo{PropertyName = "YearQuarter", Label = "*Year:", ControlType = ControlType.TextBox, isRequired = true},
                     new DynamicControlInfo{PropertyName = "Quarter", Label = "Quarter: ", ControlType = ControlType.ComboBox, ComboboxChoices = Quarter.ALL_QUARTER},
                     new DynamicControlInfo{PropertyName = "RPTremarks", Label = "Remarks:", ControlType = ControlType.TextBox},
                 }.Concat(commonInfo).ToArray());
@@ -94,8 +95,8 @@ namespace Revised_OPTS.Forms
                     new DynamicControlInfo{PropertyName = "TaxpayersName", Label = "TaxPayer's Name:", ControlType = ControlType.TextBox},
                     new DynamicControlInfo{PropertyName = "MP_Number", Label = "M.P Number:", ControlType = ControlType.TextBox},
                     new DynamicControlInfo{PropertyName = "BusinessName", Label = "Business Name: ", ControlType = ControlType.TextBox},
-                    new DynamicControlInfo{PropertyName = "BillAmount", Label = "Bill Amount:", ControlType = ControlType.TextBox},
-                    new DynamicControlInfo{PropertyName = "TotalAmount", Label = "Transferred Amount:", ControlType = ControlType.TextBox},
+                    new DynamicControlInfo{PropertyName = "BillAmount", Label = "Bill Amount:", ControlType = ControlType.TextBox, InitialValue = "0.00"},
+                    new DynamicControlInfo{PropertyName = "TotalAmount", Label = "Transferred Amount:", ControlType = ControlType.TextBox, InitialValue = "0.00"},
                     new DynamicControlInfo{PropertyName = "PaymentChannel", Label = "Bank: ", ControlType = ControlType.ComboBox, ComboboxChoices = bankNames},
                     new DynamicControlInfo{PropertyName = "DateOfPayment", Label = "Payment Date: ", ControlType = ControlType.DatePicker},
                     new DynamicControlInfo{PropertyName = "Year", Label = "Year:", ControlType = ControlType.TextBox},
@@ -110,8 +111,8 @@ namespace Revised_OPTS.Forms
                     new DynamicControlInfo{PropertyName = "OrderOfPaymentNum", Label = "Bill Number:", ControlType = ControlType.TextBox},
                     new DynamicControlInfo{PropertyName = "TaxpayersName", Label = "TaxPayer's Name:", ControlType = ControlType.TextBox},
                     new DynamicControlInfo{PropertyName = "OPATrackingNum", Label = "OPA Tracking No.: ", ControlType = ControlType.TextBox},
-                    new DynamicControlInfo{PropertyName = "AmountToBePaid", Label = "Bill Amount: ", ControlType = ControlType.TextBox},
-                    new DynamicControlInfo{PropertyName = "TransferredAmount", Label = "Transferred Amount:", ControlType = ControlType.TextBox},
+                    new DynamicControlInfo{PropertyName = "AmountToBePaid", Label = "Bill Amount:", ControlType = ControlType.TextBox, InitialValue = "0.00"},
+                    new DynamicControlInfo{PropertyName = "TransferredAmount", Label = "Transferred Amount:", ControlType = ControlType.TextBox, InitialValue = "0.00"},
                     new DynamicControlInfo{PropertyName = "ModeOfPayment", Label = "Bank:", ControlType = ControlType.ComboBox, ComboboxChoices = bankNames},
                     new DynamicControlInfo{PropertyName = "PaymentDate", Label = "Payment Date: ", ControlType = ControlType.DatePicker},
                     new DynamicControlInfo{PropertyName = "Remarks", Label = "Remarks: ", ControlType = ControlType.TextBox},
@@ -125,8 +126,8 @@ namespace Revised_OPTS.Forms
             {
                     new DynamicControlInfo{PropertyName = "TaxpayersName", Label = "TaxPayer's Name:", ControlType = ControlType.TextBox},
                     new DynamicControlInfo{PropertyName = "OrderOfPaymentNum", Label = "Bill Number:", ControlType = ControlType.TextBox},
-                    new DynamicControlInfo{PropertyName = "AmountToBePaid", Label = "Bill Amount: ", ControlType = ControlType.TextBox},
-                    new DynamicControlInfo{PropertyName = "TransferredAmount", Label = "Transferred Amount:", ControlType = ControlType.TextBox},
+                    new DynamicControlInfo{PropertyName = "AmountToBePaid", Label = "Bill Amount:", ControlType = ControlType.TextBox, InitialValue = "0.00"},
+                    new DynamicControlInfo{PropertyName = "TransferredAmount", Label = "Transferred Amount:", ControlType = ControlType.TextBox, InitialValue = "0.00"},
                     new DynamicControlInfo{PropertyName = "ModeOfPayment", Label = "Bank:", ControlType = ControlType.ComboBox, ComboboxChoices = bankNames},
                     new DynamicControlInfo{PropertyName = "PaymentDate", Label = "Payment Date: ", ControlType = ControlType.DatePicker},
                     new DynamicControlInfo{PropertyName = "Remarks", Label = "Remarks: ", ControlType = ControlType.TextBox},
@@ -142,8 +143,8 @@ namespace Revised_OPTS.Forms
                     new DynamicControlInfo{PropertyName = "BillNumber", Label = "Bill Number: ", ControlType = ControlType.TextBox},
                     new DynamicControlInfo{PropertyName = "MP_Number", Label = "M.P Number:", ControlType = ControlType.TextBox},
                     new DynamicControlInfo{PropertyName = "TaxpayersName", Label = "TaxPayer's Name:", ControlType = ControlType.TextBox},
-                    new DynamicControlInfo{PropertyName = "BillAmount", Label = "Bill Amount:", ControlType = ControlType.TextBox},
-                    new DynamicControlInfo{PropertyName = "TotalAmount", Label = "Transferred Amount:", ControlType = ControlType.TextBox},
+                    new DynamicControlInfo{PropertyName = "BillAmount", Label = "Bill Amount:", ControlType = ControlType.TextBox, InitialValue = "0.00"},
+                    new DynamicControlInfo{PropertyName = "TotalAmount", Label = "Transferred Amount:", ControlType = ControlType.TextBox, InitialValue = "0.00"},
                     new DynamicControlInfo{PropertyName = "PaymentChannel", Label = "Bank: ", ControlType = ControlType.ComboBox, ComboboxChoices = bankNames},
                     new DynamicControlInfo{PropertyName = "DateOfPayment", Label = "Payment Date: ", ControlType = ControlType.DatePicker},
                     new DynamicControlInfo{PropertyName = "Year", Label = "Year:", ControlType = ControlType.TextBox},
@@ -246,6 +247,25 @@ namespace Revised_OPTS.Forms
             }
         }
 
+        public void validateForm()
+        {
+            errorProvider1.Clear();
+            string taxType = cbTaxType.Text;
+
+            DynamicControlInfo[] dynamicPropertyInfos = dynamicPropertyMapping[taxType];
+            for (int i = 0; i < dynamicPropertyInfos.Length; i++)
+            {
+                DynamicControlInfo dynamicPropertyInfo = dynamicPropertyInfos[i];
+                Control control = dynamicControlList[i];
+
+                if (dynamicPropertyInfo.isRequired)
+                {
+                    Validations.ValidateRequired(errorProvider1, control, dynamicPropertyInfo.Label);
+                    return;
+                }
+            }
+        }
+
         private void btnSaveRecord_Click(object sender, EventArgs e)
         {
             string taxType = cbTaxType.Text;
@@ -257,7 +277,9 @@ namespace Revised_OPTS.Forms
             {
                 Rpt rpt = new Rpt();
                 CopyDynamicProperties(rpt, dynamicPropertyInfos);
+                validateForm();
                 rptService.Insert(rpt);
+                MessageBox.Show("Record successfully saved.");
                 searchKeyword = rpt.TaxDec;
                 MainForm.Instance.Search(searchKeyword);
             }
@@ -279,7 +301,6 @@ namespace Revised_OPTS.Forms
                 searchKeyword = misc.OrderOfPaymentNum;
                 MainForm.Instance.Search(searchKeyword);
             }
-            MessageBox.Show("Record successfully saved.");
         }
 
         private void CopyDynamicProperties(Object obj, DynamicControlInfo[] dynamicPropertyInfos)
@@ -356,6 +377,7 @@ namespace Revised_OPTS.Forms
         public string[] ComboboxChoices;
         public bool Enabled = true;
         public string InitialValue = null;
+        public bool isRequired = false;
     }
 
     public enum ControlType
