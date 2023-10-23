@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Inventory_System.DAL;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,22 +13,29 @@ namespace Revised_OPTS.DAL
 
         public IRptRepository GetRptRepository()
         {
-            return new RptRepository();
+            return new RptRepository(ApplicationDBContext.Instance);
         }
 
         public IMiscRepository GetMiscRepository()
         {
-            return new MiscRepository();
+            return new MiscRepository(ApplicationDBContext.Instance);
         }
 
         public IBusinessRepository GetBusinessRepository()
         {
-            return new BusinessRepository();
+            return new BusinessRepository(ApplicationDBContext.Instance);
         }
 
         public IBankRepository GetBankRepository()
         {
-            return new BankRepository();
+            return new BankRepository(ApplicationDBContext.Instance);
         }
+
+        public IRptTaxbillTPNRepository GetRptRetrieveTaxpayerNameRepository()
+        {
+            return new RptTaxbillTPNRepository(SecondApplicationDBContext.Instance);
+        }
+
+
     }
 }

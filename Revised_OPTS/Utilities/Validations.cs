@@ -8,6 +8,28 @@ namespace Inventory_System.Utilities
 {
     internal class Validations
     {
+        public const string NO_RETRIEVED_NAME = "**NO RECORD FOUND IN I.T DATABASE**";
+
+        public static bool HaveErrors(ErrorProvider ep)
+        {
+            foreach (Control formControl in ep.ContainerControl.Controls)
+                if (formControl is Panel)
+                {
+                    Panel panel = (Panel)formControl;
+                    foreach (Control panelControl in panel.Controls)
+
+                        if (ep.GetError(panelControl) != "")
+                            return true;
+                }
+                else
+                {
+                    if (ep.GetError(formControl) != "")
+                        return true;
+                }
+
+            return false;
+        }
+
         private static bool hasExistingError(ErrorProvider ep, Control tb)
         {
             return ep.GetError(tb).Length > 0;

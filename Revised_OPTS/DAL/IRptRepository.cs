@@ -1,4 +1,5 @@
-﻿using Revised_OPTS.Model;
+﻿using Inventory_System.Model;
+using Revised_OPTS.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,5 +11,6 @@ namespace Revised_OPTS.DAL
     internal interface IRptRepository : IRepository<Rpt>
     {
         List<Rpt> retrieveBySearchKeyword(string tdn);
+
     }
 }

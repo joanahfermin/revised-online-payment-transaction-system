@@ -1,4 +1,6 @@
-﻿using Inventory_System.Exception;
+﻿using Inventory_System.DAL;
+using Inventory_System.Exception;
+using Inventory_System.Model;
 using Revised_OPTS.DAL;
 using Revised_OPTS.Model;
 using System;
@@ -14,6 +16,7 @@ namespace Revised_OPTS.Service
     {
         IRptRepository rptRepository = RepositoryFactory.Instance.GetRptRepository();
         IBankRepository bankRepository = RepositoryFactory.Instance.GetBankRepository();
+        IRptTaxbillTPNRepository rptRetrieveTaxpayerNameRepository = RepositoryFactory.Instance.GetRptRetrieveTaxpayerNameRepository();
 
         public List<Rpt> GetAll()
         {
@@ -38,5 +41,6 @@ namespace Revised_OPTS.Service
                 rptRepository.Insert(rpt);
             }
         }
+
     }
 }
