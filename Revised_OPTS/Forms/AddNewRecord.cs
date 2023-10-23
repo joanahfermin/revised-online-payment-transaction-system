@@ -115,7 +115,7 @@ namespace Revised_OPTS.Forms
                 {
                     new DynamicControlInfo{PropertyName = "OrderOfPaymentNum", Label = "*Bill Number:", ControlType = ControlType.TextBox, isRequired = true},
                     new DynamicControlInfo{PropertyName = "TaxpayersName", Label = "*TaxPayer's Name:", ControlType = ControlType.TextBox, isRequired = true},
-                    new DynamicControlInfo{PropertyName = "OPATrackingNum", Label = "OPA Tracking No.: ", ControlType = ControlType.TextBox},
+                    new DynamicControlInfo{PropertyName = "OPATrackingNum", Label = "OPA Tracking No.: ", ControlType = ControlType.TextBox, Enabled = true},
                     new DynamicControlInfo{PropertyName = "AmountToBePaid", Label = "*Bill Amount:", ControlType = ControlType.TextBox, InitialValue = "0.00", isRequired = true},
                     new DynamicControlInfo{PropertyName = "TransferredAmount", Label = "*Transferred Amount:", ControlType = ControlType.TextBox, InitialValue = "0.00", isRequired = true},
                     new DynamicControlInfo{PropertyName = "ModeOfPayment", Label = "*Bank:", ControlType = ControlType.ComboBox, ComboboxChoices = bankNames, isRequired = true},
@@ -125,21 +125,24 @@ namespace Revised_OPTS.Forms
 
             dynamicPropertyMapping.Add(TaxTypeUtil.MISCELLANEOUS_OCCUPERMIT, OccuPermitAndOVRInfo);
             dynamicPropertyMapping.Add(TaxTypeUtil.MISCELLANEOUS_OVR, OccuPermitAndOVRInfo);
+            dynamicPropertyMapping.Add(TaxTypeUtil.MISCELLANEOUS_MARKET, OccuPermitAndOVRInfo);
+            dynamicPropertyMapping.Add(TaxTypeUtil.MISCELLANEOUS_ZONING, OccuPermitAndOVRInfo);
+
 
             //MARKET AND ZONING
-            DynamicControlInfo[] marketAndZoningInfo = new DynamicControlInfo[]
-            {       
-                    new DynamicControlInfo{PropertyName = "OrderOfPaymentNum", Label = "*Bill Number:", ControlType = ControlType.TextBox, isRequired = true},
-                    new DynamicControlInfo{PropertyName = "TaxpayersName", Label = "*TaxPayer's Name:", ControlType = ControlType.TextBox, isRequired = true},
-                    new DynamicControlInfo{PropertyName = "AmountToBePaid", Label = "*Bill Amount:", ControlType = ControlType.TextBox, InitialValue = "0.00", isRequired = true},
-                    new DynamicControlInfo{PropertyName = "TransferredAmount", Label = "*Transferred Amount:", ControlType = ControlType.TextBox, InitialValue = "0.00", isRequired = true},
-                    new DynamicControlInfo{PropertyName = "ModeOfPayment", Label = "*Bank:", ControlType = ControlType.ComboBox, ComboboxChoices = bankNames, isRequired = true},
-                    new DynamicControlInfo{PropertyName = "PaymentDate", Label = "*Payment Date: ", ControlType = ControlType.DatePicker, isRequired = true},
-                    new DynamicControlInfo{PropertyName = "Remarks", Label = "Remarks: ", ControlType = ControlType.TextBox},
-            }.Concat(commonInfo).ToArray();
+            //DynamicControlInfo[] marketAndZoningInfo = new DynamicControlInfo[]
+            //{       
+            //        new DynamicControlInfo{PropertyName = "OrderOfPaymentNum", Label = "*Bill Number:", ControlType = ControlType.TextBox, isRequired = true},
+            //        new DynamicControlInfo{PropertyName = "TaxpayersName", Label = "*TaxPayer's Name:", ControlType = ControlType.TextBox, isRequired = true},
+            //        new DynamicControlInfo{PropertyName = "AmountToBePaid", Label = "*Bill Amount:", ControlType = ControlType.TextBox, InitialValue = "0.00", isRequired = true},
+            //        new DynamicControlInfo{PropertyName = "TransferredAmount", Label = "*Transferred Amount:", ControlType = ControlType.TextBox, InitialValue = "0.00", isRequired = true},
+            //        new DynamicControlInfo{PropertyName = "ModeOfPayment", Label = "*Bank:", ControlType = ControlType.ComboBox, ComboboxChoices = bankNames, isRequired = true},
+            //        new DynamicControlInfo{PropertyName = "PaymentDate", Label = "*Payment Date: ", ControlType = ControlType.DatePicker, isRequired = true},
+            //        new DynamicControlInfo{PropertyName = "Remarks", Label = "Remarks: ", ControlType = ControlType.TextBox},
+            //}.Concat(commonInfo).ToArray();
 
-            dynamicPropertyMapping.Add(TaxTypeUtil.MISCELLANEOUS_MARKET, marketAndZoningInfo);
-            dynamicPropertyMapping.Add(TaxTypeUtil.MISCELLANEOUS_ZONING, marketAndZoningInfo);
+            //dynamicPropertyMapping.Add(TaxTypeUtil.MISCELLANEOUS_MARKET, marketAndZoningInfo);
+            //dynamicPropertyMapping.Add(TaxTypeUtil.MISCELLANEOUS_ZONING, marketAndZoningInfo);
 
             //LIQUOR
             dynamicPropertyMapping.Add(TaxTypeUtil.MISCELLANEOUS_LIQUOR,
@@ -186,7 +189,6 @@ namespace Revised_OPTS.Forms
             {
                 Control OrderOfPaymentNumTextBox = FindControlByName("OrderOfPaymentNum");
                 OrderOfPaymentNumTextBox.TextChanged += OrderOfPaymentNumTextBox_TextChanged;
-
             }
         }
 
@@ -206,7 +208,6 @@ namespace Revised_OPTS.Forms
             }
             return null;
         }
-
 
         private void TaxDecTextBox_TextChanged(object sender, EventArgs e)
         {
@@ -242,16 +243,17 @@ namespace Revised_OPTS.Forms
             }
         }
 
-
-
         private void AddDynamicControls(DynamicControlInfo[] dynamicPropertyInfos)
         {
             int y = CONTROL_START_Y;
             int x = LABEL_START_X;
             int controlCounter = 0;
 
+            string taxType = cbTaxType.Text;
+
             foreach (DynamicControlInfo propertyInfo in dynamicPropertyInfos)
             {
+
                 controlCounter++;
                 if (controlCounter == 8)
                 {
@@ -298,6 +300,15 @@ namespace Revised_OPTS.Forms
                 }
 
                 control.Enabled = propertyInfo.Enabled;
+
+                if (taxType != TaxTypeUtil.MISCELLANEOUS_OCCUPERMIT || taxType != TaxTypeUtil.MISCELLANEOUS_OVR)
+                {
+                    if (propertyInfo.Label == "OPA Tracking No.: ")
+                    {
+                        control.Enabled = false;
+                    }
+                }
+
                 if (propertyInfo.InitialValue != null)
                 {
                     control.Text = propertyInfo.InitialValue;
