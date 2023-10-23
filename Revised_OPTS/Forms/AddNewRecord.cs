@@ -25,6 +25,8 @@ namespace Revised_OPTS.Forms
         IBusinessService businessService = ServiceFactory.Instance.GetBusinessService();
         IMiscService miscService = ServiceFactory.Instance.GetMiscService();
         IRptTaxbillTPNRepository rptRetrieveTaxpayerNameRep = RepositoryFactory.Instance.GetRptRetrieveTaxpayerNameRepository();
+        IMiscDetailsBillingStageRepository miscRetrieveTaxpayerNameRep = RepositoryFactory.Instance.MiscRetrieveTaxpayerNameRepository();
+
 
         private List<Label> dynamicLabelList = new List<Label>();
         private List<Control> dynamicControlList = new List<Control>();
@@ -170,17 +172,21 @@ namespace Revised_OPTS.Forms
 
         private void cbTaxType_SelectedIndexChanged(object sender, EventArgs e)
         {
-
             RemoveAllDynamicControls();
             string taxType = cbTaxType.Text;
             DynamicControlInfo[] dynamicPropertyInfos = dynamicPropertyMapping[taxType];
             AddDynamicControls(dynamicPropertyInfos);
 
-
             if (taxType == TaxTypeUtil.REALPROPERTYTAX)
             {
                 Control TaxDecTextBox = FindControlByName("TaxDec");
                 TaxDecTextBox.TextChanged += TaxDecTextBox_TextChanged;
+            }
+            else if (taxType == TaxTypeUtil.MISCELLANEOUS_OCCUPERMIT)
+            {
+                Control OrderOfPaymentNumTextBox = FindControlByName("OrderOfPaymentNum");
+                OrderOfPaymentNumTextBox.TextChanged += OrderOfPaymentNumTextBox_TextChanged;
+
             }
         }
 
@@ -201,13 +207,13 @@ namespace Revised_OPTS.Forms
             return null;
         }
 
+
         private void TaxDecTextBox_TextChanged(object sender, EventArgs e)
         {
             Control TaxdecTextBox = FindControlByName("TaxDec");
             Control TaxPayerNameTextBox = FindControlByName("TaxPayerName");
 
-            RptTaxbillTPN rptRetrieveTaxpayerName = rptRetrieveTaxpayerNameRep.retrieveByTaxpayerName(TaxdecTextBox.Text);
-
+            RptTaxbillTPN rptRetrieveTaxpayerName = rptRetrieveTaxpayerNameRep.retrieveByTDN(TaxdecTextBox.Text);
 
             if (rptRetrieveTaxpayerName != null)
             {
@@ -218,6 +224,24 @@ namespace Revised_OPTS.Forms
                 TaxPayerNameTextBox.Text = Validations.NO_RETRIEVED_NAME;
             }
         }
+
+        private void OrderOfPaymentNumTextBox_TextChanged(object sender, EventArgs e)
+        {
+            Control OrderOfPaymentNum = FindControlByName("OrderOfPaymentNum");
+            Control TaxPayerNameTextBox = FindControlByName("TaxpayersName");
+
+            MiscDetailsBillingStage miscRetrieveTaxpayerName = miscRetrieveTaxpayerNameRep.retrieveByBillNum(OrderOfPaymentNum.Text);
+
+            if (miscRetrieveTaxpayerName != null)
+            {
+                TaxPayerNameTextBox.Text = miscRetrieveTaxpayerName.TaxpayerLName;
+            }
+            else
+            {
+                TaxPayerNameTextBox.Text = Validations.NO_RETRIEVED_NAME;
+            }
+        }
+
 
 
         private void AddDynamicControls(DynamicControlInfo[] dynamicPropertyInfos)

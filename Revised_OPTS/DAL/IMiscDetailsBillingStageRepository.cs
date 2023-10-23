@@ -8,9 +8,8 @@ using System.Threading.Tasks;
 
 namespace Inventory_System.DAL
 {
-    internal interface IRptTaxbillTPNRepository : IRepository<RptTaxbillTPN>
+    internal interface IMiscDetailsBillingStageRepository : IRepository<MiscDetailsBillingStage>
     {
-        RptTaxbillTPN retrieveByTDN(string tdn);
-
+        MiscDetailsBillingStage retrieveByBillNum(string billNum);
     }
 }
