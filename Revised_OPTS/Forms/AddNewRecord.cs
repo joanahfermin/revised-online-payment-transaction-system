@@ -2,6 +2,7 @@
 using Inventory_System.Exception;
 using Inventory_System.Model;
 using Inventory_System.Utilities;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Revised_OPTS.DAL;
 using Revised_OPTS.Model;
 using Revised_OPTS.Service;
@@ -25,11 +26,13 @@ namespace Revised_OPTS.Forms
         private const string TAXDEC_FORMAT = "^[A|B|C|D|E|F|G]-[0-9]{3}-[0-9]{5}( / [A|B|C|D|E|F|G]-[0-9]{3}-[0-9]{5})*$";
         private const string MP_FORMAT = "^[0-9]{2}-[0-9]{6}$";
         private const string BUSINESS_BILLNUM_FORMAT = "^[B]-[0-9]{4}-[0-9]{2}-[0-9]{2}-[N][X]-[0-9]{6}$";
-        //private const string OCCUPERMIT_FORMAT = "^[M]-[0-9]{4}-[0-9]{2}-[0-9]{2}-[B][P][L][O]-[A-Z,0-9]{4}-[0-9]{6}$";
-        //private const string OVR_TTMD_FORMAT = "^[M]-[0-9]{4}-[0-9]{2}-[0-9]{2}-[T][T][M][D]-[A-Z,0-9]{4}-[0-9]{6}$";
-        //private const string OVR_DPOS_FORMAT = "^[M]-[0-9]{4}-[0-9]{2}-[0-9]{2}-[D][P][O][S]-[A-Z,0-9]{4}-[0-9]{6}$";
-        //private const string MARKET_FORMAT = "^[M]-[0-9]{4}-[0-9]{2}-[0-9]{2}-[M][D][A][D]-[A-Z,0-9]{4}-[0-9]{6}$";
-        //private const string ZONING_FORMAT = "^[M]-[0-9]{4}-[0-9]{2}-[0-9]{2}-[C][P][D][O]-[A-Z,0-9]{4}-[0-9]{6}$";
+
+        private const string OCCUPERMIT_FORMAT = "^[M]-[0-9]{4}-[0-9]{2}-[0-9]{2}-[B][P][L][O]-[A-Z,0-9]{4}-[0-9]{6}$";
+        private const string OVR_TTMD_FORMAT = "^[M]-[0-9]{4}-[0-9]{2}-[0-9]{2}-[T][T][M][D]-[A-Z,0-9]{4}-[0-9]{6}$";
+        private const string OVR_DPOS_FORMAT = "^[M]-[0-9]{4}-[0-9]{2}-[0-9]{2}-[D][P][O][S]-[A-Z,0-9]{4}-[0-9]{6}$";
+        private const string MARKET_FORMAT = "^[M]-[0-9]{4}-[0-9]{2}-[0-9]{2}-[M][D][A][D]-[A-Z,0-9]{4}-[0-9]{6}$";
+        private const string ZONING_FORMAT = "^[M]-[0-9]{4}-[0-9]{2}-[0-9]{2}-[C][P][D][O]-[A-Z,0-9]{4}-[0-9]{6}$";
+
         private const string LIQUOR_FORMAT = "^[M]-[0-9]{4}-[0-9]{2}-[0-9]{2}-[L][L][R][B]-[A-Z,0-9]{4}-[0-9]{6}$";
 
         IRptService rptService = ServiceFactory.Instance.GetRptService();
@@ -134,10 +137,10 @@ namespace Revised_OPTS.Forms
                     new DynamicControlInfo{PropertyName = "Remarks", Label = "Remarks: ", ControlType = ControlType.TextBox},
                 }.Concat(commonInfo).ToArray();
 
-            dynamicPropertyMapping.Add(TaxTypeUtil.MISCELLANEOUS_OCCUPERMIT, miscInfo);
-            dynamicPropertyMapping.Add(TaxTypeUtil.MISCELLANEOUS_OVR, miscInfo);
-            dynamicPropertyMapping.Add(TaxTypeUtil.MISCELLANEOUS_MARKET, miscInfo);
-            dynamicPropertyMapping.Add(TaxTypeUtil.MISCELLANEOUS_ZONING, miscInfo);
+            dynamicPropertyMapping.Add(TaxTypeUtil.MISCELLANEOUS_OCCUPERMIT, DynamicControlInfoUtil.Clone(miscInfo));
+            dynamicPropertyMapping.Add(TaxTypeUtil.MISCELLANEOUS_OVR, DynamicControlInfoUtil.Clone(miscInfo));
+            dynamicPropertyMapping.Add(TaxTypeUtil.MISCELLANEOUS_MARKET, DynamicControlInfoUtil.Clone(miscInfo));
+            dynamicPropertyMapping.Add(TaxTypeUtil.MISCELLANEOUS_ZONING, DynamicControlInfoUtil.Clone(miscInfo));
 
             //LIQUOR
             dynamicPropertyMapping.Add(TaxTypeUtil.MISCELLANEOUS_LIQUOR,
@@ -154,6 +157,67 @@ namespace Revised_OPTS.Forms
                     new DynamicControlInfo{PropertyName = "Qtrs", Label = "*Quarter: ", ControlType = ControlType.ComboBox, ComboboxChoices = Quarter.ALL_QUARTER, isRequired = true},
                     new DynamicControlInfo{PropertyName = "BussinessRemarks", Label = "Remarks:", ControlType = ControlType.TextBox},
                 }.Concat(commonInfo).ToArray());
+
+            ApplyDynamicMappingSpecialRules();
+        }
+        /*
+                        if (taxType != TaxTypeUtil.MISCELLANEOUS_OCCUPERMIT && taxType != TaxTypeUtil.MISCELLANEOUS_OVR)
+                {
+                    if (propertyInfo.PropertyName == "OPATrackingNum")
+                    {
+                        control.Enabled = false;
+                        textBox.Text = "NOT APPLICABLE";
+                    }
+                    else
+                    {
+                        control.Enabled = propertyInfo.Enabled;
+                    }
+                }*/
+
+        private void ApplyDynamicMappingSpecialRules()
+        {
+            //MISCELLANEOUS_OCCUPERMIT
+            DynamicControlInfo[] occuPermitDynamicPropertyInfos = dynamicPropertyMapping[TaxTypeUtil.MISCELLANEOUS_OCCUPERMIT];
+            DynamicControlInfo OccuPermitOrderOfPaymentNumInfo = FindDynamicControlInfo(occuPermitDynamicPropertyInfos, "OrderOfPaymentNum");
+            OccuPermitOrderOfPaymentNumInfo.format = OCCUPERMIT_FORMAT;
+
+            //MISCELLANEOUS_OVR
+            DynamicControlInfo[] OvrDynamicPropertyInfos = dynamicPropertyMapping[TaxTypeUtil.MISCELLANEOUS_OVR];
+            DynamicControlInfo OvrOrderOfPaymentNumInfo = FindDynamicControlInfo(OvrDynamicPropertyInfos, "OrderOfPaymentNum");
+            OvrOrderOfPaymentNumInfo.format = OVR_TTMD_FORMAT;
+
+            //MISCELLANEOUS_MARKET
+            DynamicControlInfo[] MarketDynamicPropertyInfos = dynamicPropertyMapping[TaxTypeUtil.MISCELLANEOUS_MARKET];
+            DynamicControlInfo MarketOrderOfPaymentNumInfo = FindDynamicControlInfo(MarketDynamicPropertyInfos, "OrderOfPaymentNum");
+            MarketOrderOfPaymentNumInfo.format = MARKET_FORMAT;
+
+            DynamicControlInfo MarketOPATrackingNumInfo = FindDynamicControlInfo(MarketDynamicPropertyInfos, "OPATrackingNum");
+            MarketOPATrackingNumInfo.Enabled = false;
+            MarketOPATrackingNumInfo.InitialValue = "NOT APPLICABLE";
+
+            //MISCELLANEOUS_ZONING
+            DynamicControlInfo[] ZoningDynamicPropertyInfos = dynamicPropertyMapping[TaxTypeUtil.MISCELLANEOUS_ZONING];
+            DynamicControlInfo ZoningOrderOfPaymentNumInfo = FindDynamicControlInfo(ZoningDynamicPropertyInfos, "OrderOfPaymentNum");
+            ZoningOrderOfPaymentNumInfo.format = ZONING_FORMAT;
+
+            DynamicControlInfo ZoningOPATrackingNumInfo = FindDynamicControlInfo(ZoningDynamicPropertyInfos, "OPATrackingNum");
+            ZoningOPATrackingNumInfo.Enabled = false;
+            ZoningOPATrackingNumInfo.InitialValue = "NOT APPLICABLE";
+
+        }
+
+        private DynamicControlInfo FindDynamicControlInfo(DynamicControlInfo[] dynamicPropertyInfos, String propertyName)
+        {
+            for (int i = 0; i < dynamicPropertyInfos.Length; i++)
+            {
+                DynamicControlInfo dynamicPropertyInfo = dynamicPropertyInfos[i];
+                if (propertyName == dynamicPropertyInfo.PropertyName)
+                {
+                    return dynamicPropertyInfo;
+                }
+            }
+            return null;
+
         }
 
         private void RemoveAllDynamicControls()
@@ -298,7 +362,7 @@ namespace Revised_OPTS.Forms
                 {
                     textBox.BorderStyle = BorderStyle.FixedSingle;
                     textBox.TextAlign = HorizontalAlignment.Center;
-
+                    /*
                     if (taxType != TaxTypeUtil.MISCELLANEOUS_OCCUPERMIT && taxType != TaxTypeUtil.MISCELLANEOUS_OVR)
                     {
                         if (propertyInfo.PropertyName == "OPATrackingNum")
@@ -306,6 +370,7 @@ namespace Revised_OPTS.Forms
                             textBox.Enabled = false;
                         }
                     }
+                    */
                     control = textBox;
                 }
                 else if (propertyInfo.ControlType == ControlType.ComboBox)
@@ -323,6 +388,7 @@ namespace Revised_OPTS.Forms
                     control = dateTimePicker;
                 }
 
+                /*
                 if (taxType != TaxTypeUtil.MISCELLANEOUS_OCCUPERMIT && taxType != TaxTypeUtil.MISCELLANEOUS_OVR)
                 {
                     if (propertyInfo.PropertyName == "OPATrackingNum")
@@ -335,6 +401,7 @@ namespace Revised_OPTS.Forms
                         control.Enabled = propertyInfo.Enabled;
                     }
                 }
+                */
 
                 if (propertyInfo.InitialValue != null)
                 {
@@ -491,22 +558,6 @@ namespace Revised_OPTS.Forms
             this.Close();
         }
     }
-    public class DynamicControlInfo
-    {
-        public string PropertyName;
-        public string Label;
-        public ControlType ControlType;
-        public string[] ComboboxChoices;
-        public bool Enabled = true;
-        public string InitialValue = null;
-        public bool isRequired = false;
-        public string format = string.Empty;
-    }
 
-    public enum ControlType
-    {
-        TextBox,
-        ComboBox,
-        DatePicker
-    }
+
 }
