@@ -20,10 +20,7 @@ namespace Revised_OPTS.Service
 
         public void Insert(Miscellaneous misc)
         {
-            using (var scope = new TransactionScope())
-            {
-                misc.ExcessShort = misc.TransferredAmount - misc.AmountToBePaid;
-            }
+            misc.ExcessShort = misc.TransferredAmount - misc.AmountToBePaid;
             miscRepository.Insert(misc);
         }
     }

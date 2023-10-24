@@ -160,19 +160,6 @@ namespace Revised_OPTS.Forms
 
             ApplyDynamicMappingSpecialRules();
         }
-        /*
-                        if (taxType != TaxTypeUtil.MISCELLANEOUS_OCCUPERMIT && taxType != TaxTypeUtil.MISCELLANEOUS_OVR)
-                {
-                    if (propertyInfo.PropertyName == "OPATrackingNum")
-                    {
-                        control.Enabled = false;
-                        textBox.Text = "NOT APPLICABLE";
-                    }
-                    else
-                    {
-                        control.Enabled = propertyInfo.Enabled;
-                    }
-                }*/
 
         private void ApplyDynamicMappingSpecialRules()
         {
@@ -362,15 +349,6 @@ namespace Revised_OPTS.Forms
                 {
                     textBox.BorderStyle = BorderStyle.FixedSingle;
                     textBox.TextAlign = HorizontalAlignment.Center;
-                    /*
-                    if (taxType != TaxTypeUtil.MISCELLANEOUS_OCCUPERMIT && taxType != TaxTypeUtil.MISCELLANEOUS_OVR)
-                    {
-                        if (propertyInfo.PropertyName == "OPATrackingNum")
-                        {
-                            textBox.Enabled = false;
-                        }
-                    }
-                    */
                     control = textBox;
                 }
                 else if (propertyInfo.ControlType == ControlType.ComboBox)
@@ -388,26 +366,11 @@ namespace Revised_OPTS.Forms
                     control = dateTimePicker;
                 }
 
-                /*
-                if (taxType != TaxTypeUtil.MISCELLANEOUS_OCCUPERMIT && taxType != TaxTypeUtil.MISCELLANEOUS_OVR)
-                {
-                    if (propertyInfo.PropertyName == "OPATrackingNum")
-                    {
-                        control.Enabled = false;
-                        textBox.Text = "NOT APPLICABLE";
-                    }
-                    else
-                    {
-                        control.Enabled = propertyInfo.Enabled;
-                    }
-                }
-                */
-
                 control.Enabled = propertyInfo.Enabled;
+
                 if (propertyInfo.InitialValue != null)
                 {
                     control.Text = propertyInfo.InitialValue;
-                    //control.Enabled = false;
                 }
 
                 control.Top = y;  // Place the textbox below the label

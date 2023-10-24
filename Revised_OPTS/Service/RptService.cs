@@ -35,12 +35,8 @@ namespace Revised_OPTS.Service
 
         public void Insert(Rpt rpt)
         {
-            using (var scope = new TransactionScope())
-            {
-                rpt.ExcessShortAmount = rpt.AmountTransferred - rpt.AmountToPay;
-                rptRepository.Insert(rpt);
-            }
+            rpt.ExcessShortAmount = rpt.AmountTransferred - rpt.AmountToPay;
+            rptRepository.Insert(rpt);
         }
-
     }
 }
