@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Inventory_System.Utilities
@@ -44,6 +45,24 @@ namespace Inventory_System.Utilities
             if (tb.Text.Trim() == "")
             {
                 ep.SetError(tb, $"{propertyName} is required.");
+            }
+        }
+
+        public static void ValidateFormat(ErrorProvider ep, Control tb, string propertyName, string format)
+        {
+            if (hasExistingError(ep, tb))
+            {
+                return;
+            }
+
+            if (tb.Text.Trim() != "")
+            {
+                Regex re = new Regex(format);
+
+                if (!re.IsMatch(tb.Text.Trim()))
+                {
+                    ep.SetError(tb, $"{propertyName} is in wrong format.");
+                }
             }
         }
     }

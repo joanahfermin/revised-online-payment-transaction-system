@@ -36,6 +36,11 @@ namespace Revised_OPTS.DAL
             return new RptTaxbillTPNRepository(ITDDFMUDAILY2022ApplicationDBContext.Instance);
         }
 
+        public IBusinessMasterDetailTPNRepository GetBusinessRetrieveTaxpayerNameRepository()
+        {
+            return new BusinessMasterDetailTPNRepository(ITDDFMUDAILY2022ApplicationDBContext.Instance);
+        }
+
         public IMiscDetailsBillingStageRepository MiscRetrieveTaxpayerNameRepository()
         {
             return new MiscDetailsBillingStageRepository(ITDDFMUDAILY2023ApplicationDBContext.Instance);

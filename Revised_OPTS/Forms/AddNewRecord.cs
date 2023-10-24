@@ -14,6 +14,7 @@ using System.Drawing;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -21,12 +22,22 @@ namespace Revised_OPTS.Forms
 {
     public partial class AddNewRecord : Form
     {
+        private const string TAXDEC_FORMAT = "^[A|B|C|D|E|F|G]-[0-9]{3}-[0-9]{5}( / [A|B|C|D|E|F|G]-[0-9]{3}-[0-9]{5})*$";
+        private const string MP_FORMAT = "^[0-9]{2}-[0-9]{6}$";
+        private const string BUSINESS_BILLNUM_FORMAT = "^[B]-[0-9]{4}-[0-9]{2}-[0-9]{2}-[N][X]-[0-9]{6}$";
+        //private const string OCCUPERMIT_FORMAT = "^[M]-[0-9]{4}-[0-9]{2}-[0-9]{2}-[B][P][L][O]-[A-Z,0-9]{4}-[0-9]{6}$";
+        //private const string OVR_TTMD_FORMAT = "^[M]-[0-9]{4}-[0-9]{2}-[0-9]{2}-[T][T][M][D]-[A-Z,0-9]{4}-[0-9]{6}$";
+        //private const string OVR_DPOS_FORMAT = "^[M]-[0-9]{4}-[0-9]{2}-[0-9]{2}-[D][P][O][S]-[A-Z,0-9]{4}-[0-9]{6}$";
+        //private const string MARKET_FORMAT = "^[M]-[0-9]{4}-[0-9]{2}-[0-9]{2}-[M][D][A][D]-[A-Z,0-9]{4}-[0-9]{6}$";
+        //private const string ZONING_FORMAT = "^[M]-[0-9]{4}-[0-9]{2}-[0-9]{2}-[C][P][D][O]-[A-Z,0-9]{4}-[0-9]{6}$";
+        private const string LIQUOR_FORMAT = "^[M]-[0-9]{4}-[0-9]{2}-[0-9]{2}-[L][L][R][B]-[A-Z,0-9]{4}-[0-9]{6}$";
+
         IRptService rptService = ServiceFactory.Instance.GetRptService();
         IBusinessService businessService = ServiceFactory.Instance.GetBusinessService();
         IMiscService miscService = ServiceFactory.Instance.GetMiscService();
         IRptTaxbillTPNRepository rptRetrieveTaxpayerNameRep = RepositoryFactory.Instance.GetRptRetrieveTaxpayerNameRepository();
+        IBusinessMasterDetailTPNRepository businessRetrieveTaxpayerNameRep = RepositoryFactory.Instance.GetBusinessRetrieveTaxpayerNameRepository();
         IMiscDetailsBillingStageRepository miscRetrieveTaxpayerNameRep = RepositoryFactory.Instance.MiscRetrieveTaxpayerNameRepository();
-
 
         private List<Label> dynamicLabelList = new List<Label>();
         private List<Control> dynamicControlList = new List<Control>();
@@ -59,7 +70,7 @@ namespace Revised_OPTS.Forms
 
         public void InitializeTaxType()
         {
-            foreach (string miscType in TaxTypeUtil.ALL_TAX_TYPE)
+            foreach (string miscType in TaxTypeUtil.ALL_TAX_TYPE.OrderBy(taxType => taxType))
             {
                 cbTaxType.Items.Add(miscType);
             }
@@ -80,7 +91,7 @@ namespace Revised_OPTS.Forms
             //RPT
             dynamicPropertyMapping.Add(TaxTypeUtil.REALPROPERTYTAX, new DynamicControlInfo[]
                 {
-                    new DynamicControlInfo{PropertyName = "TaxDec", Label = "*TDN:", ControlType = ControlType.TextBox, isRequired = true},
+                    new DynamicControlInfo{PropertyName = "TaxDec", Label = "*TDN:", ControlType = ControlType.TextBox, isRequired = true, format = TAXDEC_FORMAT},
                     new DynamicControlInfo{PropertyName = "TaxPayerName", Label = "*TaxPayer's Name:", ControlType = ControlType.TextBox, isRequired = true},
                     new DynamicControlInfo{PropertyName = "AmountToPay", Label = "*Bill Amount:", ControlType = ControlType.TextBox, InitialValue = "0.00", isRequired = true},
                     new DynamicControlInfo{PropertyName = "AmountTransferred", Label = "*Transferred Amount:", ControlType = ControlType.TextBox, InitialValue = "0.00", isRequired = true},
@@ -89,16 +100,16 @@ namespace Revised_OPTS.Forms
                     new DynamicControlInfo{PropertyName = "YearQuarter", Label = "*Year:", ControlType = ControlType.TextBox, isRequired = true},
                     new DynamicControlInfo{PropertyName = "Quarter", Label = "Quarter: ", ControlType = ControlType.ComboBox, ComboboxChoices = Quarter.ALL_QUARTER},
                     new DynamicControlInfo{PropertyName = "RPTremarks", Label = "Remarks:", ControlType = ControlType.TextBox},
-                }.Concat(commonInfo).ToArray());
+                }.Concat(commonInfo).ToArray()); ;
 
             //BUSINESS
             dynamicPropertyMapping.Add(TaxTypeUtil.BUSINESS,
                 new DynamicControlInfo[]
                 {
                     new DynamicControlInfo{PropertyName = "Business_Type", Label = "*Business Type: ", ControlType = ControlType.ComboBox, ComboboxChoices = BusinessUtil.BUSINESS_TYPE, isRequired = true},
-                    new DynamicControlInfo{PropertyName = "BillNumber", Label = "*Bill Number: ", ControlType = ControlType.TextBox, isRequired = true},
+                    new DynamicControlInfo{PropertyName = "BillNumber", Label = "*Bill Number: ", ControlType = ControlType.TextBox, isRequired = true, format = BUSINESS_BILLNUM_FORMAT},
                     new DynamicControlInfo{PropertyName = "TaxpayersName", Label = "*TaxPayer's Name:", ControlType = ControlType.TextBox, isRequired = true},
-                    new DynamicControlInfo{PropertyName = "MP_Number", Label = "*M.P Number:", ControlType = ControlType.TextBox, isRequired = true},
+                    new DynamicControlInfo{PropertyName = "MP_Number", Label = "*M.P Number:", ControlType = ControlType.TextBox, isRequired = true, format = MP_FORMAT},
                     new DynamicControlInfo{PropertyName = "BusinessName", Label = "*Business Name: ", ControlType = ControlType.TextBox, isRequired = true},
                     new DynamicControlInfo{PropertyName = "BillAmount", Label = "*Bill Amount:", ControlType = ControlType.TextBox, InitialValue = "0.00", isRequired = true},
                     new DynamicControlInfo{PropertyName = "TotalAmount", Label = "*Transferred Amount:", ControlType = ControlType.TextBox, InitialValue = "0.00", isRequired = true},
@@ -110,12 +121,12 @@ namespace Revised_OPTS.Forms
                     new DynamicControlInfo{PropertyName = "BussinessRemarks", Label = "Remarks:", ControlType = ControlType.TextBox},
                 }.Concat(commonInfo).ToArray());
 
-            //OCCUPERMIT AND OVR
-            DynamicControlInfo[] OccuPermitAndOVRInfo = new DynamicControlInfo[]
+            //MISC
+            DynamicControlInfo[] miscInfo = new DynamicControlInfo[]
                 {
                     new DynamicControlInfo{PropertyName = "OrderOfPaymentNum", Label = "*Bill Number:", ControlType = ControlType.TextBox, isRequired = true},
                     new DynamicControlInfo{PropertyName = "TaxpayersName", Label = "*TaxPayer's Name:", ControlType = ControlType.TextBox, isRequired = true},
-                    new DynamicControlInfo{PropertyName = "OPATrackingNum", Label = "OPA Tracking No.: ", ControlType = ControlType.TextBox, Enabled = true},
+                    new DynamicControlInfo{PropertyName = "OPATrackingNum", Label = "OPA Tracking No.: ", ControlType = ControlType.TextBox},
                     new DynamicControlInfo{PropertyName = "AmountToBePaid", Label = "*Bill Amount:", ControlType = ControlType.TextBox, InitialValue = "0.00", isRequired = true},
                     new DynamicControlInfo{PropertyName = "TransferredAmount", Label = "*Transferred Amount:", ControlType = ControlType.TextBox, InitialValue = "0.00", isRequired = true},
                     new DynamicControlInfo{PropertyName = "ModeOfPayment", Label = "*Bank:", ControlType = ControlType.ComboBox, ComboboxChoices = bankNames, isRequired = true},
@@ -123,33 +134,17 @@ namespace Revised_OPTS.Forms
                     new DynamicControlInfo{PropertyName = "Remarks", Label = "Remarks: ", ControlType = ControlType.TextBox},
                 }.Concat(commonInfo).ToArray();
 
-            dynamicPropertyMapping.Add(TaxTypeUtil.MISCELLANEOUS_OCCUPERMIT, OccuPermitAndOVRInfo);
-            dynamicPropertyMapping.Add(TaxTypeUtil.MISCELLANEOUS_OVR, OccuPermitAndOVRInfo);
-            dynamicPropertyMapping.Add(TaxTypeUtil.MISCELLANEOUS_MARKET, OccuPermitAndOVRInfo);
-            dynamicPropertyMapping.Add(TaxTypeUtil.MISCELLANEOUS_ZONING, OccuPermitAndOVRInfo);
-
-
-            //MARKET AND ZONING
-            //DynamicControlInfo[] marketAndZoningInfo = new DynamicControlInfo[]
-            //{       
-            //        new DynamicControlInfo{PropertyName = "OrderOfPaymentNum", Label = "*Bill Number:", ControlType = ControlType.TextBox, isRequired = true},
-            //        new DynamicControlInfo{PropertyName = "TaxpayersName", Label = "*TaxPayer's Name:", ControlType = ControlType.TextBox, isRequired = true},
-            //        new DynamicControlInfo{PropertyName = "AmountToBePaid", Label = "*Bill Amount:", ControlType = ControlType.TextBox, InitialValue = "0.00", isRequired = true},
-            //        new DynamicControlInfo{PropertyName = "TransferredAmount", Label = "*Transferred Amount:", ControlType = ControlType.TextBox, InitialValue = "0.00", isRequired = true},
-            //        new DynamicControlInfo{PropertyName = "ModeOfPayment", Label = "*Bank:", ControlType = ControlType.ComboBox, ComboboxChoices = bankNames, isRequired = true},
-            //        new DynamicControlInfo{PropertyName = "PaymentDate", Label = "*Payment Date: ", ControlType = ControlType.DatePicker, isRequired = true},
-            //        new DynamicControlInfo{PropertyName = "Remarks", Label = "Remarks: ", ControlType = ControlType.TextBox},
-            //}.Concat(commonInfo).ToArray();
-
-            //dynamicPropertyMapping.Add(TaxTypeUtil.MISCELLANEOUS_MARKET, marketAndZoningInfo);
-            //dynamicPropertyMapping.Add(TaxTypeUtil.MISCELLANEOUS_ZONING, marketAndZoningInfo);
+            dynamicPropertyMapping.Add(TaxTypeUtil.MISCELLANEOUS_OCCUPERMIT, miscInfo);
+            dynamicPropertyMapping.Add(TaxTypeUtil.MISCELLANEOUS_OVR, miscInfo);
+            dynamicPropertyMapping.Add(TaxTypeUtil.MISCELLANEOUS_MARKET, miscInfo);
+            dynamicPropertyMapping.Add(TaxTypeUtil.MISCELLANEOUS_ZONING, miscInfo);
 
             //LIQUOR
             dynamicPropertyMapping.Add(TaxTypeUtil.MISCELLANEOUS_LIQUOR,
                 new DynamicControlInfo[]
                 {
-                    new DynamicControlInfo{PropertyName = "BillNumber", Label = "*Bill Number: ", ControlType = ControlType.TextBox, isRequired = true},
-                    new DynamicControlInfo{PropertyName = "MP_Number", Label = "*M.P Number:", ControlType = ControlType.TextBox, isRequired = true},
+                    new DynamicControlInfo{PropertyName = "BillNumber", Label = "*Bill Number: ", ControlType = ControlType.TextBox, isRequired = true, format = LIQUOR_FORMAT},
+                    new DynamicControlInfo{PropertyName = "MP_Number", Label = "*M.P Number:", ControlType = ControlType.TextBox, isRequired = true, format = MP_FORMAT},
                     new DynamicControlInfo{PropertyName = "TaxpayersName", Label = "*TaxPayer's Name:", ControlType = ControlType.TextBox, isRequired = true},
                     new DynamicControlInfo{PropertyName = "BillAmount", Label = "*Bill Amount:", ControlType = ControlType.TextBox, InitialValue = "0.00", isRequired = true},
                     new DynamicControlInfo{PropertyName = "TotalAmount", Label = "*Transferred Amount:", ControlType = ControlType.TextBox, InitialValue = "0.00", isRequired = true},
@@ -173,25 +168,6 @@ namespace Revised_OPTS.Forms
             }
         }
 
-        private void cbTaxType_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            RemoveAllDynamicControls();
-            string taxType = cbTaxType.Text;
-            DynamicControlInfo[] dynamicPropertyInfos = dynamicPropertyMapping[taxType];
-            AddDynamicControls(dynamicPropertyInfos);
-
-            if (taxType == TaxTypeUtil.REALPROPERTYTAX)
-            {
-                Control TaxDecTextBox = FindControlByName("TaxDec");
-                TaxDecTextBox.TextChanged += TaxDecTextBox_TextChanged;
-            }
-            else if (taxType == TaxTypeUtil.MISCELLANEOUS_OCCUPERMIT)
-            {
-                Control OrderOfPaymentNumTextBox = FindControlByName("OrderOfPaymentNum");
-                OrderOfPaymentNumTextBox.TextChanged += OrderOfPaymentNumTextBox_TextChanged;
-            }
-        }
-
         private Control FindControlByName(String propertyName)
         {
             string taxType = cbTaxType.Text;
@@ -207,6 +183,30 @@ namespace Revised_OPTS.Forms
                 }
             }
             return null;
+        }
+
+        private void cbTaxType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            RemoveAllDynamicControls();
+            string taxType = cbTaxType.Text;
+            DynamicControlInfo[] dynamicPropertyInfos = dynamicPropertyMapping[taxType];
+            AddDynamicControls(dynamicPropertyInfos);
+
+            if (taxType == TaxTypeUtil.REALPROPERTYTAX)
+            {
+                Control TaxDecTextBox = FindControlByName("TaxDec");
+                TaxDecTextBox.TextChanged += TaxDecTextBox_TextChanged;
+            }
+            else if (taxType == TaxTypeUtil.BUSINESS)
+            {
+                Control MP_NumberTextBox = FindControlByName("MP_Number");
+                MP_NumberTextBox.TextChanged += MP_NumberTextBox_TextChanged;
+            }
+            else if (taxType == TaxTypeUtil.MISCELLANEOUS_OCCUPERMIT)
+            {
+                Control MiscOrderOfPaymentNumTextBox = FindControlByName("OrderOfPaymentNum");
+                MiscOrderOfPaymentNumTextBox.TextChanged += MiscOrderOfPaymentNumTextBox_TextChanged;
+            }
         }
 
         private void TaxDecTextBox_TextChanged(object sender, EventArgs e)
@@ -226,7 +226,24 @@ namespace Revised_OPTS.Forms
             }
         }
 
-        private void OrderOfPaymentNumTextBox_TextChanged(object sender, EventArgs e)
+        private void MP_NumberTextBox_TextChanged(object sender, EventArgs e)
+        {
+            Control MP_NumberTextBox = FindControlByName("MP_Number");
+            Control BusinessNameTextBox = FindControlByName("BusinessName");
+
+            BusinessMasterDetailTPN businessRetrieveTaxpayerName = businessRetrieveTaxpayerNameRep.retrieveByMpNo(MP_NumberTextBox.Text);
+
+            if (businessRetrieveTaxpayerName != null)
+            {
+                BusinessNameTextBox.Text = businessRetrieveTaxpayerName.BusinessName;
+            }
+            else
+            {
+                BusinessNameTextBox.Text = Validations.NO_RETRIEVED_NAME;
+            }
+        }
+
+        private void MiscOrderOfPaymentNumTextBox_TextChanged(object sender, EventArgs e)
         {
             Control OrderOfPaymentNum = FindControlByName("OrderOfPaymentNum");
             Control TaxPayerNameTextBox = FindControlByName("TaxpayersName");
@@ -253,7 +270,7 @@ namespace Revised_OPTS.Forms
 
             foreach (DynamicControlInfo propertyInfo in dynamicPropertyInfos)
             {
-
+                TextBox textBox = new TextBox();
                 controlCounter++;
                 if (controlCounter == 8)
                 {
@@ -279,9 +296,16 @@ namespace Revised_OPTS.Forms
                 Control control = null;
                 if (propertyInfo.ControlType == ControlType.TextBox)
                 {
-                    TextBox textBox = new TextBox();
                     textBox.BorderStyle = BorderStyle.FixedSingle;
                     textBox.TextAlign = HorizontalAlignment.Center;
+
+                    if (taxType != TaxTypeUtil.MISCELLANEOUS_OCCUPERMIT && taxType != TaxTypeUtil.MISCELLANEOUS_OVR)
+                    {
+                        if (propertyInfo.PropertyName == "OPATrackingNum")
+                        {
+                            textBox.Enabled = false;
+                        }
+                    }
                     control = textBox;
                 }
                 else if (propertyInfo.ControlType == ControlType.ComboBox)
@@ -299,19 +323,23 @@ namespace Revised_OPTS.Forms
                     control = dateTimePicker;
                 }
 
-                control.Enabled = propertyInfo.Enabled;
-
-                if (taxType != TaxTypeUtil.MISCELLANEOUS_OCCUPERMIT || taxType != TaxTypeUtil.MISCELLANEOUS_OVR)
+                if (taxType != TaxTypeUtil.MISCELLANEOUS_OCCUPERMIT && taxType != TaxTypeUtil.MISCELLANEOUS_OVR)
                 {
-                    if (propertyInfo.Label == "OPA Tracking No.: ")
+                    if (propertyInfo.PropertyName == "OPATrackingNum")
                     {
                         control.Enabled = false;
+                        textBox.Text = "NOT APPLICABLE";
+                    }
+                    else
+                    {
+                        control.Enabled = propertyInfo.Enabled;
                     }
                 }
 
                 if (propertyInfo.InitialValue != null)
                 {
                     control.Text = propertyInfo.InitialValue;
+                    control.Enabled = false;
                 }
 
                 control.Top = y;  // Place the textbox below the label
@@ -342,6 +370,11 @@ namespace Revised_OPTS.Forms
                 if (dynamicPropertyInfo.isRequired)
                 {
                     Validations.ValidateRequired(errorProvider1, control, dynamicPropertyInfo.Label);
+                }
+
+                if (dynamicPropertyInfo.format.Length > 0)
+                {
+                    Validations.ValidateFormat(errorProvider1, control, dynamicPropertyInfo.Label, dynamicPropertyInfo.format);
                 }
             }
         }
@@ -467,6 +500,7 @@ namespace Revised_OPTS.Forms
         public bool Enabled = true;
         public string InitialValue = null;
         public bool isRequired = false;
+        public string format = string.Empty;
     }
 
     public enum ControlType

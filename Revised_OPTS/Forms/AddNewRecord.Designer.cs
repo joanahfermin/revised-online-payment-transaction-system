@@ -44,6 +44,7 @@
             // cbTaxType
             // 
             this.cbTaxType.BackColor = System.Drawing.Color.AliceBlue;
+            this.cbTaxType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbTaxType.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cbTaxType.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.cbTaxType.FormattingEnabled = true;

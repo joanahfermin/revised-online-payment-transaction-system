@@ -32,5 +32,7 @@ namespace Inventory_System.DAL
 
         public DbSet<RptTaxbillTPN> rptRetrieveTaxpayerNames { get; set; }
 
+        public DbSet<BusinessMasterDetailTPN> businessRetrieveTaxpayerNames { get; set; }
+
     }
 }
