@@ -187,7 +187,7 @@ namespace Revised_OPTS
 
         private void btnAddNewRecord_Click(object sender, EventArgs e)
         {
-            new AddNewRecord().Show();
+            new AddNewRecordForm().Show();
         }
 
         private void MainForm_SizeChanged(object sender, EventArgs e)

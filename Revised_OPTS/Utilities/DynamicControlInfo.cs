@@ -11,7 +11,7 @@ namespace Inventory_System.Utilities
     {
         public string PropertyName;
         public string Label;
-        public ControlType ControlType;
+        public DynamicControlType ControlType;
         public string[] ComboboxChoices;
         public bool Enabled = true;
         public string InitialValue = null;

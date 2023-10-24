@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Inventory_System.Utilities
 {
-    public enum ControlType
+    public enum DynamicControlType
     {
         TextBox,
         ComboBox,
