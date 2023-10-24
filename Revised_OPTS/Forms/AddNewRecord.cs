@@ -403,10 +403,11 @@ namespace Revised_OPTS.Forms
                 }
                 */
 
+                control.Enabled = propertyInfo.Enabled;
                 if (propertyInfo.InitialValue != null)
                 {
                     control.Text = propertyInfo.InitialValue;
-                    control.Enabled = false;
+                    //control.Enabled = false;
                 }
 
                 control.Top = y;  // Place the textbox below the label
