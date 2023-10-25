@@ -1,6 +1,6 @@
 ﻿namespace Revised_OPTS.Forms
 {
-    partial class AddNewRecordForm
+    partial class AddUpdateRecordForm
     {
         /// <summary>
         /// Required designer variable.
@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AddNewRecordForm));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AddUpdateRecordForm));
             this.cbTaxType = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.btnSaveRecord = new System.Windows.Forms.Button();

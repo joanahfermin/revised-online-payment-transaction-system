@@ -26,7 +26,7 @@ namespace Revised_OPTS.DAL
 
         public T Get(object id)
         {
-            throw new NotImplementedException();
+            return dbSet.Find(id);
         }
 
         public List<T> GetAll()

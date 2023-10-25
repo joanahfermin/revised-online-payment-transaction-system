@@ -12,6 +12,11 @@ namespace Revised_OPTS.Service
     {
         IBusinessRepository businessRepository = RepositoryFactory.Instance.GetBusinessRepository();
 
+        public Business Get(object id)
+        {
+            return businessRepository.Get(id);
+        }
+
         public List<Business> RetrieveBySearchKeyword(string mpNum)
         {
             return businessRepository.retrieveBySearchKeyword(mpNum);
@@ -21,5 +26,6 @@ namespace Revised_OPTS.Service
         {
             businessRepository.Insert(business);
         }
+
     }
 }

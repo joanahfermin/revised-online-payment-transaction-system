@@ -9,6 +9,7 @@ namespace Revised_OPTS.Service
 {
     internal interface IBusinessService
     {
+        Business Get(object id);
         List<Business> RetrieveBySearchKeyword(string mpNum);
 
         void Insert(Business business);

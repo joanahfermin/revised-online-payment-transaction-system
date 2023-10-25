@@ -21,9 +21,8 @@ using System.Windows.Forms;
 
 namespace Revised_OPTS.Forms
 {
-    public partial class AddNewRecordForm : Form
+    public partial class AddUpdateRecordForm : Form
     {
-
         IRptService rptService = ServiceFactory.Instance.GetRptService();
         IBusinessService businessService = ServiceFactory.Instance.GetBusinessService();
         IMiscService miscService = ServiceFactory.Instance.GetMiscService();
@@ -38,7 +37,15 @@ namespace Revised_OPTS.Forms
 
         DynamicControlContainer dynamicControlContainer;
 
-        public AddNewRecordForm()
+        Rpt rpt;
+        Business business;
+        Miscellaneous misc;
+        string retrieveTaxTypeFromMainForm = "";
+        long rptId = 0;
+        long businessId = 0;
+        long miscId = 0;
+
+        public AddUpdateRecordForm()
         {
             dynamicControlContainer = new DynamicControlContainer(this);
 
@@ -50,6 +57,63 @@ namespace Revised_OPTS.Forms
             label1.BackColor = customColor;
             btnSaveRecord.BackColor = customColor;
             btnClose.BackColor = customColor;
+        }
+
+        public AddUpdateRecordForm(long id, string taxType)
+        {
+            dynamicControlContainer = new DynamicControlContainer(this);
+
+            if (taxType == TaxTypeUtil.REALPROPERTYTAX)
+            {
+                rpt = rptService.Get(id);
+                rptId = rpt.RptID;
+                retrieveTaxTypeFromMainForm = taxType;
+            }
+            else if (taxType == TaxTypeUtil.BUSINESS)
+            {
+                business = businessService.Get(id);
+                businessId = business.BusinessID;
+                retrieveTaxTypeFromMainForm = taxType;
+            }
+            else if (taxType == TaxTypeUtil.MISCELLANEOUS_OCCUPERMIT)
+            {
+                misc = miscService.Get(id);
+                miscId = misc.MiscID;
+                retrieveTaxTypeFromMainForm = taxType;
+            }
+
+            InitializeComponent();
+            InitializeTaxType();
+            InitializeDynamicMapping();
+            InitializeRetrieveRecord();
+
+            panel1.BackColor = customColor;
+            label1.BackColor = customColor;
+            btnSaveRecord.BackColor = customColor;
+            btnClose.BackColor = customColor;
+        }
+
+        public void InitializeRetrieveRecord()
+        {
+            cbTaxType.Text = retrieveTaxTypeFromMainForm;
+            cbTaxType.Enabled = false;
+
+            if (retrieveTaxTypeFromMainForm == TaxTypeUtil.REALPROPERTYTAX)
+            {
+                rpt = rptService.Get(rptId);
+                dynamicControlContainer.PopulateDynamicControls(retrieveTaxTypeFromMainForm, rpt);
+            }
+            else if (retrieveTaxTypeFromMainForm == TaxTypeUtil.BUSINESS)
+            {
+                business = businessService.Get(businessId);
+                dynamicControlContainer.PopulateDynamicControls(retrieveTaxTypeFromMainForm, business);
+            }
+            else if (retrieveTaxTypeFromMainForm == TaxTypeUtil.MISCELLANEOUS_OCCUPERMIT)
+            {
+                misc = miscService.Get(miscId);
+                dynamicControlContainer.PopulateDynamicControls(retrieveTaxTypeFromMainForm, misc);
+            }
+
         }
 
         public void InitializeTaxType()
@@ -167,7 +231,6 @@ namespace Revised_OPTS.Forms
             DynamicControlInfo ZoningOPATrackingNumInfo = dynamicControlContainer.FindDynamicControlInfo(TaxTypeUtil.MISCELLANEOUS_ZONING, "OPATrackingNum");
             ZoningOPATrackingNumInfo.Enabled = false;
             ZoningOPATrackingNumInfo.InitialValue = "NOT APPLICABLE";
-
         }
 
 
@@ -290,6 +353,7 @@ namespace Revised_OPTS.Forms
                 searchKeyword = misc.OrderOfPaymentNum;
                 MainForm.Instance.Search(searchKeyword);
             }
+            btnClose_Click(sender, e);
         }
 
 
@@ -328,6 +392,4 @@ namespace Revised_OPTS.Forms
             this.Close();
         }
     }
-
-
 }

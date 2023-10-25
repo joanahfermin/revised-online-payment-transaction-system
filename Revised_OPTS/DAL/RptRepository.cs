@@ -19,6 +19,5 @@ namespace Revised_OPTS.DAL
         {
             return dbSet.Where(t => t.TaxDec.Contains(tdn)).OrderByDescending(t => t.EncodedDate).ToList();
         }
-
     }
 }

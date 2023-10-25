@@ -18,6 +18,11 @@ namespace Revised_OPTS.Service
         IBankRepository bankRepository = RepositoryFactory.Instance.GetBankRepository();
         IRptTaxbillTPNRepository rptRetrieveTaxpayerNameRepository = RepositoryFactory.Instance.GetRptRetrieveTaxpayerNameRepository();
 
+        public Rpt Get(object id)
+        {
+            return rptRepository.Get(id);
+        }
+
         public List<Rpt> GetAll()
         {
             return rptRepository.GetAll();

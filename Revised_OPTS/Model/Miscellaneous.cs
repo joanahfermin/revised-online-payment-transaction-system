@@ -42,9 +42,9 @@ namespace Revised_OPTS.Model
         public string? ContactNumber { get; set; }
         public DateTime? ReleasedDate { get; set; }
         public string? LastUpdateBy { get; set; }
-        public DateTime? LastUpdateDate { get; set; }
+        public string? LastUpdateDate { get; set; }
 
-        public int DeletedRecord { get; set; } = 0;
+        public bool DeletedRecord { get; set; } = false;
 
         public int DuplicateRecord { get; set; } = 0;
 

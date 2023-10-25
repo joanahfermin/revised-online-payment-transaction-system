@@ -76,6 +76,7 @@
             this.DgMainForm.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.DgMainForm.Location = new System.Drawing.Point(22, 143);
             this.DgMainForm.Name = "DgMainForm";
+            this.DgMainForm.ReadOnly = true;
             this.DgMainForm.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
             dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(174)))), ((int)(((byte)(219)))));
@@ -100,6 +101,8 @@
             this.DgMainForm.UseCustomBackColor = true;
             this.DgMainForm.UseCustomForeColor = true;
             this.DgMainForm.UseStyleColors = true;
+            this.DgMainForm.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DgMainForm_CellClick);
+            this.DgMainForm.DoubleClick += new System.EventHandler(this.DgMainForm_DoubleClick);
             this.DgMainForm.MouseClick += new System.Windows.Forms.MouseEventHandler(this.DgMainForm_MouseClick);
             // 
             // MainDGRightClick

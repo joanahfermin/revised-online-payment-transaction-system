@@ -1,6 +1,8 @@
+using Inventory_System.Utilities;
 using Revised_OPTS.Forms;
 using Revised_OPTS.Model;
 using Revised_OPTS.Service;
+using Revised_OPTS.Utilities;
 using System.Text.RegularExpressions;
 
 
@@ -14,6 +16,13 @@ namespace Revised_OPTS
 
         private Image originalBackgroundImage;
         public static MainForm Instance;
+
+        string selectedRecordTaxDecFormat = "";
+        long selectedRecordRptId = 0;
+        string selectedRecordBusinessFormat = "";
+        long selectedRecordBusinessId = 0;
+        string selectedRecordMiscFormat = "";
+        long selectedRecordMiscId = 0;
 
         Dictionary<string, string> RPT_DG_COLUMNS = new Dictionary<string, string>
         {
@@ -43,7 +52,6 @@ namespace Revised_OPTS
             { "ContactNumber", "Contact Number" }, { "UploadedBy", "Uploaded By" }, { "UploadedDate", "Uploaded Date" },
                      { "ReleasedBy", "Released By" }, { "ReleasedDate", "Released Date" },
         };
-
 
         Dictionary<string, string> MISC_DG_COLUMNS = new Dictionary<string, string>
         {
@@ -80,14 +88,12 @@ namespace Revised_OPTS
                 DgMainForm.Columns.Add(kvp.Key, kvp.Value);
                 DgMainForm.Columns[kvp.Key].DataPropertyName = kvp.Key;
             }
-
             DgMainForm.DataSource = dataList;
         }
 
         public void DataGridUI()
         {
-            DgMainForm.DefaultCellStyle.ForeColor = Color.Black; // Change font color to blue
-            DgMainForm.DefaultCellStyle.Font = new Font("Tahoma", 12, FontStyle.Regular); // Change font size and style
+            DgMainForm.DefaultCellStyle.Font = new Font("Tahoma", 12, FontStyle.Regular);
             DgMainForm.BackgroundColor = Color.AliceBlue;
             this.WindowState = FormWindowState.Maximized;
             DgMainForm.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.DisplayedCells;
@@ -103,27 +109,6 @@ namespace Revised_OPTS
             DgMainForm.DefaultCellStyle.SelectionBackColor = Color.AliceBlue;
         }
 
-        private bool isTDN(string rpt)
-        {
-            //format of RPT tdn.
-            Regex re = new Regex("^[A-Z]{1}-[0-9]{3}-[0-9]{5}$");
-            return re.IsMatch(rpt.Trim());
-        }
-
-        private bool isBusiness(string bus)
-        {
-            //format of misc number.
-            Regex re = new Regex("^[0-9]{2}-[0-9]{6}$");
-            return re.IsMatch(bus.Trim());
-        }
-
-        private bool isMiscOccuPermit(string misc)
-        {
-            //format of misc number.
-            Regex re = new Regex("^[M]-[0-9]{4}-[0-9]{2}-[0-9]{2}-[B][P][L][O]-[A-Z,0-9]{4}-[0-9]{6}$");
-            return re.IsMatch(misc.Trim());
-        }
-
         private void tbSearch_KeyDown(object sender, KeyEventArgs e)
         {
             Search(tbSearch.Text);
@@ -131,15 +116,17 @@ namespace Revised_OPTS
 
         public void Search(string searchRecordinDB)
         {
-            if (isTDN(searchRecordinDB))
+            if (SearchBusinessFormat.isTDN(searchRecordinDB))
             {
                 ShowDataInDataGridView<Rpt>(RPT_DG_COLUMNS, rptService.RetrieveBySearchKeyword(searchRecordinDB));
             }
-            else if (isMiscOccuPermit(searchRecordinDB))
+            else if (SearchBusinessFormat.isMiscOccuPermit(searchRecordinDB) || SearchBusinessFormat.isMiscOvrTtmd(searchRecordinDB)
+                || SearchBusinessFormat.isMiscOvrDpos(searchRecordinDB) || SearchBusinessFormat.isMiscMarket(searchRecordinDB)
+                || SearchBusinessFormat.isMiscZoning(searchRecordinDB) || SearchBusinessFormat.isMiscLiquor(searchRecordinDB))
             {
                 ShowDataInDataGridView<Miscellaneous>(MISC_DG_COLUMNS, miscService.RetrieveBySearchKeyword(searchRecordinDB));
             }
-            else if (isBusiness(searchRecordinDB))
+            else if (SearchBusinessFormat.isBusiness(searchRecordinDB))
             {
                 ShowDataInDataGridView<Business>(BUSINESS_DG_COLUMNS, businessService.RetrieveBySearchKeyword(searchRecordinDB));
             }
@@ -161,6 +148,66 @@ namespace Revised_OPTS
             DgMainForm.ColumnHeadersDefaultCellStyle.ForeColor = Color.Black;
             DgMainForm.ColumnHeadersDefaultCellStyle.BackColor = Color.DarkSalmon;
             DgMainForm.ColumnHeadersDefaultCellStyle.SelectionBackColor = Color.DarkSalmon;
+        }
+
+        private void DgMainForm_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                DataGridViewRow selectedRow = DgMainForm.Rows[e.RowIndex];
+                if (selectedRow.DataBoundItem is Rpt selectedRecord)
+                {
+                    Rpt tdnRecord = selectedRow.DataBoundItem as Rpt;
+                    selectedRecordTaxDecFormat = tdnRecord.TaxDec;
+                    selectedRecordRptId = tdnRecord.RptID;
+                }
+                else if (selectedRow.DataBoundItem is Business businessSelectedRecord)
+                {
+                    Business businessRecord = selectedRow.DataBoundItem as Business;
+                    selectedRecordBusinessFormat = businessRecord.MP_Number;
+                    selectedRecordBusinessId = businessRecord.BusinessID;
+
+                }
+                else if (selectedRow.DataBoundItem is Miscellaneous miscSelectedRecord)
+                {
+                    Miscellaneous miscRecord = selectedRow.DataBoundItem as Miscellaneous;
+                    selectedRecordMiscFormat = miscRecord.OrderOfPaymentNum;
+                    selectedRecordMiscId = miscRecord.MiscID;
+                }
+            }
+        }
+
+        private void DgMainForm_DoubleClick(object sender, EventArgs e)
+        {
+            bool isRptTDNFormatCorrect = SearchBusinessFormat.isTDN(selectedRecordTaxDecFormat);
+            bool isBusinessMpNumFormatCorrect = SearchBusinessFormat.isBusiness(selectedRecordBusinessFormat);
+            bool isMiscOccuPermitFormatCorrect = SearchBusinessFormat.isMiscOccuPermit(selectedRecordMiscFormat);
+
+            if (isRptTDNFormatCorrect)
+            {
+                Rpt retrieveRptRecord = rptService.Get(selectedRecordRptId);
+                string taxType = TaxTypeUtil.REALPROPERTYTAX;
+                AddUpdateRecordForm updateRecord = new AddUpdateRecordForm(retrieveRptRecord.RptID, taxType);
+                updateRecord.ShowDialog();
+            }
+            else if (isBusinessMpNumFormatCorrect)
+            {
+                Business retrieveBusinessRecord = businessService.Get(selectedRecordBusinessId);
+                string taxType = TaxTypeUtil.BUSINESS;
+                AddUpdateRecordForm updateRecord = new AddUpdateRecordForm(retrieveBusinessRecord.BusinessID, taxType);
+                updateRecord.ShowDialog();
+            }
+            else if (isMiscOccuPermitFormatCorrect)
+            {
+                Miscellaneous retrieveMiscOccuPermitRecord = miscService.Get(selectedRecordMiscId);
+                string taxType = TaxTypeUtil.MISCELLANEOUS_OCCUPERMIT;
+                AddUpdateRecordForm updateRecord = new AddUpdateRecordForm(retrieveMiscOccuPermitRecord.MiscID, taxType);
+                updateRecord.ShowDialog();
+            }
+            else
+            {
+                return;
+            }
         }
 
         private void DgMainForm_MouseClick(object sender, MouseEventArgs e)
@@ -187,7 +234,7 @@ namespace Revised_OPTS
 
         private void btnAddNewRecord_Click(object sender, EventArgs e)
         {
-            new AddNewRecordForm().Show();
+            new AddUpdateRecordForm().Show();
         }
 
         private void MainForm_SizeChanged(object sender, EventArgs e)

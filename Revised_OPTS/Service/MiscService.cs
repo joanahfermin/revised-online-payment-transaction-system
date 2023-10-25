@@ -13,6 +13,11 @@ namespace Revised_OPTS.Service
     {
         IMiscRepository miscRepository = RepositoryFactory.Instance.GetMiscRepository();
 
+        public Miscellaneous Get(object id)
+        {
+            return miscRepository.Get(id);
+        }
+
         public List<Miscellaneous> RetrieveBySearchKeyword(string opNum)
         {
             return miscRepository.retrieveBySearchKeyword(opNum);
@@ -23,5 +28,6 @@ namespace Revised_OPTS.Service
             misc.ExcessShort = misc.TransferredAmount - misc.AmountToBePaid;
             miscRepository.Insert(misc);
         }
+
     }
 }

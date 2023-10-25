@@ -215,5 +215,32 @@ namespace Inventory_System.Utilities
             }
         }
 
+        public void PopulateDynamicControls(string key, Object obj)
+        {
+            DynamicControlInfo[] dynamicPropertyInfos = GetDynamicPropertyMapping(key);
+
+            for (int i = 0; i < dynamicPropertyInfos.Length; i++)
+            {
+                DynamicControlInfo dynamicPropertyInfo = dynamicPropertyInfos[i];
+                PropertyInfo propertyInfo = obj.GetType().GetProperty(dynamicPropertyInfo.PropertyName);
+                object value = propertyInfo.GetValue(obj);
+
+                if (propertyInfo.PropertyType == typeof(decimal?) || propertyInfo.PropertyType == typeof(decimal))
+                {
+                    dynamicControlList[i].Text = ((decimal)value).ToString();
+                }
+                else if (propertyInfo.PropertyType == typeof(DateTime?) || propertyInfo.PropertyType == typeof(DateTime))
+                {
+                    if (dynamicControlList[i] is DateTimePicker dateTimePicker)
+                    {
+                        dateTimePicker.Value = (DateTime)value;
+                    }
+                }
+                else
+                {
+                    dynamicControlList[i].Text = value.ToString();
+                }
+            }
+        }
     }
 }

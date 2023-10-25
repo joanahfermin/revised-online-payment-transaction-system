@@ -9,6 +9,7 @@ namespace Revised_OPTS.Service
 {
     internal interface IRptService 
     {
+        Rpt Get(object id);
         List<Rpt> GetAll();
         List<Bank> GetAllBanks();
         List<Rpt> RetrieveBySearchKeyword(string tdn);

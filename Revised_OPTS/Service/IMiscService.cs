@@ -9,6 +9,7 @@ namespace Revised_OPTS.Service
 {
     internal interface IMiscService
     {
+        Miscellaneous Get(object id);
         List<Miscellaneous> RetrieveBySearchKeyword(string opNum);
 
         void Insert(Miscellaneous misc);
