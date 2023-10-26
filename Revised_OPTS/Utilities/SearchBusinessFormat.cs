@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Revised_OPTS.Utilities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -53,6 +54,43 @@ namespace Inventory_System.Utilities
         {
             Regex re = new Regex(BusinessFormat.LIQUOR_FORMAT);
             return re.IsMatch(misc.Trim());
+        }
+
+        public static string GetTaxTypeFromTaxDecFormat(string taxDec)
+        {
+            if (isTDN(taxDec))
+            {
+                return TaxTypeUtil.REALPROPERTYTAX;
+            }
+            else if (isBusiness(taxDec))
+            {
+                return TaxTypeUtil.BUSINESS;
+            }
+            else if (isMiscOccuPermit(taxDec))
+            {
+                return TaxTypeUtil.MISCELLANEOUS_OCCUPERMIT;
+            }
+            else if (isMiscOvrDpos(taxDec))
+            {
+                return TaxTypeUtil.MISCELLANEOUS_OVR;
+            }
+            else if (isMiscOvrTtmd(taxDec))
+            {
+                return TaxTypeUtil.MISCELLANEOUS_OVR;
+            }
+            else if (isMiscMarket(taxDec))
+            {
+                return TaxTypeUtil.MISCELLANEOUS_MARKET;
+            }
+            else if (isMiscZoning(taxDec))
+            {
+                return TaxTypeUtil.MISCELLANEOUS_ZONING;
+            }
+            else if (isMiscLiquor(taxDec))
+            {
+                return TaxTypeUtil.MISCELLANEOUS_LIQUOR;
+            }
+            return null;
         }
     }
 }

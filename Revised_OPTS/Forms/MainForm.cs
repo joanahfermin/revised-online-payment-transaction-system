@@ -181,12 +181,12 @@ namespace Revised_OPTS
         {
             bool isRptTDNFormatCorrect = SearchBusinessFormat.isTDN(selectedRecordTaxDecFormat);
             bool isBusinessMpNumFormatCorrect = SearchBusinessFormat.isBusiness(selectedRecordBusinessFormat);
-            bool isMiscOccuPermitFormatCorrect = SearchBusinessFormat.isMiscOccuPermit(selectedRecordMiscFormat);
-            bool isMiscOvrDposFormatCorrect = SearchBusinessFormat.isMiscOvrDpos(selectedRecordMiscFormat);
-            bool isMiscOvrTtmdFormatCorrect = SearchBusinessFormat.isMiscOvrTtmd(selectedRecordMiscFormat);
-            bool isMiscMarketFormatCorrect = SearchBusinessFormat.isMiscMarket(selectedRecordMiscFormat);
-            bool isMiscZoningFormatCorrect = SearchBusinessFormat.isMiscZoning(selectedRecordMiscFormat);
-            bool isMiscLiquorFormatCorrect = SearchBusinessFormat.isMiscLiquor(selectedRecordMiscFormat);
+            //bool isMiscOccuPermitFormatCorrect = SearchBusinessFormat.isMiscOccuPermit(selectedRecordMiscFormat);
+            //bool isMiscOvrDposFormatCorrect = SearchBusinessFormat.isMiscOvrDpos(selectedRecordMiscFormat);
+            //bool isMiscOvrTtmdFormatCorrect = SearchBusinessFormat.isMiscOvrTtmd(selectedRecordMiscFormat);
+            //bool isMiscMarketFormatCorrect = SearchBusinessFormat.isMiscMarket(selectedRecordMiscFormat);
+            //bool isMiscZoningFormatCorrect = SearchBusinessFormat.isMiscZoning(selectedRecordMiscFormat);
+            //bool isMiscLiquorFormatCorrect = SearchBusinessFormat.isMiscLiquor(selectedRecordMiscFormat);
 
             if (isRptTDNFormatCorrect)
             {
@@ -202,6 +202,17 @@ namespace Revised_OPTS
                 AddUpdateRecordForm updateRecord = new AddUpdateRecordForm(retrieveBusinessRecord.BusinessID, taxType);
                 updateRecord.ShowDialog();
             }
+            else
+            {
+                string taxType = SearchBusinessFormat.GetTaxTypeFromTaxDecFormat(selectedRecordMiscFormat);
+                if (taxType != null)
+                {
+                    Miscellaneous retrieveMiscOccuPermitRecord = miscService.Get(selectedRecordMiscId);
+                    AddUpdateRecordForm updateRecord = new AddUpdateRecordForm(retrieveMiscOccuPermitRecord.MiscID, taxType);
+                    updateRecord.ShowDialog();
+                }
+            }
+            /*
             else if (isMiscOccuPermitFormatCorrect)
             {
                 Miscellaneous retrieveMiscOccuPermitRecord = miscService.Get(selectedRecordMiscId);
@@ -248,6 +259,7 @@ namespace Revised_OPTS
             {
                 return;
             }
+            */
         }
 
         private void DgMainForm_MouseClick(object sender, MouseEventArgs e)
