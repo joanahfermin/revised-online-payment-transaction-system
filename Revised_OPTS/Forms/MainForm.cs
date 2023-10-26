@@ -182,6 +182,11 @@ namespace Revised_OPTS
             bool isRptTDNFormatCorrect = SearchBusinessFormat.isTDN(selectedRecordTaxDecFormat);
             bool isBusinessMpNumFormatCorrect = SearchBusinessFormat.isBusiness(selectedRecordBusinessFormat);
             bool isMiscOccuPermitFormatCorrect = SearchBusinessFormat.isMiscOccuPermit(selectedRecordMiscFormat);
+            bool isMiscOvrDposFormatCorrect = SearchBusinessFormat.isMiscOvrDpos(selectedRecordMiscFormat);
+            bool isMiscOvrTtmdFormatCorrect = SearchBusinessFormat.isMiscOvrTtmd(selectedRecordMiscFormat);
+            bool isMiscMarketFormatCorrect = SearchBusinessFormat.isMiscMarket(selectedRecordMiscFormat);
+            bool isMiscZoningFormatCorrect = SearchBusinessFormat.isMiscZoning(selectedRecordMiscFormat);
+            bool isMiscLiquorFormatCorrect = SearchBusinessFormat.isMiscLiquor(selectedRecordMiscFormat);
 
             if (isRptTDNFormatCorrect)
             {
@@ -202,6 +207,41 @@ namespace Revised_OPTS
                 Miscellaneous retrieveMiscOccuPermitRecord = miscService.Get(selectedRecordMiscId);
                 string taxType = TaxTypeUtil.MISCELLANEOUS_OCCUPERMIT;
                 AddUpdateRecordForm updateRecord = new AddUpdateRecordForm(retrieveMiscOccuPermitRecord.MiscID, taxType);
+                updateRecord.ShowDialog();
+            }
+            else if (isMiscOvrDposFormatCorrect)
+            {
+                Miscellaneous retrieveMiscOvrDposRecord = miscService.Get(selectedRecordMiscId);
+                string taxType = TaxTypeUtil.MISCELLANEOUS_OVR;
+                AddUpdateRecordForm updateRecord = new AddUpdateRecordForm(retrieveMiscOvrDposRecord.MiscID, taxType);
+                updateRecord.ShowDialog();
+            }
+            else if (isMiscOvrTtmdFormatCorrect)
+            {
+                Miscellaneous retrieveMiscTtmdRecord = miscService.Get(selectedRecordMiscId);
+                string taxType = TaxTypeUtil.MISCELLANEOUS_OVR;
+                AddUpdateRecordForm updateRecord = new AddUpdateRecordForm(retrieveMiscTtmdRecord.MiscID, taxType);
+                updateRecord.ShowDialog();
+            }
+            else if (isMiscMarketFormatCorrect)
+            {
+                Miscellaneous retrieveMiscMarketRecord = miscService.Get(selectedRecordMiscId);
+                string taxType = TaxTypeUtil.MISCELLANEOUS_MARKET;
+                AddUpdateRecordForm updateRecord = new AddUpdateRecordForm(retrieveMiscMarketRecord.MiscID, taxType);
+                updateRecord.ShowDialog();
+            }
+            else if (isMiscZoningFormatCorrect)
+            {
+                Miscellaneous retrieveMiscZoningRecord = miscService.Get(selectedRecordMiscId);
+                string taxType = TaxTypeUtil.MISCELLANEOUS_ZONING;
+                AddUpdateRecordForm updateRecord = new AddUpdateRecordForm(retrieveMiscZoningRecord.MiscID, taxType);
+                updateRecord.ShowDialog();
+            }
+            else if (isMiscLiquorFormatCorrect)
+            {
+                Miscellaneous retrieveMiscLiquorRecord = miscService.Get(selectedRecordMiscId);
+                string taxType = TaxTypeUtil.MISCELLANEOUS_LIQUOR;
+                AddUpdateRecordForm updateRecord = new AddUpdateRecordForm(retrieveMiscLiquorRecord.MiscID, taxType);
                 updateRecord.ShowDialog();
             }
             else

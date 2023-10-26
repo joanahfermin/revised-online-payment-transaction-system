@@ -225,20 +225,28 @@ namespace Inventory_System.Utilities
                 PropertyInfo propertyInfo = obj.GetType().GetProperty(dynamicPropertyInfo.PropertyName);
                 object value = propertyInfo.GetValue(obj);
 
-                if (propertyInfo.PropertyType == typeof(decimal?) || propertyInfo.PropertyType == typeof(decimal))
+                if (value != null)
                 {
-                    dynamicControlList[i].Text = ((decimal)value).ToString();
-                }
-                else if (propertyInfo.PropertyType == typeof(DateTime?) || propertyInfo.PropertyType == typeof(DateTime))
-                {
-                    if (dynamicControlList[i] is DateTimePicker dateTimePicker)
+                    if (propertyInfo.PropertyType == typeof(decimal?) || propertyInfo.PropertyType == typeof(decimal))
                     {
-                        dateTimePicker.Value = (DateTime)value;
+                        dynamicControlList[i].Text = ((decimal)value).ToString();
                     }
+                    else if (propertyInfo.PropertyType == typeof(DateTime?) || propertyInfo.PropertyType == typeof(DateTime))
+                    {
+                        if (dynamicControlList[i] is DateTimePicker dateTimePicker)
+                        {
+                            dateTimePicker.Value = (DateTime)value;
+                        }
+                    }
+                    else
+                    {
+                        dynamicControlList[i].Text = value.ToString();
+                    }
+
                 }
                 else
                 {
-                    dynamicControlList[i].Text = value.ToString();
+                    dynamicControlList[i].Text = string.Empty; // For example, setting an empty string
                 }
             }
         }

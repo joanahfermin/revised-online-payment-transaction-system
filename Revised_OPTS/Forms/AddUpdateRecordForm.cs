@@ -75,7 +75,8 @@ namespace Revised_OPTS.Forms
                 businessId = business.BusinessID;
                 retrieveTaxTypeFromMainForm = taxType;
             }
-            else if (taxType == TaxTypeUtil.MISCELLANEOUS_OCCUPERMIT)
+            else if (taxType == TaxTypeUtil.MISCELLANEOUS_OCCUPERMIT || taxType == TaxTypeUtil.MISCELLANEOUS_OVR || 
+                taxType == TaxTypeUtil.MISCELLANEOUS_ZONING || taxType == TaxTypeUtil.MISCELLANEOUS_MARKET || taxType == TaxTypeUtil.MISCELLANEOUS_LIQUOR)
             {
                 misc = miscService.Get(id);
                 miscId = misc.MiscID;
@@ -108,12 +109,13 @@ namespace Revised_OPTS.Forms
                 business = businessService.Get(businessId);
                 dynamicControlContainer.PopulateDynamicControls(retrieveTaxTypeFromMainForm, business);
             }
-            else if (retrieveTaxTypeFromMainForm == TaxTypeUtil.MISCELLANEOUS_OCCUPERMIT)
+            else if (retrieveTaxTypeFromMainForm == TaxTypeUtil.MISCELLANEOUS_OCCUPERMIT || retrieveTaxTypeFromMainForm == TaxTypeUtil.MISCELLANEOUS_OVR ||
+                retrieveTaxTypeFromMainForm == TaxTypeUtil.MISCELLANEOUS_MARKET || retrieveTaxTypeFromMainForm == TaxTypeUtil.MISCELLANEOUS_ZONING ||
+                retrieveTaxTypeFromMainForm == TaxTypeUtil.MISCELLANEOUS_LIQUOR)
             {
                 misc = miscService.Get(miscId);
                 dynamicControlContainer.PopulateDynamicControls(retrieveTaxTypeFromMainForm, misc);
-            }
-
+            }  
         }
 
         public void InitializeTaxType()
@@ -186,22 +188,7 @@ namespace Revised_OPTS.Forms
             dynamicControlContainer.AddDynamicPropertyMapping(TaxTypeUtil.MISCELLANEOUS_OVR, DynamicControlInfoUtil.Clone(miscInfo));
             dynamicControlContainer.AddDynamicPropertyMapping(TaxTypeUtil.MISCELLANEOUS_MARKET, DynamicControlInfoUtil.Clone(miscInfo));
             dynamicControlContainer.AddDynamicPropertyMapping(TaxTypeUtil.MISCELLANEOUS_ZONING, DynamicControlInfoUtil.Clone(miscInfo));
-
-            //LIQUOR
-            dynamicControlContainer.AddDynamicPropertyMapping(TaxTypeUtil.MISCELLANEOUS_LIQUOR,
-                new DynamicControlInfo[]
-                {
-                    new DynamicControlInfo{PropertyName = "BillNumber", Label = "*Bill Number: ", ControlType = DynamicControlType.TextBox, isRequired = true, format = BusinessFormat.LIQUOR_FORMAT},
-                    new DynamicControlInfo{PropertyName = "MP_Number", Label = "*M.P Number:", ControlType = DynamicControlType.TextBox, isRequired = true, format = BusinessFormat.MP_FORMAT},
-                    new DynamicControlInfo{PropertyName = "TaxpayersName", Label = "*TaxPayer's Name:", ControlType = DynamicControlType.TextBox, isRequired = true},
-                    new DynamicControlInfo{PropertyName = "BillAmount", Label = "*Bill Amount:", ControlType = DynamicControlType.TextBox, InitialValue = "0.00", isRequired = true},
-                    new DynamicControlInfo{PropertyName = "TotalAmount", Label = "*Transferred Amount:", ControlType = DynamicControlType.TextBox, InitialValue = "0.00", isRequired = true},
-                    new DynamicControlInfo{PropertyName = "PaymentChannel", Label = "*Bank: ", ControlType = DynamicControlType.ComboBox, ComboboxChoices = bankNames, isRequired = true},
-                    new DynamicControlInfo{PropertyName = "DateOfPayment", Label = "*Payment Date: ", ControlType = DynamicControlType.DatePicker, isRequired = true},
-                    new DynamicControlInfo{PropertyName = "Year", Label = "*Year:", ControlType = DynamicControlType.TextBox, isRequired = true},
-                    new DynamicControlInfo{PropertyName = "Qtrs", Label = "*Quarter: ", ControlType = DynamicControlType.ComboBox, ComboboxChoices = Quarter.ALL_QUARTER, isRequired = true},
-                    new DynamicControlInfo{PropertyName = "BussinessRemarks", Label = "Remarks:", ControlType = DynamicControlType.TextBox},
-                }.Concat(commonInfo).ToArray());
+            dynamicControlContainer.AddDynamicPropertyMapping(TaxTypeUtil.MISCELLANEOUS_LIQUOR, DynamicControlInfoUtil.Clone(miscInfo));
 
             ApplyDynamicMappingSpecialRules();
         }
@@ -231,8 +218,11 @@ namespace Revised_OPTS.Forms
             DynamicControlInfo ZoningOPATrackingNumInfo = dynamicControlContainer.FindDynamicControlInfo(TaxTypeUtil.MISCELLANEOUS_ZONING, "OPATrackingNum");
             ZoningOPATrackingNumInfo.Enabled = false;
             ZoningOPATrackingNumInfo.InitialValue = "NOT APPLICABLE";
-        }
 
+            //MISCELLANEOUS_LIQUOR_CHANGELABELTO_MPNUM
+            DynamicControlInfo LiquorLabelInfo = dynamicControlContainer.FindDynamicControlInfo(TaxTypeUtil.MISCELLANEOUS_LIQUOR, "OPATrackingNum");
+            LiquorLabelInfo.Label = "MP Number:";
+        }
 
         private void cbTaxType_SelectedIndexChanged(object sender, EventArgs e)
         {
