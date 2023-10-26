@@ -81,7 +81,6 @@ namespace Inventory_System.Utilities
                 }
             }
             return null;
-
         }
 
         public void AddDynamicControls(String key)
@@ -172,12 +171,17 @@ namespace Inventory_System.Utilities
 
                 if (dynamicPropertyInfo.isRequired)
                 {
-                    Validations.ValidateRequired(errorProvider1, control, dynamicPropertyInfo.Label);
+                    Validations.validateRequired(errorProvider1, control, dynamicPropertyInfo.Label);
                 }
 
                 if (dynamicPropertyInfo.format.Length > 0)
                 {
-                    Validations.ValidateFormat(errorProvider1, control, dynamicPropertyInfo.Label, dynamicPropertyInfo.format);
+                    Validations.validateFormat(errorProvider1, control, dynamicPropertyInfo.Label, dynamicPropertyInfo.format);
+                }
+
+                if (dynamicPropertyInfo.decimalValue)
+                {
+                    Validations.validateAmountFormat(errorProvider1, control, dynamicPropertyInfo.Label);
                 }
             }
         }
@@ -198,10 +202,11 @@ namespace Inventory_System.Utilities
 
                     if (value.Length > 0)
                     {
+                        value = value.Replace(",", "");
                         decimalValue = decimal.Parse(value);
+                        propertyInfo.SetValue(obj, decimalValue);
                     }
                     propertyInfo.SetValue(obj, decimalValue);
-
                 }
                 else if (propertyInfo.PropertyType == typeof(DateTime?) || propertyInfo.PropertyType == typeof(DateTime))
                 {
@@ -246,7 +251,7 @@ namespace Inventory_System.Utilities
                 }
                 else
                 {
-                    dynamicControlList[i].Text = string.Empty; // For example, setting an empty string
+                    dynamicControlList[i].Text = string.Empty;
                 }
             }
         }

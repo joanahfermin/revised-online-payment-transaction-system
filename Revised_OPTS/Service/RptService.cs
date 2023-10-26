@@ -16,7 +16,6 @@ namespace Revised_OPTS.Service
     {
         IRptRepository rptRepository = RepositoryFactory.Instance.GetRptRepository();
         IBankRepository bankRepository = RepositoryFactory.Instance.GetBankRepository();
-        IRptTaxbillTPNRepository rptRetrieveTaxpayerNameRepository = RepositoryFactory.Instance.GetRptRetrieveTaxpayerNameRepository();
 
         public Rpt Get(object id)
         {
@@ -40,8 +39,19 @@ namespace Revised_OPTS.Service
 
         public void Insert(Rpt rpt)
         {
-            rpt.ExcessShortAmount = rpt.AmountTransferred - rpt.AmountToPay;
+            calculateRpt(rpt);
             rptRepository.Insert(rpt);
+        }
+
+        public void Update(Rpt rpt)
+        {
+            calculateRpt(rpt);
+            rptRepository.Update(rpt);
+        }
+
+        private void calculateRpt(Rpt rpt)
+        {
+            rpt.ExcessShortAmount = rpt.AmountTransferred - rpt.AmountToPay;
         }
     }
 }

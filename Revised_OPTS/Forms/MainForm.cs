@@ -17,12 +17,12 @@ namespace Revised_OPTS
         private Image originalBackgroundImage;
         public static MainForm Instance;
 
-        string selectedRecordTaxDecFormat = "";
-        long selectedRecordRptId = 0;
-        string selectedRecordBusinessFormat = "";
-        long selectedRecordBusinessId = 0;
-        string selectedRecordMiscFormat = "";
-        long selectedRecordMiscId = 0;
+        string selectedRecordFormat = "";
+        long selectedRecordId = 0;
+        //string selectedRecordBusinessFormat = "";
+        //long selectedRecordBusinessId = 0;
+        //string selectedRecordMiscFormat = "";
+        //long selectedRecordMiscId = 0;
 
         Dictionary<string, string> RPT_DG_COLUMNS = new Dictionary<string, string>
         {
@@ -158,108 +158,54 @@ namespace Revised_OPTS
                 if (selectedRow.DataBoundItem is Rpt selectedRecord)
                 {
                     Rpt tdnRecord = selectedRow.DataBoundItem as Rpt;
-                    selectedRecordTaxDecFormat = tdnRecord.TaxDec;
-                    selectedRecordRptId = tdnRecord.RptID;
+                    selectedRecordFormat = tdnRecord.TaxDec;
+                    selectedRecordId = tdnRecord.RptID;
                 }
                 else if (selectedRow.DataBoundItem is Business businessSelectedRecord)
                 {
                     Business businessRecord = selectedRow.DataBoundItem as Business;
-                    selectedRecordBusinessFormat = businessRecord.MP_Number;
-                    selectedRecordBusinessId = businessRecord.BusinessID;
+                    selectedRecordFormat = businessRecord.MP_Number;
+                    selectedRecordId = businessRecord.BusinessID;
 
                 }
                 else if (selectedRow.DataBoundItem is Miscellaneous miscSelectedRecord)
                 {
                     Miscellaneous miscRecord = selectedRow.DataBoundItem as Miscellaneous;
-                    selectedRecordMiscFormat = miscRecord.OrderOfPaymentNum;
-                    selectedRecordMiscId = miscRecord.MiscID;
+                    selectedRecordFormat = miscRecord.OrderOfPaymentNum;
+                    selectedRecordId = miscRecord.MiscID;
                 }
             }
         }
 
         private void DgMainForm_DoubleClick(object sender, EventArgs e)
         {
-            bool isRptTDNFormatCorrect = SearchBusinessFormat.isTDN(selectedRecordTaxDecFormat);
-            bool isBusinessMpNumFormatCorrect = SearchBusinessFormat.isBusiness(selectedRecordBusinessFormat);
-            //bool isMiscOccuPermitFormatCorrect = SearchBusinessFormat.isMiscOccuPermit(selectedRecordMiscFormat);
-            //bool isMiscOvrDposFormatCorrect = SearchBusinessFormat.isMiscOvrDpos(selectedRecordMiscFormat);
-            //bool isMiscOvrTtmdFormatCorrect = SearchBusinessFormat.isMiscOvrTtmd(selectedRecordMiscFormat);
-            //bool isMiscMarketFormatCorrect = SearchBusinessFormat.isMiscMarket(selectedRecordMiscFormat);
-            //bool isMiscZoningFormatCorrect = SearchBusinessFormat.isMiscZoning(selectedRecordMiscFormat);
-            //bool isMiscLiquorFormatCorrect = SearchBusinessFormat.isMiscLiquor(selectedRecordMiscFormat);
-
+            bool isRptTDNFormatCorrect = SearchBusinessFormat.isTDN(selectedRecordFormat);
+            bool isBusinessMpNumFormatCorrect = SearchBusinessFormat.isBusiness(selectedRecordFormat);
+ 
             if (isRptTDNFormatCorrect)
             {
-                Rpt retrieveRptRecord = rptService.Get(selectedRecordRptId);
+                Rpt retrieveRptRecord = rptService.Get(selectedRecordId);
                 string taxType = TaxTypeUtil.REALPROPERTYTAX;
                 AddUpdateRecordForm updateRecord = new AddUpdateRecordForm(retrieveRptRecord.RptID, taxType);
                 updateRecord.ShowDialog();
             }
             else if (isBusinessMpNumFormatCorrect)
             {
-                Business retrieveBusinessRecord = businessService.Get(selectedRecordBusinessId);
+                Business retrieveBusinessRecord = businessService.Get(selectedRecordId);
                 string taxType = TaxTypeUtil.BUSINESS;
                 AddUpdateRecordForm updateRecord = new AddUpdateRecordForm(retrieveBusinessRecord.BusinessID, taxType);
                 updateRecord.ShowDialog();
             }
             else
             {
-                string taxType = SearchBusinessFormat.GetTaxTypeFromTaxDecFormat(selectedRecordMiscFormat);
+                string taxType = SearchBusinessFormat.GetTaxTypeFromFormat(selectedRecordFormat);
                 if (taxType != null)
                 {
-                    Miscellaneous retrieveMiscOccuPermitRecord = miscService.Get(selectedRecordMiscId);
-                    AddUpdateRecordForm updateRecord = new AddUpdateRecordForm(retrieveMiscOccuPermitRecord.MiscID, taxType);
+                    Miscellaneous retrieveMiscRecord = miscService.Get(selectedRecordId);
+                    AddUpdateRecordForm updateRecord = new AddUpdateRecordForm(retrieveMiscRecord.MiscID, taxType);
                     updateRecord.ShowDialog();
                 }
             }
-            /*
-            else if (isMiscOccuPermitFormatCorrect)
-            {
-                Miscellaneous retrieveMiscOccuPermitRecord = miscService.Get(selectedRecordMiscId);
-                string taxType = TaxTypeUtil.MISCELLANEOUS_OCCUPERMIT;
-                AddUpdateRecordForm updateRecord = new AddUpdateRecordForm(retrieveMiscOccuPermitRecord.MiscID, taxType);
-                updateRecord.ShowDialog();
-            }
-            else if (isMiscOvrDposFormatCorrect)
-            {
-                Miscellaneous retrieveMiscOvrDposRecord = miscService.Get(selectedRecordMiscId);
-                string taxType = TaxTypeUtil.MISCELLANEOUS_OVR;
-                AddUpdateRecordForm updateRecord = new AddUpdateRecordForm(retrieveMiscOvrDposRecord.MiscID, taxType);
-                updateRecord.ShowDialog();
-            }
-            else if (isMiscOvrTtmdFormatCorrect)
-            {
-                Miscellaneous retrieveMiscTtmdRecord = miscService.Get(selectedRecordMiscId);
-                string taxType = TaxTypeUtil.MISCELLANEOUS_OVR;
-                AddUpdateRecordForm updateRecord = new AddUpdateRecordForm(retrieveMiscTtmdRecord.MiscID, taxType);
-                updateRecord.ShowDialog();
-            }
-            else if (isMiscMarketFormatCorrect)
-            {
-                Miscellaneous retrieveMiscMarketRecord = miscService.Get(selectedRecordMiscId);
-                string taxType = TaxTypeUtil.MISCELLANEOUS_MARKET;
-                AddUpdateRecordForm updateRecord = new AddUpdateRecordForm(retrieveMiscMarketRecord.MiscID, taxType);
-                updateRecord.ShowDialog();
-            }
-            else if (isMiscZoningFormatCorrect)
-            {
-                Miscellaneous retrieveMiscZoningRecord = miscService.Get(selectedRecordMiscId);
-                string taxType = TaxTypeUtil.MISCELLANEOUS_ZONING;
-                AddUpdateRecordForm updateRecord = new AddUpdateRecordForm(retrieveMiscZoningRecord.MiscID, taxType);
-                updateRecord.ShowDialog();
-            }
-            else if (isMiscLiquorFormatCorrect)
-            {
-                Miscellaneous retrieveMiscLiquorRecord = miscService.Get(selectedRecordMiscId);
-                string taxType = TaxTypeUtil.MISCELLANEOUS_LIQUOR;
-                AddUpdateRecordForm updateRecord = new AddUpdateRecordForm(retrieveMiscLiquorRecord.MiscID, taxType);
-                updateRecord.ShowDialog();
-            }
-            else
-            {
-                return;
-            }
-            */
         }
 
         private void DgMainForm_MouseClick(object sender, MouseEventArgs e)

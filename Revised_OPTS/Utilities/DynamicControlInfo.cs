@@ -17,5 +17,6 @@ namespace Inventory_System.Utilities
         public string InitialValue = null;
         public bool isRequired = false;
         public string format = string.Empty;
+        public bool decimalValue = false;
     }
 }

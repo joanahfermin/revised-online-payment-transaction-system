@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -36,7 +37,7 @@ namespace Inventory_System.Utilities
             return ep.GetError(tb).Length > 0;
         }
 
-        public static void ValidateRequired(ErrorProvider ep, Control tb, string propertyName)
+        public static void validateRequired(ErrorProvider ep, Control tb, string propertyName)
         {
             if (hasExistingError(ep, tb))
             {
@@ -48,7 +49,7 @@ namespace Inventory_System.Utilities
             }
         }
 
-        public static void ValidateFormat(ErrorProvider ep, Control tb, string propertyName, string format)
+        public static void validateFormat(ErrorProvider ep, Control tb, string propertyName, string format)
         {
             if (hasExistingError(ep, tb))
             {
@@ -63,6 +64,18 @@ namespace Inventory_System.Utilities
                 {
                     ep.SetError(tb, $"{propertyName} is in wrong format.");
                 }
+            }
+        }
+
+        public static void validateAmountFormat(ErrorProvider ep, Control tb, string propertyName)
+        {
+            if (hasExistingError(ep, tb))
+            {
+                return;
+            }
+            if (!decimal.TryParse(tb.Text, NumberStyles.Number, CultureInfo.InvariantCulture, out decimal value))
+            {
+                ep.SetError(tb, $"{propertyName} is in the wrong format.");
             }
         }
     }

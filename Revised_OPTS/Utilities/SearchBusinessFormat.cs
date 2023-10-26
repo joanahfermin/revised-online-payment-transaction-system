@@ -56,37 +56,37 @@ namespace Inventory_System.Utilities
             return re.IsMatch(misc.Trim());
         }
 
-        public static string GetTaxTypeFromTaxDecFormat(string taxDec)
+        public static string GetTaxTypeFromFormat(string taxType)
         {
-            if (isTDN(taxDec))
+            if (isTDN(taxType))
             {
                 return TaxTypeUtil.REALPROPERTYTAX;
             }
-            else if (isBusiness(taxDec))
+            else if (isBusiness(taxType))
             {
                 return TaxTypeUtil.BUSINESS;
             }
-            else if (isMiscOccuPermit(taxDec))
+            else if (isMiscOccuPermit(taxType))
             {
                 return TaxTypeUtil.MISCELLANEOUS_OCCUPERMIT;
             }
-            else if (isMiscOvrDpos(taxDec))
+            else if (isMiscOvrDpos(taxType))
             {
                 return TaxTypeUtil.MISCELLANEOUS_OVR;
             }
-            else if (isMiscOvrTtmd(taxDec))
+            else if (isMiscOvrTtmd(taxType))
             {
                 return TaxTypeUtil.MISCELLANEOUS_OVR;
             }
-            else if (isMiscMarket(taxDec))
+            else if (isMiscMarket(taxType))
             {
                 return TaxTypeUtil.MISCELLANEOUS_MARKET;
             }
-            else if (isMiscZoning(taxDec))
+            else if (isMiscZoning(taxType))
             {
                 return TaxTypeUtil.MISCELLANEOUS_ZONING;
             }
-            else if (isMiscLiquor(taxDec))
+            else if (isMiscLiquor(taxType))
             {
                 return TaxTypeUtil.MISCELLANEOUS_LIQUOR;
             }

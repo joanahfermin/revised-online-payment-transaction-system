@@ -48,7 +48,8 @@ namespace Revised_OPTS.DAL
 
         public void Update(T entity)
         {
-            throw new NotImplementedException();
+            dBContext.Entry(entity).State = EntityState.Modified;
+            dBContext.SaveChanges();
         }
 
         public void Delete(T entity)

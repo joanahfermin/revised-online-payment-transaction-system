@@ -15,5 +15,6 @@ namespace Revised_OPTS.Service
         List<Rpt> RetrieveBySearchKeyword(string tdn);
 
         void Insert(Rpt rpt);
+        void Update(Rpt rpt);
     }
 }
