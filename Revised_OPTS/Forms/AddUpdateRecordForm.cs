@@ -329,20 +329,25 @@ namespace Revised_OPTS.Forms
                     rptService.Insert(rpt);
                     searchKeyword = rpt.TaxDec;
                 }
-                MessageBox.Show("Record successfully saved.");
-                searchKeyword = rpt.TaxDec;
-                MainForm.Instance.Search(searchKeyword);
-
+                notifyUserAndRefreshRecord(searchKeyword);
             }
 
             else if (taxType == TaxTypeUtil.BUSINESS)
             {
-                Business business = new Business();
-                dynamicControlContainer.CopyDynamicProperties(business, taxType);
-                businessService.Insert(business);
-                MessageBox.Show("Record successfully saved.");
-                searchKeyword = business.MP_Number;
-                MainForm.Instance.Search(searchKeyword);
+                if (business != null)
+                {
+                    dynamicControlContainer.CopyDynamicProperties(business, taxType);
+                    businessService.Update(business);
+                    searchKeyword = business.MP_Number;
+                }
+                else if (true)
+                {
+                    Business business = new Business();
+                    dynamicControlContainer.CopyDynamicProperties(business, taxType);
+                    businessService.Insert(business);
+                    searchKeyword = business.MP_Number;
+                }
+                notifyUserAndRefreshRecord(searchKeyword);
             }
             else
             {
@@ -351,13 +356,19 @@ namespace Revised_OPTS.Forms
                 string miscType = cbTaxType.Text;
                 misc.MiscType = miscType;
                 miscService.Insert(misc);
+
                 MessageBox.Show("Record successfully saved.");
-                searchKeyword = misc.OrderOfPaymentNum;
+                //searchKeyword = misc.OrderOfPaymentNum;
                 MainForm.Instance.Search(searchKeyword);
             }
             btnClose_Click(sender, e);
         }
 
+        public void notifyUserAndRefreshRecord(string keyWord)
+        {
+            MessageBox.Show("Record successfully saved.");
+            MainForm.Instance.Search(keyWord);
+        }
 
         private void btnSaveRecord_MouseEnter(object sender, EventArgs e)
         {

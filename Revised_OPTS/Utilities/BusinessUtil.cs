@@ -8,10 +8,9 @@ namespace Inventory_System.Utilities
 {
     internal class BusinessUtil
     {
-        public const string NEW_BUSINESS = "NEW";
-        public const string RENEWAL = "RENEWAL";
+        public const string NEW_BUSINESS = "NEW BUSINESS";
+        public const string RENEWAL = "RENEWAL BUSINESS";
 
         public static string[] BUSINESS_TYPE = { NEW_BUSINESS, RENEWAL };
-
     }
 }

@@ -3,6 +3,7 @@ using Revised_OPTS.Forms;
 using Revised_OPTS.Model;
 using Revised_OPTS.Service;
 using Revised_OPTS.Utilities;
+using System.Globalization;
 using System.Text.RegularExpressions;
 
 
@@ -19,10 +20,6 @@ namespace Revised_OPTS
 
         string selectedRecordFormat = "";
         long selectedRecordId = 0;
-        //string selectedRecordBusinessFormat = "";
-        //long selectedRecordBusinessId = 0;
-        //string selectedRecordMiscFormat = "";
-        //long selectedRecordMiscId = 0;
 
         Dictionary<string, string> RPT_DG_COLUMNS = new Dictionary<string, string>
         {
@@ -44,7 +41,7 @@ namespace Revised_OPTS
         {
             { "Business_Type", "Bus. Type" }, { "MP_Number", "M.P Number" }, { "TaxpayersName", "TaxPayer's Name" },
             { "MiscFees", "Misc. Fees" }, { "BillNumber", "Bill Number" }, { "BillAmount", "Bill Amount" },
-            { "BusinessName", "Business Name" }, { "TotalAmount", "Total Amount" }, { "Year", "Year" },
+            { "BusinessName", "Business Name" }, { "TotalAmount", "Transferred Amount" }, { "Year", "Year" },
             { "Qtrs", "Quarter" }, { "Status", "Status" }, { "PaymentChannel", "Bank" },
             { "VerifiedBy", "Verified By" }, { "VerifiedDate", "Verified Date" }, { "DateOfPayment", "Payment Date" },
             { "ValidatedBy", "Validated By" }, { "ValidatedDate", "Validated Date" }, { "RequestingParty", "Email Address" },
@@ -68,6 +65,16 @@ namespace Revised_OPTS
             InitializeComponent();
             DataGridUI();
             Instance = this;
+            DgMainForm.CellFormatting += DgMainForm_CellFormatting;
+        }
+
+        private void DgMainForm_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (e.Value is decimal decimalValue)
+            {
+                e.Value = decimalValue.ToString("N2"); 
+                e.FormattingApplied = true;
+            }
         }
 
         public void InitializeData()

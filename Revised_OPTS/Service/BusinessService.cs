@@ -27,5 +27,9 @@ namespace Revised_OPTS.Service
             businessRepository.Insert(business);
         }
 
+        public void Update(Business business)
+        {
+            businessRepository.Update(business);
+        }
     }
 }
