@@ -168,7 +168,7 @@ namespace Revised_OPTS.Forms
                     new DynamicControlInfo{PropertyName = "DateOfPayment", Label = "*Payment Date: ", ControlType = DynamicControlType.DatePicker, isRequired = true},
                     new DynamicControlInfo{PropertyName = "Year", Label = "*Year:", ControlType = DynamicControlType.TextBox, isRequired = true},
                     new DynamicControlInfo{PropertyName = "Qtrs", Label = "*Quarter: ", ControlType = DynamicControlType.ComboBox, ComboboxChoices = Quarter.ALL_QUARTER, isRequired = true},
-                    new DynamicControlInfo{PropertyName = "MiscFees", Label = "Misc. Fees: ", ControlType = DynamicControlType.TextBox},
+                    new DynamicControlInfo{PropertyName = "MiscFees", Label = "Misc. Fees: ", ControlType = DynamicControlType.TextBox, InitialValue = "0.00"},
                     new DynamicControlInfo{PropertyName = "BussinessRemarks", Label = "Remarks:", ControlType = DynamicControlType.TextBox},
                 }.Concat(commonInfo).ToArray());
 
@@ -306,6 +306,8 @@ namespace Revised_OPTS.Forms
         {
             string taxType = cbTaxType.Text;
             string searchKeyword = "";
+            string newBusiness = "NEW BUSINESS";
+            string renewalBusiness = "RENEWAL BUSINESS";
 
             dynamicControlContainer.validateForm(taxType, errorProvider1);
 
@@ -344,6 +346,17 @@ namespace Revised_OPTS.Forms
                 {
                     Business business = new Business();
                     dynamicControlContainer.CopyDynamicProperties(business, taxType);
+                    Control bussinessType = dynamicControlContainer.FindControlByName(taxType, "Business_Type");
+
+                    if (bussinessType.Text == BusinessUtil.NEW_BUSINESS)
+                    {
+                        business.Business_Type = BusinessUtil.NEW_BUSINESS;
+                    }
+                    else
+                    {
+                        business.Business_Type = BusinessUtil.RENEWAL_BUSINESS;
+                    }
+
                     businessService.Insert(business);
                     searchKeyword = business.MP_Number;
                 }
@@ -351,15 +364,21 @@ namespace Revised_OPTS.Forms
             }
             else
             {
-                Miscellaneous misc = new Miscellaneous();
-                dynamicControlContainer.CopyDynamicProperties(misc, taxType);
-                string miscType = cbTaxType.Text;
-                misc.MiscType = miscType;
-                miscService.Insert(misc);
-
-                MessageBox.Show("Record successfully saved.");
-                //searchKeyword = misc.OrderOfPaymentNum;
-                MainForm.Instance.Search(searchKeyword);
+                if (misc != null)
+                {
+                    dynamicControlContainer.CopyDynamicProperties(misc, taxType);
+                    miscService.Update(misc);
+                    searchKeyword = misc.OrderOfPaymentNum;
+                }
+                else if (true)
+                {
+                    Miscellaneous misc = new Miscellaneous();
+                    dynamicControlContainer.CopyDynamicProperties(misc, taxType);
+                    misc.MiscType = taxType;
+                    miscService.Insert(misc);
+                    searchKeyword = misc.OrderOfPaymentNum;
+                }
+                notifyUserAndRefreshRecord(searchKeyword);
             }
             btnClose_Click(sender, e);
         }

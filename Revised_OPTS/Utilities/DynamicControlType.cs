@@ -10,6 +10,6 @@ namespace Inventory_System.Utilities
     {
         TextBox,
         ComboBox,
-        DatePicker
+        DatePicker,
     }
 }

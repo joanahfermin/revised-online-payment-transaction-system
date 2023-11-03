@@ -13,5 +13,6 @@ namespace Revised_OPTS.Service
         List<Miscellaneous> RetrieveBySearchKeyword(string opNum);
 
         void Insert(Miscellaneous misc);
+        void Update(Miscellaneous misc);
     }
 }

@@ -127,6 +127,7 @@ namespace Inventory_System.Utilities
                 {
                     ComboBox comboBox = new ComboBox();
                     comboBox.DataSource = propertyInfo.ComboboxChoices;
+                    comboBox.DropDownStyle = ComboBoxStyle.DropDownList;
                     control = comboBox;
                 }
                 else if (propertyInfo.ControlType == DynamicControlType.DatePicker)
@@ -140,9 +141,15 @@ namespace Inventory_System.Utilities
 
                 control.Enabled = propertyInfo.Enabled;
 
+                //all amounts textbox should have an initial value(0.00) upon loading of the form
                 if (propertyInfo.InitialValue != null)
                 {
                     control.Text = propertyInfo.InitialValue;
+                }
+
+                if (propertyInfo.ControlType == DynamicControlType.TextBox && propertyInfo.InitialValue == "0.00")
+                {
+                    textBox.Leave += TextBox_Leave;
                 }
 
                 control.Top = y;  // Place the textbox below the label
@@ -156,6 +163,18 @@ namespace Inventory_System.Utilities
 
                 // Increment the Y position for the next label-textbox pair
                 y += CONTROL_HEIGHT_INCREMENT;
+            }
+        }
+
+        private void TextBox_Leave(object sender, EventArgs e)
+        {
+            if (sender is TextBox textBox)
+            {
+                decimal value = 0.00m;
+                if (decimal.TryParse(textBox.Text, out value))
+                {
+                    textBox.Text = value.ToString("#,##0.00");
+                }
             }
         }
 

@@ -29,5 +29,10 @@ namespace Revised_OPTS.Service
             miscRepository.Insert(misc);
         }
 
+        public void Update(Miscellaneous misc)
+        {
+            miscRepository.Update(misc);
+        }
+
     }
 }
