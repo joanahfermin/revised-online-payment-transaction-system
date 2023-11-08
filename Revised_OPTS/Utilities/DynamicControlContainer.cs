@@ -51,6 +51,8 @@ namespace Inventory_System.Utilities
             {
                 containerForm.Controls.Remove(textBox);
             }
+            dynamicLabelList.Clear();
+            dynamicControlList.Clear();
         }
 
         public Control FindControlByName(String key, String propertyName)
@@ -85,6 +87,8 @@ namespace Inventory_System.Utilities
 
         public void AddDynamicControls(String key)
         {
+            RemoveAllDynamicControls();
+
             DynamicControlInfo[] dynamicPropertyInfos = GetDynamicPropertyMapping(key);
 
             int y = CONTROL_START_Y;
@@ -146,7 +150,7 @@ namespace Inventory_System.Utilities
                 {
                     control.Text = propertyInfo.InitialValue;
                 }
-
+                
                 if (propertyInfo.ControlType == DynamicControlType.TextBox && propertyInfo.InitialValue == "0.00")
                 {
                     textBox.Leave += TextBox_Leave;

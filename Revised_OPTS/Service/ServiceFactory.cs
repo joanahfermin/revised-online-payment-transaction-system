@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Inventory_System.Service;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -24,5 +25,11 @@ namespace Revised_OPTS.Service
         {
             return new BusinessService();
         }
+
+        public ISecurityService GetSecurityService()
+        {
+            return new SecurityService();
+        }
+
     }
 }

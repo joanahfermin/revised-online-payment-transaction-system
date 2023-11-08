@@ -31,6 +31,11 @@ namespace Revised_OPTS.DAL
             return new BankRepository(ApplicationDBContext.Instance);
         }
 
+        public IUserRepository GetUserRepository()
+        {
+            return new UserRepository(ApplicationDBContext.Instance);
+        }
+
         public IRptTaxbillTPNRepository GetRptRetrieveTaxpayerNameRepository()
         {
             return new RptTaxbillTPNRepository(ITDDFMUDAILY2022ApplicationDBContext.Instance);
@@ -45,6 +50,5 @@ namespace Revised_OPTS.DAL
         {
             return new MiscDetailsBillingStageRepository(ITDDFMUDAILY2023ApplicationDBContext.Instance);
         }
-
     }
 }

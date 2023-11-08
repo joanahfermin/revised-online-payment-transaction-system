@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Amazon.IdentityManagement.Model;
+using Inventory_System.Model;
+using Microsoft.EntityFrameworkCore;
 using Revised_OPTS.Model;
 using System;
 using System.Collections.Generic;
@@ -32,5 +34,8 @@ namespace Revised_OPTS.DAL
         public DbSet<Miscellaneous> Miscellaneous { get; set; }
         public DbSet<Business> purchase { get; set; }
         public DbSet<Bank> banks { get; set; }
+        public DbSet<UserAccount> users { get; set; }
+
     }
+
 }

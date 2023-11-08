@@ -306,8 +306,6 @@ namespace Revised_OPTS.Forms
         {
             string taxType = cbTaxType.Text;
             string searchKeyword = "";
-            string newBusiness = "NEW BUSINESS";
-            string renewalBusiness = "RENEWAL BUSINESS";
 
             dynamicControlContainer.validateForm(taxType, errorProvider1);
 
@@ -342,21 +340,10 @@ namespace Revised_OPTS.Forms
                     businessService.Update(business);
                     searchKeyword = business.MP_Number;
                 }
-                else if (true)
+                else
                 {
                     Business business = new Business();
                     dynamicControlContainer.CopyDynamicProperties(business, taxType);
-                    Control bussinessType = dynamicControlContainer.FindControlByName(taxType, "Business_Type");
-
-                    if (bussinessType.Text == BusinessUtil.NEW_BUSINESS)
-                    {
-                        business.Business_Type = BusinessUtil.NEW_BUSINESS;
-                    }
-                    else
-                    {
-                        business.Business_Type = BusinessUtil.RENEWAL_BUSINESS;
-                    }
-
                     businessService.Insert(business);
                     searchKeyword = business.MP_Number;
                 }
@@ -370,7 +357,7 @@ namespace Revised_OPTS.Forms
                     miscService.Update(misc);
                     searchKeyword = misc.OrderOfPaymentNum;
                 }
-                else if (true)
+                else
                 {
                     Miscellaneous misc = new Miscellaneous();
                     dynamicControlContainer.CopyDynamicProperties(misc, taxType);
