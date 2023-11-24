@@ -32,5 +32,11 @@ namespace Inventory_System.Service
             }
             LOGIN_USER = user;
         }
+
+        public static UserAccount getLoginUser()
+        {
+            return LOGIN_USER;
+        }
+
     }
 }

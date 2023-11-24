@@ -63,7 +63,7 @@
             // 
             // tbUsername
             // 
-            this.tbUsername.BackColor = System.Drawing.Color.AliceBlue;
+            this.tbUsername.BackColor = System.Drawing.Color.Linen;
             this.tbUsername.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.tbUsername.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.tbUsername.Location = new System.Drawing.Point(30, 406);
@@ -87,11 +87,12 @@
             // 
             // tbPassword
             // 
-            this.tbPassword.BackColor = System.Drawing.Color.AliceBlue;
+            this.tbPassword.BackColor = System.Drawing.Color.Linen;
             this.tbPassword.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.tbPassword.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.tbPassword.Location = new System.Drawing.Point(30, 472);
             this.tbPassword.Name = "tbPassword";
+            this.tbPassword.PasswordChar = '•';
             this.tbPassword.Size = new System.Drawing.Size(238, 27);
             this.tbPassword.TabIndex = 2;
             this.tbPassword.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;

@@ -38,8 +38,9 @@
             this.testToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.SearchLabel = new System.Windows.Forms.Label();
             this.tbSearch = new System.Windows.Forms.TextBox();
-            this.btnAddNewRecord = new System.Windows.Forms.Button();
+            this.btnNonRptAddNewRecord = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.btnAddRptRecord = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.DgMainForm)).BeginInit();
             this.MainDGRightClick.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -148,26 +149,26 @@
             this.tbSearch.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.tbSearch.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbSearch_KeyDown);
             // 
-            // btnAddNewRecord
+            // btnNonRptAddNewRecord
             // 
-            this.btnAddNewRecord.BackColor = System.Drawing.Color.MidnightBlue;
-            this.btnAddNewRecord.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnAddNewRecord.BackgroundImage")));
-            this.btnAddNewRecord.FlatAppearance.BorderSize = 0;
-            this.btnAddNewRecord.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnAddNewRecord.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.btnAddNewRecord.ForeColor = System.Drawing.Color.White;
-            this.btnAddNewRecord.Image = ((System.Drawing.Image)(resources.GetObject("btnAddNewRecord.Image")));
-            this.btnAddNewRecord.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnAddNewRecord.Location = new System.Drawing.Point(724, 51);
-            this.btnAddNewRecord.Name = "btnAddNewRecord";
-            this.btnAddNewRecord.Size = new System.Drawing.Size(216, 53);
-            this.btnAddNewRecord.TabIndex = 3;
-            this.btnAddNewRecord.Text = "Add New Record";
-            this.btnAddNewRecord.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnAddNewRecord.UseVisualStyleBackColor = false;
-            this.btnAddNewRecord.Click += new System.EventHandler(this.btnAddNewRecord_Click);
-            this.btnAddNewRecord.MouseEnter += new System.EventHandler(this.btnAddNewRecord_MouseEnter);
-            this.btnAddNewRecord.MouseLeave += new System.EventHandler(this.btnAddNewRecord_MouseLeave);
+            this.btnNonRptAddNewRecord.BackColor = System.Drawing.Color.Transparent;
+            this.btnNonRptAddNewRecord.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnNonRptAddNewRecord.BackgroundImage")));
+            this.btnNonRptAddNewRecord.FlatAppearance.BorderSize = 0;
+            this.btnNonRptAddNewRecord.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnNonRptAddNewRecord.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.btnNonRptAddNewRecord.ForeColor = System.Drawing.Color.White;
+            this.btnNonRptAddNewRecord.Image = ((System.Drawing.Image)(resources.GetObject("btnNonRptAddNewRecord.Image")));
+            this.btnNonRptAddNewRecord.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnNonRptAddNewRecord.Location = new System.Drawing.Point(720, 40);
+            this.btnNonRptAddNewRecord.Name = "btnNonRptAddNewRecord";
+            this.btnNonRptAddNewRecord.Size = new System.Drawing.Size(251, 74);
+            this.btnNonRptAddNewRecord.TabIndex = 3;
+            this.btnNonRptAddNewRecord.Text = "Add Non-RPT Record";
+            this.btnNonRptAddNewRecord.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnNonRptAddNewRecord.UseVisualStyleBackColor = false;
+            this.btnNonRptAddNewRecord.Click += new System.EventHandler(this.btnAddNewRecord_Click);
+            this.btnNonRptAddNewRecord.MouseEnter += new System.EventHandler(this.btnAddNewRecord_MouseEnter);
+            this.btnNonRptAddNewRecord.MouseLeave += new System.EventHandler(this.btnAddNewRecord_MouseLeave);
             // 
             // pictureBox1
             // 
@@ -179,6 +180,26 @@
             this.pictureBox1.TabIndex = 201;
             this.pictureBox1.TabStop = false;
             // 
+            // btnAddRptRecord
+            // 
+            this.btnAddRptRecord.BackColor = System.Drawing.Color.Transparent;
+            this.btnAddRptRecord.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnAddRptRecord.BackgroundImage")));
+            this.btnAddRptRecord.FlatAppearance.BorderSize = 0;
+            this.btnAddRptRecord.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnAddRptRecord.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.btnAddRptRecord.Image = ((System.Drawing.Image)(resources.GetObject("btnAddRptRecord.Image")));
+            this.btnAddRptRecord.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnAddRptRecord.Location = new System.Drawing.Point(1006, 40);
+            this.btnAddRptRecord.Name = "btnAddRptRecord";
+            this.btnAddRptRecord.Size = new System.Drawing.Size(213, 74);
+            this.btnAddRptRecord.TabIndex = 4;
+            this.btnAddRptRecord.Text = "Add RPT Record";
+            this.btnAddRptRecord.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnAddRptRecord.UseVisualStyleBackColor = false;
+            this.btnAddRptRecord.Click += new System.EventHandler(this.btnAddRptRecord_Click);
+            this.btnAddRptRecord.MouseEnter += new System.EventHandler(this.btnAddRptRecord_MouseEnter);
+            this.btnAddRptRecord.MouseLeave += new System.EventHandler(this.btnAddRptRecord_MouseLeave);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -187,14 +208,16 @@
             this.BackColor = System.Drawing.Color.Gainsboro;
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.ClientSize = new System.Drawing.Size(1817, 758);
+            this.Controls.Add(this.btnAddRptRecord);
             this.Controls.Add(this.pictureBox1);
-            this.Controls.Add(this.btnAddNewRecord);
+            this.Controls.Add(this.btnNonRptAddNewRecord);
             this.Controls.Add(this.SearchLabel);
             this.Controls.Add(this.DgMainForm);
             this.Controls.Add(this.tbSearch);
             this.ForeColor = System.Drawing.Color.White;
             this.Name = "MainForm";
             this.Text = "Form1";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainForm_FormClosed);
             this.SizeChanged += new System.EventHandler(this.MainForm_SizeChanged);
             ((System.ComponentModel.ISupportInitialize)(this.DgMainForm)).EndInit();
             this.MainDGRightClick.ResumeLayout(false);
@@ -211,7 +234,8 @@
         private ToolStripMenuItem testToolStripMenuItem;
         private Label SearchLabel;
         private TextBox tbSearch;
-        private Button btnAddNewRecord;
+        private Button btnNonRptAddNewRecord;
         private PictureBox pictureBox1;
+        private Button btnAddRptRecord;
     }
 }

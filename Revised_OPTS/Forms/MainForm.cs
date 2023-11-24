@@ -1,3 +1,4 @@
+using Inventory_System.Forms;
 using Inventory_System.Utilities;
 using Revised_OPTS.Forms;
 using Revised_OPTS.Model;
@@ -15,7 +16,9 @@ namespace Revised_OPTS
         IMiscService miscService = ServiceFactory.Instance.GetMiscService();
         IBusinessService businessService = ServiceFactory.Instance.GetBusinessService();
 
-        private Image originalBackgroundImage;
+        private Image originalBackgroundImageNonRpt;
+        private Image originalBackgroundImageRpt;
+
         public static MainForm Instance;
 
         string selectedRecordFormat = "";
@@ -26,7 +29,7 @@ namespace Revised_OPTS
             { "TaxDec", "TDN" }, { "TaxPayerName", "TaxPayer's Name" }, { "AmountToPay", "Bill Amount" },
             { "AmountTransferred", "Transferred Amount" }, { "TotalAmountTransferred", "Total Amount Transferred" }, { "ExcessShortAmount", "Excess/Short" },
             { "Bank", "Bank" }, { "YearQuarter", "Year" }, { "Quarter", "Quarter" },
-            { "PaymentType", "Payment Type" }, { "BillingSelection", "Billing Selection" }, { "Status", "Status" },
+            /*{ "PaymentType", "Payment Type" }, { "BillingSelection", "Billing Selection" },*/ { "Status", "Status" },
             { "RequestingParty", "Email Address" }, { "EncodedBy", "Encoded By" }, { "EncodedDate", "Encoded Date" },
                     { "RefNum", "Reference No." }, { "RPTremarks", "Remarks" },
 
@@ -127,16 +130,16 @@ namespace Revised_OPTS
             {
                 ShowDataInDataGridView<Rpt>(RPT_DG_COLUMNS, rptService.RetrieveBySearchKeyword(searchRecordinDB));
             }
-            else if (SearchBusinessFormat.isMiscOccuPermit(searchRecordinDB) || SearchBusinessFormat.isMiscOvrTtmd(searchRecordinDB)
-                || SearchBusinessFormat.isMiscOvrDpos(searchRecordinDB) || SearchBusinessFormat.isMiscMarket(searchRecordinDB)
-                || SearchBusinessFormat.isMiscZoning(searchRecordinDB) || SearchBusinessFormat.isMiscLiquor(searchRecordinDB))
-            {
-                ShowDataInDataGridView<Miscellaneous>(MISC_DG_COLUMNS, miscService.RetrieveBySearchKeyword(searchRecordinDB));
-            }
-            else if (SearchBusinessFormat.isBusiness(searchRecordinDB))
-            {
-                ShowDataInDataGridView<Business>(BUSINESS_DG_COLUMNS, businessService.RetrieveBySearchKeyword(searchRecordinDB));
-            }
+            //else if (SearchBusinessFormat.isMiscOccuPermit(searchRecordinDB) || SearchBusinessFormat.isMiscOvrTtmd(searchRecordinDB)
+            //    || SearchBusinessFormat.isMiscOvrDpos(searchRecordinDB) || SearchBusinessFormat.isMiscMarket(searchRecordinDB)
+            //    || SearchBusinessFormat.isMiscZoning(searchRecordinDB) || SearchBusinessFormat.isMiscLiquor(searchRecordinDB))
+            //{
+            //    ShowDataInDataGridView<Miscellaneous>(MISC_DG_COLUMNS, miscService.RetrieveBySearchKeyword(searchRecordinDB));
+            //}
+            //else if (SearchBusinessFormat.isBusiness(searchRecordinDB))
+            //{
+            //    ShowDataInDataGridView<Business>(BUSINESS_DG_COLUMNS, businessService.RetrieveBySearchKeyword(searchRecordinDB));
+            //}
         }
 
         private void ShowDataInDataGridView<T>(Dictionary<string, string> columnMappings, List<T> dataList)
@@ -193,14 +196,14 @@ namespace Revised_OPTS
             {
                 Rpt retrieveRptRecord = rptService.Get(selectedRecordId);
                 string taxType = TaxTypeUtil.REALPROPERTYTAX;
-                AddUpdateRecordForm updateRecord = new AddUpdateRecordForm(retrieveRptRecord.RptID, taxType);
+                NonRPTAddUpdateRecordForm updateRecord = new NonRPTAddUpdateRecordForm(retrieveRptRecord.RptID, taxType);
                 updateRecord.ShowDialog();
             }
             else if (isBusinessMpNumFormatCorrect)
             {
                 Business retrieveBusinessRecord = businessService.Get(selectedRecordId);
                 string taxType = TaxTypeUtil.BUSINESS;
-                AddUpdateRecordForm updateRecord = new AddUpdateRecordForm(retrieveBusinessRecord.BusinessID, taxType);
+                NonRPTAddUpdateRecordForm updateRecord = new NonRPTAddUpdateRecordForm(retrieveBusinessRecord.BusinessID, taxType);
                 updateRecord.ShowDialog();
             }
             else
@@ -209,7 +212,7 @@ namespace Revised_OPTS
                 if (taxType != null)
                 {
                     Miscellaneous retrieveMiscRecord = miscService.Get(selectedRecordId);
-                    AddUpdateRecordForm updateRecord = new AddUpdateRecordForm(retrieveMiscRecord.MiscID, taxType);
+                    NonRPTAddUpdateRecordForm updateRecord = new NonRPTAddUpdateRecordForm(retrieveMiscRecord.MiscID, taxType);
                     updateRecord.ShowDialog();
                 }
             }
@@ -225,26 +228,53 @@ namespace Revised_OPTS
 
         private void btnAddNewRecord_MouseEnter(object sender, EventArgs e)
         {
-            originalBackgroundImage = btnAddNewRecord.BackgroundImage;
-            btnAddNewRecord.BackgroundImage = null;
+            originalBackgroundImageNonRpt = btnNonRptAddNewRecord.BackgroundImage;
+            btnNonRptAddNewRecord.BackgroundImage = null;
 
             Color customColor = Color.FromArgb(23, 45, 74);
-            btnAddNewRecord.BackColor = customColor;
+            btnNonRptAddNewRecord.BackColor = customColor;
         }
 
         private void btnAddNewRecord_MouseLeave(object sender, EventArgs e)
         {
-            btnAddNewRecord.BackgroundImage = originalBackgroundImage;
+            btnNonRptAddNewRecord.BackgroundImage = originalBackgroundImageNonRpt;
         }
 
         private void btnAddNewRecord_Click(object sender, EventArgs e)
         {
-            new AddUpdateRecordForm().Show();
+            new NonRPTAddUpdateRecordForm().Show();
         }
 
         private void MainForm_SizeChanged(object sender, EventArgs e)
         {
             DgMainForm.Size = new Size(this.ClientSize.Width - 50, this.ClientSize.Height - 170);
+        }
+
+        private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            if (LoginForm.INSTANCE != null)
+            {
+                LoginForm.INSTANCE.Close();
+            }
+        }
+
+        private void btnAddRptRecord_Click(object sender, EventArgs e)
+        {
+            new RPTAddUpdateRecordForm().Show();
+        }
+
+        private void btnAddRptRecord_MouseEnter(object sender, EventArgs e)
+        {
+            originalBackgroundImageRpt = btnAddRptRecord.BackgroundImage;
+            btnAddRptRecord.BackgroundImage = null;
+
+            Color customColor = Color.FromArgb(23, 45, 74);
+            btnAddRptRecord.BackColor = customColor;
+        }
+
+        private void btnAddRptRecord_MouseLeave(object sender, EventArgs e)
+        {
+            btnAddRptRecord.BackgroundImage = originalBackgroundImageRpt;
         }
     }
 }

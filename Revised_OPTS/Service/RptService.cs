@@ -54,5 +54,49 @@ namespace Revised_OPTS.Service
         {
             rpt.ExcessShortAmount = rpt.AmountTransferred - rpt.AmountToPay;
         }
+
+        public void SaveAll(List<Rpt> listOfRptsToSave, List<Rpt> listOfRptsToDelete)
+        {
+            AssignRefNum(listOfRptsToSave);
+            // add calculations here
+            foreach (Rpt rpt in listOfRptsToSave)
+            {
+                if (rpt.RptID == 0)
+                {
+                    rptRepository.Insert(rpt);
+                }
+                else
+                {
+                    rptRepository.Update(rpt);
+                }
+            }
+
+            foreach (Rpt rpt in listOfRptsToDelete)
+            {
+                if (rpt.RptID > 0)
+                {
+                    rptRepository.Delete(rpt);
+                }
+            }
+        }
+
+        public void AssignRefNum(List<Rpt> listOfPersonsToSave)
+        {
+            // hanapin if may existing refnum na
+            string RefNum = listOfPersonsToSave.Where(person => !string.IsNullOrEmpty(person.RefNum)).Select(person => person.RefNum).FirstOrDefault();
+
+            // if wala existing, gawa tayo bago
+            if (RefNum == null)
+            {
+                RefNum = Guid.NewGuid().ToString(); // mag generate ito ng unique na refnum
+            }
+
+            // gamitin na refnum
+            foreach (Rpt rpt in listOfPersonsToSave)
+            {
+                rpt.RefNum = RefNum;
+            }
+        }
+
     }
 }

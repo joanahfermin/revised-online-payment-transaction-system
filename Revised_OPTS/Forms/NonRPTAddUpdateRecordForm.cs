@@ -1,6 +1,7 @@
 ﻿using Inventory_System.DAL;
 using Inventory_System.Exception;
 using Inventory_System.Model;
+using Inventory_System.Service;
 using Inventory_System.Utilities;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Revised_OPTS.DAL;
@@ -21,8 +22,10 @@ using System.Windows.Forms;
 
 namespace Revised_OPTS.Forms
 {
-    public partial class AddUpdateRecordForm : Form
+    public partial class NonRPTAddUpdateRecordForm : Form
     {
+        private UserAccount loginUser = SecurityService.getLoginUser();
+
         IRptService rptService = ServiceFactory.Instance.GetRptService();
         IRptRepository rptRepository = RepositoryFactory.Instance.GetRptRepository();
         IBusinessService businessService = ServiceFactory.Instance.GetBusinessService();
@@ -46,7 +49,7 @@ namespace Revised_OPTS.Forms
         long businessId = 0;
         long miscId = 0;
 
-        public AddUpdateRecordForm()
+        public NonRPTAddUpdateRecordForm()
         {
             dynamicControlContainer = new DynamicControlContainer(this);
 
@@ -58,9 +61,11 @@ namespace Revised_OPTS.Forms
             label1.BackColor = customColor;
             btnSaveRecord.BackColor = customColor;
             btnClose.BackColor = customColor;
+
+            btnSaveRecord.Visible = false;
         }
 
-        public AddUpdateRecordForm(long id, string taxType)
+        public NonRPTAddUpdateRecordForm(long id, string taxType)
         {
             dynamicControlContainer = new DynamicControlContainer(this);
 
@@ -231,6 +236,8 @@ namespace Revised_OPTS.Forms
             string taxType = cbTaxType.Text;
             dynamicControlContainer.AddDynamicControls(taxType);
 
+            btnSaveRecord.Visible = true;
+
             if (taxType == TaxTypeUtil.REALPROPERTYTAX)
             {
                 Control TaxDecTextBox = dynamicControlContainer.FindControlByName(taxType, "TaxDec");
@@ -302,6 +309,14 @@ namespace Revised_OPTS.Forms
             }
         }
 
+        public void setEncodedByAndDate()
+        {
+            Rpt rpt = new Rpt();
+
+            rpt.EncodedBy = loginUser.DisplayName;
+            rpt.EncodedDate = DateTime.Now;
+        }
+
         private void btnSaveRecord_Click(object sender, EventArgs e)
         {
             string taxType = cbTaxType.Text;
@@ -319,6 +334,7 @@ namespace Revised_OPTS.Forms
                 if (rpt != null)
                 {
                     dynamicControlContainer.CopyDynamicProperties(rpt, taxType);
+                    setEncodedByAndDate();
                     rptService.Update(rpt);
                     searchKeyword = rpt.TaxDec;
                 }
@@ -326,6 +342,7 @@ namespace Revised_OPTS.Forms
                 {
                     Rpt rpt = new Rpt();
                     dynamicControlContainer.CopyDynamicProperties(rpt, taxType);
+                    setEncodedByAndDate();
                     rptService.Insert(rpt);
                     searchKeyword = rpt.TaxDec;
                 }

@@ -18,10 +18,13 @@ namespace Inventory_System.Forms
     {
         ISecurityService securityService = ServiceFactory.Instance.GetSecurityService();
 
+        public static LoginForm INSTANCE;
+
         public LoginForm()
         {
             InitializeComponent();
             StartPosition = FormStartPosition.CenterScreen;
+            INSTANCE = this;
         }
 
         private void btnSaveRecord_Click(object sender, EventArgs e)
