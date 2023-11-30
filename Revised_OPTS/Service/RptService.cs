@@ -43,7 +43,7 @@ namespace Revised_OPTS.Service
 
         public void Insert(Rpt rpt)
         {
-            calculatePayment(rpt);
+            //calculatePayment(rpt);
             rpt.EncodedBy = securityService.getLoginUser().DisplayName;
             rpt.EncodedDate = DateTime.Now;
             rptRepository.Insert(rpt);
@@ -51,16 +51,16 @@ namespace Revised_OPTS.Service
 
         public void Update(Rpt rpt)
         {
-            calculatePayment(rpt);
+            //calculatePayment(rpt);
             rptRepository.Update(rpt);
         }
 
-        private void calculatePayment(Rpt rpt)
-        {
-            rpt.ExcessShortAmount = rpt.AmountTransferred - rpt.AmountToPay;
-        }
+        //private void calculatePayment(Rpt rpt)
+        //{
+        //    rpt.ExcessShortAmount = rpt.AmountTransferred - rpt.AmountToPay;
+        //}
 
-        private void calculateTotalPayment(List<Rpt> listOfRptsToSave, decimal totalAmountTransferred)
+        public void calculateTotalPayment(List<Rpt> listOfRptsToSave, decimal totalAmountTransferred)
         {
             //List<Rpt> sortedList = listOfRptsToSave.OrderByDescending(rpt => rpt.TaxDec).ThenBy(rpt => rpt.YearQuarter).ToList();
             bool firstRecord = true;

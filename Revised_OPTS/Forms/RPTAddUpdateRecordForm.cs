@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -32,12 +33,24 @@ namespace Inventory_System.Forms
             InitializeDataGridView();
             DataGridUI();
             DgRptAddUpdateForm.CellFormatting += DgRptAddUpdateForm_CellFormatting;
+            DgRptAddUpdateForm.CellValueChanged += DgRptAddUpdateForm_CellValueChanged;
 
             panel1.BackColor = customColor;
             btnSaveRecord.BackColor = customColor;
             btnClose.BackColor = customColor;
+        }
 
-            //btnSaveRecord.Visible = false;
+        private void DgRptAddUpdateForm_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            List<Rpt> listOfRptsToSave = DynamicGridContainer.GetData();
+
+            decimal? totalAmounttoPayComputed = 0;
+
+            foreach (Rpt rpt in listOfRptsToSave)
+            {
+                totalAmounttoPayComputed += rpt.AmountToPay;
+            }
+            tbTotalAmountTransferred.Text = totalAmounttoPayComputed?.ToString("N", CultureInfo.InvariantCulture) ;
         }
 
         private void DgRptAddUpdateForm_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
@@ -148,5 +161,6 @@ namespace Inventory_System.Forms
         {
             this.Close();
         }
+
     }
 }
