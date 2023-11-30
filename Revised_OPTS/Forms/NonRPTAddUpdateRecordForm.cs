@@ -24,8 +24,6 @@ namespace Revised_OPTS.Forms
 {
     public partial class NonRPTAddUpdateRecordForm : Form
     {
-        private UserAccount loginUser = SecurityService.getLoginUser();
-
         IRptService rptService = ServiceFactory.Instance.GetRptService();
         IRptRepository rptRepository = RepositoryFactory.Instance.GetRptRepository();
         IBusinessService businessService = ServiceFactory.Instance.GetBusinessService();
@@ -309,14 +307,6 @@ namespace Revised_OPTS.Forms
             }
         }
 
-        public void setEncodedByAndDate()
-        {
-            Rpt rpt = new Rpt();
-
-            rpt.EncodedBy = loginUser.DisplayName;
-            rpt.EncodedDate = DateTime.Now;
-        }
-
         private void btnSaveRecord_Click(object sender, EventArgs e)
         {
             string taxType = cbTaxType.Text;
@@ -334,7 +324,6 @@ namespace Revised_OPTS.Forms
                 if (rpt != null)
                 {
                     dynamicControlContainer.CopyDynamicProperties(rpt, taxType);
-                    setEncodedByAndDate();
                     rptService.Update(rpt);
                     searchKeyword = rpt.TaxDec;
                 }
@@ -342,7 +331,6 @@ namespace Revised_OPTS.Forms
                 {
                     Rpt rpt = new Rpt();
                     dynamicControlContainer.CopyDynamicProperties(rpt, taxType);
-                    setEncodedByAndDate();
                     rptService.Insert(rpt);
                     searchKeyword = rpt.TaxDec;
                 }

@@ -59,15 +59,15 @@ namespace Inventory_System.Forms
                 new DynamicGridInfo{PropertyName="TaxDec", Label = "TDN", isRequired=true },
                 new DynamicGridInfo{PropertyName="TaxPayerName", Label = "TaxPayer's Name", isRequired=true },
                 new DynamicGridInfo{PropertyName="AmountToPay", Label = "Bill Amount", isRequired=true },
-                new DynamicGridInfo{PropertyName="AmountTransferred", Label = "Transferred Amount", isRequired=true },
+                //new DynamicGridInfo{PropertyName="AmountTransferred", Label = "Transferred Amount", isRequired=true },
                 new DynamicGridInfo{PropertyName="Bank", Label = "Bank", GridType = DynamicGridType.ComboBox, ComboboxChoices = bankNames, isRequired=true },
-                new DynamicGridInfo{PropertyName="Status", Label = "Status", GridType = DynamicGridType.ComboBox, ComboboxChoices = TaxStatus.STATUS,
-                    isEnabled = false, InitialValue = TaxStatus.ForPaymentVerification },
 
-                //PAYMENT DATE!!!!!!!!!!
+
 
                 new DynamicGridInfo{PropertyName="YearQuarter", Label = "Year", decimalValue = true},
                 new DynamicGridInfo{PropertyName="Quarter", Label = "Quarter", GridType=DynamicGridType.ComboBox, ComboboxChoices = Quarter.ALL_QUARTER, isRequired=true },
+                new DynamicGridInfo{PropertyName="RequestingParty", Label = "Email Address" },
+
                 new DynamicGridInfo{PropertyName="RPTremarks", Label = "Remarks"},
             };
             DynamicGridContainer = new DynamicGridContainer<Rpt>(DgRptAddUpdateForm, gridInfoArray, true);
@@ -87,18 +87,24 @@ namespace Inventory_System.Forms
 
         private void btnSaveRecord_Click(object sender, EventArgs e)
         {
-            Rpt firstTaxdecRecord = null;
+            string firstTaxdecRecord = null;
+            decimal totalAmountTransferred = Convert.ToDecimal(tbTotalAmountTransferred.Text);
 
             List<Rpt> listOfRptsToSave = DynamicGridContainer.GetData();
             List<Rpt> listOfRptsToDelete = DynamicGridContainer.GetDataToDelete();
 
             if (listOfRptsToSave.Count > 0)
             {
-                firstTaxdecRecord = listOfRptsToSave[0];
-                MessageBox.Show(firstTaxdecRecord.TaxDec.ToString());
+                firstTaxdecRecord = listOfRptsToSave[0].TaxDec.ToString();
             }
-            rptService.SaveAll(listOfRptsToSave, listOfRptsToDelete);
-            notifyUserAndRefreshRecord(firstTaxdecRecord.ToString());
+            else
+            {
+                MessageBox.Show("No items in the grid.");
+                return;
+            }
+            rptService.SaveAll(listOfRptsToSave, listOfRptsToDelete, totalAmountTransferred);
+            notifyUserAndRefreshRecord(firstTaxdecRecord);
+            btnClose_Click(sender, e);
         }
 
         public void notifyUserAndRefreshRecord(string keyWord)
@@ -142,7 +148,5 @@ namespace Inventory_System.Forms
         {
             this.Close();
         }
-
-
     }
 }

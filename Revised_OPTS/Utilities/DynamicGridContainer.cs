@@ -34,7 +34,7 @@ namespace Inventory_System.Utilities
             {
                 if (info.GridType == DynamicGridType.Text)
                 {
-                    dataGridView.Columns.Add(info.PropertyName, info.PropertyName);
+                    dataGridView.Columns.Add(info.PropertyName, info.Label);
                     dataGridView.Columns[info.PropertyName].DataPropertyName = info.PropertyName;
                 }
                 else

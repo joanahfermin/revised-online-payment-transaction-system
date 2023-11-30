@@ -70,6 +70,7 @@
             this.tbUsername.Name = "tbUsername";
             this.tbUsername.Size = new System.Drawing.Size(238, 27);
             this.tbUsername.TabIndex = 1;
+            this.tbUsername.Text = "jfermin";
             this.tbUsername.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // label2
@@ -95,6 +96,7 @@
             this.tbPassword.PasswordChar = '•';
             this.tbPassword.Size = new System.Drawing.Size(238, 27);
             this.tbPassword.TabIndex = 2;
+            this.tbPassword.Text = "Joanah1992";
             this.tbPassword.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // btnSaveRecord

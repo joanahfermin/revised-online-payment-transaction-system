@@ -17,6 +17,6 @@ namespace Revised_OPTS.Service
         void Insert(Rpt rpt);
         void Update(Rpt rpt);
 
-        void SaveAll(List<Rpt> rpt, List<Rpt> rptToDelte);
+        void SaveAll(List<Rpt> rpt, List<Rpt> rptToDelte, decimal totalAmountTransferred);
     }
 }

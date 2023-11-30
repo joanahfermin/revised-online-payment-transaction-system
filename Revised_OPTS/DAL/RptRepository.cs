@@ -17,7 +17,11 @@ namespace Revised_OPTS.DAL
 
         public List<Rpt> retrieveBySearchKeyword(string tdn)
         {
-            return dbSet.Where(t => t.TaxDec.Contains(tdn)).OrderByDescending(t => t.EncodedDate).ToList();
+            return dbSet.Where(t => t.TaxDec.Contains(tdn)).OrderByDescending(t => t.EncodedDate)
+                .Union(dbSet.Where(j => j.TaxDec.Contains(tdn) && j.DeletedRecord != 1))
+                .Union(dbSet.Where(j => dbSet.Where(subJ => subJ.TaxDec.Contains(tdn)).Select(subJ => subJ.RefNum)
+                .Contains(j.RefNum) && j.DeletedRecord != 1)).OrderByDescending(j => j.RefNum)
+                .ThenBy(j => j.EncodedDate).ToList();
         }
     }
 }
