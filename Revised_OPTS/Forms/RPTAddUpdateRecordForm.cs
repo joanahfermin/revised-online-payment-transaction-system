@@ -34,23 +34,37 @@ namespace Inventory_System.Forms
             DataGridUI();
             DgRptAddUpdateForm.CellFormatting += DgRptAddUpdateForm_CellFormatting;
             DgRptAddUpdateForm.CellValueChanged += DgRptAddUpdateForm_CellValueChanged;
+            DgRptAddUpdateForm.RowsRemoved += DgRptAddUpdateForm_RowsRemoved;
 
             panel1.BackColor = customColor;
             btnSaveRecord.BackColor = customColor;
             btnClose.BackColor = customColor;
         }
 
+        private void DgRptAddUpdateForm_RowsRemoved(object sender, DataGridViewRowsRemovedEventArgs e)
+        {
+            UpdateTotalAmount();
+        }
+
         private void DgRptAddUpdateForm_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            UpdateTotalAmount();
+        }
+
+        private void UpdateTotalAmount()
         {
             List<Rpt> listOfRptsToSave = DynamicGridContainer.GetData();
 
-            decimal? totalAmounttoPayComputed = 0;
+            //decimal? totalAmountToPayComputed = 0;
 
-            foreach (Rpt rpt in listOfRptsToSave)
-            {
-                totalAmounttoPayComputed += rpt.AmountToPay;
-            }
-            tbTotalAmountTransferred.Text = totalAmounttoPayComputed?.ToString("N", CultureInfo.InvariantCulture) ;
+            //foreach (Rpt rpt in listOfRptsToSave)
+            //{
+            //    totalAmountToPayComputed += rpt.AmountToPay;
+            //}
+
+            decimal totalAmountToPayComputed = listOfRptsToSave.Sum(rpt => rpt.AmountToPay ?? 0);
+
+            tbTotalAmountTransferred.Text = totalAmountToPayComputed.ToString("N", CultureInfo.InvariantCulture);
         }
 
         private void DgRptAddUpdateForm_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
@@ -74,8 +88,6 @@ namespace Inventory_System.Forms
                 new DynamicGridInfo{PropertyName="AmountToPay", Label = "Bill Amount", isRequired=true },
                 //new DynamicGridInfo{PropertyName="AmountTransferred", Label = "Transferred Amount", isRequired=true },
                 new DynamicGridInfo{PropertyName="Bank", Label = "Bank", GridType = DynamicGridType.ComboBox, ComboboxChoices = bankNames, isRequired=true },
-
-
 
                 new DynamicGridInfo{PropertyName="YearQuarter", Label = "Year", decimalValue = true},
                 new DynamicGridInfo{PropertyName="Quarter", Label = "Quarter", GridType=DynamicGridType.ComboBox, ComboboxChoices = Quarter.ALL_QUARTER, isRequired=true },
@@ -115,6 +127,7 @@ namespace Inventory_System.Forms
                 MessageBox.Show("No items in the grid.");
                 return;
             }
+
             rptService.SaveAll(listOfRptsToSave, listOfRptsToDelete, totalAmountTransferred);
             notifyUserAndRefreshRecord(firstTaxdecRecord);
             btnClose_Click(sender, e);

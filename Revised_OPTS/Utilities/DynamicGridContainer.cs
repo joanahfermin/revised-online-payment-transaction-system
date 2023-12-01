@@ -82,7 +82,7 @@ namespace Inventory_System.Utilities
                 if (string.IsNullOrEmpty(cellValue))
                 {
                     dataGridView.Rows[e.RowIndex].ErrorText = $"{info.Label} is required.";
-                    e.Cancel = true;
+                    //e.Cancel = true;
                     errorFound = true;
                 }
             }
@@ -93,7 +93,7 @@ namespace Inventory_System.Utilities
                 if (!decimal.TryParse(cellValue, NumberStyles.Number, CultureInfo.InvariantCulture, out decimal value))
                 {
                     dataGridView.Rows[e.RowIndex].ErrorText = $"{info.Label} is not in decimal format.";
-                    e.Cancel = true;
+                    //e.Cancel = true;
                     errorFound = true;
                 }
             }
@@ -107,7 +107,7 @@ namespace Inventory_System.Utilities
                     if (!re.IsMatch(cellValue))
                     {
                         dataGridView.Rows[e.RowIndex].ErrorText = $"{info.Label} is not in correct format.";
-                        e.Cancel = true;
+                        //e.Cancel = true;
                         errorFound = true;
                     }
                 }
