@@ -35,10 +35,16 @@ namespace Inventory_System.Forms
             DgRptAddUpdateForm.CellFormatting += DgRptAddUpdateForm_CellFormatting;
             DgRptAddUpdateForm.CellValueChanged += DgRptAddUpdateForm_CellValueChanged;
             DgRptAddUpdateForm.RowsRemoved += DgRptAddUpdateForm_RowsRemoved;
+            DgRptAddUpdateForm.RowsAdded += DgRptAddUpdateForm_RowsAdded;
 
             panel1.BackColor = customColor;
             btnSaveRecord.BackColor = customColor;
             btnClose.BackColor = customColor;
+        }
+
+        private void DgRptAddUpdateForm_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
+        {
+            UpdateTotalAmount();
         }
 
         private void DgRptAddUpdateForm_RowsRemoved(object sender, DataGridViewRowsRemovedEventArgs e)
@@ -95,7 +101,7 @@ namespace Inventory_System.Forms
 
                 new DynamicGridInfo{PropertyName="RPTremarks", Label = "Remarks"},
             };
-            DynamicGridContainer = new DynamicGridContainer<Rpt>(DgRptAddUpdateForm, gridInfoArray, true);
+            DynamicGridContainer = new DynamicGridContainer<Rpt>(DgRptAddUpdateForm, gridInfoArray, true, true);
         }
 
         public void DataGridUI()

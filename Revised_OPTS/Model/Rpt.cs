@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace Revised_OPTS.Model
 {
     [Table("Jo_RPT")]
-    internal class Rpt
+    internal class Rpt: ICloneable
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -75,5 +75,9 @@ namespace Revised_OPTS.Model
         public DateTime? ORConfirmDate { get; set; }
         public DateTime? ORAttachedDate { get; set; }
 
+        public object Clone()
+        {
+            return this.MemberwiseClone();
+        }
     }
 }
