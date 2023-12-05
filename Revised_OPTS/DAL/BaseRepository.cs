@@ -43,13 +43,13 @@ namespace Revised_OPTS.DAL
         public void Insert(T entity)
         {
             dbSet.Add(entity);
-            dBContext.SaveChanges();
+            //dBContext.SaveChanges();
         }
 
         public void Update(T entity)
         {
             dBContext.Entry(entity).State = EntityState.Modified;
-            dBContext.SaveChanges();
+            //dBContext.SaveChanges();
         }
 
         public void Delete(T entity)

@@ -47,18 +47,15 @@ namespace Revised_OPTS.Service
             rpt.EncodedBy = securityService.getLoginUser().DisplayName;
             rpt.EncodedDate = DateTime.Now;
             rptRepository.Insert(rpt);
+            ApplicationDBContext.Instance.SaveChanges();
         }
 
         public void Update(Rpt rpt)
         {
             //calculatePayment(rpt);
             rptRepository.Update(rpt);
+            ApplicationDBContext.Instance.SaveChanges();
         }
-
-        //private void calculatePayment(Rpt rpt)
-        //{
-        //    rpt.ExcessShortAmount = rpt.AmountTransferred - rpt.AmountToPay;
-        //}
 
         public void calculateTotalPayment(List<Rpt> listOfRptsToSave, decimal totalAmountTransferred)
         {
@@ -94,7 +91,6 @@ namespace Revised_OPTS.Service
             }
         }
 
-
         public void SaveAll(List<Rpt> listOfRptsToSave, List<Rpt> listOfRptsToDelete, decimal totalAmountTransferred)
         {
             AssignRefNum(listOfRptsToSave);
@@ -102,28 +98,39 @@ namespace Revised_OPTS.Service
 
             calculateTotalPayment(listOfRptsToSave, totalAmountTransferred);
 
-            foreach (Rpt rpt in listOfRptsToSave)
+            using (var scope = new TransactionScope())
             {
-                if (rpt.RptID == 0)
+                foreach (Rpt rpt in listOfRptsToSave)
                 {
-                    rpt.Status = TaxStatus.ForPaymentVerification;
-                    rpt.EncodedBy = securityService.getLoginUser().DisplayName;
-                    rpt.EncodedDate = DateTime.Now;
+                    List<Rpt> duplicateRecord = rptRepository.checkExistingRecord(rpt.TaxDec, rpt.YearQuarter, rpt.Quarter, rpt.BillingSelection);
 
-                    rptRepository.Insert(rpt);
-                }
-                else
-                {
-                    rptRepository.Update(rpt);
-                }
-            }
+                    if (duplicateRecord.Count > 0)
+                    {
+                        throw new RptException("There is an exiting record/s detected in the database.");
+                    }
 
-            foreach (Rpt rpt in listOfRptsToDelete)
-            {
-                if (rpt.RptID > 0)
-                {
-                    rptRepository.Delete(rpt);
+                    if (rpt.RptID == 0)
+                    {
+                        rpt.Status = TaxStatus.ForPaymentVerification;
+                        rpt.EncodedBy = securityService.getLoginUser().DisplayName;
+                        rpt.EncodedDate = DateTime.Now;
+                        rptRepository.Insert(rpt);
+                    }
+                    else
+                    {
+                        rptRepository.Update(rpt);
+                    }
                 }
+
+                foreach (Rpt rpt in listOfRptsToDelete)
+                {
+                    if (rpt.RptID > 0)
+                    {
+                        rptRepository.Delete(rpt);
+                    }
+                }
+                ApplicationDBContext.Instance.SaveChanges();
+                scope.Complete();
             }
         }
 
@@ -144,6 +151,5 @@ namespace Revised_OPTS.Service
                 rpt.RefNum = RefNum;
             }
         }
-
     }
 }

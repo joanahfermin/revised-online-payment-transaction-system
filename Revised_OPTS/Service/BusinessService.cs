@@ -1,4 +1,5 @@
-﻿using Revised_OPTS.DAL;
+﻿using Inventory_System.Service;
+using Revised_OPTS.DAL;
 using Revised_OPTS.Model;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,7 @@ namespace Revised_OPTS.Service
     internal class BusinessService : IBusinessService
     {
         IBusinessRepository businessRepository = RepositoryFactory.Instance.GetBusinessRepository();
+        ISecurityService securityService = ServiceFactory.Instance.GetSecurityService();
 
         public Business Get(object id)
         {
@@ -24,12 +26,16 @@ namespace Revised_OPTS.Service
 
         public void Insert(Business business)
         {
+            business.EncodedBy = securityService.getLoginUser().DisplayName;
+            business.EncodedDate = DateTime.Now;
             businessRepository.Insert(business);
+            ApplicationDBContext.Instance.SaveChanges();
         }
 
         public void Update(Business business)
         {
             businessRepository.Update(business);
+            ApplicationDBContext.Instance.SaveChanges();
         }
     }
 }

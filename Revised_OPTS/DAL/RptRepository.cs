@@ -15,6 +15,18 @@ namespace Revised_OPTS.DAL
         {
         }
 
+        public List<Rpt> checkExistingRecord(string tdn, string year, string quarter, string billingSelection)
+        {
+            return dbSet
+                    .Where(jo => jo.TaxDec == tdn
+                        && jo.YearQuarter == $"{year}"
+                        && jo.Quarter == quarter
+                        && jo.DeletedRecord != 1
+                        && jo.DuplicateRecord == 0
+                        && jo.BillingSelection == billingSelection)
+                    .ToList();
+        }
+
         public List<Rpt> retrieveBySearchKeyword(string tdn)
         {
             return dbSet.Where(t => t.TaxDec.Contains(tdn)).OrderByDescending(t => t.EncodedDate)

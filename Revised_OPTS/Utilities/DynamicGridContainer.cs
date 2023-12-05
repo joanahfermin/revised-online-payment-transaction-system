@@ -14,69 +14,9 @@ namespace Inventory_System.Utilities
     internal class DynamicGridContainer<T> where T : ICloneable
     {
         private DataGridView dataGridView;
-
         private DynamicGridInfo[] gridInfoArray;
-
         private BindingList<T> BindingDataList = new BindingList<T>();
-
         private List<T> DataToDeleteList = new List<T>();
-
-        //public DynamicGridContainer(DataGridView dataGridView, DynamicGridInfo[] gridInfoArray, bool allowDelete, bool allowDuplicate)
-        //{
-        //    this.dataGridView = dataGridView;
-        //    this.gridInfoArray = gridInfoArray;
-
-        //    wag mag auto generate ng columns, manual natin lalagay
-        //    dataGridView.AutoGenerateColumns = false;
-
-        //    attach validation
-        //    dataGridView.CellValidating += dataGridView_CellValidating;
-
-        //    foreach (DynamicGridInfo info in gridInfoArray)
-        //    {
-        //        if (info.GridType == DynamicGridType.Text)
-        //        {
-        //            dataGridView.Columns.Add(info.PropertyName, info.Label);
-        //            dataGridView.Columns[info.PropertyName].DataPropertyName = info.PropertyName;
-        //        }
-        //        else
-        //        {
-        //            DataGridViewComboBoxColumn comboBoxColumn = new DataGridViewComboBoxColumn();
-        //            comboBoxColumn.DataPropertyName = info.PropertyName;
-        //            comboBoxColumn.HeaderText = info.Label;
-        //            comboBoxColumn.Name = info.PropertyName;
-        //            comboBoxColumn.Items.AddRange(info.ComboboxChoices);
-        //            dataGridView.Columns.Add(comboBoxColumn);
-        //        }
-        //        if (info.isReadOnly)
-        //        {
-        //            dataGridView.Columns[info.PropertyName].ReadOnly = true;
-        //        }
-
-        //        Add Delete Menu
-        //        if (allowDelete)
-        //        {
-        //            ContextMenuStrip contextMenuStrip1 = new ContextMenuStrip();
-        //            ToolStripMenuItem menuItem = new ToolStripMenuItem("Delete");
-        //            menuItem.Click += DeleteItem_Click;
-        //            contextMenuStrip1.Items.Add(menuItem);
-        //            dataGridView.ContextMenuStrip = contextMenuStrip1;
-        //            dataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-        //        }
-
-        //        if (allowDuplicate)
-        //        {
-        //            ContextMenuStrip contextMenuStrip1 = new ContextMenuStrip();
-        //            ToolStripMenuItem menuItem = new ToolStripMenuItem("Duplicate");
-        //            menuItem.Click += DuplicateRecord_Click;
-        //            contextMenuStrip1.Items.Add(menuItem);
-        //            dataGridView.ContextMenuStrip = contextMenuStrip1;
-        //            dataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-        //        }
-        //        Bind the data
-        //        dataGridView.DataSource = BindingDataList;
-        //    }
-        //}
 
         public DynamicGridContainer(DataGridView dataGridView, DynamicGridInfo[] gridInfoArray, bool allowDelete, bool allowDuplicate)
         {
@@ -88,6 +28,7 @@ namespace Inventory_System.Utilities
 
             // attach validation
             dataGridView.CellValidating += dataGridView_CellValidating;
+            dataGridView.CellMouseDown += dataGridView_CellMouseDown;
 
             // Create a single ContextMenuStrip
             ContextMenuStrip contextMenuStrip1 = new ContextMenuStrip();
@@ -187,9 +128,24 @@ namespace Inventory_System.Utilities
             }
         }
 
+        private void dataGridView_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right && e.RowIndex != -1)
+            {
+                // Clear the current selection
+                dataGridView.ClearSelection();
+
+                // Select the entire row
+                dataGridView.Rows[e.RowIndex].Selected = true;
+            }
+        }
+
+
         private void DeleteItem_Click(object sender, EventArgs e)
         {
-            DataGridViewRow selectedRow = dataGridView.CurrentRow;
+            //DataGridViewRow selectedRow = dataGridView.CurrentRow;
+            DataGridViewRow selectedRow = dataGridView.SelectedRows[0];
+
             if (selectedRow != null)
             {
                 T selectedItem = (T)selectedRow.DataBoundItem;
@@ -207,7 +163,7 @@ namespace Inventory_System.Utilities
         private void DuplicateRecord_Click(object sender, EventArgs e)
         {
             // Get the selected row
-            DataGridViewRow selectedRow = dataGridView.CurrentRow;
+            DataGridViewRow selectedRow = dataGridView.SelectedRows[0];
 
             // Check if a row is selected
             if (selectedRow != null)
@@ -232,7 +188,6 @@ namespace Inventory_System.Utilities
                     dataGridView.Refresh();
                 }
             }
-
         }
 
         public void PopulateData(List<T> data)
@@ -252,6 +207,18 @@ namespace Inventory_System.Utilities
         public List<T> GetDataToDelete()
         {
             return DataToDeleteList;
+        }
+
+        public bool HaveNoErrors()
+        {
+            foreach (DataGridViewRow item in dataGridView.Rows)
+            {
+                if (!string.IsNullOrEmpty(item.ErrorText))
+                {
+                    return false;
+                }
+            }
+            return true;
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Inventory_System.Utilities;
+﻿using Inventory_System.Exception;
+using Inventory_System.Utilities;
 using Revised_OPTS;
 using Revised_OPTS.Model;
 using Revised_OPTS.Service;
@@ -44,6 +45,29 @@ namespace Inventory_System.Forms
 
         private void DgRptAddUpdateForm_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
         {
+            DataGridViewRow selectedRow = DgRptAddUpdateForm.CurrentRow;
+
+            // Check if a row is selected
+            if (selectedRow != null)
+            {
+                Rpt selectedRpt = (Rpt)selectedRow.DataBoundItem;
+
+                if (selectedRpt != null)
+                {
+                    if (selectedRpt.Bank == null)
+                    {
+                        selectedRpt.Bank = "BANK TRANSFER";
+                    }
+                    if (selectedRpt.Quarter == null)
+                    {
+                        selectedRpt.Quarter = Quarter.FULL_YEAR;
+                    }
+                    if (selectedRpt.BillingSelection == null)
+                    {
+                        selectedRpt.BillingSelection = BillingSelectionUtil.CLASS1;
+                    }
+                }
+            }
             UpdateTotalAmount();
         }
 
@@ -61,15 +85,7 @@ namespace Inventory_System.Forms
         {
             List<Rpt> listOfRptsToSave = DynamicGridContainer.GetData();
 
-            //decimal? totalAmountToPayComputed = 0;
-
-            //foreach (Rpt rpt in listOfRptsToSave)
-            //{
-            //    totalAmountToPayComputed += rpt.AmountToPay;
-            //}
-
             decimal totalAmountToPayComputed = listOfRptsToSave.Sum(rpt => rpt.AmountToPay ?? 0);
-
             tbTotalAmountTransferred.Text = totalAmountToPayComputed.ToString("N", CultureInfo.InvariantCulture);
         }
 
@@ -98,7 +114,7 @@ namespace Inventory_System.Forms
 
                 new DynamicGridInfo{PropertyName="YearQuarter", Label = "Year", decimalValue = true},
                 new DynamicGridInfo{PropertyName="Quarter", Label = "Quarter", GridType=DynamicGridType.ComboBox, ComboboxChoices = Quarter.ALL_QUARTER, isRequired=true },
-                new DynamicGridInfo{PropertyName="PaymentType", Label = "Payment Type", GridType=DynamicGridType.ComboBox, ComboboxChoices = PaymentTypeUtil.ALL_PAYMENT_TYPE, isRequired=true },
+                new DynamicGridInfo{PropertyName="BillingSelection", Label = "Billing Selection", GridType=DynamicGridType.ComboBox, ComboboxChoices = BillingSelectionUtil.ALL_BILLING_SELECTION, isRequired=true },
                 new DynamicGridInfo{PropertyName="RequestingParty", Label = "Email Address" },
                 new DynamicGridInfo{PropertyName="RPTremarks", Label = "Remarks"},
             };
@@ -135,7 +151,22 @@ namespace Inventory_System.Forms
                 return;
             }
 
-            rptService.SaveAll(listOfRptsToSave, listOfRptsToDelete, totalAmountTransferred);
+            if (!DynamicGridContainer.HaveNoErrors())
+            {
+                MessageBox.Show("Data contains error.");
+                return;
+            }
+
+            try
+            {
+                rptService.SaveAll(listOfRptsToSave, listOfRptsToDelete, totalAmountTransferred);
+            }
+            catch (RptException ex)
+            {
+                MessageBox.Show(ex.Message);
+                return;
+            }
+
             notifyUserAndRefreshRecord(firstTaxdecRecord);
             btnClose_Click(sender, e);
         }
@@ -145,7 +176,6 @@ namespace Inventory_System.Forms
             MessageBox.Show("Record successfully saved.");
             MainForm.Instance.Search(keyWord);
         }
-
 
         private void btnSaveRecord_MouseEnter(object sender, EventArgs e)
         {
@@ -181,6 +211,5 @@ namespace Inventory_System.Forms
         {
             this.Close();
         }
-
     }
 }

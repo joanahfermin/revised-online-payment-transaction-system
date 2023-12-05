@@ -1,4 +1,5 @@
-﻿using Revised_OPTS.DAL;
+﻿using Inventory_System.Service;
+using Revised_OPTS.DAL;
 using Revised_OPTS.Model;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,7 @@ namespace Revised_OPTS.Service
     internal class MiscService : IMiscService
     {
         IMiscRepository miscRepository = RepositoryFactory.Instance.GetMiscRepository();
+        ISecurityService securityService = ServiceFactory.Instance.GetSecurityService();
 
         public Miscellaneous Get(object id)
         {
@@ -26,13 +28,16 @@ namespace Revised_OPTS.Service
         public void Insert(Miscellaneous misc)
         {
             misc.ExcessShort = misc.TransferredAmount - misc.AmountToBePaid;
+            misc.EncodedBy = securityService.getLoginUser().DisplayName;
+            misc.EncodedDate = DateTime.Now;
             miscRepository.Insert(misc);
+            ApplicationDBContext.Instance.SaveChanges();
         }
 
         public void Update(Miscellaneous misc)
         {
             miscRepository.Update(misc);
+            ApplicationDBContext.Instance.SaveChanges();
         }
-
     }
 }

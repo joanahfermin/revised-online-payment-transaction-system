@@ -12,5 +12,6 @@ namespace Revised_OPTS.DAL
     {
         List<Rpt> retrieveBySearchKeyword(string tdn);
 
+        List<Rpt> checkExistingRecord(string tdn, string year, string quarter, string billingSelection);
     }
 }
