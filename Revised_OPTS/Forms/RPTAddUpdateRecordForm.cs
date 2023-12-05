@@ -92,13 +92,14 @@ namespace Inventory_System.Forms
                 new DynamicGridInfo{PropertyName="TaxDec", Label = "TDN", isRequired=true },
                 new DynamicGridInfo{PropertyName="TaxPayerName", Label = "TaxPayer's Name", isRequired=true },
                 new DynamicGridInfo{PropertyName="AmountToPay", Label = "Bill Amount", isRequired=true },
-                //new DynamicGridInfo{PropertyName="AmountTransferred", Label = "Transferred Amount", isRequired=true },
                 new DynamicGridInfo{PropertyName="Bank", Label = "Bank", GridType = DynamicGridType.ComboBox, ComboboxChoices = bankNames, isRequired=true },
+
+                //PAYMENT DATE
 
                 new DynamicGridInfo{PropertyName="YearQuarter", Label = "Year", decimalValue = true},
                 new DynamicGridInfo{PropertyName="Quarter", Label = "Quarter", GridType=DynamicGridType.ComboBox, ComboboxChoices = Quarter.ALL_QUARTER, isRequired=true },
+                new DynamicGridInfo{PropertyName="PaymentType", Label = "Payment Type", GridType=DynamicGridType.ComboBox, ComboboxChoices = PaymentTypeUtil.ALL_PAYMENT_TYPE, isRequired=true },
                 new DynamicGridInfo{PropertyName="RequestingParty", Label = "Email Address" },
-
                 new DynamicGridInfo{PropertyName="RPTremarks", Label = "Remarks"},
             };
             DynamicGridContainer = new DynamicGridContainer<Rpt>(DgRptAddUpdateForm, gridInfoArray, true, true);
