@@ -17,8 +17,19 @@ namespace Revised_OPTS.Service
 {
     internal class RptService : IRptService
     {
+        /// <summary>
+        /// Provides the IRptRepository instance from the RepositoryFactory.
+        /// </summary>
         IRptRepository rptRepository = RepositoryFactory.Instance.GetRptRepository();
+
+        /// <summary>
+        /// Provides the IBankRepository instance from the RepositoryFactory.
+        /// </summary>
         IBankRepository bankRepository = RepositoryFactory.Instance.GetBankRepository();
+
+        /// <summary>
+        /// Provides the ISecurityService instance from the ServiceFactory.
+        /// </summary>
         ISecurityService securityService = ServiceFactory.Instance.GetSecurityService();
 
         public Rpt Get(object id)
@@ -106,7 +117,7 @@ namespace Revised_OPTS.Service
 
                     if (duplicateRecord.Count > 0)
                     {
-                        throw new RptException("There is an exiting record/s detected in the database.");
+                        throw new RptException("There is an existing record/s detected in the database. Please update or delete the old record/s.");
                     }
 
                     if (rpt.RptID == 0)

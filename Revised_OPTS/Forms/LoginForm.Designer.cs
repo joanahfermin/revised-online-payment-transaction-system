@@ -101,10 +101,10 @@
             // 
             // btnSaveRecord
             // 
-            this.btnSaveRecord.BackColor = System.Drawing.Color.SkyBlue;
+            this.btnSaveRecord.BackColor = System.Drawing.Color.LightBlue;
             this.btnSaveRecord.FlatAppearance.BorderSize = 0;
             this.btnSaveRecord.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnSaveRecord.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.btnSaveRecord.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.btnSaveRecord.ForeColor = System.Drawing.SystemColors.WindowText;
             this.btnSaveRecord.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnSaveRecord.Location = new System.Drawing.Point(55, 536);

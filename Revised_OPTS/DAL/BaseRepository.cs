@@ -12,9 +12,6 @@ namespace Revised_OPTS.DAL
 {
     abstract class BaseRepository<T> : IRepository<T> where T : class
     {
-        //protected ApplicationDBContext dBContext = ApplicationDBContext.Instance;
-        //protected SecondApplicationDBContext secondDbContext = SecondApplicationDBContext.Instance;
-
         protected DbContext dBContext; 
         protected DbSet<T> dbSet;
 

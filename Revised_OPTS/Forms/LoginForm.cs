@@ -41,7 +41,6 @@ namespace Inventory_System.Forms
                 MessageBox.Show(ex.Message);
                 return;
             }
-
             MainForm mainForm = new MainForm();
             mainForm.Show();
             this.Hide();
