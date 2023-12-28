@@ -79,6 +79,21 @@ namespace Inventory_System.Forms
         private void DgRptAddUpdateForm_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
             UpdateTotalAmount();
+
+            // Retrieve TPN using TDN.
+            if (e.RowIndex >= 0 && e.ColumnIndex == 1)
+            {
+                // Access the cell value
+                DataGridViewRow selectedRow = DgRptAddUpdateForm.CurrentRow;
+
+                // Check if a row is selected
+                if (selectedRow != null)
+                {
+                    Rpt selectedRpt = (Rpt)selectedRow.DataBoundItem;
+                    //TODO:  LOOKUP LATER
+                    selectedRpt.TaxPayerName = "ABC";
+                }
+            }
         }
 
         private void UpdateTotalAmount()

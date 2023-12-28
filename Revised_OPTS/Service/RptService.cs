@@ -102,8 +102,44 @@ namespace Revised_OPTS.Service
             }
         }
 
+        public void validateDuplicateRecord(List<Rpt> listOfRptsToSave)
+        {
+            var duplicates = listOfRptsToSave
+            .GroupBy(obj => new
+            {
+                obj.TaxDec,
+                obj.YearQuarter,
+                obj.Quarter,
+                obj.BillingSelection
+            })
+            .Where(group => group.Count() > 1)
+            .SelectMany(group => group);
+
+            if (duplicates.Any())
+            {
+                foreach (var duplicate in duplicates)
+                {
+                    //throw new RptException("Submitted record(s) contains duplicate(s). TDN = " + duplicate.TaxDec);
+                    throw new RptException($"Submitted record(s) contains duplicate(s). TDN = {duplicate.TaxDec}");
+                }
+            }
+
+            foreach (Rpt rpt in listOfRptsToSave)
+            {
+                List<Rpt> existingRecord = rptRepository.checkExistingRecord(rpt.TaxDec, rpt.YearQuarter, rpt.Quarter, rpt.BillingSelection);
+
+                if (existingRecord.Count > 0)
+                {
+                    //throw new RptException("There is an existing record/s detected in the database. Please update or delete the old record/s.");
+                    throw new RptException($"There is an existing record/s detected in the database. Please update or delete the old record/s. TDN = {rpt.TaxDec}");
+                }
+            }
+        }
+
         public void SaveAll(List<Rpt> listOfRptsToSave, List<Rpt> listOfRptsToDelete, decimal totalAmountTransferred)
         {
+            validateDuplicateRecord(listOfRptsToSave);
+
             AssignRefNum(listOfRptsToSave);
             bool firstRecord = true;
 
@@ -113,13 +149,6 @@ namespace Revised_OPTS.Service
             {
                 foreach (Rpt rpt in listOfRptsToSave)
                 {
-                    List<Rpt> duplicateRecord = rptRepository.checkExistingRecord(rpt.TaxDec, rpt.YearQuarter, rpt.Quarter, rpt.BillingSelection);
-
-                    if (duplicateRecord.Count > 0)
-                    {
-                        throw new RptException("There is an existing record/s detected in the database. Please update or delete the old record/s.");
-                    }
-
                     if (rpt.RptID == 0)
                     {
                         rpt.Status = TaxStatus.ForPaymentVerification;
