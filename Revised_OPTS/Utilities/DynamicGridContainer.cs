@@ -40,6 +40,14 @@ namespace Inventory_System.Utilities
                     dataGridView.Columns.Add(info.PropertyName, info.Label);
                     dataGridView.Columns[info.PropertyName].DataPropertyName = info.PropertyName;
                 }
+                else if (info.GridType == DynamicGridType.DatetimePicker)
+                {
+                    DataGridViewDateTimePickerColumn dateTimeColumn = new DataGridViewDateTimePickerColumn();
+                    dataGridView.Columns.Add(dateTimeColumn);
+                    dateTimeColumn.DataPropertyName = info.PropertyName;
+                    dateTimeColumn.HeaderText = info.Label;
+                    dateTimeColumn.Name = info.PropertyName;
+                }
                 else
                 {
                     DataGridViewComboBoxColumn comboBoxColumn = new DataGridViewComboBoxColumn();

@@ -9,6 +9,7 @@ namespace Inventory_System.Utilities
     enum DynamicGridType
     {
         Text,
-        ComboBox
+        ComboBox,
+        DatetimePicker
     }
 }

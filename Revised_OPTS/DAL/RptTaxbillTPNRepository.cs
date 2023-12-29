@@ -18,7 +18,8 @@ namespace Inventory_System.DAL
 
         public RptTaxbillTPN retrieveByTDN(string tpn)
         {
-            return dbSet.Where(e => e.PSTDN == tpn).OrderByDescending(e => e.BILLDATE).FirstOrDefault();
+            return null;
+            //return dbSet.Where(e => e.PSTDN == tpn).OrderByDescending(e => e.BILLDATE).FirstOrDefault();
         }
     }
 }

@@ -41,13 +41,24 @@ namespace Inventory_System.Forms
             DgRptAddUpdateForm.CellValueChanged += DgRptAddUpdateForm_CellValueChanged;
             DgRptAddUpdateForm.RowsRemoved += DgRptAddUpdateForm_RowsRemoved;
             DgRptAddUpdateForm.RowsAdded += DgRptAddUpdateForm_RowsAdded;
+            DgRptAddUpdateForm.DefaultValuesNeeded += DgRptAddUpdateForm_DefaultValuesNeeded;
 
             panel1.BackColor = customColor;
             btnSaveRecord.BackColor = customColor;
             btnClose.BackColor = customColor;
         }
 
-        private void DgRptAddUpdateForm_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
+        private void DgRptAddUpdateForm_DefaultValuesNeeded(object sender, DataGridViewRowEventArgs e)
+        {
+            DataGridViewRow selectedRow = DgRptAddUpdateForm.CurrentRow;
+            if (selectedRow != null)
+            {
+                Rpt selectedRpt = (Rpt)selectedRow.DataBoundItem;
+                selectedRpt.PaymentDate = DateTime.Now;
+            }
+        }
+
+            private void DgRptAddUpdateForm_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
         {
             DataGridViewRow selectedRow = DgRptAddUpdateForm.CurrentRow;
 
@@ -136,9 +147,7 @@ namespace Inventory_System.Forms
                 new DynamicGridInfo{PropertyName="TaxPayerName", Label = "TaxPayer's Name", isRequired=true },
                 new DynamicGridInfo{PropertyName="AmountToPay", Label = "Bill Amount", isRequired=true },
                 new DynamicGridInfo{PropertyName="Bank", Label = "Bank", GridType = DynamicGridType.ComboBox, ComboboxChoices = bankNames, isRequired=true },
-
-                //PAYMENT DATE
-
+                new DynamicGridInfo{PropertyName="PaymentDate", Label = "Payment Date", GridType = DynamicGridType.DatetimePicker, isRequired=true },
                 new DynamicGridInfo{PropertyName="YearQuarter", Label = "Year", decimalValue = true},
                 new DynamicGridInfo{PropertyName="Quarter", Label = "Quarter", GridType=DynamicGridType.ComboBox, ComboboxChoices = Quarter.ALL_QUARTER, isRequired=true },
                 new DynamicGridInfo{PropertyName="BillingSelection", Label = "Billing Selection", GridType=DynamicGridType.ComboBox, ComboboxChoices = BillingSelectionUtil.ALL_BILLING_SELECTION, isRequired=true },
