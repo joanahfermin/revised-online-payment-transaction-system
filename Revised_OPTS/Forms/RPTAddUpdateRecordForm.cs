@@ -1,6 +1,9 @@
-﻿using Inventory_System.Exception;
+﻿using Inventory_System.DAL;
+using Inventory_System.Exception;
+using Inventory_System.Model;
 using Inventory_System.Utilities;
 using Revised_OPTS;
+using Revised_OPTS.DAL;
 using Revised_OPTS.Model;
 using Revised_OPTS.Service;
 using Revised_OPTS.Utilities;
@@ -20,6 +23,7 @@ namespace Inventory_System.Forms
     public partial class RPTAddUpdateRecordForm : Form
     {
         IRptService rptService = ServiceFactory.Instance.GetRptService();
+        IRptTaxbillTPNRepository rptRetrieveTaxpayerNameRep = RepositoryFactory.Instance.GetRptRetrieveTaxpayerNameRepository();
 
         private Image originalBackgroundImage;
         private Image originalCloseBackgroundImage;
@@ -90,8 +94,16 @@ namespace Inventory_System.Forms
                 if (selectedRow != null)
                 {
                     Rpt selectedRpt = (Rpt)selectedRow.DataBoundItem;
-                    //TODO:  LOOKUP LATER
-                    selectedRpt.TaxPayerName = "ABC";
+                    RptTaxbillTPN retrievedTPN = rptRetrieveTaxpayerNameRep.retrieveByTDN(selectedRpt.TaxDec);
+
+                    if (retrievedTPN != null)
+                    {
+                        selectedRpt.TaxPayerName = retrievedTPN.ONAME;
+                    }
+                    //else
+                    //{
+                    //    selectedRpt.TaxPayerName = "";
+                    //}
                 }
             }
         }
