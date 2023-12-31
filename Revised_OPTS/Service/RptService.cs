@@ -191,5 +191,10 @@ namespace Revised_OPTS.Service
                 rpt.RefNum = RefNum;
             }
         }
+
+        public List<Rpt> RetrieveBySameRefNumAndReqParty(string refNum, string reqParty)
+        {
+            return rptRepository.retrieveBySameRefNumAndReqParty(refNum, reqParty);
+        }
     }
 }

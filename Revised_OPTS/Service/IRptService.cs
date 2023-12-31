@@ -13,6 +13,8 @@ namespace Revised_OPTS.Service
         List<Rpt> GetAll();
         List<Bank> GetAllBanks();
         List<Rpt> RetrieveBySearchKeyword(string tdn);
+        List<Rpt> RetrieveBySameRefNumAndReqParty(string refNum, string reqParty);
+
 
         void Insert(Rpt rpt);
         void Update(Rpt rpt);

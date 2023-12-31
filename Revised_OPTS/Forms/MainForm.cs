@@ -69,6 +69,25 @@ namespace Revised_OPTS
             DataGridUI();
             Instance = this;
             DgMainForm.CellFormatting += DgMainForm_CellFormatting;
+
+            ContextMenuStrip contextMenuStrip1 = new ContextMenuStrip();
+            ToolStripMenuItem menuItem = new ToolStripMenuItem("Edit");
+            menuItem.Click += MenuItem_Click;
+            contextMenuStrip1.Items.Add(menuItem);
+            DgMainForm.ContextMenuStrip = contextMenuStrip1;
+        }
+
+        private void MenuItem_Click(object? sender, EventArgs e)
+        {
+            DataGridViewRow selectedRow = DgMainForm.CurrentRow;
+            if (selectedRow != null)
+            {
+                Rpt selectedRptRecord = selectedRow.DataBoundItem as Rpt;
+                if (selectedRptRecord != null)
+                {
+                    new RPTAddUpdateRecordForm(selectedRptRecord.RefNum, selectedRptRecord.RequestingParty).Show();
+                }
+            }
         }
 
         private void DgMainForm_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)

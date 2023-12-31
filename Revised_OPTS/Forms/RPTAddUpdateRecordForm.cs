@@ -48,6 +48,26 @@ namespace Inventory_System.Forms
             btnClose.BackColor = customColor;
         }
 
+        public RPTAddUpdateRecordForm(string refNum, string reqParty)
+        {
+            InitializeComponent();
+            InitializeDataGridView();
+            DataGridUI();
+
+            DgRptAddUpdateForm.CellFormatting += DgRptAddUpdateForm_CellFormatting;
+            DgRptAddUpdateForm.CellValueChanged += DgRptAddUpdateForm_CellValueChanged;
+            DgRptAddUpdateForm.RowsRemoved += DgRptAddUpdateForm_RowsRemoved;
+            DgRptAddUpdateForm.RowsAdded += DgRptAddUpdateForm_RowsAdded;
+            DgRptAddUpdateForm.DefaultValuesNeeded += DgRptAddUpdateForm_DefaultValuesNeeded;
+
+            panel1.BackColor = customColor;
+            btnSaveRecord.BackColor = customColor;
+            btnClose.BackColor = customColor;
+
+            List<Rpt> allRptSameRefnum = rptService.RetrieveBySameRefNumAndReqParty(refNum, reqParty);
+            DynamicGridContainer.PopulateData(allRptSameRefnum);
+        }
+
         private void DgRptAddUpdateForm_DefaultValuesNeeded(object sender, DataGridViewRowEventArgs e)
         {
             DataGridViewRow selectedRow = DgRptAddUpdateForm.CurrentRow;
@@ -102,20 +122,20 @@ namespace Inventory_System.Forms
                 DataGridViewRow selectedRow = DgRptAddUpdateForm.CurrentRow;
 
                 // Check if a row is selected
-                if (selectedRow != null)
-                {
-                    Rpt selectedRpt = (Rpt)selectedRow.DataBoundItem;
-                    RptTaxbillTPN retrievedTPN = rptRetrieveTaxpayerNameRep.retrieveByTDN(selectedRpt.TaxDec);
+                //if (selectedRow != null)
+                //{
+                //    Rpt selectedRpt = (Rpt)selectedRow.DataBoundItem;
+                //    RptTaxbillTPN retrievedTPN = rptRetrieveTaxpayerNameRep.retrieveByTDN(selectedRpt.TaxDec);
 
-                    if (retrievedTPN != null)
-                    {
-                        selectedRpt.TaxPayerName = retrievedTPN.ONAME;
-                    }
-                    //else
-                    //{
-                    //    selectedRpt.TaxPayerName = "";
-                    //}
-                }
+                //    if (retrievedTPN != null)
+                //    {
+                //        selectedRpt.TaxPayerName = retrievedTPN.ONAME;
+                //    }
+                //    //else
+                //    //{
+                //    //    selectedRpt.TaxPayerName = "";
+                //    //}
+                //}
             }
         }
 
