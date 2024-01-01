@@ -1,4 +1,5 @@
 ﻿using Inventory_System.DAL;
+using Inventory_System.Model;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Revised_OPTS.Model;
@@ -51,7 +52,9 @@ namespace Revised_OPTS.DAL
 
         public void Delete(T entity)
         {
-            throw new NotImplementedException();
+            BaseEntity b =  entity as BaseEntity;
+            b.DeletedRecord = 1;
+            Update(entity);
         }
     }
 }

@@ -15,10 +15,9 @@ namespace Revised_OPTS.Service
         List<Rpt> RetrieveBySearchKeyword(string tdn);
         List<Rpt> RetrieveBySameRefNumAndReqParty(string refNum, string reqParty);
 
-
         void Insert(Rpt rpt);
         void Update(Rpt rpt);
-
+        void UpdateSelectedRecordsStatus(List<Rpt> rpt);
         void SaveAll(List<Rpt> rpt, List<Rpt> rptToDelte, decimal totalAmountTransferred);
     }
 }

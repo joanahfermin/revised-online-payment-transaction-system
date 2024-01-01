@@ -32,6 +32,12 @@ namespace Revised_OPTS.Service
         /// </summary>
         ISecurityService securityService = ServiceFactory.Instance.GetSecurityService();
 
+        /// <summary>
+        /// Provides the IRptService instance from the ServiceFactory.
+        /// </summary>
+        //IRptService rptService = ServiceFactory.Instance.GetRptService();
+
+
         public Rpt Get(object id)
         {
             return rptRepository.Get(id);
@@ -126,7 +132,7 @@ namespace Revised_OPTS.Service
 
             foreach (Rpt rpt in listOfRptsToSave)
             {
-                List<Rpt> existingRecord = rptRepository.checkExistingRecord(rpt.TaxDec, rpt.YearQuarter, rpt.Quarter, rpt.BillingSelection);
+                List<Rpt> existingRecord = rptRepository.checkExistingRecord(rpt);
 
                 if (existingRecord.Count > 0)
                 {
@@ -182,7 +188,7 @@ namespace Revised_OPTS.Service
             // if wala existing, gawa tayo bago
             if (RefNum == null)
             {
-                RefNum = Guid.NewGuid().ToString(); // mag generate ito ng unique na refnum
+                RefNum = GenerateRefNo();
             }
 
             // gamitin na refnum
@@ -192,9 +198,25 @@ namespace Revised_OPTS.Service
             }
         }
 
+        public static string GenerateRefNo()
+        {
+            string refNo = "R" + DateTimeOffset.Now.ToUnixTimeMilliseconds();
+            return refNo;
+        }
+
         public List<Rpt> RetrieveBySameRefNumAndReqParty(string refNum, string reqParty)
         {
             return rptRepository.retrieveBySameRefNumAndReqParty(refNum, reqParty);
+        }
+
+        public void UpdateSelectedRecordsStatus(List<Rpt> rptList)
+        {
+            foreach (Rpt rpt in rptList)
+            {
+                rpt.Status = TaxStatus.ForPaymentValidation;
+                rptRepository.Update(rpt);
+            }
+            ApplicationDBContext.Instance.SaveChanges();
         }
     }
 }

@@ -15,15 +15,16 @@ namespace Revised_OPTS.DAL
         {
         }
 
-        public List<Rpt> checkExistingRecord(string tdn, string year, string quarter, string billingSelection)
+        public List<Rpt> checkExistingRecord(Rpt rpt)
         {
             return dbSet
-                    .Where(jo => jo.TaxDec == tdn
-                        && jo.YearQuarter == $"{year}"
-                        && jo.Quarter == quarter
+                    .Where(jo => jo.TaxDec == rpt.TaxDec
+                        && jo.YearQuarter == rpt.YearQuarter
+                        && jo.Quarter == rpt.Quarter
                         && jo.DeletedRecord != 1
                         && jo.DuplicateRecord == 0
-                        && jo.BillingSelection == billingSelection)
+                        && jo.BillingSelection == rpt.BillingSelection
+                        && jo.RptID != rpt.RptID)
                     .ToList();
         }
 

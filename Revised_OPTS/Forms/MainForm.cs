@@ -71,13 +71,38 @@ namespace Revised_OPTS
             DgMainForm.CellFormatting += DgMainForm_CellFormatting;
 
             ContextMenuStrip contextMenuStrip1 = new ContextMenuStrip();
-            ToolStripMenuItem menuItem = new ToolStripMenuItem("Edit");
-            menuItem.Click += MenuItem_Click;
-            contextMenuStrip1.Items.Add(menuItem);
+
+            ToolStripMenuItem menuItemEdit = new ToolStripMenuItem("Edit");
+            menuItemEdit.Click += MenuItemEdit_Click;
+            ToolStripMenuItem menuItemVerifiedPayment = new ToolStripMenuItem("Payment Verified");
+            menuItemVerifiedPayment.Click += MenuItemVerifiedPayment_Click;
+
+            contextMenuStrip1.Items.Add(menuItemEdit);
+            contextMenuStrip1.Items.Add(menuItemVerifiedPayment);
             DgMainForm.ContextMenuStrip = contextMenuStrip1;
         }
 
-        private void MenuItem_Click(object? sender, EventArgs e)
+        private void MenuItemVerifiedPayment_Click(object? sender, EventArgs e)
+        {
+            DataGridViewSelectedRowCollection selectedRows = DgMainForm.SelectedRows;
+
+            List<Rpt> rptList = new List<Rpt>();
+            foreach (DataGridViewRow row in selectedRows)
+            {
+                //conversion of row to Rpt
+                Rpt selectedRptRecord = row.DataBoundItem as Rpt;
+
+                if (selectedRptRecord.Status == TaxStatus.ForPaymentVerification)
+                {
+                    rptList.Add(selectedRptRecord);
+                }
+                // TO DO: LAGAY SA TRANSACTION
+            }
+            rptService.UpdateSelectedRecordsStatus(rptList);
+            DgMainForm.Refresh();
+        }
+
+        private void MenuItemEdit_Click(object? sender, EventArgs e)
         {
             DataGridViewRow selectedRow = DgMainForm.CurrentRow;
             if (selectedRow != null)
@@ -172,6 +197,11 @@ namespace Revised_OPTS
                 DgMainForm.Columns[kvp.Key].DataPropertyName = kvp.Key;
             }
             DgMainForm.DataSource = dataList;
+
+            if (dataList.Count == 0)
+            {
+                MessageBox.Show("No data found.");
+            }
 
             DgMainForm.ColumnHeadersDefaultCellStyle.Font = new Font("Tahoma", 12, FontStyle.Regular);
             DgMainForm.ColumnHeadersDefaultCellStyle.ForeColor = Color.Black;

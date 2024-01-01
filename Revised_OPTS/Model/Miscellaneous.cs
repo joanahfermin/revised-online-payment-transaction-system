@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Inventory_System.Model;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -10,7 +11,7 @@ namespace Revised_OPTS.Model
 {
     [Table("Jo_MISC")]
 
-    internal class Miscellaneous
+    internal class Miscellaneous : BaseEntity
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -44,7 +45,7 @@ namespace Revised_OPTS.Model
         public string? LastUpdateBy { get; set; }
         public string? LastUpdateDate { get; set; }
 
-        public bool DeletedRecord { get; set; } = false;
+        //public bool DeletedRecord { get; set; } = false;
 
         public int DuplicateRecord { get; set; } = 0;
 

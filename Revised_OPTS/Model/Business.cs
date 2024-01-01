@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Inventory_System.Model;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 namespace Revised_OPTS.Model
 {
     [Table("Jo_Business")]
-    internal class Business
+    internal class Business : BaseEntity
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -45,7 +46,7 @@ namespace Revised_OPTS.Model
         public DateTime? ReleasedDate { get; set; }
 
 
-        public bool DeletedRecord { get; set; } = false;
+        //public bool DeletedRecord { get; set; } = false;
         public bool DuplicateRecord { get; set; } = false;
 
 
