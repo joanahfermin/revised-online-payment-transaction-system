@@ -211,12 +211,18 @@ namespace Revised_OPTS.Service
 
         public void UpdateSelectedRecordsStatus(List<Rpt> rptList)
         {
-            foreach (Rpt rpt in rptList)
+            using (var scope = new TransactionScope())
             {
-                rpt.Status = TaxStatus.ForPaymentValidation;
-                rptRepository.Update(rpt);
+                foreach (Rpt rpt in rptList)
+                {
+                    rpt.Status = TaxStatus.ForPaymentValidation;
+                    rpt.VerifiedBy = securityService.getLoginUser().DisplayName;
+                    rpt.VerifiedDate = DateTime.Now;
+                    rptRepository.Update(rpt);
+                }
+                ApplicationDBContext.Instance.SaveChanges();
+                scope.Complete();
             }
-            ApplicationDBContext.Instance.SaveChanges();
         }
     }
 }

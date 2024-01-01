@@ -96,10 +96,24 @@ namespace Revised_OPTS
                 {
                     rptList.Add(selectedRptRecord);
                 }
-                // TO DO: LAGAY SA TRANSACTION
             }
-            rptService.UpdateSelectedRecordsStatus(rptList);
-            DgMainForm.Refresh();
+            if (rptList.Count > 0)
+            {
+                // Display confirmation box
+                DialogResult result = MessageBox.Show("Are you sure you want to update the status of the selected records?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                // Check user's response
+                if (result == DialogResult.Yes)
+                {
+                    rptService.UpdateSelectedRecordsStatus(rptList);
+                    DgMainForm.Refresh();
+                }
+            }
+            else
+            {
+                // Inform the user that there are no records to update
+                MessageBox.Show("No records selected for payment verification.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
         }
 
         private void MenuItemEdit_Click(object? sender, EventArgs e)
@@ -148,7 +162,7 @@ namespace Revised_OPTS
         public void DataGridUI()
         {
             DgMainForm.DefaultCellStyle.Font = new Font("Tahoma", 12, FontStyle.Regular);
-            DgMainForm.BackgroundColor = Color.AliceBlue;
+            DgMainForm.BackgroundColor = Color.White;
             this.WindowState = FormWindowState.Maximized;
             DgMainForm.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.DisplayedCells;
             DgMainForm.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
@@ -198,10 +212,10 @@ namespace Revised_OPTS
             }
             DgMainForm.DataSource = dataList;
 
-            if (dataList.Count == 0)
-            {
-                MessageBox.Show("No data found.");
-            }
+            //if (dataList.Count == 0)
+            //{
+            //    MessageBox.Show("No data found.");
+            //}
 
             DgMainForm.ColumnHeadersDefaultCellStyle.Font = new Font("Tahoma", 12, FontStyle.Regular);
             DgMainForm.ColumnHeadersDefaultCellStyle.ForeColor = Color.Black;

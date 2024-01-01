@@ -33,13 +33,13 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.label1 = new System.Windows.Forms.Label();
             this.SearchLabel = new System.Windows.Forms.Label();
             this.tbTotalAmountTransferred = new System.Windows.Forms.TextBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.btnClose = new System.Windows.Forms.Button();
             this.btnSaveRecord = new System.Windows.Forms.Button();
             this.DgRptAddUpdateForm = new System.Windows.Forms.DataGridView();
-            this.sqlCommand1 = new Microsoft.Data.SqlClient.SqlCommand();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DgRptAddUpdateForm)).BeginInit();
@@ -49,16 +49,35 @@
             // 
             this.panel1.BackColor = System.Drawing.Color.Transparent;
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Controls.Add(this.label1);
             this.panel1.Controls.Add(this.SearchLabel);
             this.panel1.Controls.Add(this.tbTotalAmountTransferred);
             this.panel1.Controls.Add(this.pictureBox1);
             this.panel1.Controls.Add(this.btnClose);
             this.panel1.Controls.Add(this.btnSaveRecord);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panel1.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.panel1.Location = new System.Drawing.Point(0, 584);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1760, 146);
             this.panel1.TabIndex = 7;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.BackColor = System.Drawing.Color.Transparent;
+            this.label1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.label1.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point);
+            this.label1.ForeColor = System.Drawing.Color.White;
+            this.label1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.label1.Location = new System.Drawing.Point(1159, 84);
+            this.label1.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
+            this.label1.Name = "label1";
+            this.label1.Padding = new System.Windows.Forms.Padding(10);
+            this.label1.Size = new System.Drawing.Size(140, 34);
+            this.label1.TabIndex = 205;
+            this.label1.Text = "*This field is editable";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // SearchLabel
             // 
@@ -68,7 +87,7 @@
             this.SearchLabel.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.SearchLabel.ForeColor = System.Drawing.Color.White;
             this.SearchLabel.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.SearchLabel.Location = new System.Drawing.Point(874, 48);
+            this.SearchLabel.Location = new System.Drawing.Point(939, 48);
             this.SearchLabel.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
             this.SearchLabel.Name = "SearchLabel";
             this.SearchLabel.Padding = new System.Windows.Forms.Padding(10);
@@ -82,7 +101,7 @@
             this.tbTotalAmountTransferred.BackColor = System.Drawing.Color.AliceBlue;
             this.tbTotalAmountTransferred.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.tbTotalAmountTransferred.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.tbTotalAmountTransferred.Location = new System.Drawing.Point(1105, 54);
+            this.tbTotalAmountTransferred.Location = new System.Drawing.Point(1170, 54);
             this.tbTotalAmountTransferred.Name = "tbTotalAmountTransferred";
             this.tbTotalAmountTransferred.Size = new System.Drawing.Size(233, 27);
             this.tbTotalAmountTransferred.TabIndex = 204;
@@ -127,7 +146,7 @@
             this.btnSaveRecord.ForeColor = System.Drawing.Color.White;
             this.btnSaveRecord.Image = ((System.Drawing.Image)(resources.GetObject("btnSaveRecord.Image")));
             this.btnSaveRecord.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnSaveRecord.Location = new System.Drawing.Point(1419, 29);
+            this.btnSaveRecord.Location = new System.Drawing.Point(1429, 29);
             this.btnSaveRecord.Name = "btnSaveRecord";
             this.btnSaveRecord.Size = new System.Drawing.Size(184, 73);
             this.btnSaveRecord.TabIndex = 6;
@@ -175,11 +194,6 @@
             this.DgRptAddUpdateForm.Size = new System.Drawing.Size(1736, 560);
             this.DgRptAddUpdateForm.TabIndex = 8;
             // 
-            // sqlCommand1
-            // 
-            this.sqlCommand1.CommandTimeout = 30;
-            this.sqlCommand1.EnableOptimizedParameterBinding = false;
-            // 
             // RPTAddUpdateRecordForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -209,5 +223,6 @@
         private Label SearchLabel;
         private TextBox tbTotalAmountTransferred;
         private Microsoft.Data.SqlClient.SqlCommand sqlCommand1;
+        private Label label1;
     }
 }

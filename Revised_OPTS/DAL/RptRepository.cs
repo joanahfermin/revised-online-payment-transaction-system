@@ -31,7 +31,7 @@ namespace Revised_OPTS.DAL
         public List<Rpt> retrieveBySameRefNumAndReqParty(string refNum, string reqParty)
         {
             return dbSet.Where(j => j.RefNum == refNum && j.DeletedRecord != 1 && j.RequestingParty == reqParty)
-            .OrderByDescending(j => j.RefNum).ThenBy(j => j.TaxDec).ToList();
+            .OrderBy(j => j.RptID).ThenBy(j => j.TaxDec).ToList();
         }
 
         public List<Rpt> retrieveBySearchKeyword(string tdn)
