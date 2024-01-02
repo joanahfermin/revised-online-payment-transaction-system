@@ -46,7 +46,7 @@ namespace Revised_OPTS.DAL
 
         public void Delete(T entity)
         {
-            BaseEntity b =  entity as BaseEntity;
+            BasePrimaryEntity b =  entity as BasePrimaryEntity;
             b.DeletedRecord = 1;
             Update(entity);
         }

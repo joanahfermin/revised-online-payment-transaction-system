@@ -11,7 +11,7 @@ namespace Revised_OPTS.Model
 {
     [Table("Jo_MISC")]
 
-    internal class Miscellaneous : BaseEntity
+    internal class Miscellaneous : BasePrimaryEntity
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

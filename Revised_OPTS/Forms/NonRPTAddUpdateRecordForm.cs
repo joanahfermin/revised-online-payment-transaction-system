@@ -143,18 +143,18 @@ namespace Revised_OPTS.Forms
                 };
 
             //RPT
-            //dynamicControlContainer.AddDynamicPropertyMapping(TaxTypeUtil.REALPROPERTYTAX, new DynamicControlInfo[]
-            //    {
-            //        new DynamicControlInfo{PropertyName = "TaxDec", Label = "*TDN:", ControlType = DynamicControlType.TextBox, isRequired = true, format = BusinessFormat.TAXDEC_FORMAT},
-            //        new DynamicControlInfo{PropertyName = "TaxPayerName", Label = "*TaxPayer's Name:", ControlType = DynamicControlType.TextBox, isRequired = true},
-            //        new DynamicControlInfo{PropertyName = "AmountToPay", Label = "*Bill Amount:", ControlType = DynamicControlType.TextBox, InitialValue = "0.00", isRequired = true, decimalValue = true},
-            //        new DynamicControlInfo{PropertyName = "AmountTransferred", Label = "*Transferred Amount:", ControlType = DynamicControlType.TextBox, InitialValue = "0.00", isRequired = true, decimalValue = true},
-            //        new DynamicControlInfo{PropertyName = "Bank", Label = "*Bank: ", ControlType = DynamicControlType.ComboBox, ComboboxChoices = bankNames, isRequired = true},
-            //        new DynamicControlInfo{PropertyName = "PaymentDate", Label = "Payment Date: ", ControlType = DynamicControlType.DatePicker, isRequired = true},
-            //        new DynamicControlInfo{PropertyName = "YearQuarter", Label = "*Year:", ControlType = DynamicControlType.TextBox, isRequired = true},
-            //        new DynamicControlInfo{PropertyName = "Quarter", Label = "Quarter: ", ControlType = DynamicControlType.ComboBox, ComboboxChoices = Quarter.ALL_QUARTER},
-            //        new DynamicControlInfo{PropertyName = "RPTremarks", Label = "Remarks:", ControlType = DynamicControlType.TextBox},
-            //    }.Concat(commonInfo).ToArray()); ;
+            dynamicControlContainer.AddDynamicPropertyMapping(TaxTypeUtil.REALPROPERTYTAX, new DynamicControlInfo[]
+                {
+                    new DynamicControlInfo{PropertyName = "TaxDec", Label = "*TDN:", ControlType = DynamicControlType.TextBox, isRequired = true, format = BusinessFormat.TAXDEC_FORMAT},
+                    new DynamicControlInfo{PropertyName = "TaxPayerName", Label = "*TaxPayer's Name:", ControlType = DynamicControlType.TextBox, isRequired = true},
+                    new DynamicControlInfo{PropertyName = "AmountToPay", Label = "*Bill Amount:", ControlType = DynamicControlType.TextBox, InitialValue = "0.00", isRequired = true, decimalValue = true},
+                    new DynamicControlInfo{PropertyName = "AmountTransferred", Label = "*Transferred Amount:", ControlType = DynamicControlType.TextBox, InitialValue = "0.00", isRequired = true, decimalValue = true},
+                    new DynamicControlInfo{PropertyName = "Bank", Label = "*Bank: ", ControlType = DynamicControlType.ComboBox, ComboboxChoices = bankNames, isRequired = true},
+                    new DynamicControlInfo{PropertyName = "PaymentDate", Label = "Payment Date: ", ControlType = DynamicControlType.DatePicker, isRequired = true},
+                    new DynamicControlInfo{PropertyName = "YearQuarter", Label = "*Year:", ControlType = DynamicControlType.TextBox, isRequired = true},
+                    new DynamicControlInfo{PropertyName = "Quarter", Label = "Quarter: ", ControlType = DynamicControlType.ComboBox, ComboboxChoices = Quarter.ALL_QUARTER},
+                    new DynamicControlInfo{PropertyName = "RPTremarks", Label = "Remarks:", ControlType = DynamicControlType.TextBox},
+                }.Concat(commonInfo).ToArray()); ;
 
             //BUSINESS
             dynamicControlContainer.AddDynamicPropertyMapping(TaxTypeUtil.BUSINESS,
@@ -236,11 +236,11 @@ namespace Revised_OPTS.Forms
 
             btnSaveRecord.Visible = true;
 
-            //if (taxType == TaxTypeUtil.REALPROPERTYTAX)
-            //{
-            //    Control TaxDecTextBox = dynamicControlContainer.FindControlByName(taxType, "TaxDec");
-            //    TaxDecTextBox.TextChanged += TaxDecTextBox_TextChanged;
-            //}
+            if (taxType == TaxTypeUtil.REALPROPERTYTAX)
+            {
+                Control TaxDecTextBox = dynamicControlContainer.FindControlByName(taxType, "TaxDec");
+                TaxDecTextBox.TextChanged += TaxDecTextBox_TextChanged;
+            }
             if (taxType == TaxTypeUtil.BUSINESS)
             {
                 Control MP_NumberTextBox = dynamicControlContainer.FindControlByName(taxType, "MP_Number");
@@ -319,23 +319,23 @@ namespace Revised_OPTS.Forms
                 return;
             }
 
-            //if (taxType == TaxTypeUtil.REALPROPERTYTAX)
-            //{
-            //    if (rpt != null)
-            //    {
-            //        dynamicControlContainer.CopyDynamicProperties(rpt, taxType);
-            //        rptService.Update(rpt);
-            //        searchKeyword = rpt.TaxDec;
-            //    }
-            //    else
-            //    {
-            //        Rpt rpt = new Rpt();
-            //        dynamicControlContainer.CopyDynamicProperties(rpt, taxType);
-            //        rptService.Insert(rpt);
-            //        searchKeyword = rpt.TaxDec;
-            //    }
-            //    notifyUserAndRefreshRecord(searchKeyword);
-            //}
+            if (taxType == TaxTypeUtil.REALPROPERTYTAX)
+            {
+                if (rpt != null)
+                {
+                    dynamicControlContainer.CopyDynamicProperties(rpt, taxType);
+                    rptService.Update(rpt);
+                    searchKeyword = rpt.TaxDec;
+                }
+                else
+                {
+                    Rpt rpt = new Rpt();
+                    dynamicControlContainer.CopyDynamicProperties(rpt, taxType);
+                    rptService.Insert(rpt);
+                    searchKeyword = rpt.TaxDec;
+                }
+                notifyUserAndRefreshRecord(searchKeyword);
+            }
 
             if (taxType == TaxTypeUtil.BUSINESS)
             {

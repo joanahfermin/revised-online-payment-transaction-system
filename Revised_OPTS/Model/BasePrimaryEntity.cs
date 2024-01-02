@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Inventory_System.Model
 {
-    public class BaseEntity
+    public class BasePrimaryEntity
     {
         public int? DeletedRecord { get; set; }
     }

@@ -76,10 +76,41 @@ namespace Revised_OPTS
             menuItemEdit.Click += MenuItemEdit_Click;
             ToolStripMenuItem menuItemVerifiedPayment = new ToolStripMenuItem("Payment Verified");
             menuItemVerifiedPayment.Click += MenuItemVerifiedPayment_Click;
+            ToolStripMenuItem menuItemRevertStatus = new ToolStripMenuItem("Revert Status");
+            menuItemRevertStatus.Click += MenuItemRevertStatus_Click;
 
             contextMenuStrip1.Items.Add(menuItemEdit);
             contextMenuStrip1.Items.Add(menuItemVerifiedPayment);
+            contextMenuStrip1.Items.Add(menuItemRevertStatus);
             DgMainForm.ContextMenuStrip = contextMenuStrip1;
+        }
+
+        private void MenuItemRevertStatus_Click(object? sender, EventArgs e)
+        {
+            DataGridViewRow selectedRow = DgMainForm.CurrentRow;
+
+            if (selectedRow != null)
+            {
+                Rpt rptRecord = selectedRow.DataBoundItem as Rpt;
+
+                if (rptRecord.Status != null)
+                {
+                    //TO DO: STATUS MAPPING.
+                    DialogResult result = MessageBox.Show("Are you sure you want to revert the staus to 'FOR PAYMENT VERIFICATION'?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                    if (result == DialogResult.Yes)
+                    {
+                        rptService.RevertSelectedRecordStatus(rptRecord);
+                        MessageBox.Show("Operation completed successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        DgMainForm.Refresh();
+                    }
+                }
+                else
+                {
+                    // Inform the user that there are no records to update
+                    MessageBox.Show("Action cancelled. No status were reverted.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
         }
 
         private void MenuItemVerifiedPayment_Click(object? sender, EventArgs e)
@@ -106,6 +137,7 @@ namespace Revised_OPTS
                 if (result == DialogResult.Yes)
                 {
                     rptService.UpdateSelectedRecordsStatus(rptList);
+                    MessageBox.Show("Operation completed successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     DgMainForm.Refresh();
                 }
             }

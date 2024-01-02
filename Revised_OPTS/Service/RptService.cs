@@ -252,5 +252,20 @@ namespace Revised_OPTS.Service
                 }
             }
         }
+
+        public void RevertSelectedRecordStatus(Rpt rpt)
+        {
+            using (var dbContext = ApplicationDBContext.Create())
+            {
+                if (rpt.Status == TaxStatus.ForPaymentValidation)
+                {
+                    rpt.Status = TaxStatus.ForPaymentVerification;
+                    rpt.VerifiedBy = null;
+                    rpt.VerifiedDate = null;
+                    rptRepository.Update(rpt);
+                }
+                dbContext.SaveChanges();
+            }
+        }
     }
 }
