@@ -18,8 +18,8 @@ namespace Revised_OPTS.DAL
         /// <summary>
         /// Provides the connection of the database.
         /// </summary>
-        //public const string MISCSERVER_TESTDB_CONNECTION_STRING = @"Server=CTO-MISCSERVER;Database=TestDB;User ID = joanahf; Password=Joanah1992; TrustServerCertificate = True";
-        public const string MISCSERVER_TESTDB_CONNECTION_STRING = @"Server=localhost;Database=master;Trusted_Connection=True; TrustServerCertificate = True";
+        public const string MISCSERVER_TESTDB_CONNECTION_STRING = @"Server=CTO-MISCSERVER;Database=TestDB;User ID = joanahf; Password=Joanah1992; TrustServerCertificate = True";
+        //public const string MISCSERVER_TESTDB_CONNECTION_STRING = @"Server=localhost;Database=master;Trusted_Connection=True; TrustServerCertificate = True";
 
         /// <summary>
         /// 

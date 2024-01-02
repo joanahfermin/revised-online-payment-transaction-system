@@ -22,7 +22,7 @@ namespace Revised_OPTS.Model
         public decimal? AmountTransferred { get; set; }
         public decimal? TotalAmountTransferred { get; set; }
         public decimal? ExcessShortAmount { get; set; }
-        public string? Bank { get; set; } = "GCASH";
+        public string? Bank { get; set; }
         public string? YearQuarter { get; set; }
         public string? Quarter { get; set; }
         public string? PaymentType { get; set; }
