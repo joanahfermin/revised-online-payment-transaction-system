@@ -10,13 +10,9 @@ namespace Revised_OPTS.DAL
 {
     internal class BusinessRepository : BaseRepository<Business>, IBusinessRepository
     {
-        public BusinessRepository(DbContext dBContext) : base(dBContext)
-        {
-        }
-
         public List<Business> retrieveBySearchKeyword(string mpNum)
         {
-            return dbSet.Where(b => b.MP_Number.Contains(mpNum)).ToList();
+            return getDbSet().Where(b => b.MP_Number.Contains(mpNum)).ToList();
         }
     }
 }

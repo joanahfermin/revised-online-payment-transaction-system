@@ -18,20 +18,21 @@ namespace Revised_OPTS.DAL
         /// <summary>
         /// Provides the connection of the database.
         /// </summary>
-        public const string MISCSERVER_TESTDB_CONNECTION_STRING = @"Server=CTO-MISCSERVER;Database=TestDB;User ID = joanahf; Password=Joanah1992; TrustServerCertificate = True";
+        //public const string MISCSERVER_TESTDB_CONNECTION_STRING = @"Server=CTO-MISCSERVER;Database=TestDB;User ID = joanahf; Password=Joanah1992; TrustServerCertificate = True";
+        public const string MISCSERVER_TESTDB_CONNECTION_STRING = @"Server=localhost;Database=master;Trusted_Connection=True; TrustServerCertificate = True";
 
         /// <summary>
         /// 
         /// </summary>
-        public static ApplicationDBContext Instance = Create();
+        public static ApplicationDBContext CurrentInstance = null;
 
-        private static ApplicationDBContext Create()
+        public static ApplicationDBContext Create()
         {
             var options = new DbContextOptionsBuilder<ApplicationDBContext>()
                 .UseSqlServer(MISCSERVER_TESTDB_CONNECTION_STRING) // Provide your connection string here.
                 .Options;
-
-            return new ApplicationDBContext(options);
+            CurrentInstance = new ApplicationDBContext(options);
+            return CurrentInstance;
         }
 
         public ApplicationDBContext(DbContextOptions<ApplicationDBContext> options) : base(options)

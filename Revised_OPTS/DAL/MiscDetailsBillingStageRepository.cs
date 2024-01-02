@@ -11,14 +11,13 @@ namespace Inventory_System.DAL
 {
     internal class MiscDetailsBillingStageRepository : BaseRepository<MiscDetailsBillingStage>, IMiscDetailsBillingStageRepository
     {
-        public MiscDetailsBillingStageRepository(DbContext dBContext) : base(dBContext)
+        protected DbSet<MiscDetailsBillingStage> getDbSet()
         {
-
+            return ITDDFMUDAILY2023ApplicationDBContext.Instance.Set<MiscDetailsBillingStage>();
         }
-
         public MiscDetailsBillingStage retrieveByBillNum(string billNum)
         {
-            return dbSet.Where(e => e.BillNumber == billNum && e.TaxpayerLName != null).FirstOrDefault();
+            return getDbSet().Where(e => e.BillNumber == billNum && e.TaxpayerLName != null).FirstOrDefault();
         }
 
     }

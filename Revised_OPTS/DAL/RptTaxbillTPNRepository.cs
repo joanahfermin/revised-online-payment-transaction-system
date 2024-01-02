@@ -11,15 +11,14 @@ namespace Inventory_System.DAL
 {
     internal class RptTaxbillTPNRepository : BaseRepository<RptTaxbillTPN>, IRptTaxbillTPNRepository
     {
-        public RptTaxbillTPNRepository(DbContext dBContext) : base(dBContext)
+        protected DbSet<BusinessMasterDetailTPN> getDbSet()
         {
-
+            return ITDDFMUDAILY2022ApplicationDBContext.Instance.Set<BusinessMasterDetailTPN>();
         }
-
         public RptTaxbillTPN retrieveByTDN(string tpn)
         {
             return null;
-            //return dbSet.Where(e => e.PSTDN == tpn).OrderByDescending(e => e.BILLDATE).FirstOrDefault();
+            //return getDbSet().Where(e => e.PSTDN == tpn).OrderByDescending(e => e.BILLDATE).FirstOrDefault();
         }
     }
 }

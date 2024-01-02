@@ -11,14 +11,10 @@ namespace Inventory_System.DAL
 {
     internal class UserRepository: BaseRepository<UserAccount>, IUserRepository
     {
-        public UserRepository(DbContext dBContext) : base(dBContext)
-        {
-        }
 
         public UserAccount FindByUserName(string userName)
         {
-            //return dbSet.Find(userName);
-            return dbSet.FirstOrDefault(u => u.UserName == userName);
+            return getDbSet().FirstOrDefault(u => u.UserName == userName);
         }
     }
 }

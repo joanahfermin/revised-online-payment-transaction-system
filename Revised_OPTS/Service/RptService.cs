@@ -40,41 +40,59 @@ namespace Revised_OPTS.Service
 
         public Rpt Get(object id)
         {
-            return rptRepository.Get(id);
+            using (var dbContext = ApplicationDBContext.Create())
+            {
+                return rptRepository.Get(id);
+            }
         }
 
         public List<Rpt> GetAll()
         {
-            return rptRepository.GetAll();
+            using (var dbContext = ApplicationDBContext.Create())
+            {
+                return rptRepository.GetAll();
+            }
         }
 
         public List<Bank> GetAllBanks()
         {
-            return bankRepository.GetBanks();
+            using (var dbContext = ApplicationDBContext.Create())
+            {
+                return bankRepository.GetBanks();
+            }
         }
 
         public List<Rpt> RetrieveBySearchKeyword(string tdn)
         {
-            return rptRepository.retrieveBySearchKeyword(tdn);
+            using (var dbContext = ApplicationDBContext.Create())
+            {
+                return rptRepository.retrieveBySearchKeyword(tdn);
+            }
         }
 
         public void Insert(Rpt rpt)
         {
-            //calculatePayment(rpt);
-            rpt.EncodedBy = securityService.getLoginUser().DisplayName;
-            rpt.EncodedDate = DateTime.Now;
-            rptRepository.Insert(rpt);
-            ApplicationDBContext.Instance.SaveChanges();
+            using (var dbContext = ApplicationDBContext.Create())
+            {
+                //calculatePayment(rpt);
+                rpt.EncodedBy = securityService.getLoginUser().DisplayName;
+                rpt.EncodedDate = DateTime.Now;
+                rptRepository.Insert(rpt);
+                dbContext.SaveChanges();
+            }
         }
 
         public void Update(Rpt rpt)
         {
-            //calculatePayment(rpt);
-            rptRepository.Update(rpt);
-            ApplicationDBContext.Instance.SaveChanges();
+            using (var dbContext = ApplicationDBContext.Create())
+            {
+                //calculatePayment(rpt);
+                rptRepository.Update(rpt);
+                dbContext.SaveChanges();
+            }
         }
 
-        public void calculateTotalPayment(List<Rpt> listOfRptsToSave, decimal totalAmountTransferred)
+        private void calculateTotalPayment(List<Rpt> listOfRptsToSave, decimal totalAmountTransferred)
         {
             //List<Rpt> sortedList = listOfRptsToSave.OrderByDescending(rpt => rpt.TaxDec).ThenBy(rpt => rpt.YearQuarter).ToList();
             bool firstRecord = true;
@@ -108,7 +126,7 @@ namespace Revised_OPTS.Service
             }
         }
 
-        public void validateDuplicateRecord(List<Rpt> listOfRptsToSave)
+        private void validateDuplicateRecord(List<Rpt> listOfRptsToSave)
         {
             var duplicates = listOfRptsToSave
             .GroupBy(obj => new
@@ -144,43 +162,47 @@ namespace Revised_OPTS.Service
 
         public void SaveAll(List<Rpt> listOfRptsToSave, List<Rpt> listOfRptsToDelete, decimal totalAmountTransferred)
         {
-            validateDuplicateRecord(listOfRptsToSave);
-
-            AssignRefNum(listOfRptsToSave);
-            bool firstRecord = true;
-
-            calculateTotalPayment(listOfRptsToSave, totalAmountTransferred);
-
-            using (var scope = new TransactionScope())
+            using (var dbContext = ApplicationDBContext.Create())
             {
-                foreach (Rpt rpt in listOfRptsToSave)
-                {
-                    if (rpt.RptID == 0)
-                    {
-                        rpt.Status = TaxStatus.ForPaymentVerification;
-                        rpt.EncodedBy = securityService.getLoginUser().DisplayName;
-                        rpt.EncodedDate = DateTime.Now;
-                        rptRepository.Insert(rpt);
-                    }
-                    else
-                    {
-                        rptRepository.Update(rpt);
-                    }
-                }
+                validateDuplicateRecord(listOfRptsToSave);
 
-                foreach (Rpt rpt in listOfRptsToDelete)
+                AssignRefNum(listOfRptsToSave);
+                bool firstRecord = true;
+
+                calculateTotalPayment(listOfRptsToSave, totalAmountTransferred);
+
+                using (var scope = new TransactionScope())
                 {
-                    if (rpt.RptID > 0)
+                    foreach (Rpt rpt in listOfRptsToSave)
                     {
-                        rptRepository.Delete(rpt);
+                        if (rpt.RptID == 0)
+                        {
+                            rpt.Status = TaxStatus.ForPaymentVerification;
+                            rpt.EncodedBy = securityService.getLoginUser().DisplayName;
+                            rpt.EncodedDate = DateTime.Now;
+                            rptRepository.Insert(rpt);
+                        }
+                        else
+                        {
+                            rptRepository.Update(rpt);
+                        }
                     }
+
+                    foreach (Rpt rpt in listOfRptsToDelete)
+                    {
+                        if (rpt.RptID > 0)
+                        {
+                            rptRepository.Delete(rpt);
+                        }
+                    }
+                    dbContext.SaveChanges();
+                    scope.Complete();
                 }
-                ApplicationDBContext.Instance.SaveChanges();
-                scope.Complete();
             }
+
         }
 
-        public void AssignRefNum(List<Rpt> listOfPersonsToSave)
+        private void AssignRefNum(List<Rpt> listOfPersonsToSave)
         {
             // hanapin if may existing refnum na
             string RefNum = listOfPersonsToSave.Where(person => !string.IsNullOrEmpty(person.RefNum)).Select(person => person.RefNum).FirstOrDefault();
@@ -198,7 +220,7 @@ namespace Revised_OPTS.Service
             }
         }
 
-        public static string GenerateRefNo()
+        private static string GenerateRefNo()
         {
             string refNo = "R" + DateTimeOffset.Now.ToUnixTimeMilliseconds();
             return refNo;
@@ -206,22 +228,28 @@ namespace Revised_OPTS.Service
 
         public List<Rpt> RetrieveBySameRefNumAndReqParty(string refNum, string reqParty)
         {
-            return rptRepository.retrieveBySameRefNumAndReqParty(refNum, reqParty);
+            using (var dbContext = ApplicationDBContext.Create())
+            {
+                return rptRepository.retrieveBySameRefNumAndReqParty(refNum, reqParty);
+            }
         }
 
         public void UpdateSelectedRecordsStatus(List<Rpt> rptList)
         {
-            using (var scope = new TransactionScope())
+            using (var dbContext = ApplicationDBContext.Create())
             {
-                foreach (Rpt rpt in rptList)
+                using (var scope = new TransactionScope())
                 {
-                    rpt.Status = TaxStatus.ForPaymentValidation;
-                    rpt.VerifiedBy = securityService.getLoginUser().DisplayName;
-                    rpt.VerifiedDate = DateTime.Now;
-                    rptRepository.Update(rpt);
+                    foreach (Rpt rpt in rptList)
+                    {
+                        rpt.Status = TaxStatus.ForPaymentValidation;
+                        rpt.VerifiedBy = securityService.getLoginUser().DisplayName;
+                        rpt.VerifiedDate = DateTime.Now;
+                        rptRepository.Update(rpt);
+                    }
+                    dbContext.SaveChanges();
+                    scope.Complete();
                 }
-                ApplicationDBContext.Instance.SaveChanges();
-                scope.Complete();
             }
         }
     }

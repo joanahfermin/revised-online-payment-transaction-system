@@ -13,41 +13,35 @@ namespace Revised_OPTS.DAL
 {
     abstract class BaseRepository<T> : IRepository<T> where T : class
     {
-        protected DbContext dBContext; 
-        protected DbSet<T> dbSet;
-
-        public BaseRepository(DbContext dBContext)
+        protected DbSet<T> getDbSet()
         {
-            dbSet = dBContext.Set<T>();
-            this.dBContext = dBContext;
+            return ApplicationDBContext.CurrentInstance.Set<T>();
         }
 
         public T Get(object id)
         {
-            return dbSet.Find(id);
+            return getDbSet().Find(id);
         }
 
         public List<T> GetAll()
         {
-            var query = dbSet.Take(100).ToList();
+            var query = getDbSet().Take(100).ToList();
             return query;
         }
 
         public List<T> GetBanks()
         {
-            return dbSet.ToList();
+            return getDbSet().ToList();
         }
 
         public void Insert(T entity)
         {
-            dbSet.Add(entity);
-            //dBContext.SaveChanges();
+            getDbSet().Add(entity);
         }
 
         public void Update(T entity)
         {
-            dBContext.Entry(entity).State = EntityState.Modified;
-            //dBContext.SaveChanges();
+            ApplicationDBContext.CurrentInstance.Entry(entity).State = EntityState.Modified;
         }
 
         public void Delete(T entity)

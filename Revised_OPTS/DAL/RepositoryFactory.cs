@@ -13,42 +13,42 @@ namespace Revised_OPTS.DAL
 
         public IRptRepository GetRptRepository()
         {
-            return new RptRepository(ApplicationDBContext.Instance);
+            return new RptRepository();
         }
 
         public IMiscRepository GetMiscRepository()
         {
-            return new MiscRepository(ApplicationDBContext.Instance);
+            return new MiscRepository();
         }
 
         public IBusinessRepository GetBusinessRepository()
         {
-            return new BusinessRepository(ApplicationDBContext.Instance);
+            return new BusinessRepository();
         }
 
         public IBankRepository GetBankRepository()
         {
-            return new BankRepository(ApplicationDBContext.Instance);
+            return new BankRepository();
         }
 
         public IUserRepository GetUserRepository()
         {
-            return new UserRepository(ApplicationDBContext.Instance);
+            return new UserRepository();
         }
 
         public IRptTaxbillTPNRepository GetRptRetrieveTaxpayerNameRepository()
         {
-            return new RptTaxbillTPNRepository(ITDDFMUDAILY2022ApplicationDBContext.Instance);
+            return new RptTaxbillTPNRepository();
         }
 
         public IBusinessMasterDetailTPNRepository GetBusinessRetrieveTaxpayerNameRepository()
         {
-            return new BusinessMasterDetailTPNRepository(ITDDFMUDAILY2022ApplicationDBContext.Instance);
+            return new BusinessMasterDetailTPNRepository();
         }
 
         public IMiscDetailsBillingStageRepository MiscRetrieveTaxpayerNameRepository()
         {
-            return new MiscDetailsBillingStageRepository(ITDDFMUDAILY2023ApplicationDBContext.Instance);
+            return new MiscDetailsBillingStageRepository();
         }
     }
 }

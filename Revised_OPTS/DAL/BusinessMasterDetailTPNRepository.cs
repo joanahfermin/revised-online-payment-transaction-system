@@ -11,13 +11,14 @@ namespace Inventory_System.DAL
 {
     internal class BusinessMasterDetailTPNRepository : BaseRepository<BusinessMasterDetailTPN>, IBusinessMasterDetailTPNRepository
     {
-        public BusinessMasterDetailTPNRepository(DbContext dBContext) : base(dBContext)
+        protected DbSet<BusinessMasterDetailTPN> getDbSet()
         {
+            return ITDDFMUDAILY2022ApplicationDBContext.Instance.Set<BusinessMasterDetailTPN>();
         }
 
         public BusinessMasterDetailTPN retrieveByMpNo(string mpNum)
         {
-            return dbSet.Where(e => e.RefNo == mpNum).FirstOrDefault();
+            return getDbSet().Where(e => e.RefNo == mpNum).FirstOrDefault();
         }
     }
 }

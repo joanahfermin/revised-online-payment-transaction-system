@@ -14,17 +14,13 @@ namespace Revised_OPTS.DAL
     /// </summary>
     internal class BankRepository : BaseRepository<Bank>, IBankRepository
     {
-        public BankRepository(DbContext dBContext) : base(dBContext)
-        {
-        }
-
         /// <summary>
         /// Returns the bank name of from the Bank table.
         /// </summary>
         /// <returns></returns>
         public List<Bank> GetBanks()
         {
-            return dbSet.OrderBy(bank => bank.BankName).ToList();
+            return getDbSet().OrderBy(bank => bank.BankName).ToList();
         }
     }
 }

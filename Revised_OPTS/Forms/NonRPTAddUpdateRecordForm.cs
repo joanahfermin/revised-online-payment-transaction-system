@@ -25,9 +25,9 @@ namespace Revised_OPTS.Forms
     public partial class NonRPTAddUpdateRecordForm : Form
     {
         IRptService rptService = ServiceFactory.Instance.GetRptService();
-        IRptRepository rptRepository = RepositoryFactory.Instance.GetRptRepository();
         IBusinessService businessService = ServiceFactory.Instance.GetBusinessService();
         IMiscService miscService = ServiceFactory.Instance.GetMiscService();
+
         IRptTaxbillTPNRepository rptRetrieveTaxpayerNameRep = RepositoryFactory.Instance.GetRptRetrieveTaxpayerNameRepository();
         IBusinessMasterDetailTPNRepository businessRetrieveTaxpayerNameRep = RepositoryFactory.Instance.GetBusinessRetrieveTaxpayerNameRepository();
         IMiscDetailsBillingStageRepository miscRetrieveTaxpayerNameRep = RepositoryFactory.Instance.MiscRetrieveTaxpayerNameRepository();

@@ -17,27 +17,39 @@ namespace Revised_OPTS.Service
 
         public Miscellaneous Get(object id)
         {
-            return miscRepository.Get(id);
+            using (var dbContext = ApplicationDBContext.Create())
+            {
+                return miscRepository.Get(id);
+            }
         }
 
         public List<Miscellaneous> RetrieveBySearchKeyword(string opNum)
         {
-            return miscRepository.retrieveBySearchKeyword(opNum);
+            using (var dbContext = ApplicationDBContext.Create())
+            {
+                return miscRepository.retrieveBySearchKeyword(opNum);
+            }
         }
 
         public void Insert(Miscellaneous misc)
         {
-            misc.ExcessShort = misc.TransferredAmount - misc.AmountToBePaid;
-            misc.EncodedBy = securityService.getLoginUser().DisplayName;
-            misc.EncodedDate = DateTime.Now;
-            miscRepository.Insert(misc);
-            ApplicationDBContext.Instance.SaveChanges();
+            using (var dbContext = ApplicationDBContext.Create())
+            {
+                misc.ExcessShort = misc.TransferredAmount - misc.AmountToBePaid;
+                misc.EncodedBy = securityService.getLoginUser().DisplayName;
+                misc.EncodedDate = DateTime.Now;
+                miscRepository.Insert(misc);
+                dbContext.SaveChanges();
+            }
         }
 
         public void Update(Miscellaneous misc)
         {
-            miscRepository.Update(misc);
-            ApplicationDBContext.Instance.SaveChanges();
+            using (var dbContext = ApplicationDBContext.Create())
+            {
+                miscRepository.Update(misc);
+                dbContext.SaveChanges();
+            }
         }
     }
 }

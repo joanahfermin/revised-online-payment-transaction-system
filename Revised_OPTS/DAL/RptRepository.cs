@@ -11,13 +11,9 @@ namespace Revised_OPTS.DAL
 {
     internal class RptRepository : BaseRepository<Rpt>, IRptRepository
     {
-        public RptRepository(DbContext dBContext) : base(dBContext)
-        {
-        }
-
         public List<Rpt> checkExistingRecord(Rpt rpt)
         {
-            return dbSet
+            return getDbSet()
                     .Where(jo => jo.TaxDec == rpt.TaxDec
                         && jo.YearQuarter == rpt.YearQuarter
                         && jo.Quarter == rpt.Quarter
@@ -30,15 +26,15 @@ namespace Revised_OPTS.DAL
 
         public List<Rpt> retrieveBySameRefNumAndReqParty(string refNum, string reqParty)
         {
-            return dbSet.Where(j => j.RefNum == refNum && j.DeletedRecord != 1 && j.RequestingParty == reqParty)
+            return getDbSet().Where(j => j.RefNum == refNum && j.DeletedRecord != 1 && j.RequestingParty == reqParty)
             .OrderBy(j => j.RptID).ThenBy(j => j.TaxDec).ToList();
         }
 
         public List<Rpt> retrieveBySearchKeyword(string tdn)
         {
-            return dbSet.Where(t => t.TaxDec.Contains(tdn)).OrderByDescending(t => t.EncodedDate)
-                .Union(dbSet.Where(j => j.TaxDec.Contains(tdn) && j.DeletedRecord != 1))
-                .Union(dbSet.Where(j => dbSet.Where(subJ => subJ.TaxDec.Contains(tdn)).Select(subJ => subJ.RefNum)
+            return getDbSet().Where(t => t.TaxDec.Contains(tdn)).OrderByDescending(t => t.EncodedDate)
+                .Union(getDbSet().Where(j => j.TaxDec.Contains(tdn) && j.DeletedRecord != 1))
+                .Union(getDbSet().Where(j => getDbSet().Where(subJ => subJ.TaxDec.Contains(tdn)).Select(subJ => subJ.RefNum)
                 .Contains(j.RefNum) && j.DeletedRecord != 1)).OrderByDescending(j => j.RefNum)
                 .ThenBy(j => j.EncodedDate).ToList();
         }

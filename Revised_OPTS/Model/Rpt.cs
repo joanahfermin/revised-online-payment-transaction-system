@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Inventory_System.Model;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 namespace Revised_OPTS.Model
 {
     [Table("Jo_RPT")]
-    internal class Rpt: ICloneable
+    internal class Rpt: BaseEntity, ICloneable
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -21,7 +22,7 @@ namespace Revised_OPTS.Model
         public decimal? AmountTransferred { get; set; }
         public decimal? TotalAmountTransferred { get; set; }
         public decimal? ExcessShortAmount { get; set; }
-        public string? Bank { get; set; }
+        public string? Bank { get; set; } = "GCASH";
         public string? YearQuarter { get; set; }
         public string? Quarter { get; set; }
         public string? PaymentType { get; set; }
@@ -62,7 +63,7 @@ namespace Revised_OPTS.Model
         //public bool WithAuthorizationLetter { get; set; } = false;
         //public bool is_Released { get; set; } = false;
 
-        public int? DeletedRecord { get; set; } = 0;
+        //public int? DeletedRecord { get; set; } = 0;
         public int? DuplicateRecord { get; set; } = 0;
 
         //public bool SendAssessmentReady { get; set; } = false;

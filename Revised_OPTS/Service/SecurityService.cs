@@ -19,18 +19,21 @@ namespace Inventory_System.Service
 
         public void login(string userName, string passWord)
         {
-            UserAccount user = userRepository.FindByUserName(userName);
-
-            if (user == null)
+            using (var dbContext = ApplicationDBContext.Create())
             {
-                throw new RptException("Invalid Username.");
-            }
+                UserAccount user = userRepository.FindByUserName(userName);
 
-            if (user.PassWord != passWord)
-            {
-                throw new RptException("Invalid Password.");
+                if (user == null)
+                {
+                    throw new RptException("Invalid Username.");
+                }
+
+                if (user.PassWord != passWord)
+                {
+                    throw new RptException("Invalid Password.");
+                }
+                LOGIN_USER = user;
             }
-            LOGIN_USER = user;
         }
 
         public UserAccount getLoginUser()

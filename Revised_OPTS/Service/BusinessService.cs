@@ -16,26 +16,39 @@ namespace Revised_OPTS.Service
 
         public Business Get(object id)
         {
-            return businessRepository.Get(id);
+            using (var dbContext = ApplicationDBContext.Create())
+            {
+                return businessRepository.Get(id);
+            }
         }
 
         public List<Business> RetrieveBySearchKeyword(string mpNum)
         {
-            return businessRepository.retrieveBySearchKeyword(mpNum);
+            using (var dbContext = ApplicationDBContext.Create())
+            {
+                return businessRepository.retrieveBySearchKeyword(mpNum);
+            }
         }
 
         public void Insert(Business business)
         {
-            business.EncodedBy = securityService.getLoginUser().DisplayName;
-            business.EncodedDate = DateTime.Now;
-            businessRepository.Insert(business);
-            ApplicationDBContext.Instance.SaveChanges();
+            using (var dbContext = ApplicationDBContext.Create())
+            {
+                business.EncodedBy = securityService.getLoginUser().DisplayName;
+                business.EncodedDate = DateTime.Now;
+                businessRepository.Insert(business);
+                dbContext.SaveChanges();
+            }
         }
 
         public void Update(Business business)
         {
-            businessRepository.Update(business);
-            ApplicationDBContext.Instance.SaveChanges();
+            using (var dbContext = ApplicationDBContext.Create())
+            {
+                businessRepository.Update(business);
+                dbContext.SaveChanges();
+            }
+
         }
     }
 }
