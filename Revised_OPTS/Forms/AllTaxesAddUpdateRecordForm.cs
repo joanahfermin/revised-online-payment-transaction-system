@@ -22,7 +22,7 @@ using System.Windows.Forms;
 
 namespace Revised_OPTS.Forms
 {
-    public partial class NonRPTAddUpdateRecordForm : Form
+    public partial class AllTaxesAddUpdateRecordForm : Form
     {
         IRptService rptService = ServiceFactory.Instance.GetRptService();
         IBusinessService businessService = ServiceFactory.Instance.GetBusinessService();
@@ -47,7 +47,7 @@ namespace Revised_OPTS.Forms
         long businessId = 0;
         long miscId = 0;
 
-        public NonRPTAddUpdateRecordForm()
+        public AllTaxesAddUpdateRecordForm()
         {
             dynamicControlContainer = new DynamicControlContainer(this);
 
@@ -63,7 +63,7 @@ namespace Revised_OPTS.Forms
             btnSaveRecord.Visible = false;
         }
 
-        public NonRPTAddUpdateRecordForm(long id, string taxType)
+        public AllTaxesAddUpdateRecordForm(long id, string taxType)
         {
             dynamicControlContainer = new DynamicControlContainer(this);
 

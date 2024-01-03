@@ -1,6 +1,6 @@
 ﻿namespace Revised_OPTS.Forms
 {
-    partial class NonRPTAddUpdateRecordForm
+    partial class AllTaxesAddUpdateRecordForm
     {
         /// <summary>
         /// Required designer variable.
@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(NonRPTAddUpdateRecordForm));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AllTaxesAddUpdateRecordForm));
             this.cbTaxType = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.btnSaveRecord = new System.Windows.Forms.Button();

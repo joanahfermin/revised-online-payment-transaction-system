@@ -199,7 +199,6 @@ namespace Revised_OPTS.Service
                     scope.Complete();
                 }
             }
-
         }
 
         private void AssignRefNum(List<Rpt> listOfPersonsToSave)

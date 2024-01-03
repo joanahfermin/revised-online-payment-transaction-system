@@ -156,7 +156,7 @@ namespace Revised_OPTS
                 Rpt selectedRptRecord = selectedRow.DataBoundItem as Rpt;
                 if (selectedRptRecord != null)
                 {
-                    new RPTAddUpdateRecordForm(selectedRptRecord.RefNum, selectedRptRecord.RequestingParty).Show();
+                    new RPTMultipleAddUpdateRecordForm(selectedRptRecord.RefNum, selectedRptRecord.RequestingParty).Show();
                 }
             }
         }
@@ -291,14 +291,14 @@ namespace Revised_OPTS
             {
                 Rpt retrieveRptRecord = rptService.Get(selectedRecordId);
                 string taxType = TaxTypeUtil.REALPROPERTYTAX;
-                NonRPTAddUpdateRecordForm updateRecord = new NonRPTAddUpdateRecordForm(retrieveRptRecord.RptID, taxType);
+                AllTaxesAddUpdateRecordForm updateRecord = new AllTaxesAddUpdateRecordForm(retrieveRptRecord.RptID, taxType);
                 updateRecord.ShowDialog();
             }
             else if (isBusinessMpNumFormatCorrect)
             {
                 Business retrieveBusinessRecord = businessService.Get(selectedRecordId);
                 string taxType = TaxTypeUtil.BUSINESS;
-                NonRPTAddUpdateRecordForm updateRecord = new NonRPTAddUpdateRecordForm(retrieveBusinessRecord.BusinessID, taxType);
+                AllTaxesAddUpdateRecordForm updateRecord = new AllTaxesAddUpdateRecordForm(retrieveBusinessRecord.BusinessID, taxType);
                 updateRecord.ShowDialog();
             }
             else
@@ -307,7 +307,7 @@ namespace Revised_OPTS
                 if (taxType != null)
                 {
                     Miscellaneous retrieveMiscRecord = miscService.Get(selectedRecordId);
-                    NonRPTAddUpdateRecordForm updateRecord = new NonRPTAddUpdateRecordForm(retrieveMiscRecord.MiscID, taxType);
+                    AllTaxesAddUpdateRecordForm updateRecord = new AllTaxesAddUpdateRecordForm(retrieveMiscRecord.MiscID, taxType);
                     updateRecord.ShowDialog();
                 }
             }
@@ -337,7 +337,7 @@ namespace Revised_OPTS
 
         private void btnAddNewRecord_Click(object sender, EventArgs e)
         {
-            new NonRPTAddUpdateRecordForm().Show();
+            new AllTaxesAddUpdateRecordForm().Show();
         }
 
         private void MainForm_SizeChanged(object sender, EventArgs e)
@@ -355,7 +355,7 @@ namespace Revised_OPTS
 
         private void btnAddRptRecord_Click(object sender, EventArgs e)
         {
-            new RPTAddUpdateRecordForm().Show();
+            new RPTMultipleAddUpdateRecordForm().Show();
         }
 
         private void btnAddRptRecord_MouseEnter(object sender, EventArgs e)

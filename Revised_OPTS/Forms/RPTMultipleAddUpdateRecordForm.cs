@@ -20,7 +20,7 @@ using System.Windows.Forms;
 
 namespace Inventory_System.Forms
 {
-    public partial class RPTAddUpdateRecordForm : Form
+    public partial class RPTMultipleAddUpdateRecordForm : Form
     {
         IRptService rptService = ServiceFactory.Instance.GetRptService();
         IRptTaxbillTPNRepository rptRetrieveTaxpayerNameRep = RepositoryFactory.Instance.GetRptRetrieveTaxpayerNameRepository();
@@ -32,7 +32,7 @@ namespace Inventory_System.Forms
 
         private DynamicGridContainer<Rpt> DynamicGridContainer;
 
-        public RPTAddUpdateRecordForm()
+        public RPTMultipleAddUpdateRecordForm()
         {
             InitializeComponent();
             InitializeDataGridView();
@@ -48,7 +48,7 @@ namespace Inventory_System.Forms
             btnClose.BackColor = customColor;
         }
 
-        public RPTAddUpdateRecordForm(string refNum, string reqParty)
+        public RPTMultipleAddUpdateRecordForm(string refNum, string reqParty)
         {
             InitializeComponent();
             InitializeDataGridView();

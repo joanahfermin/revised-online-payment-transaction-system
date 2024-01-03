@@ -161,9 +161,9 @@
             this.btnNonRptAddNewRecord.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnNonRptAddNewRecord.Location = new System.Drawing.Point(720, 40);
             this.btnNonRptAddNewRecord.Name = "btnNonRptAddNewRecord";
-            this.btnNonRptAddNewRecord.Size = new System.Drawing.Size(251, 74);
+            this.btnNonRptAddNewRecord.Size = new System.Drawing.Size(179, 74);
             this.btnNonRptAddNewRecord.TabIndex = 3;
-            this.btnNonRptAddNewRecord.Text = "Add Non-RPT Record";
+            this.btnNonRptAddNewRecord.Text = "Add Record";
             this.btnNonRptAddNewRecord.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnNonRptAddNewRecord.UseVisualStyleBackColor = false;
             this.btnNonRptAddNewRecord.Click += new System.EventHandler(this.btnAddNewRecord_Click);
@@ -189,11 +189,11 @@
             this.btnAddRptRecord.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.btnAddRptRecord.Image = ((System.Drawing.Image)(resources.GetObject("btnAddRptRecord.Image")));
             this.btnAddRptRecord.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnAddRptRecord.Location = new System.Drawing.Point(1006, 40);
+            this.btnAddRptRecord.Location = new System.Drawing.Point(905, 40);
             this.btnAddRptRecord.Name = "btnAddRptRecord";
-            this.btnAddRptRecord.Size = new System.Drawing.Size(213, 74);
+            this.btnAddRptRecord.Size = new System.Drawing.Size(292, 74);
             this.btnAddRptRecord.TabIndex = 4;
-            this.btnAddRptRecord.Text = "Add RPT Record";
+            this.btnAddRptRecord.Text = "Add Multiple RPT Records";
             this.btnAddRptRecord.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnAddRptRecord.UseVisualStyleBackColor = false;
             this.btnAddRptRecord.Click += new System.EventHandler(this.btnAddRptRecord_Click);

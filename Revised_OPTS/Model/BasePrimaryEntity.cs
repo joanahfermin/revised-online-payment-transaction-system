@@ -8,6 +8,6 @@ namespace Inventory_System.Model
 {
     public class BasePrimaryEntity
     {
-        public int? DeletedRecord { get; set; }
+        public int? DeletedRecord { get; set; } = 0;
     }
 }

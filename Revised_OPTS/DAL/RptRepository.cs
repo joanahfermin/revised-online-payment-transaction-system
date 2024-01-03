@@ -32,11 +32,15 @@ namespace Revised_OPTS.DAL
 
         public List<Rpt> retrieveBySearchKeyword(string tdn)
         {
-            return getDbSet().Where(t => t.TaxDec.Contains(tdn)).OrderByDescending(t => t.EncodedDate)
+            return getDbSet()
+                .Where(t => t.TaxDec.Contains(tdn))
+                .OrderByDescending(t => t.EncodedDate)
                 .Union(getDbSet().Where(j => j.TaxDec.Contains(tdn) && j.DeletedRecord != 1))
-                .Union(getDbSet().Where(j => getDbSet().Where(subJ => subJ.TaxDec.Contains(tdn)).Select(subJ => subJ.RefNum)
-                .Contains(j.RefNum) && j.DeletedRecord != 1)).OrderByDescending(j => j.RefNum)
-                .ThenBy(j => j.EncodedDate).ToList();
+                .Union(getDbSet().Where(j =>
+                    (j.RefNum != null && j.RefNum != "") && tdn.Contains(j.TaxDec) && j.DeletedRecord != 1))
+                .OrderByDescending(j => j.RefNum)
+                .ThenBy(j => j.EncodedDate)
+                .ToList();
         }
     }
 }
