@@ -74,7 +74,11 @@ namespace Revised_OPTS.Service
         {
             using (var dbContext = ApplicationDBContext.Create())
             {
-                //calculatePayment(rpt);
+                //calculatePaymentForSingleRecords();
+
+                rpt.TotalAmountTransferred = rpt.AmountTransferred;
+
+                rpt.ExcessShortAmount = rpt.TotalAmountTransferred - rpt.AmountToPay;
                 rpt.EncodedBy = securityService.getLoginUser().DisplayName;
                 rpt.EncodedDate = DateTime.Now;
                 rptRepository.Insert(rpt);
@@ -86,7 +90,9 @@ namespace Revised_OPTS.Service
         {
             using (var dbContext = ApplicationDBContext.Create())
             {
-                //calculatePayment(rpt);
+                rpt.TotalAmountTransferred = rpt.AmountTransferred;
+
+                rpt.ExcessShortAmount = rpt.TotalAmountTransferred - rpt.AmountToPay;
                 rptRepository.Update(rpt);
                 dbContext.SaveChanges();
             }
@@ -264,6 +270,20 @@ namespace Revised_OPTS.Service
                     rptRepository.Update(rpt);
                 }
                 dbContext.SaveChanges();
+            }
+        }
+
+        public void Delete(Rpt rpt)
+        {
+            using (var dbContext = ApplicationDBContext.Create())
+            {
+                using (var scope = new TransactionScope())
+                {
+                    rpt.DeletedRecord = 1;
+                    rptRepository.Update(rpt);
+                    dbContext.SaveChanges();
+                    scope.Complete();
+                }
             }
         }
     }

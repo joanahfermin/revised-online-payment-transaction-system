@@ -153,6 +153,7 @@ namespace Revised_OPTS.Forms
                     new DynamicControlInfo{PropertyName = "PaymentDate", Label = "Payment Date: ", ControlType = DynamicControlType.DatePicker, isRequired = true},
                     new DynamicControlInfo{PropertyName = "YearQuarter", Label = "*Year:", ControlType = DynamicControlType.TextBox, isRequired = true},
                     new DynamicControlInfo{PropertyName = "Quarter", Label = "Quarter: ", ControlType = DynamicControlType.ComboBox, ComboboxChoices = Quarter.ALL_QUARTER},
+                    new DynamicControlInfo{PropertyName = "BillingSelection", Label = "Billing Selection: ", ControlType = DynamicControlType.ComboBox, ComboboxChoices = BillingSelectionUtil.ALL_BILLING_SELECTION},
                     new DynamicControlInfo{PropertyName = "RPTremarks", Label = "Remarks:", ControlType = DynamicControlType.TextBox},
                 }.Concat(commonInfo).ToArray()); ;
 
@@ -337,7 +338,7 @@ namespace Revised_OPTS.Forms
                 notifyUserAndRefreshRecord(searchKeyword);
             }
 
-            if (taxType == TaxTypeUtil.BUSINESS)
+            else if (taxType == TaxTypeUtil.BUSINESS)
             {
                 if (business != null)
                 {

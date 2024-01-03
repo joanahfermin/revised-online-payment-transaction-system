@@ -72,6 +72,8 @@ namespace Revised_OPTS
 
             ContextMenuStrip contextMenuStrip1 = new ContextMenuStrip();
 
+            ToolStripMenuItem menuItemDelete = new ToolStripMenuItem("Delete");
+            menuItemDelete.Click += MenuItemDelete_Click;
             ToolStripMenuItem menuItemEdit = new ToolStripMenuItem("Edit");
             menuItemEdit.Click += MenuItemEdit_Click;
             ToolStripMenuItem menuItemVerifiedPayment = new ToolStripMenuItem("Payment Verified");
@@ -79,10 +81,45 @@ namespace Revised_OPTS
             ToolStripMenuItem menuItemRevertStatus = new ToolStripMenuItem("Revert Status");
             menuItemRevertStatus.Click += MenuItemRevertStatus_Click;
 
+            contextMenuStrip1.Items.Add(menuItemDelete);
             contextMenuStrip1.Items.Add(menuItemEdit);
             contextMenuStrip1.Items.Add(menuItemVerifiedPayment);
             contextMenuStrip1.Items.Add(menuItemRevertStatus);
             DgMainForm.ContextMenuStrip = contextMenuStrip1;
+        }
+
+        private void MenuItemDelete_Click(object? sender, EventArgs e)
+        {
+            DataGridViewSelectedRowCollection selectedRows = DgMainForm.SelectedRows;
+
+            if (selectedRows.Count > 0)
+            {
+                foreach (DataGridViewRow row in selectedRows)
+                {
+                    //conversion of row to Rpt
+                    Rpt selectedRptRecord = row.DataBoundItem as Rpt;
+                    if (selectedRptRecord.RefNum != null)
+                    {
+                        MenuItemEdit_Click(sender, e);
+                    }
+                    else
+                    {
+                        // Display confirmation box
+                        DialogResult result = MessageBox.Show("Are you sure you want to delete the selected records?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                        // Check user's response
+                        if (result == DialogResult.Yes)
+                        {
+                            rptService.Delete(selectedRptRecord);
+                            MessageBox.Show("Operation completed successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            //DgMainForm.Refresh();
+                            Search(tbSearch.Text);
+                            tbSearch.Clear();
+                        }
+
+                    }
+                }
+            }
         }
 
         private void MenuItemRevertStatus_Click(object? sender, EventArgs e)
@@ -92,7 +129,6 @@ namespace Revised_OPTS
             if (selectedRow != null)
             {
                 Rpt rptRecord = selectedRow.DataBoundItem as Rpt;
-
                 if (rptRecord.Status != null)
                 {
                     //TO DO: STATUS MAPPING.
