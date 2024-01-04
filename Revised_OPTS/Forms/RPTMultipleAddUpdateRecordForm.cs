@@ -121,21 +121,20 @@ namespace Inventory_System.Forms
                 // Access the cell value
                 DataGridViewRow selectedRow = DgRptAddUpdateForm.CurrentRow;
 
-                // Check if a row is selected
-                //if (selectedRow != null)
-                //{
-                //    Rpt selectedRpt = (Rpt)selectedRow.DataBoundItem;
-                //    RptTaxbillTPN retrievedTPN = rptRetrieveTaxpayerNameRep.retrieveByTDN(selectedRpt.TaxDec);
+                if (selectedRow != null)
+                {
+                    Rpt selectedRpt = (Rpt)selectedRow.DataBoundItem;
+                    RptTaxbillTPN retrievedTPN = rptRetrieveTaxpayerNameRep.retrieveByTDN(selectedRpt.TaxDec);
 
-                //    if (retrievedTPN != null)
-                //    {
-                //        selectedRpt.TaxPayerName = retrievedTPN.ONAME;
-                //    }
-                //    //else
-                //    //{
-                //    //    selectedRpt.TaxPayerName = "";
-                //    //}
-                //}
+                    if (retrievedTPN != null)
+                    {
+                        selectedRpt.TaxPayerName = retrievedTPN.ONAME;
+                    }
+                    else
+                    {
+                        selectedRpt.TaxPayerName = Validations.NO_RETRIEVED_NAME;
+                    }
+                }
             }
         }
 

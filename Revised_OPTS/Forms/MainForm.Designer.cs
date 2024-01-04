@@ -41,6 +41,12 @@
             this.btnNonRptAddNewRecord = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.btnAddRptRecord = new System.Windows.Forms.Button();
+            this.tbTotalAmountTransferred = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.tbRecordSelected = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.tbTotalBillAmount = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.DgMainForm)).BeginInit();
             this.MainDGRightClick.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -128,7 +134,7 @@
             this.SearchLabel.ForeColor = System.Drawing.Color.White;
             this.SearchLabel.Image = ((System.Drawing.Image)(resources.GetObject("SearchLabel.Image")));
             this.SearchLabel.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.SearchLabel.Location = new System.Drawing.Point(146, 30);
+            this.SearchLabel.Location = new System.Drawing.Point(139, 32);
             this.SearchLabel.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
             this.SearchLabel.Name = "SearchLabel";
             this.SearchLabel.Padding = new System.Windows.Forms.Padding(10);
@@ -142,7 +148,7 @@
             this.tbSearch.BackColor = System.Drawing.Color.AliceBlue;
             this.tbSearch.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.tbSearch.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.tbSearch.Location = new System.Drawing.Point(160, 77);
+            this.tbSearch.Location = new System.Drawing.Point(270, 40);
             this.tbSearch.Name = "tbSearch";
             this.tbSearch.Size = new System.Drawing.Size(463, 27);
             this.tbSearch.TabIndex = 1;
@@ -159,7 +165,7 @@
             this.btnNonRptAddNewRecord.ForeColor = System.Drawing.Color.White;
             this.btnNonRptAddNewRecord.Image = ((System.Drawing.Image)(resources.GetObject("btnNonRptAddNewRecord.Image")));
             this.btnNonRptAddNewRecord.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnNonRptAddNewRecord.Location = new System.Drawing.Point(720, 40);
+            this.btnNonRptAddNewRecord.Location = new System.Drawing.Point(765, 14);
             this.btnNonRptAddNewRecord.Name = "btnNonRptAddNewRecord";
             this.btnNonRptAddNewRecord.Size = new System.Drawing.Size(179, 74);
             this.btnNonRptAddNewRecord.TabIndex = 3;
@@ -189,7 +195,7 @@
             this.btnAddRptRecord.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.btnAddRptRecord.Image = ((System.Drawing.Image)(resources.GetObject("btnAddRptRecord.Image")));
             this.btnAddRptRecord.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnAddRptRecord.Location = new System.Drawing.Point(905, 40);
+            this.btnAddRptRecord.Location = new System.Drawing.Point(950, 14);
             this.btnAddRptRecord.Name = "btnAddRptRecord";
             this.btnAddRptRecord.Size = new System.Drawing.Size(292, 74);
             this.btnAddRptRecord.TabIndex = 4;
@@ -199,6 +205,96 @@
             this.btnAddRptRecord.Click += new System.EventHandler(this.btnAddRptRecord_Click);
             this.btnAddRptRecord.MouseEnter += new System.EventHandler(this.btnAddRptRecord_MouseEnter);
             this.btnAddRptRecord.MouseLeave += new System.EventHandler(this.btnAddRptRecord_MouseLeave);
+            // 
+            // tbTotalAmountTransferred
+            // 
+            this.tbTotalAmountTransferred.BackColor = System.Drawing.Color.OldLace;
+            this.tbTotalAmountTransferred.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.tbTotalAmountTransferred.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.tbTotalAmountTransferred.ForeColor = System.Drawing.Color.Black;
+            this.tbTotalAmountTransferred.Location = new System.Drawing.Point(707, 98);
+            this.tbTotalAmountTransferred.Name = "tbTotalAmountTransferred";
+            this.tbTotalAmountTransferred.Size = new System.Drawing.Size(136, 26);
+            this.tbTotalAmountTransferred.TabIndex = 1;
+            this.tbTotalAmountTransferred.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.tbTotalAmountTransferred.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbSearch_KeyDown);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.BackColor = System.Drawing.Color.Transparent;
+            this.label1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.label1.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.label1.ForeColor = System.Drawing.Color.White;
+            this.label1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.label1.Location = new System.Drawing.Point(463, 89);
+            this.label1.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
+            this.label1.Name = "label1";
+            this.label1.Padding = new System.Windows.Forms.Padding(10);
+            this.label1.Size = new System.Drawing.Size(253, 39);
+            this.label1.TabIndex = 200;
+            this.label1.Text = "Total Amount Transferred: ";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // tbRecordSelected
+            // 
+            this.tbRecordSelected.BackColor = System.Drawing.Color.OldLace;
+            this.tbRecordSelected.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.tbRecordSelected.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.tbRecordSelected.ForeColor = System.Drawing.Color.Black;
+            this.tbRecordSelected.Location = new System.Drawing.Point(1040, 98);
+            this.tbRecordSelected.Name = "tbRecordSelected";
+            this.tbRecordSelected.Size = new System.Drawing.Size(60, 26);
+            this.tbRecordSelected.TabIndex = 1;
+            this.tbRecordSelected.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.tbRecordSelected.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbSearch_KeyDown);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.BackColor = System.Drawing.Color.Transparent;
+            this.label2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.label2.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.label2.ForeColor = System.Drawing.Color.White;
+            this.label2.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.label2.Location = new System.Drawing.Point(859, 90);
+            this.label2.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
+            this.label2.Name = "label2";
+            this.label2.Padding = new System.Windows.Forms.Padding(10);
+            this.label2.Size = new System.Drawing.Size(175, 39);
+            this.label2.TabIndex = 200;
+            this.label2.Text = "Records Selected:";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // tbTotalBillAmount
+            // 
+            this.tbTotalBillAmount.BackColor = System.Drawing.Color.OldLace;
+            this.tbTotalBillAmount.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.tbTotalBillAmount.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.tbTotalBillAmount.ForeColor = System.Drawing.Color.Black;
+            this.tbTotalBillAmount.Location = new System.Drawing.Point(321, 97);
+            this.tbTotalBillAmount.Name = "tbTotalBillAmount";
+            this.tbTotalBillAmount.Size = new System.Drawing.Size(136, 26);
+            this.tbTotalBillAmount.TabIndex = 1;
+            this.tbTotalBillAmount.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.tbTotalBillAmount.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbSearch_KeyDown);
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.BackColor = System.Drawing.Color.Transparent;
+            this.label3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.label3.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.label3.ForeColor = System.Drawing.Color.White;
+            this.label3.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.label3.Location = new System.Drawing.Point(145, 89);
+            this.label3.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
+            this.label3.Name = "label3";
+            this.label3.Padding = new System.Windows.Forms.Padding(10);
+            this.label3.Size = new System.Drawing.Size(178, 39);
+            this.label3.TabIndex = 200;
+            this.label3.Text = "Total Bill Amount:";
+            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // MainForm
             // 
@@ -211,8 +307,14 @@
             this.Controls.Add(this.btnAddRptRecord);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.btnNonRptAddNewRecord);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.SearchLabel);
             this.Controls.Add(this.DgMainForm);
+            this.Controls.Add(this.tbRecordSelected);
+            this.Controls.Add(this.tbTotalBillAmount);
+            this.Controls.Add(this.tbTotalAmountTransferred);
             this.Controls.Add(this.tbSearch);
             this.ForeColor = System.Drawing.Color.White;
             this.Name = "MainForm";
@@ -237,5 +339,11 @@
         private Button btnNonRptAddNewRecord;
         private PictureBox pictureBox1;
         private Button btnAddRptRecord;
+        private TextBox tbTotalAmountTransferred;
+        private Label label1;
+        private TextBox tbRecordSelected;
+        private Label label2;
+        private TextBox tbTotalBillAmount;
+        private Label label3;
     }
 }

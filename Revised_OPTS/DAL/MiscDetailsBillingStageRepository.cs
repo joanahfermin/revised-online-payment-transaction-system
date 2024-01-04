@@ -15,6 +15,7 @@ namespace Inventory_System.DAL
         {
             return ITDDFMUDAILY2023ApplicationDBContext.Instance.Set<MiscDetailsBillingStage>();
         }
+
         public MiscDetailsBillingStage retrieveByBillNum(string billNum)
         {
             return getDbSet().Where(e => e.BillNumber == billNum && e.TaxpayerLName != null).FirstOrDefault();

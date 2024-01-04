@@ -69,6 +69,7 @@ namespace Revised_OPTS
             DataGridUI();
             Instance = this;
             DgMainForm.CellFormatting += DgMainForm_CellFormatting;
+            DgMainForm.SelectionChanged += DgMainForm_SelectionChanged;
 
             ContextMenuStrip contextMenuStrip1 = new ContextMenuStrip();
 
@@ -88,7 +89,33 @@ namespace Revised_OPTS
             DgMainForm.ContextMenuStrip = contextMenuStrip1;
         }
 
-        private void MenuItemDelete_Click(object? sender, EventArgs e)
+        private void DgMainForm_SelectionChanged(object? sender, EventArgs e)
+        {
+            tbRecordSelected.Text = DgMainForm.SelectedRows.Count.ToString();
+
+            DataGridViewSelectedRowCollection selectedRows = DgMainForm.SelectedRows;
+            decimal sumBillAmount = 0;
+            decimal sumTotalTransferredAmount = 0;
+
+            List<Rpt> rptList = new List<Rpt>();
+            foreach (DataGridViewRow row in selectedRows)
+            {
+                //conversion of row to Rpt
+                Rpt selectedRptRecord = row.DataBoundItem as Rpt;
+
+                if (selectedRptRecord != null)
+                {
+                    // Assuming AmountToPay is a property in your Rpt class and Sum is a property of AmountToPay
+                    sumBillAmount = (decimal)(selectedRptRecord.AmountToPay + sumBillAmount);
+                    sumTotalTransferredAmount = (decimal)(selectedRptRecord.TotalAmountTransferred + sumTotalTransferredAmount);
+                }
+                // Set the value of tbTotalBillAmount
+                tbTotalBillAmount.Text = sumBillAmount.ToString("N2");
+                tbTotalAmountTransferred.Text = sumTotalTransferredAmount.ToString("N2");
+            }
+        }
+
+            private void MenuItemDelete_Click(object? sender, EventArgs e)
         {
             DataGridViewSelectedRowCollection selectedRows = DgMainForm.SelectedRows;
 
@@ -111,10 +138,10 @@ namespace Revised_OPTS
                         if (result == DialogResult.Yes)
                         {
                             rptService.Delete(selectedRptRecord);
-                            MessageBox.Show("Operation completed successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                             //DgMainForm.Refresh();
                             Search(tbSearch.Text);
                             tbSearch.Clear();
+                            MessageBox.Show("Operation completed successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         }
 
                     }
@@ -247,7 +274,27 @@ namespace Revised_OPTS
 
         private void tbSearch_KeyDown(object sender, KeyEventArgs e)
         {
-            Search(tbSearch.Text);
+            string searchedUniqueKey = tbSearch.Text; // Replace with the actual TaxDec you've searched for
+
+            Search(searchedUniqueKey);
+            DgMainForm.ClearSelection();
+            int selectedRowCount = 0;
+
+            // Iterate through the rows in the DataGridView
+            foreach (DataGridViewRow row in DgMainForm.Rows)
+            {
+                // Assuming TaxDec is in the first column, adjust the index if it's in a different column
+                string uniqueRecordValue = row.Cells[0].Value.ToString();
+
+                // Check if the current row's TaxDec matches the searched TaxDec
+                if (uniqueRecordValue.Equals(searchedUniqueKey, StringComparison.OrdinalIgnoreCase))
+                {
+                    // Select the row and break out of the loop
+                    row.Selected = true;
+                    selectedRowCount++;
+                }
+                tbRecordSelected.Text = selectedRowCount.ToString();
+            }
         }
 
         public void Search(string searchRecordinDB)
@@ -255,6 +302,7 @@ namespace Revised_OPTS
             if (SearchBusinessFormat.isTDN(searchRecordinDB))
             {
                 ShowDataInDataGridView<Rpt>(RPT_DG_COLUMNS, rptService.RetrieveBySearchKeyword(searchRecordinDB));
+                
             }
             //else if (SearchBusinessFormat.isMiscOccuPermit(searchRecordinDB) || SearchBusinessFormat.isMiscOvrTtmd(searchRecordinDB)
             //    || SearchBusinessFormat.isMiscOvrDpos(searchRecordinDB) || SearchBusinessFormat.isMiscMarket(searchRecordinDB)
@@ -325,10 +373,21 @@ namespace Revised_OPTS
  
             if (isRptTDNFormatCorrect)
             {
-                Rpt retrieveRptRecord = rptService.Get(selectedRecordId);
-                string taxType = TaxTypeUtil.REALPROPERTYTAX;
-                AllTaxesAddUpdateRecordForm updateRecord = new AllTaxesAddUpdateRecordForm(retrieveRptRecord.RptID, taxType);
-                updateRecord.ShowDialog();
+                DataGridViewRow selectedRow = DgMainForm.CurrentRow;
+
+                Rpt rptRecord = selectedRow.DataBoundItem as Rpt;
+
+                if (rptRecord.RefNum != null)
+                {
+                    MenuItemEdit_Click(sender, e);
+                }
+                else
+                {
+                    Rpt retrieveRptRecord = rptService.Get(selectedRecordId);
+                    string taxType = TaxTypeUtil.REALPROPERTYTAX;
+                    AllTaxesAddUpdateRecordForm updateRecord = new AllTaxesAddUpdateRecordForm(retrieveRptRecord.RptID, taxType);
+                    updateRecord.ShowDialog();
+                }
             }
             else if (isBusinessMpNumFormatCorrect)
             {

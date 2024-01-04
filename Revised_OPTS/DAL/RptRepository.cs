@@ -1,4 +1,5 @@
 ﻿using Inventory_System.Model;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Revised_OPTS.Model;
 using System;
@@ -32,19 +33,35 @@ namespace Revised_OPTS.DAL
 
         public List<Rpt> retrieveBySearchKeyword(string tdn)
         {
+
             return getDbSet()
+                //SELECT * FROM Jo_RPT where TaxDec LIKE @TaxDec and DeletedRecord != 1
                 .Where(j => j.TaxDec.Contains(tdn) && j.DeletedRecord != 1)
-                .Union(getDbSet().Where(j => getDbSet().Where(subJ => subJ.TaxDec.Contains(tdn)).Select(subJ => subJ.RefNum)
-                .Contains(j.RefNum) && j.DeletedRecord != 1)).OrderByDescending(j => j.RefNum).ThenBy(j => j.EncodedDate).ToList();
+                //UNION
+                .Union(
+                    //SELECT *FROM Jo_RPT where RefNum
+                    getDbSet()
+                        .Where(j => getDbSet()
+                            // (select RefNum FROM Jo_RPT where TaxDec LIKE @TaxDec)
+                            .Where(subJ => subJ.TaxDec.Contains(tdn))
+                            .Select(subJ => subJ.RefNum)
+                            //RefNum in (select RefNum
+                            .Contains(j.RefNum)
+                            //and DeletedRecord != 1  AND RefNum IS NOT NULL AND RefNum != ''
+                            && j.DeletedRecord != 1 && j.RefNum != null && j.RefNum != "")
+                )
+                //order by RefNum desc, EncodedDate asc
+                .OrderByDescending(j => j.RefNum)
+                .ThenBy(j => j.EncodedDate)
+                .ToList();
+
+            //var parameterValue = new SqlParameter("@TaxDec", tdn);
+
+            //var sql = "SELECT * FROM Jo_RPT where TaxDec LIKE @TaxDec and DeletedRecord != 1 " +
+            //          "UNION SELECT *FROM Jo_RPT where RefNum in (select RefNum FROM Jo_RPT where TaxDec LIKE @TaxDec) " +
+            //          "and DeletedRecord != 1  AND RefNum IS NOT NULL AND RefNum != '' order by RefNum desc, EncodedDate asc";
+
+            //return  getDbSet().FromSqlRaw(sql, parameterValue).ToList();
         }
-        //return getDbSet()
-        //.Where(t => t.TaxDec.Contains(tdn))
-        //.OrderByDescending(t => t.EncodedDate)
-        //.Union(getDbSet().Where(j => j.TaxDec.Contains(tdn) && j.DeletedRecord != 1))
-        //.Union(getDbSet().Where(j =>
-        //    (j.RefNum != null && j.RefNum != "") && tdn.Contains(j.RefNum) && j.DeletedRecord != 1))
-        //.OrderByDescending(j => j.RefNum)
-        //.ThenBy(j => j.EncodedDate)
-        //.ToList();
     }
 }
