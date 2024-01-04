@@ -15,5 +15,8 @@ namespace Revised_OPTS.Service
         void Insert(Business business);
         void Update(Business business);
 
+        void RevertSelectedRecordStatus(Business business);
+        void UpdateSelectedRecordsStatus(List<Business> businessList);
+
     }
 }

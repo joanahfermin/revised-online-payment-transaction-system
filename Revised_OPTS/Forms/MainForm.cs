@@ -50,7 +50,7 @@ namespace Revised_OPTS
             { "ValidatedBy", "Validated By" }, { "ValidatedDate", "Validated Date" }, { "RequestingParty", "Email Address" },
             { "EncodedDate", "Encoded Date" }, { "BussinessRemarks", "Remarks" }, { "EncodedBy", "Encoded By" },
             { "ContactNumber", "Contact Number" }, { "UploadedBy", "Uploaded By" }, { "UploadedDate", "Uploaded Date" },
-                     { "ReleasedBy", "Released By" }, { "ReleasedDate", "Released Date" },
+                     { "ReleasedBy", "Released By" }, { "ReleasedDate", "Released Date" }, { "RepName", "Representative Name" }, { "RepContactNumber", "Rep. Contact Number" },
         };
 
         Dictionary<string, string> MISC_DG_COLUMNS = new Dictionary<string, string>
@@ -96,26 +96,37 @@ namespace Revised_OPTS
             DataGridViewSelectedRowCollection selectedRows = DgMainForm.SelectedRows;
             decimal sumBillAmount = 0;
             decimal sumTotalTransferredAmount = 0;
-
-            List<Rpt> rptList = new List<Rpt>();
+            
             foreach (DataGridViewRow row in selectedRows)
             {
-                //conversion of row to Rpt
-                Rpt selectedRptRecord = row.DataBoundItem as Rpt;
-
-                if (selectedRptRecord != null)
+                if (CURRENT_RECORD_TYPE == RPT_RECORD_TYPE)
                 {
-                    // Assuming AmountToPay is a property in your Rpt class and Sum is a property of AmountToPay
-                    sumBillAmount = (decimal)(selectedRptRecord.AmountToPay + sumBillAmount);
-                    sumTotalTransferredAmount = (decimal)(selectedRptRecord.TotalAmountTransferred + sumTotalTransferredAmount);
+                    //conversion of row to Rpt
+                    Rpt selectedRptRecord = row.DataBoundItem as Rpt;
+                    if (selectedRptRecord != null)
+                    {
+                        // Assuming AmountToPay is a property in your Rpt class and Sum is a property of AmountToPay
+                        sumBillAmount = (decimal)(selectedRptRecord.AmountToPay + sumBillAmount);
+                        sumTotalTransferredAmount = (decimal)(selectedRptRecord.TotalAmountTransferred + sumTotalTransferredAmount);
+                    }
                 }
-                // Set the value of tbTotalBillAmount
+                else if (CURRENT_RECORD_TYPE == BUSINESS_RECORD_TYPE)
+                {
+                    Business selectedRptRecord = row.DataBoundItem as Business;
+
+                    if (selectedRptRecord != null)
+                    {
+                        // Assuming AmountToPay is a property in your Rpt class and Sum is a property of AmountToPay
+                        sumBillAmount = (decimal)(selectedRptRecord.BillAmount + sumBillAmount);
+                        sumTotalTransferredAmount = (decimal)(selectedRptRecord.TotalAmount + sumTotalTransferredAmount);
+                    }
+                }
                 tbTotalBillAmount.Text = sumBillAmount.ToString("N2");
                 tbTotalAmountTransferred.Text = sumTotalTransferredAmount.ToString("N2");
             }
         }
 
-            private void MenuItemDelete_Click(object? sender, EventArgs e)
+        private void MenuItemDelete_Click(object? sender, EventArgs e)
         {
             DataGridViewSelectedRowCollection selectedRows = DgMainForm.SelectedRows;
 
@@ -155,23 +166,47 @@ namespace Revised_OPTS
 
             if (selectedRow != null)
             {
-                Rpt rptRecord = selectedRow.DataBoundItem as Rpt;
-                if (rptRecord.Status != null)
+                if (CURRENT_RECORD_TYPE == RPT_RECORD_TYPE)
                 {
-                    //TO DO: STATUS MAPPING.
-                    DialogResult result = MessageBox.Show("Are you sure you want to revert the staus to 'FOR PAYMENT VERIFICATION'?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-
-                    if (result == DialogResult.Yes)
+                    Rpt rptRecord = selectedRow.DataBoundItem as Rpt;
+                    if (rptRecord.Status != null)
                     {
-                        rptService.RevertSelectedRecordStatus(rptRecord);
-                        MessageBox.Show("Operation completed successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        DgMainForm.Refresh();
+                        //TO DO: STATUS MAPPING.
+                        DialogResult result = MessageBox.Show("Are you sure you want to revert the staus to it's previous status?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                        if (result == DialogResult.Yes)
+                        {
+                            rptService.RevertSelectedRecordStatus(rptRecord);
+                            MessageBox.Show("Operation completed successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            DgMainForm.Refresh();
+                        }
+                    }
+                    else
+                    {
+                        // Inform the user that there are no records to update
+                        MessageBox.Show("Action cancelled. No status were reverted.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                 }
-                else
+                else if (CURRENT_RECORD_TYPE == BUSINESS_RECORD_TYPE)
                 {
-                    // Inform the user that there are no records to update
-                    MessageBox.Show("Action cancelled. No status were reverted.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    Business businessRecord = selectedRow.DataBoundItem as Business;
+                    if (businessRecord.Status != null)
+                    {
+                        //TO DO: STATUS MAPPING.
+                        DialogResult result = MessageBox.Show("Are you sure you want to revert the staus to it's previous status?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                        if (result == DialogResult.Yes)
+                        {
+                            businessService.RevertSelectedRecordStatus(businessRecord);
+                            MessageBox.Show("Operation completed successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            DgMainForm.Refresh();
+                        }
+                    }
+                    else
+                    {
+                        // Inform the user that there are no records to update
+                        MessageBox.Show("Action cancelled. No status were reverted.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
                 }
             }
         }
@@ -180,35 +215,71 @@ namespace Revised_OPTS
         {
             DataGridViewSelectedRowCollection selectedRows = DgMainForm.SelectedRows;
 
-            List<Rpt> rptList = new List<Rpt>();
-            foreach (DataGridViewRow row in selectedRows)
+            if (CURRENT_RECORD_TYPE == RPT_RECORD_TYPE)
             {
-                //conversion of row to Rpt
-                Rpt selectedRptRecord = row.DataBoundItem as Rpt;
-
-                if (selectedRptRecord.Status == TaxStatus.ForPaymentVerification)
+                List<Rpt> rptList = new List<Rpt>();
+                foreach (DataGridViewRow row in selectedRows)
                 {
-                    rptList.Add(selectedRptRecord);
+                    //conversion of row to Rpt
+                    Rpt selectedRptRecord = row.DataBoundItem as Rpt;
+
+                    if (selectedRptRecord.Status == TaxStatus.ForPaymentVerification)
+                    {
+                        rptList.Add(selectedRptRecord);
+                    }
+                }
+                if (rptList.Count > 0)
+                {
+                    // Display confirmation box
+                    DialogResult result = MessageBox.Show("Are you sure you want to update the status of the selected records?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                    // Check user's response
+                    if (result == DialogResult.Yes)
+                    {
+                        rptService.UpdateSelectedRecordsStatus(rptList);
+                        MessageBox.Show("Operation completed successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        DgMainForm.Refresh();
+                    }
+                }
+                else
+                {
+                    // Inform the user that there are no records to update
+                    MessageBox.Show("No records selected for payment verification.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
-            if (rptList.Count > 0)
+            else if (CURRENT_RECORD_TYPE == BUSINESS_RECORD_TYPE)
             {
-                // Display confirmation box
-                DialogResult result = MessageBox.Show("Are you sure you want to update the status of the selected records?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-
-                // Check user's response
-                if (result == DialogResult.Yes)
+                List<Business> businessList = new List<Business>();
+                foreach (DataGridViewRow row in selectedRows)
                 {
-                    rptService.UpdateSelectedRecordsStatus(rptList);
-                    MessageBox.Show("Operation completed successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    DgMainForm.Refresh();
+                    //conversion of row to Rpt
+                    Business selectedRptRecord = row.DataBoundItem as Business;
+
+                    if (selectedRptRecord.Status == TaxStatus.ForPaymentVerification)
+                    {
+                        businessList.Add(selectedRptRecord);
+                    }
+                }
+                if (businessList.Count > 0)
+                {
+                    // Display confirmation box
+                    DialogResult result = MessageBox.Show("Are you sure you want to update the status of the selected records?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                    // Check user's response
+                    if (result == DialogResult.Yes)
+                    {
+                        businessService.UpdateSelectedRecordsStatus(businessList);
+                        MessageBox.Show("Operation completed successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        DgMainForm.Refresh();
+                    }
+                }
+                else
+                {
+                    // Inform the user that there are no records to update
+                    MessageBox.Show("No records selected for payment verification.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
-            else
-            {
-                // Inform the user that there are no records to update
-                MessageBox.Show("No records selected for payment verification.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
+
         }
 
         private void MenuItemEdit_Click(object? sender, EventArgs e)
@@ -233,26 +304,26 @@ namespace Revised_OPTS
             }
         }
 
-        public void InitializeData()
-        {
-            List<Rpt> dataList = rptService.GetAll();
-            DgMainForm.AutoGenerateColumns = false;
+        //public void InitializeData()
+        //{
+        //    List<Rpt> dataList = rptService.GetAll();
+        //    DgMainForm.AutoGenerateColumns = false;
 
-            //DgMainForm.Columns.Add("TaxDec", "TDN");
-            //DgMainForm.Columns.Add("TaxPayerName", "Taxpayer's Name");
-            //DgMainForm.Columns.Add("AmountToPay", "Bill Amount");
+        //    //DgMainForm.Columns.Add("TaxDec", "TDN");
+        //    //DgMainForm.Columns.Add("TaxPayerName", "Taxpayer's Name");
+        //    //DgMainForm.Columns.Add("AmountToPay", "Bill Amount");
 
-            //DgMainForm.Columns["TaxDec"].DataPropertyName = "TaxDec";
-            //DgMainForm.Columns["TaxPayerName"].DataPropertyName = "TaxPayerName";
-            //DgMainForm.Columns["AmountToPay"].DataPropertyName = "AmountToPay";
+        //    //DgMainForm.Columns["TaxDec"].DataPropertyName = "TaxDec";
+        //    //DgMainForm.Columns["TaxPayerName"].DataPropertyName = "TaxPayerName";
+        //    //DgMainForm.Columns["AmountToPay"].DataPropertyName = "AmountToPay";
 
-            foreach (var kvp in RPT_DG_COLUMNS)
-            {
-                DgMainForm.Columns.Add(kvp.Key, kvp.Value);
-                DgMainForm.Columns[kvp.Key].DataPropertyName = kvp.Key;
-            }
-            DgMainForm.DataSource = dataList;
-        }
+        //    foreach (var kvp in RPT_DG_COLUMNS)
+        //    {
+        //        DgMainForm.Columns.Add(kvp.Key, kvp.Value);
+        //        DgMainForm.Columns[kvp.Key].DataPropertyName = kvp.Key;
+        //    }
+        //    DgMainForm.DataSource = dataList;
+        //}
 
         public void DataGridUI()
         {
@@ -274,46 +345,60 @@ namespace Revised_OPTS
 
         private void tbSearch_KeyDown(object sender, KeyEventArgs e)
         {
-            string searchedUniqueKey = tbSearch.Text; // Replace with the actual TaxDec you've searched for
+            string searchedUniqueKey = tbSearch.Text;
 
             Search(searchedUniqueKey);
             DgMainForm.ClearSelection();
             int selectedRowCount = 0;
 
-            // Iterate through the rows in the DataGridView
             foreach (DataGridViewRow row in DgMainForm.Rows)
             {
-                // Assuming TaxDec is in the first column, adjust the index if it's in a different column
-                string uniqueRecordValue = row.Cells[0].Value.ToString();
-
-                // Check if the current row's TaxDec matches the searched TaxDec
-                if (uniqueRecordValue.Equals(searchedUniqueKey, StringComparison.OrdinalIgnoreCase))
+                if (CURRENT_RECORD_TYPE == RPT_RECORD_TYPE)
                 {
-                    // Select the row and break out of the loop
-                    row.Selected = true;
-                    selectedRowCount++;
+                    Rpt selectedRptRecord = row.DataBoundItem as Rpt;
+                    if (selectedRptRecord.TaxDec.Equals(searchedUniqueKey, StringComparison.OrdinalIgnoreCase))
+                    {
+                        row.Selected = true;
+                        selectedRowCount++;
+                    }
                 }
-                tbRecordSelected.Text = selectedRowCount.ToString();
+                else if (CURRENT_RECORD_TYPE == BUSINESS_RECORD_TYPE)
+                {
+                    Business selectedRptRecord = row.DataBoundItem as Business;
+                    if (selectedRptRecord.MP_Number.Equals(searchedUniqueKey, StringComparison.OrdinalIgnoreCase))
+                    {
+                        row.Selected = true;
+                        selectedRowCount++;
+                    }
+                }
             }
+            tbRecordSelected.Text = selectedRowCount.ToString();
         }
+
+        private const int RPT_RECORD_TYPE = 1;
+        private const int MISC_RECORD_TYPE = 2;
+        private const int BUSINESS_RECORD_TYPE = 3;
+        private int CURRENT_RECORD_TYPE = 0;
 
         public void Search(string searchRecordinDB)
         {
             if (SearchBusinessFormat.isTDN(searchRecordinDB))
             {
+                CURRENT_RECORD_TYPE = RPT_RECORD_TYPE;
                 ShowDataInDataGridView<Rpt>(RPT_DG_COLUMNS, rptService.RetrieveBySearchKeyword(searchRecordinDB));
-                
             }
-            //else if (SearchBusinessFormat.isMiscOccuPermit(searchRecordinDB) || SearchBusinessFormat.isMiscOvrTtmd(searchRecordinDB)
-            //    || SearchBusinessFormat.isMiscOvrDpos(searchRecordinDB) || SearchBusinessFormat.isMiscMarket(searchRecordinDB)
-            //    || SearchBusinessFormat.isMiscZoning(searchRecordinDB) || SearchBusinessFormat.isMiscLiquor(searchRecordinDB))
-            //{
-            //    ShowDataInDataGridView<Miscellaneous>(MISC_DG_COLUMNS, miscService.RetrieveBySearchKeyword(searchRecordinDB));
-            //}
-            //else if (SearchBusinessFormat.isBusiness(searchRecordinDB))
-            //{
-            //    ShowDataInDataGridView<Business>(BUSINESS_DG_COLUMNS, businessService.RetrieveBySearchKeyword(searchRecordinDB));
-            //}
+            else if (SearchBusinessFormat.isMiscOccuPermit(searchRecordinDB) || SearchBusinessFormat.isMiscOvrTtmd(searchRecordinDB)
+                || SearchBusinessFormat.isMiscOvrDpos(searchRecordinDB) || SearchBusinessFormat.isMiscMarket(searchRecordinDB)
+                || SearchBusinessFormat.isMiscZoning(searchRecordinDB) || SearchBusinessFormat.isMiscLiquor(searchRecordinDB))
+            {
+                CURRENT_RECORD_TYPE = MISC_RECORD_TYPE;
+                ShowDataInDataGridView<Miscellaneous>(MISC_DG_COLUMNS, miscService.RetrieveBySearchKeyword(searchRecordinDB));
+            }
+            else if (SearchBusinessFormat.isBusiness(searchRecordinDB))
+            {
+                CURRENT_RECORD_TYPE = BUSINESS_RECORD_TYPE;
+                ShowDataInDataGridView<Business>(BUSINESS_DG_COLUMNS, businessService.RetrieveBySearchKeyword(searchRecordinDB));
+            }
         }
 
         private void ShowDataInDataGridView<T>(Dictionary<string, string> columnMappings, List<T> dataList)

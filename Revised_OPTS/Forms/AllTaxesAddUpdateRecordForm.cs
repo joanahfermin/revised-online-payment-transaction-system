@@ -252,6 +252,10 @@ namespace Revised_OPTS.Forms
                 Control MiscOrderOfPaymentNumTextBox = dynamicControlContainer.FindControlByName(taxType, "OrderOfPaymentNum");
                 MiscOrderOfPaymentNumTextBox.TextChanged += MiscOrderOfPaymentNumTextBox_TextChanged;
             }
+            //else
+            //{
+            //    MessageBox.Show("NOT YET IMPLEMENTED.");
+            //}
         }
 
         private void TaxDecTextBox_TextChanged(object sender, EventArgs e)

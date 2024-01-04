@@ -44,10 +44,11 @@ namespace Revised_OPTS.Model
 
         public string? ReleasedBy { get; set; }
         public DateTime? ReleasedDate { get; set; }
-
+        public string? RepName { get; set; }
+        public string? RepContactNumber { get; set; }
 
         //public bool DeletedRecord { get; set; } = false;
-        public bool DuplicateRecord { get; set; } = false;
+        public int DuplicateRecord { get; set; } = 0;
 
 
     }

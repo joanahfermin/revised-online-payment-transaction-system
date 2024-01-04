@@ -269,6 +269,30 @@ namespace Revised_OPTS.Service
                     rpt.VerifiedDate = null;
                     rptRepository.Update(rpt);
                 }
+                else if (rpt.Status == TaxStatus.ForORUpload)
+                {
+                    rpt.Status = TaxStatus.ForPaymentValidation;
+                    rpt.ValidatedBy = null;
+                    rpt.ValidatedDate = null;
+                    rptRepository.Update(rpt);
+                }
+                else if (rpt.Status == TaxStatus.ForORPickup)
+                {
+                    //TO DO: DELETE THE UPLOADED PHOTO ONCE THE STATUS IS REVERTED.
+                    rpt.Status = TaxStatus.ForPaymentValidation;
+                    rpt.UploadedBy = null;
+                    rpt.UploadedDate = null;
+                    rptRepository.Update(rpt);
+                }
+                else if (rpt.Status == TaxStatus.Released)
+                {
+                    rpt.Status = TaxStatus.ForORPickup;
+                    rpt.ReleasedBy = null;
+                    rpt.ReleasedDate = null;
+                    rpt.RepName = null;
+                    rpt.ContactNumber = null;
+                    rptRepository.Update(rpt);
+                }
                 dbContext.SaveChanges();
             }
         }

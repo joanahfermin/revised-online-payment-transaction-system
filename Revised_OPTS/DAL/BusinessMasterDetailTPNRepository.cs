@@ -18,7 +18,8 @@ namespace Inventory_System.DAL
 
         public BusinessMasterDetailTPN retrieveByMpNo(string mpNum)
         {
-            return getDbSet().Where(e => e.RefNo == mpNum).FirstOrDefault();
+            return null;
+            //return getDbSet().Where(e => e.RefNo == mpNum).FirstOrDefault();
         }
     }
 }

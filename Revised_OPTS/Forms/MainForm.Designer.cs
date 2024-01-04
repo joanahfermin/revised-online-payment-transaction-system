@@ -54,7 +54,6 @@
             // 
             // DgMainForm
             // 
-            this.DgMainForm.AllowUserToResizeRows = false;
             this.DgMainForm.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells;
             this.DgMainForm.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.DisplayedCells;
             this.DgMainForm.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
@@ -246,7 +245,7 @@
             this.tbRecordSelected.Name = "tbRecordSelected";
             this.tbRecordSelected.Size = new System.Drawing.Size(60, 26);
             this.tbRecordSelected.TabIndex = 1;
-            this.tbRecordSelected.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.tbRecordSelected.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.tbRecordSelected.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbSearch_KeyDown);
             // 
             // label2
