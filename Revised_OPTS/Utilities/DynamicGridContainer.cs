@@ -188,6 +188,9 @@ namespace Inventory_System.Utilities
                         Rpt rpt = newDataObject as Rpt;
 
                         rpt.RptID = 0;
+                        rpt.PaymentDate = rpt.PaymentDate;
+                        rpt.YearQuarter = rpt.YearQuarter;
+                        rpt.RequestingParty = rpt.RequestingParty;
                     }
                     // Add the duplicated data object to your data source
                     BindingDataList.Add(newDataObject);

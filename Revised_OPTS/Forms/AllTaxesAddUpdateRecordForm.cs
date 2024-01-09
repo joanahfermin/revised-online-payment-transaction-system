@@ -61,6 +61,7 @@ namespace Revised_OPTS.Forms
             btnClose.BackColor = customColor;
 
             btnSaveRecord.Visible = false;
+            cbTaxType.Text = TaxTypeUtil.REALPROPERTYTAX;
         }
 
         public AllTaxesAddUpdateRecordForm(long id, string taxType)

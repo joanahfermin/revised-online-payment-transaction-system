@@ -14,9 +14,9 @@ namespace Inventory_System.Utilities
         
         private const int CONTROL_START_Y = 185;
         
-        private const int LABEL_START_X = 130;
+        private const int LABEL_START_X = 70; //130
         
-        private const int LABEL_COL2_START_X = 630;
+        private const int LABEL_COL2_START_X = 500; //630
 
         private List<Label> dynamicLabelList = new List<Label>();
         

@@ -49,7 +49,7 @@
             this.cbTaxType.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cbTaxType.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.cbTaxType.FormattingEnabled = true;
-            this.cbTaxType.Location = new System.Drawing.Point(447, 50);
+            this.cbTaxType.Location = new System.Drawing.Point(288, 50);
             this.cbTaxType.Name = "cbTaxType";
             this.cbTaxType.Size = new System.Drawing.Size(247, 27);
             this.cbTaxType.TabIndex = 1;
@@ -62,7 +62,7 @@
             this.label1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.label1.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.label1.ForeColor = System.Drawing.Color.White;
-            this.label1.Location = new System.Drawing.Point(308, 58);
+            this.label1.Location = new System.Drawing.Point(149, 58);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(133, 19);
             this.label1.TabIndex = 1;
@@ -77,7 +77,7 @@
             this.btnSaveRecord.ForeColor = System.Drawing.Color.White;
             this.btnSaveRecord.Image = ((System.Drawing.Image)(resources.GetObject("btnSaveRecord.Image")));
             this.btnSaveRecord.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnSaveRecord.Location = new System.Drawing.Point(851, 27);
+            this.btnSaveRecord.Location = new System.Drawing.Point(573, 27);
             this.btnSaveRecord.Name = "btnSaveRecord";
             this.btnSaveRecord.Size = new System.Drawing.Size(184, 71);
             this.btnSaveRecord.TabIndex = 4;
@@ -97,7 +97,7 @@
             this.btnClose.ForeColor = System.Drawing.Color.White;
             this.btnClose.Image = ((System.Drawing.Image)(resources.GetObject("btnClose.Image")));
             this.btnClose.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnClose.Location = new System.Drawing.Point(1041, 27);
+            this.btnClose.Location = new System.Drawing.Point(763, 27);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(126, 71);
             this.btnClose.TabIndex = 4;
@@ -120,7 +120,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1180, 130);
+            this.panel1.Size = new System.Drawing.Size(931, 130);
             this.panel1.TabIndex = 6;
             // 
             // pictureBox1
@@ -138,14 +138,14 @@
             this.errorProvider1.ContainerControl = this;
             this.errorProvider1.Icon = ((System.Drawing.Icon)(resources.GetObject("errorProvider1.Icon")));
             // 
-            // NonRPTAddUpdateRecordForm
+            // AllTaxesAddUpdateRecordForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
-            this.ClientSize = new System.Drawing.Size(1180, 868);
+            this.ClientSize = new System.Drawing.Size(931, 868);
             this.Controls.Add(this.panel1);
-            this.Name = "NonRPTAddUpdateRecordForm";
+            this.Name = "AllTaxesAddUpdateRecordForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "AddNewRecord";
             this.panel1.ResumeLayout(false);

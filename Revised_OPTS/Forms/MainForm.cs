@@ -29,7 +29,7 @@ namespace Revised_OPTS
             { "TaxDec", "TDN" }, { "TaxPayerName", "TaxPayer's Name" }, { "AmountToPay", "Bill Amount" },
             { "AmountTransferred", "Transferred Amount" }, { "TotalAmountTransferred", "Total Amount Transferred" }, { "ExcessShortAmount", "Excess/Short" },
             { "Bank", "Bank" }, { "YearQuarter", "Year" }, { "Quarter", "Quarter" },
-            /*{ "PaymentType", "Payment Type" }, { "BillingSelection", "Billing Selection" },*/ { "Status", "Status" },
+            /*{ "PaymentType", "Payment Type" },*/ { "BillingSelection", "Billing Selection" }, { "Status", "Status" },
             { "RequestingParty", "Email Address" }, { "EncodedBy", "Encoded By" }, { "EncodedDate", "Encoded Date" },
                     { "RefNum", "Reference No." }, { "RPTremarks", "Remarks" },
 
@@ -134,27 +134,22 @@ namespace Revised_OPTS
             {
                 foreach (DataGridViewRow row in selectedRows)
                 {
-                    //conversion of row to Rpt
                     Rpt selectedRptRecord = row.DataBoundItem as Rpt;
                     if (selectedRptRecord.RefNum != null)
                     {
-                        MenuItemEdit_Click(sender, e);
+                        //new RPTMultipleAddUpdateRecordForm(selectedRptRecord.RefNum, selectedRptRecord.RequestingParty).Show();
                     }
                     else
                     {
-                        // Display confirmation box
                         DialogResult result = MessageBox.Show("Are you sure you want to delete the selected records?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
-                        // Check user's response
                         if (result == DialogResult.Yes)
                         {
                             rptService.Delete(selectedRptRecord);
-                            //DgMainForm.Refresh();
                             Search(tbSearch.Text);
                             tbSearch.Clear();
                             MessageBox.Show("Operation completed successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         }
-
                     }
                 }
             }
@@ -183,7 +178,6 @@ namespace Revised_OPTS
                     }
                     else
                     {
-                        // Inform the user that there are no records to update
                         MessageBox.Show("Action cancelled. No status were reverted.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                 }
@@ -204,7 +198,6 @@ namespace Revised_OPTS
                     }
                     else
                     {
-                        // Inform the user that there are no records to update
                         MessageBox.Show("Action cancelled. No status were reverted.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                 }
@@ -230,10 +223,8 @@ namespace Revised_OPTS
                 }
                 if (rptList.Count > 0)
                 {
-                    // Display confirmation box
                     DialogResult result = MessageBox.Show("Are you sure you want to update the status of the selected records?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
-                    // Check user's response
                     if (result == DialogResult.Yes)
                     {
                         rptService.UpdateSelectedRecordsStatus(rptList);
@@ -243,7 +234,6 @@ namespace Revised_OPTS
                 }
                 else
                 {
-                    // Inform the user that there are no records to update
                     MessageBox.Show("No records selected for payment verification.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
@@ -265,7 +255,6 @@ namespace Revised_OPTS
                     // Display confirmation box
                     DialogResult result = MessageBox.Show("Are you sure you want to update the status of the selected records?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
-                    // Check user's response
                     if (result == DialogResult.Yes)
                     {
                         businessService.UpdateSelectedRecordsStatus(businessList);
@@ -275,11 +264,9 @@ namespace Revised_OPTS
                 }
                 else
                 {
-                    // Inform the user that there are no records to update
                     MessageBox.Show("No records selected for payment verification.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
-
         }
 
         private void MenuItemEdit_Click(object? sender, EventArgs e)
@@ -288,9 +275,16 @@ namespace Revised_OPTS
             if (selectedRow != null)
             {
                 Rpt selectedRptRecord = selectedRow.DataBoundItem as Rpt;
-                if (selectedRptRecord != null)
+                if (selectedRptRecord.RefNum != null)
                 {
                     new RPTMultipleAddUpdateRecordForm(selectedRptRecord.RefNum, selectedRptRecord.RequestingParty).Show();
+                }
+                else
+                {
+                    Rpt retrieveRptRecord = rptService.Get(selectedRecordId);
+                    string taxType = TaxTypeUtil.REALPROPERTYTAX;
+                    AllTaxesAddUpdateRecordForm updateRecord = new AllTaxesAddUpdateRecordForm(retrieveRptRecord.RptID, taxType);
+                    updateRecord.ShowDialog();
                 }
             }
         }
@@ -303,27 +297,6 @@ namespace Revised_OPTS
                 e.FormattingApplied = true;
             }
         }
-
-        //public void InitializeData()
-        //{
-        //    List<Rpt> dataList = rptService.GetAll();
-        //    DgMainForm.AutoGenerateColumns = false;
-
-        //    //DgMainForm.Columns.Add("TaxDec", "TDN");
-        //    //DgMainForm.Columns.Add("TaxPayerName", "Taxpayer's Name");
-        //    //DgMainForm.Columns.Add("AmountToPay", "Bill Amount");
-
-        //    //DgMainForm.Columns["TaxDec"].DataPropertyName = "TaxDec";
-        //    //DgMainForm.Columns["TaxPayerName"].DataPropertyName = "TaxPayerName";
-        //    //DgMainForm.Columns["AmountToPay"].DataPropertyName = "AmountToPay";
-
-        //    foreach (var kvp in RPT_DG_COLUMNS)
-        //    {
-        //        DgMainForm.Columns.Add(kvp.Key, kvp.Value);
-        //        DgMainForm.Columns[kvp.Key].DataPropertyName = kvp.Key;
-        //    }
-        //    DgMainForm.DataSource = dataList;
-        //}
 
         public void DataGridUI()
         {
@@ -458,21 +431,7 @@ namespace Revised_OPTS
  
             if (isRptTDNFormatCorrect)
             {
-                DataGridViewRow selectedRow = DgMainForm.CurrentRow;
-
-                Rpt rptRecord = selectedRow.DataBoundItem as Rpt;
-
-                if (rptRecord.RefNum != null)
-                {
-                    MenuItemEdit_Click(sender, e);
-                }
-                else
-                {
-                    Rpt retrieveRptRecord = rptService.Get(selectedRecordId);
-                    string taxType = TaxTypeUtil.REALPROPERTYTAX;
-                    AllTaxesAddUpdateRecordForm updateRecord = new AllTaxesAddUpdateRecordForm(retrieveRptRecord.RptID, taxType);
-                    updateRecord.ShowDialog();
-                }
+                MenuItemEdit_Click(sender, e);
             }
             else if (isBusinessMpNumFormatCorrect)
             {

@@ -23,7 +23,7 @@ namespace Revised_OPTS.Model
         public decimal? TotalAmountTransferred { get; set; }
         public decimal? ExcessShortAmount { get; set; }
         public string? Bank { get; set; }
-        public string? YearQuarter { get; set; }
+        public string? YearQuarter { get; set; } = DateTime.UtcNow.Year.ToString();
         public string? Quarter { get; set; }
         public string? PaymentType { get; set; }
         public string? BillingSelection { get; set; }
@@ -41,7 +41,7 @@ namespace Revised_OPTS.Model
         //public DateTime? BilledDate { get; set; }
 
         public string? VerifiedBy { get; set; }
-        public DateTime? PaymentDate { get; set; }
+        public DateTime? PaymentDate { get; set; } = DateTime.UtcNow;
         public DateTime? VerifiedDate { get; set; }
         public string? ValidatedBy { get; set; }
         public DateTime? ValidatedDate { get; set; }
