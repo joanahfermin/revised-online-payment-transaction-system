@@ -13,7 +13,7 @@ namespace Inventory_System.DAL
     {
         protected DbSet<MiscDetailsBillingStage> getDbSet()
         {
-            return ITDDFMUDAILY2023ApplicationDBContext.Instance.Set<MiscDetailsBillingStage>();
+            return ITDDFMUDAILY2024MISCApplicationDBContext.Instance.Set<MiscDetailsBillingStage>();
         }
 
         public MiscDetailsBillingStage retrieveByBillNum(string billNum)

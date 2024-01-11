@@ -11,6 +11,5 @@ namespace Inventory_System.DAL
     internal interface IRptTaxbillTPNRepository : IRepository<RptTaxbillTPN>
     {
         RptTaxbillTPN retrieveByTDN(string tdn);
-
     }
 }

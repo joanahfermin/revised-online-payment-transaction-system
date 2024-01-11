@@ -13,7 +13,7 @@ namespace Inventory_System.DAL
     {
         protected DbSet<BusinessMasterDetailTPN> getDbSet()
         {
-            return ITDDFMUDAILY2022ApplicationDBContext.Instance.Set<BusinessMasterDetailTPN>();
+            return ITDDFMUDAILY2024ApplicationDBContext.Instance.Set<BusinessMasterDetailTPN>();
         }
 
         public BusinessMasterDetailTPN retrieveByMpNo(string mpNum)

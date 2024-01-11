@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Inventory_System.Model
 {
-    [Table("V_TaxBills")]
+    [Table("TAXBILLSSTAGE")]
 
     internal class RptTaxbillTPN
     {
