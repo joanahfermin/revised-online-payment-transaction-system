@@ -50,5 +50,10 @@ namespace Revised_OPTS.DAL
             b.DeletedRecord = 1;
             Update(entity);
         }
+
+        public void PhysicalDelete(T entity)
+        {
+            getDbSet().Remove(entity);
+        }
     }
 }

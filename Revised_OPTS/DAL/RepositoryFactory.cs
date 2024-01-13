@@ -50,5 +50,10 @@ namespace Revised_OPTS.DAL
         {
             return new MiscDetailsBillingStageRepository();
         }
+
+        public IRPTAttachPictureRepository GetRPTAttachPictureRepository()
+        {
+            return new RPTAttachPictureRepository();
+        }
     }
 }

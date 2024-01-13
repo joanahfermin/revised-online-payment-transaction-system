@@ -17,6 +17,6 @@ namespace Revised_OPTS.Model
 
         public long BankID { get; set; }
         public string BankName { get; set; }
-
-    }
+        public bool isEBank { get; set; }
+}
 }

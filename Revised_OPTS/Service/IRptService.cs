@@ -1,4 +1,5 @@
-﻿using Revised_OPTS.Model;
+﻿using Inventory_System.Model;
+using Revised_OPTS.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,8 +13,12 @@ namespace Revised_OPTS.Service
         Rpt Get(object id);
         List<Rpt> GetAll();
         List<Bank> GetAllBanks();
+        List<Bank> GetRegularBanks();
+        List<Bank> GetElectronicBanks();
+
         List<Rpt> RetrieveBySearchKeyword(string tdn);
         List<Rpt> RetrieveBySameRefNumAndReqParty(string refNum, string reqParty);
+        List<Rpt> RetrieveForORUploadRegular(DateTime date, string bank, string validatedBy);
 
         void Insert(Rpt rpt);
         void Update(Rpt rpt);
@@ -21,5 +26,8 @@ namespace Revised_OPTS.Service
         void RevertSelectedRecordStatus(Rpt rpt);
         void Delete(Rpt rpt);
         void SaveAll(List<Rpt> rpt, List<Rpt> rptToDelte, decimal totalAmountTransferred);
+
+        void InsertPicture(RPTAttachPicture pix);
+        RPTAttachPicture getRptReceipt(long rptId);
     }
 }

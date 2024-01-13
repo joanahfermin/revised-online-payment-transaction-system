@@ -16,5 +16,10 @@ namespace Inventory_System.DAL
         {
             return getDbSet().FirstOrDefault(u => u.UserName == userName);
         }
+
+        public List<UserAccount> GetValidators()
+        {
+            return getDbSet().Where(u => u.isValidator == true).OrderBy(u => u.DisplayName).ToList();
+        }
     }
 }

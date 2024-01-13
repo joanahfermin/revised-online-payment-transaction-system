@@ -510,5 +510,12 @@ namespace Revised_OPTS
         {
             btnAddRptRecord.BackgroundImage = originalBackgroundImageRpt;
         }
+
+        private void btnORUpload_Click(object sender, EventArgs e)
+        {
+            ORUploadForm orUploadForm = new ORUploadForm();
+            orUploadForm.ShowDialog();
+
+        }
     }
 }

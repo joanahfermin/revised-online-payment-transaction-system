@@ -31,6 +31,16 @@ namespace Revised_OPTS.DAL
             .OrderBy(j => j.RptID).ThenBy(j => j.TaxDec).ToList();
         }
 
+        public List<Rpt> RetrieveForORUploadRegular(DateTime date, string bank, string validatedBy)
+        {
+            return getDbSet().Where(rpt =>
+                    rpt.ValidatedDate.HasValue &&
+                    rpt.ValidatedDate.Value.Date == date.Date &&
+                    rpt.Bank == bank &&
+                    rpt.ValidatedBy == validatedBy
+                ).OrderBy(rpt => rpt.ValidatedDate).ToList();
+
+        }
         public List<Rpt> retrieveBySearchKeyword(string tdn)
         {
 

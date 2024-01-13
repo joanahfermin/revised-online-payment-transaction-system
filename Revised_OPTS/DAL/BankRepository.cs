@@ -22,5 +22,13 @@ namespace Revised_OPTS.DAL
         {
             return getDbSet().OrderBy(bank => bank.BankName).ToList();
         }
+        public List<Bank> GetRegularBanks()
+        {
+            return getDbSet().Where(bank => bank.isEBank == false).OrderBy(bank => bank.BankName).ToList();
+        }
+        public List<Bank> GetElectronicBanks()
+        {
+            return getDbSet().Where(bank => bank.isEBank == true).OrderBy(bank => bank.BankName).ToList();
+        }
     }
 }

@@ -10,5 +10,7 @@ namespace Revised_OPTS.DAL
     internal interface IBankRepository
     {
         List<Bank> GetBanks();
+        List<Bank> GetRegularBanks();
+        List<Bank> GetElectronicBanks();
     }
 }

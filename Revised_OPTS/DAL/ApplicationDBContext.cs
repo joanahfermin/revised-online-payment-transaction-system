@@ -65,6 +65,8 @@ namespace Revised_OPTS.DAL
         /// </summary>
         public DbSet<UserAccount> users { get; set; }
 
+        public DbSet<RPTAttachPicture> rptPictures { get; set; }
+
     }
 
 }

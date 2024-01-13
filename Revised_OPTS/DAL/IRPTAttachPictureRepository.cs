@@ -8,9 +8,8 @@ using System.Threading.Tasks;
 
 namespace Inventory_System.DAL
 {
-    internal interface IUserRepository : IRepository<UserAccount>
+    internal interface IRPTAttachPictureRepository : IRepository<RPTAttachPicture>
     {
-        UserAccount FindByUserName(string userName);
-        List<UserAccount> GetValidators();
+        RPTAttachPicture getRptReceipt(long rptId);
     }
 }

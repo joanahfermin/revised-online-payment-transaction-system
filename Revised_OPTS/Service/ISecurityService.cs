@@ -12,5 +12,7 @@ namespace Inventory_System.Service
         void login(string userName, string passWord);
 
         UserAccount getLoginUser();
+
+        List<UserAccount> GetValidators();
     }
 }

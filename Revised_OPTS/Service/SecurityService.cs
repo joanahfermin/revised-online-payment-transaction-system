@@ -41,5 +41,12 @@ namespace Inventory_System.Service
             return LOGIN_USER;
         }
 
+        public List<UserAccount> GetValidators()
+        {
+            using (var dbContext = ApplicationDBContext.Create())
+            {
+                return userRepository.GetValidators();
+            }
+        }
     }
 }

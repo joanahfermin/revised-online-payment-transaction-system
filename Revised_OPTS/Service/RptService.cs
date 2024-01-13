@@ -37,7 +37,7 @@ namespace Revised_OPTS.Service
         /// </summary>
         //IRptService rptService = ServiceFactory.Instance.GetRptService();
 
-
+        IRPTAttachPictureRepository PictureRepository = RepositoryFactory.Instance.GetRPTAttachPictureRepository();
         public Rpt Get(object id)
         {
             using (var dbContext = ApplicationDBContext.Create())
@@ -62,11 +62,34 @@ namespace Revised_OPTS.Service
             }
         }
 
+        public List<Bank> GetRegularBanks()
+        {
+            using (var dbContext = ApplicationDBContext.Create())
+            {
+                return bankRepository.GetRegularBanks();
+            }
+        }
+        public List<Bank> GetElectronicBanks()
+        {
+            using (var dbContext = ApplicationDBContext.Create())
+            {
+                return bankRepository.GetElectronicBanks();
+            }
+        }
+
         public List<Rpt> RetrieveBySearchKeyword(string tdn)
         {
             using (var dbContext = ApplicationDBContext.Create())
             {
                 return rptRepository.retrieveBySearchKeyword(tdn);
+            }
+        }
+
+        public List<Rpt> RetrieveForORUploadRegular(DateTime date, string bank, string validatedBy)
+        {
+            using (var dbContext = ApplicationDBContext.Create())
+            {
+                return rptRepository.RetrieveForORUploadRegular(date, bank, validatedBy);
             }
         }
 
@@ -308,6 +331,32 @@ namespace Revised_OPTS.Service
                     dbContext.SaveChanges();
                     scope.Complete();
                 }
+            }
+        }
+
+        public void InsertPicture(RPTAttachPicture pix)
+        {
+            using (var dbContext = ApplicationDBContext.Create())
+            {
+                using (var scope = new TransactionScope())
+                {
+                    RPTAttachPicture existing = PictureRepository.getRptReceipt(pix.RptId);
+                    if (existing != null && existing.PictureId>0)
+                    {
+                        PictureRepository.PhysicalDelete(existing);
+                    }
+                    PictureRepository.Insert(pix);
+                    dbContext.SaveChanges();
+                    scope.Complete();
+                }
+            }                
+        }
+
+        public RPTAttachPicture getRptReceipt(long rptId)
+        {
+            using (var dbContext = ApplicationDBContext.Create())
+            {
+                return PictureRepository.getRptReceipt(rptId);
             }
         }
     }
