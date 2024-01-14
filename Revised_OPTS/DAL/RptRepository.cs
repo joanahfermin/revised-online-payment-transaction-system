@@ -31,6 +31,41 @@ namespace Revised_OPTS.DAL
             .OrderBy(j => j.RptID).ThenBy(j => j.TaxDec).ToList();
         }
 
+        public List<Rpt> RetrieveBySameRefNumInUploadingEpayment(string taxdec)
+        {
+            string sql = getDbSet().Where(j => j.TaxDec.Contains(taxdec) && j.DeletedRecord != 1 && j.Status == "FOR O.R UPLOAD")
+                .Union(getDbSet()
+                .Where(j => getDbSet()
+                    .Where(innerJ => innerJ.TaxDec.Contains(taxdec))
+                    .Select(innerJ => innerJ.RefNum)
+                    .Contains(j.RefNum) && j.DeletedRecord != 1 && j.Status == "FOR O.R UPLOAD"))
+
+                .OrderByDescending(j => j.RefNum)
+                .ThenBy(j => j.EncodedDate).ToQueryString();
+            return getDbSet().Where(j => j.TaxDec.Contains(taxdec) && j.DeletedRecord != 1 && j.Status == "FOR O.R UPLOAD")
+                .Union(getDbSet()
+                .Where(j => getDbSet()
+                    .Where(innerJ => innerJ.TaxDec.Contains(taxdec))
+                    .Select(innerJ => innerJ.RefNum)
+                    .Contains(j.RefNum) && j.DeletedRecord != 1 && j.Status == "FOR O.R UPLOAD"))
+
+                .OrderByDescending(j => j.RefNum)
+                .ThenBy(j => j.EncodedDate)
+                .ToList();
+            /*
+            return getDbSet().Where(j => j.TaxDec.Contains(taxdec) && j.DeletedRecord != 1 && j.Status == "FOR O.R UPLOAD")
+                .Union(getDbSet()
+                .Where(j => getDbSet()
+                    .Where(innerJ => innerJ.TaxDec.Contains(taxdec))
+                    .Select(innerJ => innerJ.RefNum)
+                    .Contains(j.RefNum) && j.DeletedRecord != 1 && j.Status == "FOR O.R UPLOAD").OrderByDescending(j => j.RefNum)
+                .ThenBy(j => j.EncodedDate))
+
+                
+                .ToList();
+            */
+        }
+
         public List<Rpt> RetrieveForORUploadRegular(DateTime date, string bank, string validatedBy)
         {
             return getDbSet().Where(rpt =>

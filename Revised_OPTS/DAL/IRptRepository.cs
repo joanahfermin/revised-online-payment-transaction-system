@@ -14,5 +14,6 @@ namespace Revised_OPTS.DAL
         List<Rpt> retrieveBySameRefNumAndReqParty(string refNum, string reqParty);
         List<Rpt> checkExistingRecord(Rpt rpt);
         List<Rpt> RetrieveForORUploadRegular(DateTime date, string bank, string validatedBy);
+        List<Rpt> RetrieveBySameRefNumInUploadingEpayment(string refNum);
     }
 }

@@ -359,5 +359,14 @@ namespace Revised_OPTS.Service
                 return PictureRepository.getRptReceipt(rptId);
             }
         }
+
+        public List<Rpt> RetrieveBySameRefNumInUploadingEpayment(string taxdec)
+        {
+            using (var dbContext = ApplicationDBContext.Create())
+            {
+                return rptRepository.RetrieveBySameRefNumInUploadingEpayment(taxdec);
+            }
+
+        }
     }
 }

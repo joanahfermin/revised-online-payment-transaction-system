@@ -132,7 +132,7 @@ namespace Inventory_System.Forms
         {
             if (rbElectronic.Checked)
             {
-                dgRptList.DataSource = rptService.RetrieveBySearchKeyword(tbElectronicTaxDec.Text);
+                dgRptList.DataSource = rptService.RetrieveBySameRefNumInUploadingEpayment(tbElectronicTaxDec.Text);
             }
             else
             {
@@ -203,6 +203,11 @@ namespace Inventory_System.Forms
                 Rpt rpt = selectedRow.DataBoundItem as Rpt;
                 loadRptReceipt(rpt.RptID);
             }
+        }
+
+        private void dgRptList_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+
         }
     }
 }
