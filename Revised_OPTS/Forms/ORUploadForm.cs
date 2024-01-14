@@ -164,7 +164,7 @@ namespace Inventory_System.Forms
                 loadRptReceipt(rpt.RptID);
 
                 // Give user few second to see the photo and then select the next record
-                Task.Delay(3000).ContinueWith(_ =>
+                Task.Delay(1000).ContinueWith(_ =>
                 {
                     int currentRowIndex = dgRptList.CurrentCell.RowIndex;
                     if (currentRowIndex < dgRptList.Rows.Count - 1)

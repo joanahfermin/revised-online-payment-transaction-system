@@ -107,7 +107,7 @@ namespace Revised_OPTS
                     {
                         // Assuming AmountToPay is a property in your Rpt class and Sum is a property of AmountToPay
                         sumBillAmount = (decimal)(selectedRptRecord.AmountToPay + sumBillAmount);
-                        sumTotalTransferredAmount = (decimal)(selectedRptRecord.TotalAmountTransferred + sumTotalTransferredAmount);
+                        sumTotalTransferredAmount = (decimal)(selectedRptRecord.TotalAmountTransferred ?? 0) + sumTotalTransferredAmount;
                     }
                 }
                 else if (CURRENT_RECORD_TYPE == BUSINESS_RECORD_TYPE)
@@ -117,8 +117,8 @@ namespace Revised_OPTS
                     if (selectedRptRecord != null)
                     {
                         // Assuming AmountToPay is a property in your Rpt class and Sum is a property of AmountToPay
-                        sumBillAmount = (decimal)(selectedRptRecord.BillAmount + sumBillAmount);
-                        sumTotalTransferredAmount = (decimal)(selectedRptRecord.TotalAmount + sumTotalTransferredAmount);
+                        sumBillAmount = (decimal)(selectedRptRecord.BillAmount ?? 0 ) + sumBillAmount;
+                        sumTotalTransferredAmount = (decimal)(selectedRptRecord.TotalAmount ?? 0) + sumTotalTransferredAmount;
                     }
                 }
                 tbTotalBillAmount.Text = sumBillAmount.ToString("N2");
