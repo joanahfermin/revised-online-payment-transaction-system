@@ -33,16 +33,39 @@ namespace Inventory_System.Forms
             { "BillingSelection", "Billing Selection" }, { "ValidatedBy", "Validated By" },
         };
 
+        private Image originalBackgroundImageRpt;
+
         public ORUploadForm()
         {
             InitializeComponent();
-            WindowState = FormWindowState.Maximized;
             rbElectronic.Checked = true;
 
             InitializeCombobox();
             InitializeGrid();
             InitializeCamera();
+            //DataGridUI();
+            //dgRptList.ColumnHeadersVisible = true;
         }
+
+        public void DataGridUI()
+        {
+            dgRptList.DefaultCellStyle.Font = new Font("Tahoma", 12, FontStyle.Regular);
+            dgRptList.BackgroundColor = Color.White;
+            this.WindowState = FormWindowState.Maximized;
+            dgRptList.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.DisplayedCells;
+            dgRptList.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+
+
+            dgRptList.DefaultCellStyle.BackColor = Color.AliceBlue;
+
+            dgRptList.ColumnHeadersDefaultCellStyle.ForeColor = Color.MidnightBlue;
+            dgRptList.GridColor = Color.DarkGray;
+            dgRptList.CellBorderStyle = DataGridViewCellBorderStyle.Single;
+            dgRptList.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.Raised;
+
+            dgRptList.DefaultCellStyle.SelectionBackColor = Color.AliceBlue;
+        }
+
 
         private void InitializeCombobox()
         {
@@ -62,10 +85,21 @@ namespace Inventory_System.Forms
                 dgRptList.Columns.Add(kvp.Key, kvp.Value);
                 dgRptList.Columns[kvp.Key].DataPropertyName = kvp.Key;
             }
+            //dgRptList.Refresh();
+            /*
             dgRptList.ColumnHeadersDefaultCellStyle.Font = new Font("Tahoma", 12, FontStyle.Regular);
             dgRptList.ColumnHeadersDefaultCellStyle.ForeColor = Color.Black;
             dgRptList.ColumnHeadersDefaultCellStyle.BackColor = Color.DarkSalmon;
             dgRptList.ColumnHeadersDefaultCellStyle.SelectionBackColor = Color.DarkSalmon;
+
+            foreach (DataGridViewColumn column in dgRptList.Columns)
+            {
+                column.HeaderCell.Style.Font = dgRptList.ColumnHeadersDefaultCellStyle.Font;
+                column.HeaderCell.Style.ForeColor = dgRptList.ColumnHeadersDefaultCellStyle.ForeColor;
+                column.HeaderCell.Style.BackColor = dgRptList.ColumnHeadersDefaultCellStyle.BackColor;
+                column.HeaderCell.Style.SelectionBackColor = dgRptList.ColumnHeadersDefaultCellStyle.SelectionBackColor;
+            }
+            */
         }
 
         private void InitializeCamera()
@@ -92,6 +126,8 @@ namespace Inventory_System.Forms
                         pbVideoCapture.Image.Dispose();
                     }
                     pbVideoCapture.Image = image;
+                    // added small delay in between refresh to stabilize and avoid crash
+                    Thread.Sleep(10);
                 }
                 videoCapture.Release();
                 lock (pbVideoCapture)
@@ -146,35 +182,6 @@ namespace Inventory_System.Forms
             cameraThread.Join();
         }
 
-        private void btnSaveReceipt_Click(object sender, EventArgs e)
-        {
-            DataGridViewRow selectedRow = dgRptList.CurrentRow;
-            if (selectedRow != null && videoCapture!= null && videoCapture.IsOpened())
-            {
-                // prepare photo, save, and then show
-                Rpt rpt = selectedRow.DataBoundItem as Rpt;
-                RPTAttachPicture rptAttachPicture = new RPTAttachPicture();
-                rptAttachPicture.RptId = rpt.RptID;
-                rptAttachPicture.DocumentType = DocumentType.RECEIPT;
-                rptAttachPicture.FileName = "or.jpg";
-                byte[] FileData = ImageUtil.ImageToByteArray(pbVideoCapture.Image);
-                byte[] resizeFileData = ImageUtil.resizeJpg(FileData);
-                rptAttachPicture.FileData = resizeFileData;
-                rptService.InsertPicture(rptAttachPicture);
-                loadRptReceipt(rpt.RptID);
-
-                // Give user few second to see the photo and then select the next record
-                Task.Delay(1000).ContinueWith(_ =>
-                {
-                    int currentRowIndex = dgRptList.CurrentCell.RowIndex;
-                    if (currentRowIndex < dgRptList.Rows.Count - 1)
-                    {
-                        dgRptList.CurrentCell = dgRptList.Rows[currentRowIndex + 1].Cells[dgRptList.CurrentCell.ColumnIndex];
-                    }
-                }, TaskScheduler.FromCurrentSynchronizationContext());
-            }
-        }
-
         /*private void dgRptList_CellClick(object sender, DataGridViewCellEventArgs e)
         {
 
@@ -201,8 +208,74 @@ namespace Inventory_System.Forms
             if (selectedRow != null)
             {
                 Rpt rpt = selectedRow.DataBoundItem as Rpt;
-                loadRptReceipt(rpt.RptID);
+                if (rpt != null)
+                {
+                    loadRptReceipt(rpt.RptID);
+                }
             }
         }
+
+        private void btnUploadReceipt_Click(object sender, EventArgs e)
+        {
+            DataGridViewRow selectedRow = dgRptList.CurrentRow;
+            if (selectedRow != null && videoCapture != null && videoCapture.IsOpened())
+            {
+                // prepare photo, save, and then show
+                Rpt rpt = selectedRow.DataBoundItem as Rpt;
+                RPTAttachPicture rptAttachPicture = new RPTAttachPicture();
+                rptAttachPicture.RptId = rpt.RptID;
+                rptAttachPicture.DocumentType = DocumentType.RECEIPT;
+                rptAttachPicture.FileName = "or.jpg";
+                byte[] FileData = ImageUtil.ImageToByteArray(pbVideoCapture.Image);
+                byte[] resizeFileData = ImageUtil.resizeJpg(FileData);
+                rptAttachPicture.FileData = resizeFileData;
+                rptService.InsertPicture(rptAttachPicture);
+                loadRptReceipt(rpt.RptID);
+
+                // Give user few second to see the photo and then select the next record
+                Task.Delay(1000).ContinueWith(_ =>
+                {
+                    int currentRowIndex = dgRptList.CurrentCell.RowIndex;
+                    if (currentRowIndex < dgRptList.Rows.Count - 1)
+                    {
+                        dgRptList.CurrentCell = dgRptList.Rows[currentRowIndex + 1].Cells[dgRptList.CurrentCell.ColumnIndex];
+                    }
+                }, TaskScheduler.FromCurrentSynchronizationContext());
+            }
+        }
+
+        private void btnUploadReceipt_MouseEnter(object sender, EventArgs e)
+        {
+            originalBackgroundImageRpt = btnUploadReceipt.BackgroundImage;
+            btnUploadReceipt.BackgroundImage = null;
+
+            Color customColor = Color.FromArgb(23, 45, 74);
+            btnUploadReceipt.BackColor = customColor;
+        }
+
+        private void btnUploadReceipt_MouseLeave(object sender, EventArgs e)
+        {
+            btnUploadReceipt.BackgroundImage = originalBackgroundImageRpt;
+        }
+
+        private void btnClose_MouseEnter(object sender, EventArgs e)
+        {
+            originalBackgroundImageRpt = btnClose.BackgroundImage;
+            btnClose.BackgroundImage = null;
+
+            Color customColor = Color.FromArgb(23, 45, 74);
+            btnClose.BackColor = customColor;
+        }
+
+        private void btnClose_MouseLeave(object sender, EventArgs e)
+        {
+            btnClose.BackgroundImage = originalBackgroundImageRpt;
+        }
+
+        private void btnClose_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
     }
 }
