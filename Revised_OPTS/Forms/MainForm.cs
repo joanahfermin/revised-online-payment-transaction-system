@@ -460,6 +460,16 @@ namespace Revised_OPTS
             }
         }
 
+        private void MainForm_SizeChanged(object sender, EventArgs e)
+        {
+            DgMainForm.Size = new Size(this.ClientSize.Width - 50, this.ClientSize.Height - 170);
+        }
+
+        private void btnAddNewRecord_Click(object sender, EventArgs e)
+        {
+            new AllTaxesAddUpdateRecordForm().Show();
+        }
+
         private void btnAddNewRecord_MouseEnter(object sender, EventArgs e)
         {
             originalBackgroundImageNonRpt = btnNonRptAddNewRecord.BackgroundImage;
@@ -472,24 +482,6 @@ namespace Revised_OPTS
         private void btnAddNewRecord_MouseLeave(object sender, EventArgs e)
         {
             btnNonRptAddNewRecord.BackgroundImage = originalBackgroundImageNonRpt;
-        }
-
-        private void btnAddNewRecord_Click(object sender, EventArgs e)
-        {
-            new AllTaxesAddUpdateRecordForm().Show();
-        }
-
-        private void MainForm_SizeChanged(object sender, EventArgs e)
-        {
-            DgMainForm.Size = new Size(this.ClientSize.Width - 50, this.ClientSize.Height - 170);
-        }
-
-        private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            if (LoginForm.INSTANCE != null)
-            {
-                LoginForm.INSTANCE.Close();
-            }
         }
 
         private void btnAddRptRecord_Click(object sender, EventArgs e)
@@ -515,7 +507,28 @@ namespace Revised_OPTS
         {
             ORUploadForm orUploadForm = new ORUploadForm();
             orUploadForm.ShowDialog();
+        }
 
+        private void btnORUpload_MouseEnter(object sender, EventArgs e)
+        {
+            originalBackgroundImageRpt = btnORUpload.BackgroundImage;
+            btnORUpload.BackgroundImage = null;
+
+            Color customColor = Color.FromArgb(23, 45, 74);
+            btnORUpload.BackColor = customColor;
+        }
+
+        private void btnORUpload_MouseLeave(object sender, EventArgs e)
+        {
+            btnORUpload.BackgroundImage = originalBackgroundImageRpt;
+        }
+
+        private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            if (LoginForm.INSTANCE != null)
+            {
+                LoginForm.INSTANCE.Close();
+            }
         }
     }
 }

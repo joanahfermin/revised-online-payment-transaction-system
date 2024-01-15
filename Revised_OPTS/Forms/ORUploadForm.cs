@@ -29,8 +29,8 @@ namespace Inventory_System.Forms
         Dictionary<string, string> RPT_DG_COLUMNS = new Dictionary<string, string>
         {
             { "TaxDec", "TDN" }, { "TaxPayerName", "TaxPayer's Name" }, { "AmountToPay", "Bill Amount" },
-            { "AmountTransferred", "Transferred Amount" }, { "Bank", "Bank" }, { "YearQuarter", "Year" },
-            { "ValidatedBy", "Validated By" },
+            { "AmountTransferred", "Transferred Amount" }, { "Bank", "Bank" }, { "YearQuarter", "Year" }, { "Quarter", "Quarter" },
+            { "BillingSelection", "Billing Selection" }, { "ValidatedBy", "Validated By" },
         };
 
         public ORUploadForm()
@@ -203,11 +203,6 @@ namespace Inventory_System.Forms
                 Rpt rpt = selectedRow.DataBoundItem as Rpt;
                 loadRptReceipt(rpt.RptID);
             }
-        }
-
-        private void dgRptList_CellClick(object sender, DataGridViewCellEventArgs e)
-        {
-
         }
     }
 }

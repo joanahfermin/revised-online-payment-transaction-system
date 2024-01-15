@@ -33,37 +33,26 @@ namespace Revised_OPTS.DAL
 
         public List<Rpt> RetrieveBySameRefNumInUploadingEpayment(string taxdec)
         {
-            string sql = getDbSet().Where(j => j.TaxDec.Contains(taxdec) && j.DeletedRecord != 1 && j.Status == "FOR O.R UPLOAD")
-                .Union(getDbSet()
-                .Where(j => getDbSet()
-                    .Where(innerJ => innerJ.TaxDec.Contains(taxdec))
-                    .Select(innerJ => innerJ.RefNum)
-                    .Contains(j.RefNum) && j.DeletedRecord != 1 && j.Status == "FOR O.R UPLOAD"))
-
-                .OrderByDescending(j => j.RefNum)
-                .ThenBy(j => j.EncodedDate).ToQueryString();
-            return getDbSet().Where(j => j.TaxDec.Contains(taxdec) && j.DeletedRecord != 1 && j.Status == "FOR O.R UPLOAD")
-                .Union(getDbSet()
-                .Where(j => getDbSet()
-                    .Where(innerJ => innerJ.TaxDec.Contains(taxdec))
-                    .Select(innerJ => innerJ.RefNum)
-                    .Contains(j.RefNum) && j.DeletedRecord != 1 && j.Status == "FOR O.R UPLOAD"))
-
+            return getDbSet()
+                //SELECT * FROM Jo_RPT where TaxDec LIKE @TaxDec and DeletedRecord != 1
+                .Where(j => j.TaxDec.Contains(taxdec) && j.DeletedRecord != 1)
+                //UNION
+                .Union(
+                    //SELECT *FROM Jo_RPT where RefNum
+                    getDbSet()
+                        .Where(j => getDbSet()
+                            // (select RefNum FROM Jo_RPT where TaxDec LIKE @TaxDec)
+                            .Where(subJ => subJ.TaxDec.Contains(taxdec))
+                            .Select(subJ => subJ.RefNum)
+                            //RefNum in (select RefNum
+                            .Contains(j.RefNum)
+                            //and DeletedRecord != 1  AND RefNum IS NOT NULL AND RefNum != ''
+                            && j.DeletedRecord != 1 && j.RefNum != null && j.RefNum != "" && j.Status == "FOR O.R UPLOAD")
+                )
+                //order by RefNum desc, EncodedDate asc
                 .OrderByDescending(j => j.RefNum)
                 .ThenBy(j => j.EncodedDate)
                 .ToList();
-            /*
-            return getDbSet().Where(j => j.TaxDec.Contains(taxdec) && j.DeletedRecord != 1 && j.Status == "FOR O.R UPLOAD")
-                .Union(getDbSet()
-                .Where(j => getDbSet()
-                    .Where(innerJ => innerJ.TaxDec.Contains(taxdec))
-                    .Select(innerJ => innerJ.RefNum)
-                    .Contains(j.RefNum) && j.DeletedRecord != 1 && j.Status == "FOR O.R UPLOAD").OrderByDescending(j => j.RefNum)
-                .ThenBy(j => j.EncodedDate))
-
-                
-                .ToList();
-            */
         }
 
         public List<Rpt> RetrieveForORUploadRegular(DateTime date, string bank, string validatedBy)
