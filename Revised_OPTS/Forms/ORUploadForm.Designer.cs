@@ -125,9 +125,9 @@
             this.dgRptList.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.DisplayedCells;
             this.dgRptList.BackgroundColor = System.Drawing.Color.White;
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.Salmon;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.DarkSalmon;
             dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Black;
             dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.LightSalmon;
             dataGridViewCellStyle1.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
             dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
@@ -177,9 +177,9 @@
             // pbVideoCapture
             // 
             this.pbVideoCapture.BackColor = System.Drawing.Color.Transparent;
-            this.pbVideoCapture.Location = new System.Drawing.Point(1026, 535);
+            this.pbVideoCapture.Location = new System.Drawing.Point(1026, 700);
             this.pbVideoCapture.Name = "pbVideoCapture";
-            this.pbVideoCapture.Size = new System.Drawing.Size(741, 461);
+            this.pbVideoCapture.Size = new System.Drawing.Size(475, 296);
             this.pbVideoCapture.TabIndex = 12;
             this.pbVideoCapture.TabStop = false;
             // 
@@ -188,8 +188,7 @@
             this.pbReceipt.BackColor = System.Drawing.Color.Transparent;
             this.pbReceipt.Location = new System.Drawing.Point(1026, 61);
             this.pbReceipt.Name = "pbReceipt";
-            this.pbReceipt.Size = new System.Drawing.Size(741, 420);
-            this.pbReceipt.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pbReceipt.Size = new System.Drawing.Size(741, 584);
             this.pbReceipt.TabIndex = 14;
             this.pbReceipt.TabStop = false;
             // 
@@ -286,7 +285,7 @@
             this.label6.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.label6.ForeColor = System.Drawing.Color.White;
             this.label6.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.label6.Location = new System.Drawing.Point(1010, 488);
+            this.label6.Location = new System.Drawing.Point(1010, 653);
             this.label6.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
             this.label6.Name = "label6";
             this.label6.Padding = new System.Windows.Forms.Padding(10);
@@ -315,7 +314,7 @@
             this.btnClose.ForeColor = System.Drawing.Color.White;
             this.btnClose.Image = ((System.Drawing.Image)(resources.GetObject("btnClose.Image")));
             this.btnClose.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnClose.Location = new System.Drawing.Point(842, 12);
+            this.btnClose.Location = new System.Drawing.Point(1538, 923);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(126, 73);
             this.btnClose.TabIndex = 203;
@@ -336,7 +335,7 @@
             this.btnUploadReceipt.ForeColor = System.Drawing.Color.White;
             this.btnUploadReceipt.Image = ((System.Drawing.Image)(resources.GetObject("btnUploadReceipt.Image")));
             this.btnUploadReceipt.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnUploadReceipt.Location = new System.Drawing.Point(622, 12);
+            this.btnUploadReceipt.Location = new System.Drawing.Point(1538, 844);
             this.btnUploadReceipt.Name = "btnUploadReceipt";
             this.btnUploadReceipt.Size = new System.Drawing.Size(201, 73);
             this.btnUploadReceipt.TabIndex = 204;

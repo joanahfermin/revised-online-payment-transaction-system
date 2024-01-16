@@ -19,10 +19,11 @@ namespace Inventory_System.Forms
 {
     public partial class ORUploadForm : Form
     {
-        IRptService rptService = ServiceFactory.Instance.GetRptService();
-        ISecurityService securityService = ServiceFactory.Instance.GetSecurityService();
+        private IRptService rptService = ServiceFactory.Instance.GetRptService();
+        private ISecurityService securityService = ServiceFactory.Instance.GetSecurityService();
 
-        VideoCapture videoCapture;
+        private VideoCapture videoCapture;
+        private Mat frame = new Mat();
         private Thread cameraThread;
         private bool stopCameraThread = false;
 
@@ -94,20 +95,28 @@ namespace Inventory_System.Forms
             videoCapture = new VideoCapture(0);
             videoCapture.Open(0);
 
-            Mat frame = new Mat();
+            
             if (videoCapture.IsOpened())
             {
-                while(!stopCameraThread)
+                videoCapture.FrameHeight = 1920;
+                videoCapture.FrameWidth = 1080;
+
+                while (!stopCameraThread)
                 {
                     videoCapture.Read(frame);
-                    Bitmap image = BitmapConverter.ToBitmap(frame);
-                    if (pbVideoCapture.Image != null)
+                    Bitmap image;
+                    Image tempImage = pbVideoCapture.Image;
+                    lock (videoCapture)
                     {
-                        pbVideoCapture.Image.Dispose();
+                        image = BitmapConverter.ToBitmap(frame);
                     }
+                    Thread.Sleep(5);
                     pbVideoCapture.Image = image;
-                    // added small delay in between refresh to stabilize and avoid crash
-                    Thread.Sleep(10);
+                    if (tempImage != null)
+                    {
+                        tempImage.Dispose();
+                    }
+                    Thread.Sleep(5);
                 }
                 videoCapture.Release();
                 lock (pbVideoCapture)
@@ -194,6 +203,8 @@ namespace Inventory_System.Forms
             if (pix != null)
             {
                 pbReceipt.Image = Image.FromStream(new MemoryStream(pix.FileData));
+                pbReceipt.SizeMode = PictureBoxSizeMode.StretchImage;
+                //File.WriteAllBytes($"c:/temp/{rptId}.jpg", pix.FileData);
             }
         }
 
@@ -221,7 +232,16 @@ namespace Inventory_System.Forms
                 rptAttachPicture.RptId = rpt.RptID;
                 rptAttachPicture.DocumentType = DocumentType.RECEIPT;
                 rptAttachPicture.FileName = "or.jpg";
-                byte[] FileData = ImageUtil.ImageToByteArray(pbVideoCapture.Image);
+
+                Bitmap image;
+                lock (videoCapture)
+                {
+                    image = BitmapConverter.ToBitmap(frame);
+                }
+                byte[] FileData = ImageUtil.ImageToByteArray(image);
+                image.Dispose();
+
+                //byte[] FileData = ImageUtil.ImageToByteArray(pbVideoCapture.Image);
                 byte[] resizeFileData = ImageUtil.resizeJpg(FileData);
                 rptAttachPicture.FileData = resizeFileData;
                 rptService.InsertPicture(rptAttachPicture);
