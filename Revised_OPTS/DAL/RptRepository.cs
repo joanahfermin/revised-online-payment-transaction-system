@@ -33,7 +33,12 @@ namespace Revised_OPTS.DAL
 
         public List<Rpt> RetrieveBySameRefNumInUploadingEpayment(string taxdec)
         {
-            return getDbSet()
+            return getDbSet().FromSqlRaw<Rpt>(
+                $"SELECT *FROM Jo_RPT where TaxDec LIKE @TaxDec and DeletedRecord != 1 and Status = 'FOR O.R UPLOAD' UNION " +
+                $"SELECT *FROM Jo_RPT where RefNum in (select RefNum FROM Jo_RPT where TaxDec LIKE @TaxDec) and DeletedRecord != 1 and Status = 'FOR O.R UPLOAD' " +
+                $"order by RefNum desc, EncodedDate asc", new[] { new SqlParameter("@TaxDec", "%" + taxdec + "%") }).ToList();
+
+            /** return getDbSet()
                 //SELECT * FROM Jo_RPT where TaxDec LIKE @TaxDec and DeletedRecord != 1
                 .Where(j => j.TaxDec.Contains(taxdec) && j.DeletedRecord != 1)
                 //UNION
@@ -52,7 +57,8 @@ namespace Revised_OPTS.DAL
                 //order by RefNum desc, EncodedDate asc
                 .OrderByDescending(j => j.RefNum)
                 .ThenBy(j => j.EncodedDate)
-                .ToList();
+                .ToList(); 
+            **/
         }
 
         public List<Rpt> RetrieveForORUploadRegular(DateTime date, string bank, string validatedBy)

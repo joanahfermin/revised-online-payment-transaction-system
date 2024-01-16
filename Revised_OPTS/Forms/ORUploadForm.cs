@@ -43,29 +43,9 @@ namespace Inventory_System.Forms
             InitializeCombobox();
             InitializeGrid();
             InitializeCamera();
-            //DataGridUI();
-            //dgRptList.ColumnHeadersVisible = true;
-        }
-
-        public void DataGridUI()
-        {
-            dgRptList.DefaultCellStyle.Font = new Font("Tahoma", 12, FontStyle.Regular);
-            dgRptList.BackgroundColor = Color.White;
             this.WindowState = FormWindowState.Maximized;
-            dgRptList.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.DisplayedCells;
-            dgRptList.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
 
-
-            dgRptList.DefaultCellStyle.BackColor = Color.AliceBlue;
-
-            dgRptList.ColumnHeadersDefaultCellStyle.ForeColor = Color.MidnightBlue;
-            dgRptList.GridColor = Color.DarkGray;
-            dgRptList.CellBorderStyle = DataGridViewCellBorderStyle.Single;
-            dgRptList.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.Raised;
-
-            dgRptList.DefaultCellStyle.SelectionBackColor = Color.AliceBlue;
         }
-
 
         private void InitializeCombobox()
         {
@@ -169,6 +149,21 @@ namespace Inventory_System.Forms
             if (rbElectronic.Checked)
             {
                 dgRptList.DataSource = rptService.RetrieveBySameRefNumInUploadingEpayment(tbElectronicTaxDec.Text);
+
+                dgRptList.ClearSelection();
+                int counter = 0;
+                foreach (DataGridViewRow row in dgRptList.Rows)
+                {
+                    Rpt selectedRptRecord = row.DataBoundItem as Rpt;
+
+                    if (selectedRptRecord.TaxDec.Equals(tbElectronicTaxDec.Text, StringComparison.OrdinalIgnoreCase))
+                    {
+                        row.Selected = true;
+                        loadRptReceipt(selectedRptRecord.RptID);
+                        dgRptList.FirstDisplayedScrollingRowIndex = counter;
+                    }
+                    counter++;
+                }
             }
             else
             {

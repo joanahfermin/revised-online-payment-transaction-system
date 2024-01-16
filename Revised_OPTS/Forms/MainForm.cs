@@ -323,16 +323,19 @@ namespace Revised_OPTS
             Search(searchedUniqueKey);
             DgMainForm.ClearSelection();
             int selectedRowCount = 0;
+            int counter = 0;
 
             foreach (DataGridViewRow row in DgMainForm.Rows)
             {
                 if (CURRENT_RECORD_TYPE == RPT_RECORD_TYPE)
                 {
                     Rpt selectedRptRecord = row.DataBoundItem as Rpt;
+
                     if (selectedRptRecord.TaxDec.Equals(searchedUniqueKey, StringComparison.OrdinalIgnoreCase))
                     {
                         row.Selected = true;
                         selectedRowCount++;
+                        DgMainForm.FirstDisplayedScrollingRowIndex = counter;
                     }
                 }
                 else if (CURRENT_RECORD_TYPE == BUSINESS_RECORD_TYPE)
@@ -344,6 +347,7 @@ namespace Revised_OPTS
                         selectedRowCount++;
                     }
                 }
+                counter++;
             }
             tbRecordSelected.Text = selectedRowCount.ToString();
         }
