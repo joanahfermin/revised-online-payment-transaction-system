@@ -334,7 +334,7 @@ namespace Revised_OPTS.Service
             }
         }
 
-        public void InsertPicture(RPTAttachPicture pix)
+        public void UploadReceipt(RPTAttachPicture pix)
         {
             using (var dbContext = ApplicationDBContext.Create())
             {
@@ -345,6 +345,11 @@ namespace Revised_OPTS.Service
                     {
                         PictureRepository.PhysicalDelete(existing);
                     }
+
+                    Rpt rpt = rptRepository.Get(pix.RptId);
+                    rpt.UploadedBy = securityService.getLoginUser().DisplayName;
+                    rptRepository.Update(rpt);
+
                     PictureRepository.Insert(pix);
                     dbContext.SaveChanges();
                     scope.Complete();

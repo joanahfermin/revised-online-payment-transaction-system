@@ -78,7 +78,7 @@ namespace Inventory_System.Forms
             }
         }
 
-            private void DgRptAddUpdateForm_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
+        private void DgRptAddUpdateForm_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
         {
             DataGridViewRow selectedRow = DgRptAddUpdateForm.CurrentRow;
 

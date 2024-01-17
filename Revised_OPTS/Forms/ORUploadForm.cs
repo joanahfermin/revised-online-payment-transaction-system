@@ -224,6 +224,7 @@ namespace Inventory_System.Forms
         private void btnUploadReceipt_Click(object sender, EventArgs e)
         {
             DataGridViewRow selectedRow = dgRptList.CurrentRow;
+
             if (selectedRow != null && videoCapture != null && videoCapture.IsOpened())
             {
                 // prepare photo, save, and then show
@@ -244,7 +245,7 @@ namespace Inventory_System.Forms
                 //byte[] FileData = ImageUtil.ImageToByteArray(pbVideoCapture.Image);
                 byte[] resizeFileData = ImageUtil.resizeJpg(FileData);
                 rptAttachPicture.FileData = resizeFileData;
-                rptService.InsertPicture(rptAttachPicture);
+                rptService.UploadReceipt(rptAttachPicture);
                 loadRptReceipt(rpt.RptID);
 
                 // Give user few second to see the photo and then select the next record

@@ -177,9 +177,10 @@
             // pbVideoCapture
             // 
             this.pbVideoCapture.BackColor = System.Drawing.Color.Transparent;
-            this.pbVideoCapture.Location = new System.Drawing.Point(1026, 700);
+            this.pbVideoCapture.Location = new System.Drawing.Point(1026, 584);
             this.pbVideoCapture.Name = "pbVideoCapture";
-            this.pbVideoCapture.Size = new System.Drawing.Size(475, 296);
+            this.pbVideoCapture.Size = new System.Drawing.Size(875, 412);
+            this.pbVideoCapture.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pbVideoCapture.TabIndex = 12;
             this.pbVideoCapture.TabStop = false;
             // 
@@ -188,7 +189,7 @@
             this.pbReceipt.BackColor = System.Drawing.Color.Transparent;
             this.pbReceipt.Location = new System.Drawing.Point(1026, 61);
             this.pbReceipt.Name = "pbReceipt";
-            this.pbReceipt.Size = new System.Drawing.Size(741, 584);
+            this.pbReceipt.Size = new System.Drawing.Size(875, 468);
             this.pbReceipt.TabIndex = 14;
             this.pbReceipt.TabStop = false;
             // 
@@ -285,7 +286,7 @@
             this.label6.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.label6.ForeColor = System.Drawing.Color.White;
             this.label6.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.label6.Location = new System.Drawing.Point(1010, 653);
+            this.label6.Location = new System.Drawing.Point(1010, 537);
             this.label6.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
             this.label6.Name = "label6";
             this.label6.Padding = new System.Windows.Forms.Padding(10);
@@ -314,7 +315,7 @@
             this.btnClose.ForeColor = System.Drawing.Color.White;
             this.btnClose.Image = ((System.Drawing.Image)(resources.GetObject("btnClose.Image")));
             this.btnClose.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnClose.Location = new System.Drawing.Point(1538, 923);
+            this.btnClose.Location = new System.Drawing.Point(878, 12);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(126, 73);
             this.btnClose.TabIndex = 203;
@@ -335,7 +336,7 @@
             this.btnUploadReceipt.ForeColor = System.Drawing.Color.White;
             this.btnUploadReceipt.Image = ((System.Drawing.Image)(resources.GetObject("btnUploadReceipt.Image")));
             this.btnUploadReceipt.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnUploadReceipt.Location = new System.Drawing.Point(1538, 844);
+            this.btnUploadReceipt.Location = new System.Drawing.Point(671, 12);
             this.btnUploadReceipt.Name = "btnUploadReceipt";
             this.btnUploadReceipt.Size = new System.Drawing.Size(201, 73);
             this.btnUploadReceipt.TabIndex = 204;
@@ -351,7 +352,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
-            this.ClientSize = new System.Drawing.Size(1796, 1024);
+            this.ClientSize = new System.Drawing.Size(1924, 1024);
             this.Controls.Add(this.btnClose);
             this.Controls.Add(this.btnUploadReceipt);
             this.Controls.Add(this.pictureBox1);

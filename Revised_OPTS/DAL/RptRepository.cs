@@ -73,7 +73,6 @@ namespace Revised_OPTS.DAL
         }
         public List<Rpt> retrieveBySearchKeyword(string tdn)
         {
-
             return getDbSet()
                 //SELECT * FROM Jo_RPT where TaxDec LIKE @TaxDec and DeletedRecord != 1
                 .Where(j => j.TaxDec.Contains(tdn) && j.DeletedRecord != 1)

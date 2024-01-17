@@ -28,7 +28,7 @@ namespace Revised_OPTS.Service
         void Delete(Rpt rpt);
         void SaveAll(List<Rpt> rpt, List<Rpt> rptToDelte, decimal totalAmountTransferred);
 
-        void InsertPicture(RPTAttachPicture pix);
+        void UploadReceipt(RPTAttachPicture pix);
         RPTAttachPicture getRptReceipt(long rptId);
     }
 }
