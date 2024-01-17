@@ -94,7 +94,6 @@
             this.tbElectronicTaxDec.Size = new System.Drawing.Size(200, 27);
             this.tbElectronicTaxDec.TabIndex = 2;
             this.tbElectronicTaxDec.KeyDown += new System.Windows.Forms.KeyEventHandler(this.SearchRecordsOnEnterKey);
-            this.tbElectronicTaxDec.Leave += new System.EventHandler(this.SearchRecords);
             // 
             // dtRegularDate
             // 

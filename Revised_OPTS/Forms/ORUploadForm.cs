@@ -66,21 +66,6 @@ namespace Inventory_System.Forms
                 dgRptList.Columns.Add(kvp.Key, kvp.Value);
                 dgRptList.Columns[kvp.Key].DataPropertyName = kvp.Key;
             }
-            //dgRptList.Refresh();
-            /*
-            dgRptList.ColumnHeadersDefaultCellStyle.Font = new Font("Tahoma", 12, FontStyle.Regular);
-            dgRptList.ColumnHeadersDefaultCellStyle.ForeColor = Color.Black;
-            dgRptList.ColumnHeadersDefaultCellStyle.BackColor = Color.DarkSalmon;
-            dgRptList.ColumnHeadersDefaultCellStyle.SelectionBackColor = Color.DarkSalmon;
-
-            foreach (DataGridViewColumn column in dgRptList.Columns)
-            {
-                column.HeaderCell.Style.Font = dgRptList.ColumnHeadersDefaultCellStyle.Font;
-                column.HeaderCell.Style.ForeColor = dgRptList.ColumnHeadersDefaultCellStyle.ForeColor;
-                column.HeaderCell.Style.BackColor = dgRptList.ColumnHeadersDefaultCellStyle.BackColor;
-                column.HeaderCell.Style.SelectionBackColor = dgRptList.ColumnHeadersDefaultCellStyle.SelectionBackColor;
-            }
-            */
         }
 
         private void InitializeCamera()
@@ -159,18 +144,19 @@ namespace Inventory_System.Forms
             {
                 dgRptList.DataSource = rptService.RetrieveBySameRefNumInUploadingEpayment(tbElectronicTaxDec.Text);
 
-                dgRptList.ClearSelection();
+                //dgRptList.ClearSelection();
                 int counter = 0;
+
                 foreach (DataGridViewRow row in dgRptList.Rows)
                 {
                     Rpt selectedRptRecord = row.DataBoundItem as Rpt;
 
-                    if (selectedRptRecord.TaxDec.Equals(tbElectronicTaxDec.Text, StringComparison.OrdinalIgnoreCase))
-                    {
-                        row.Selected = true;
-                        loadRptReceipt(selectedRptRecord.RptID);
-                        dgRptList.FirstDisplayedScrollingRowIndex = counter;
-                    }
+                    //if (selectedRptRecord.TaxDec.Equals(tbElectronicTaxDec.Text, StringComparison.OrdinalIgnoreCase))
+                    //{
+                    //    row.Selected = true;
+                    //    loadRptReceipt(selectedRptRecord.RptID);
+                    //    dgRptList.FirstDisplayedScrollingRowIndex = counter;
+                    //}
                     counter++;
                 }
             }
@@ -185,11 +171,6 @@ namespace Inventory_System.Forms
             stopCameraThread = true;
             cameraThread.Join();
         }
-
-        /*private void dgRptList_CellClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }*/
 
         private void loadRptReceipt(long rptId)
         {
