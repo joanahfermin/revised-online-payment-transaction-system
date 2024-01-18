@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
@@ -50,6 +51,7 @@
             this.btnUploadReceipt = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.cbRegularBank = new System.Windows.Forms.ComboBox();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.dgRptList)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbVideoCapture)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbReceipt)).BeginInit();
@@ -346,6 +348,11 @@
             this.cbRegularBank.Size = new System.Drawing.Size(319, 27);
             this.cbRegularBank.TabIndex = 5;
             // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(181, 26);
+            // 
             // ORUploadForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -402,5 +409,6 @@
         private Button btnUploadReceipt;
         private Label label2;
         private ComboBox cbRegularBank;
+        private ContextMenuStrip contextMenuStrip1;
     }
 }

@@ -47,6 +47,30 @@ namespace Inventory_System.Forms
             this.WindowState = FormWindowState.Maximized;
 
             dgRptList.CellFormatting += dgRptList_CellFormatting;
+
+            ContextMenuStrip contextMenuStrip1 = new ContextMenuStrip();
+            ToolStripMenuItem menuItemSearch = new ToolStripMenuItem("Search");
+            menuItemSearch.Click += MenuItemSearch_Click;
+
+            contextMenuStrip1.Items.Add(menuItemSearch);
+            dgRptList.ContextMenuStrip = contextMenuStrip1;
+        }
+
+        private void MenuItemSearch_Click(object? sender, EventArgs e)
+        {
+            DataGridViewRow selectedRow = dgRptList.CurrentRow;
+
+            if (selectedRow != null)
+            {
+                Rpt rptRecord = selectedRow.DataBoundItem as Rpt;
+
+                string taxdec = rptRecord.TaxDec;
+                dgRptList.DataSource = rptService.RetrieveBySameRefNumInUploadingEpayment(taxdec);
+            }
+            else
+            {
+                MessageBox.Show("Invalid action.");
+            }
         }
 
         private void dgRptList_CellFormatting(object? sender, DataGridViewCellFormattingEventArgs e)
