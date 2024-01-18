@@ -534,5 +534,11 @@ namespace Revised_OPTS
                 LoginForm.INSTANCE.Close();
             }
         }
+
+        private void btnAddEpayments_Click(object sender, EventArgs e)
+        {
+            AddEPaymentForm addEPaymentForm = new AddEPaymentForm();
+            addEPaymentForm.ShowDialog();
+        }
     }
 }

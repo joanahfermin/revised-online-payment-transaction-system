@@ -48,6 +48,7 @@
             this.tbTotalBillAmount = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.btnORUpload = new System.Windows.Forms.Button();
+            this.btnAddEpayments = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.DgMainForm)).BeginInit();
             this.MainDGRightClick.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -306,7 +307,7 @@
             this.btnORUpload.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.btnORUpload.Image = ((System.Drawing.Image)(resources.GetObject("btnORUpload.Image")));
             this.btnORUpload.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnORUpload.Location = new System.Drawing.Point(1501, 12);
+            this.btnORUpload.Location = new System.Drawing.Point(1467, 14);
             this.btnORUpload.Name = "btnORUpload";
             this.btnORUpload.Size = new System.Drawing.Size(170, 74);
             this.btnORUpload.TabIndex = 202;
@@ -317,6 +318,26 @@
             this.btnORUpload.MouseEnter += new System.EventHandler(this.btnORUpload_MouseEnter);
             this.btnORUpload.MouseLeave += new System.EventHandler(this.btnORUpload_MouseLeave);
             // 
+            // btnAddEpayments
+            // 
+            this.btnAddEpayments.BackColor = System.Drawing.Color.Transparent;
+            this.btnAddEpayments.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnAddEpayments.BackgroundImage")));
+            this.btnAddEpayments.FlatAppearance.BorderSize = 0;
+            this.btnAddEpayments.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnAddEpayments.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.btnAddEpayments.Image = ((System.Drawing.Image)(resources.GetObject("btnAddEpayments.Image")));
+            this.btnAddEpayments.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnAddEpayments.Location = new System.Drawing.Point(1248, 14);
+            this.btnAddEpayments.Name = "btnAddEpayments";
+            this.btnAddEpayments.Size = new System.Drawing.Size(213, 74);
+            this.btnAddEpayments.TabIndex = 4;
+            this.btnAddEpayments.Text = "Add E-payments";
+            this.btnAddEpayments.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnAddEpayments.UseVisualStyleBackColor = false;
+            this.btnAddEpayments.Click += new System.EventHandler(this.btnAddEpayments_Click);
+            this.btnAddEpayments.MouseEnter += new System.EventHandler(this.btnAddRptRecord_MouseEnter);
+            this.btnAddEpayments.MouseLeave += new System.EventHandler(this.btnAddRptRecord_MouseLeave);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -326,6 +347,7 @@
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.ClientSize = new System.Drawing.Size(1817, 758);
             this.Controls.Add(this.btnORUpload);
+            this.Controls.Add(this.btnAddEpayments);
             this.Controls.Add(this.btnAddRptRecord);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.btnNonRptAddNewRecord);
@@ -368,5 +390,6 @@
         private TextBox tbTotalBillAmount;
         private Label label3;
         private Button btnORUpload;
+        private Button btnAddEpayments;
     }
 }

@@ -79,7 +79,7 @@
             this.rbRegular.BackColor = System.Drawing.Color.Transparent;
             this.rbRegular.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.rbRegular.ForeColor = System.Drawing.Color.White;
-            this.rbRegular.Location = new System.Drawing.Point(155, 82);
+            this.rbRegular.Location = new System.Drawing.Point(155, 110);
             this.rbRegular.Name = "rbRegular";
             this.rbRegular.Size = new System.Drawing.Size(91, 23);
             this.rbRegular.TabIndex = 1;
@@ -95,6 +95,7 @@
             this.tbElectronicTaxDec.Name = "tbElectronicTaxDec";
             this.tbElectronicTaxDec.Size = new System.Drawing.Size(200, 27);
             this.tbElectronicTaxDec.TabIndex = 2;
+            this.tbElectronicTaxDec.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.tbElectronicTaxDec.KeyDown += new System.Windows.Forms.KeyEventHandler(this.SearchRecordsOnEnterKey);
             // 
             // dtRegularDate
@@ -138,14 +139,13 @@
             this.dgRptList.Name = "dgRptList";
             this.dgRptList.ReadOnly = true;
             dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(174)))), ((int)(((byte)(219)))));
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.White;
             dataGridViewCellStyle3.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             dataGridViewCellStyle3.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(198)))), ((int)(((byte)(247)))));
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.LightBlue;
             dataGridViewCellStyle3.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
             dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.dgRptList.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
-            this.dgRptList.RowHeadersVisible = false;
             this.dgRptList.RowTemplate.DefaultCellStyle.BackColor = System.Drawing.Color.White;
             this.dgRptList.RowTemplate.DefaultCellStyle.ForeColor = System.Drawing.Color.Black;
             this.dgRptList.RowTemplate.DefaultCellStyle.SelectionBackColor = System.Drawing.Color.LightBlue;
@@ -182,6 +182,7 @@
             this.pbReceipt.Location = new System.Drawing.Point(1026, 61);
             this.pbReceipt.Name = "pbReceipt";
             this.pbReceipt.Size = new System.Drawing.Size(875, 468);
+            this.pbReceipt.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pbReceipt.TabIndex = 14;
             this.pbReceipt.TabStop = false;
             // 
@@ -290,7 +291,7 @@
             this.btnClose.ForeColor = System.Drawing.Color.White;
             this.btnClose.Image = ((System.Drawing.Image)(resources.GetObject("btnClose.Image")));
             this.btnClose.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnClose.Location = new System.Drawing.Point(878, 71);
+            this.btnClose.Location = new System.Drawing.Point(855, 32);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(126, 73);
             this.btnClose.TabIndex = 203;
@@ -311,7 +312,7 @@
             this.btnUploadReceipt.ForeColor = System.Drawing.Color.White;
             this.btnUploadReceipt.Image = ((System.Drawing.Image)(resources.GetObject("btnUploadReceipt.Image")));
             this.btnUploadReceipt.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnUploadReceipt.Location = new System.Drawing.Point(671, 71);
+            this.btnUploadReceipt.Location = new System.Drawing.Point(659, 32);
             this.btnUploadReceipt.Name = "btnUploadReceipt";
             this.btnUploadReceipt.Size = new System.Drawing.Size(201, 73);
             this.btnUploadReceipt.TabIndex = 204;
@@ -351,7 +352,7 @@
             // contextMenuStrip1
             // 
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(181, 26);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
             // 
             // ORUploadForm
             // 
