@@ -30,7 +30,7 @@ namespace Inventory_System.Forms
         Dictionary<string, string> RPT_DG_COLUMNS = new Dictionary<string, string>
         {
             { "TaxDec", "TDN" }, { "TaxPayerName", "TaxPayer's Name" }, { "AmountToPay", "Bill Amount" },
-            { "AmountTransferred", "Transferred Amount" }, { "Bank", "Bank" }, { "YearQuarter", "Year" }, { "Quarter", "Quarter" },
+            { "AmountTransferred", "Transferred Amount" }, /*{ "Bank", "Bank" },*/ { "YearQuarter", "Year" }, { "Quarter", "Quarter" },
             { "BillingSelection", "Billing Selection" }, { "ValidatedBy", "Validated By" },
         };
 
@@ -46,6 +46,16 @@ namespace Inventory_System.Forms
             InitializeCamera();
             this.WindowState = FormWindowState.Maximized;
 
+            dgRptList.CellFormatting += dgRptList_CellFormatting;
+        }
+
+        private void dgRptList_CellFormatting(object? sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (e.Value is decimal decimalValue)
+            {
+                e.Value = decimalValue.ToString("N2");
+                e.FormattingApplied = true;
+            }
         }
 
         private void InitializeCombobox()
@@ -162,7 +172,7 @@ namespace Inventory_System.Forms
             }
             else
             {
-                dgRptList.DataSource = rptService.RetrieveForORUploadRegular(dtRegularDate.Value, cbRegularBank.Text, cbRegularValBy.Text);
+                dgRptList.DataSource = rptService.RetrieveForORUploadRegular(dtRegularDate.Value, cbRegularValBy.Text);
             }
         }
 

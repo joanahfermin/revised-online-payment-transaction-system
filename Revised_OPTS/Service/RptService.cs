@@ -85,11 +85,11 @@ namespace Revised_OPTS.Service
             }
         }
 
-        public List<Rpt> RetrieveForORUploadRegular(DateTime date, string bank, string validatedBy)
+        public List<Rpt> RetrieveForORUploadRegular(DateTime date, string validatedBy)
         {
             using (var dbContext = ApplicationDBContext.Create())
             {
-                return rptRepository.RetrieveForORUploadRegular(date, bank, validatedBy);
+                return rptRepository.RetrieveForORUploadRegular(date, validatedBy);
             }
         }
 

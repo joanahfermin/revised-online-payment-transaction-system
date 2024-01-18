@@ -12,6 +12,8 @@ namespace Revised_OPTS.DAL
 {
     internal class RptRepository : BaseRepository<Rpt>, IRptRepository
     {
+        private IBankRepository bankRepository = RepositoryFactory.Instance.GetBankRepository();
+
         public List<Rpt> checkExistingRecord(Rpt rpt)
         {
             return getDbSet()
@@ -34,10 +36,10 @@ namespace Revised_OPTS.DAL
         public List<Rpt> RetrieveBySameRefNumInUploadingEpayment(string taxdec)
         {
             return getDbSet().FromSqlRaw<Rpt>(
-                $"SELECT *FROM Jo_RPT where TaxDec LIKE @TaxDec and DeletedRecord != 1 and Status = 'FOR O.R UPLOAD' UNION " +
+                $"SELECT *FROM Jo_RPT where TaxDec LIKE @TaxDec and DeletedRecord != 1 and Status = 'FOR O.R UPLOAD' /*and Bank in (Select BankName from Jo_RPT_Banks where isEbank=1)*/ UNION " +
                 $"SELECT *FROM Jo_RPT where RefNum in (select RefNum FROM Jo_RPT where TaxDec LIKE @TaxDec) and DeletedRecord != 1 and Status = 'FOR O.R UPLOAD' " +
                 $"order by RefNum desc, EncodedDate asc", new[] { new SqlParameter("@TaxDec", "%" + taxdec + "%") }).ToList();
-
+        }
             /** return getDbSet()
                 //SELECT * FROM Jo_RPT where TaxDec LIKE @TaxDec and DeletedRecord != 1
                 .Where(j => j.TaxDec.Contains(taxdec) && j.DeletedRecord != 1)
@@ -59,18 +61,20 @@ namespace Revised_OPTS.DAL
                 .ThenBy(j => j.EncodedDate)
                 .ToList(); 
             **/
-        }
+        //}
 
-        public List<Rpt> RetrieveForORUploadRegular(DateTime date, string bank, string validatedBy)
+        public List<Rpt> RetrieveForORUploadRegular(DateTime date, string validatedBy)
         {
+            List<string> regularBanks = bankRepository.GetRegularBanks().Select(p => p.BankName).ToList();
+
             return getDbSet().Where(rpt =>
                     rpt.ValidatedDate.HasValue &&
                     rpt.ValidatedDate.Value.Date == date.Date &&
-                    rpt.Bank == bank &&
+                    regularBanks.Contains(rpt.Bank) &&
                     rpt.ValidatedBy == validatedBy
                 ).OrderBy(rpt => rpt.ValidatedDate).ToList();
-
         }
+
         public List<Rpt> retrieveBySearchKeyword(string tdn)
         {
             return getDbSet()

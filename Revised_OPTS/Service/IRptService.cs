@@ -18,7 +18,7 @@ namespace Revised_OPTS.Service
 
         List<Rpt> RetrieveBySearchKeyword(string tdn);
         List<Rpt> RetrieveBySameRefNumAndReqParty(string refNum, string reqParty);
-        List<Rpt> RetrieveForORUploadRegular(DateTime date, string bank, string validatedBy);
+        List<Rpt> RetrieveForORUploadRegular(DateTime date, string validatedBy);
         List<Rpt> RetrieveBySameRefNumInUploadingEpayment(string taxdec);
 
         void Insert(Rpt rpt);

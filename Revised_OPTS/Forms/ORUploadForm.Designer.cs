@@ -36,20 +36,20 @@
             this.rbRegular = new System.Windows.Forms.RadioButton();
             this.tbElectronicTaxDec = new System.Windows.Forms.TextBox();
             this.dtRegularDate = new System.Windows.Forms.DateTimePicker();
-            this.cbRegularBank = new System.Windows.Forms.ComboBox();
             this.dgRptList = new System.Windows.Forms.DataGridView();
             this.cbRegularValBy = new System.Windows.Forms.ComboBox();
             this.pbVideoCapture = new System.Windows.Forms.PictureBox();
             this.pbReceipt = new System.Windows.Forms.PictureBox();
             this.label7 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.btnClose = new System.Windows.Forms.Button();
             this.btnUploadReceipt = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
+            this.cbRegularBank = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgRptList)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbVideoCapture)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbReceipt)).BeginInit();
@@ -89,7 +89,7 @@
             // tbElectronicTaxDec
             // 
             this.tbElectronicTaxDec.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.tbElectronicTaxDec.Location = new System.Drawing.Point(317, 43);
+            this.tbElectronicTaxDec.Location = new System.Drawing.Point(283, 44);
             this.tbElectronicTaxDec.Name = "tbElectronicTaxDec";
             this.tbElectronicTaxDec.Size = new System.Drawing.Size(200, 27);
             this.tbElectronicTaxDec.TabIndex = 2;
@@ -100,21 +100,11 @@
             this.dtRegularDate.CustomFormat = "MM/dd/yyyy";
             this.dtRegularDate.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.dtRegularDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtRegularDate.Location = new System.Drawing.Point(317, 109);
+            this.dtRegularDate.Location = new System.Drawing.Point(283, 110);
             this.dtRegularDate.Name = "dtRegularDate";
             this.dtRegularDate.Size = new System.Drawing.Size(136, 27);
             this.dtRegularDate.TabIndex = 4;
             this.dtRegularDate.ValueChanged += new System.EventHandler(this.SearchRecords);
-            // 
-            // cbRegularBank
-            // 
-            this.cbRegularBank.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.cbRegularBank.FormattingEnabled = true;
-            this.cbRegularBank.Location = new System.Drawing.Point(476, 109);
-            this.cbRegularBank.Name = "cbRegularBank";
-            this.cbRegularBank.Size = new System.Drawing.Size(319, 27);
-            this.cbRegularBank.TabIndex = 5;
-            this.cbRegularBank.SelectedIndexChanged += new System.EventHandler(this.SearchRecords);
             // 
             // dgRptList
             // 
@@ -153,6 +143,7 @@
             dataGridViewCellStyle3.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
             dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.dgRptList.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            this.dgRptList.RowHeadersVisible = false;
             this.dgRptList.RowTemplate.DefaultCellStyle.BackColor = System.Drawing.Color.White;
             this.dgRptList.RowTemplate.DefaultCellStyle.ForeColor = System.Drawing.Color.Black;
             this.dgRptList.RowTemplate.DefaultCellStyle.SelectionBackColor = System.Drawing.Color.LightBlue;
@@ -167,7 +158,7 @@
             // 
             this.cbRegularValBy.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.cbRegularValBy.FormattingEnabled = true;
-            this.cbRegularValBy.Location = new System.Drawing.Point(817, 109);
+            this.cbRegularValBy.Location = new System.Drawing.Point(444, 110);
             this.cbRegularValBy.Name = "cbRegularValBy";
             this.cbRegularValBy.Size = new System.Drawing.Size(187, 27);
             this.cbRegularValBy.TabIndex = 11;
@@ -200,7 +191,7 @@
             this.label7.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.label7.ForeColor = System.Drawing.Color.White;
             this.label7.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.label7.Location = new System.Drawing.Point(302, 7);
+            this.label7.Location = new System.Drawing.Point(268, 8);
             this.label7.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
             this.label7.Name = "label7";
             this.label7.Padding = new System.Windows.Forms.Padding(10);
@@ -217,7 +208,7 @@
             this.label1.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.label1.ForeColor = System.Drawing.Color.White;
             this.label1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.label1.Location = new System.Drawing.Point(302, 75);
+            this.label1.Location = new System.Drawing.Point(268, 76);
             this.label1.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
             this.label1.Name = "label1";
             this.label1.Padding = new System.Windows.Forms.Padding(10);
@@ -225,23 +216,6 @@
             this.label1.TabIndex = 201;
             this.label1.Text = "Date: ";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.BackColor = System.Drawing.Color.Transparent;
-            this.label2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.label2.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label2.ForeColor = System.Drawing.Color.White;
-            this.label2.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.label2.Location = new System.Drawing.Point(465, 75);
-            this.label2.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
-            this.label2.Name = "label2";
-            this.label2.Padding = new System.Windows.Forms.Padding(10);
-            this.label2.Size = new System.Drawing.Size(70, 38);
-            this.label2.TabIndex = 201;
-            this.label2.Text = "Bank:";
-            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label3
             // 
@@ -251,7 +225,7 @@
             this.label3.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.label3.ForeColor = System.Drawing.Color.White;
             this.label3.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.label3.Location = new System.Drawing.Point(801, 75);
+            this.label3.Location = new System.Drawing.Point(428, 76);
             this.label3.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
             this.label3.Name = "label3";
             this.label3.Padding = new System.Windows.Forms.Padding(10);
@@ -314,7 +288,7 @@
             this.btnClose.ForeColor = System.Drawing.Color.White;
             this.btnClose.Image = ((System.Drawing.Image)(resources.GetObject("btnClose.Image")));
             this.btnClose.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnClose.Location = new System.Drawing.Point(878, 12);
+            this.btnClose.Location = new System.Drawing.Point(878, 71);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(126, 73);
             this.btnClose.TabIndex = 203;
@@ -335,7 +309,7 @@
             this.btnUploadReceipt.ForeColor = System.Drawing.Color.White;
             this.btnUploadReceipt.Image = ((System.Drawing.Image)(resources.GetObject("btnUploadReceipt.Image")));
             this.btnUploadReceipt.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnUploadReceipt.Location = new System.Drawing.Point(671, 12);
+            this.btnUploadReceipt.Location = new System.Drawing.Point(671, 71);
             this.btnUploadReceipt.Name = "btnUploadReceipt";
             this.btnUploadReceipt.Size = new System.Drawing.Size(201, 73);
             this.btnUploadReceipt.TabIndex = 204;
@@ -345,6 +319,32 @@
             this.btnUploadReceipt.Click += new System.EventHandler(this.btnUploadReceipt_Click);
             this.btnUploadReceipt.MouseEnter += new System.EventHandler(this.btnUploadReceipt_MouseEnter);
             this.btnUploadReceipt.MouseLeave += new System.EventHandler(this.btnUploadReceipt_MouseLeave);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.BackColor = System.Drawing.Color.Transparent;
+            this.label2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.label2.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.label2.ForeColor = System.Drawing.Color.White;
+            this.label2.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.label2.Location = new System.Drawing.Point(456, 229);
+            this.label2.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
+            this.label2.Name = "label2";
+            this.label2.Padding = new System.Windows.Forms.Padding(10);
+            this.label2.Size = new System.Drawing.Size(70, 38);
+            this.label2.TabIndex = 201;
+            this.label2.Text = "Bank:";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // cbRegularBank
+            // 
+            this.cbRegularBank.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.cbRegularBank.FormattingEnabled = true;
+            this.cbRegularBank.Location = new System.Drawing.Point(467, 263);
+            this.cbRegularBank.Name = "cbRegularBank";
+            this.cbRegularBank.Size = new System.Drawing.Size(319, 27);
+            this.cbRegularBank.TabIndex = 5;
             // 
             // ORUploadForm
             // 
@@ -388,19 +388,19 @@
         private RadioButton rbRegular;
         private TextBox tbElectronicTaxDec;
         private DateTimePicker dtRegularDate;
-        private ComboBox cbRegularBank;
         private DataGridView dgRptList;
         private ComboBox cbRegularValBy;
         private PictureBox pbVideoCapture;
         private PictureBox pbReceipt;
         private Label label7;
         private Label label1;
-        private Label label2;
         private Label label3;
         private Label label4;
         private Label label6;
         private PictureBox pictureBox1;
         private Button btnClose;
         private Button btnUploadReceipt;
+        private Label label2;
+        private ComboBox cbRegularBank;
     }
 }

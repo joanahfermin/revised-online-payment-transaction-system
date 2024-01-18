@@ -13,7 +13,7 @@ namespace Revised_OPTS.DAL
         List<Rpt> retrieveBySearchKeyword(string tdn);
         List<Rpt> retrieveBySameRefNumAndReqParty(string refNum, string reqParty);
         List<Rpt> checkExistingRecord(Rpt rpt);
-        List<Rpt> RetrieveForORUploadRegular(DateTime date, string bank, string validatedBy);
+        List<Rpt> RetrieveForORUploadRegular(DateTime date, string validatedBy);
         List<Rpt> RetrieveBySameRefNumInUploadingEpayment(string refNum);
     }
 }

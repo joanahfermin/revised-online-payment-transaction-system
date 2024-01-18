@@ -14,7 +14,7 @@ namespace Inventory_System.Utilities
     {
         //public const int MAX_IMAGE_WIDTH = 1000;
         //public const int JPG_QUALITY = 75;
-        public const int MAX_IMAGE_WIDTH = 1080;
+        public const int MAX_IMAGE_WIDTH = 720;
         public const int JPG_QUALITY = 50;
 
         /// <summary>

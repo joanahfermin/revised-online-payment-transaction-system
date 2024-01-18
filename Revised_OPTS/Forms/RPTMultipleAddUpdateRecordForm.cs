@@ -42,10 +42,26 @@ namespace Inventory_System.Forms
             DgRptAddUpdateForm.RowsRemoved += DgRptAddUpdateForm_RowsRemoved;
             DgRptAddUpdateForm.RowsAdded += DgRptAddUpdateForm_RowsAdded;
             DgRptAddUpdateForm.DefaultValuesNeeded += DgRptAddUpdateForm_DefaultValuesNeeded;
+            DgRptAddUpdateForm.CellClick += DgRptAddUpdateForm_CellClick;
 
             panel1.BackColor = customColor;
             btnSaveRecord.BackColor = customColor;
             btnClose.BackColor = customColor;
+        }
+
+        private void DgRptAddUpdateForm_CellClick(object? sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0 && e.ColumnIndex >= 0)
+            {
+                // Access the clicked cell's value
+                object cellValue = DgRptAddUpdateForm.Rows[e.RowIndex].Cells[e.ColumnIndex].Value;
+
+                // Copy the text to the clipboard
+                if (cellValue != null)
+                {
+                    Clipboard.SetText(cellValue.ToString());
+                }
+            }
         }
 
         public RPTMultipleAddUpdateRecordForm(string refNum, string reqParty)
