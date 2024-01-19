@@ -31,7 +31,7 @@ namespace Inventory_System.Forms
         {
             { "TaxDec", "TDN" }, { "TaxPayerName", "TaxPayer's Name" }, { "AmountToPay", "Bill Amount" },
             { "AmountTransferred", "Transferred Amount" }, /*{ "Bank", "Bank" },*/ { "YearQuarter", "Year" }, { "Quarter", "Quarter" },
-            { "BillingSelection", "Billing Selection" }, { "ValidatedBy", "Validated By" },
+            { "BillingSelection", "Billing Selection" }, { "ValidatedBy", "Validated By" }, { "Bank", "Payment Channel" },
         };
 
         private Image originalBackgroundImageRpt;

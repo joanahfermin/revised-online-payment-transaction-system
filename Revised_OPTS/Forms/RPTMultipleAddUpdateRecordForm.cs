@@ -131,7 +131,7 @@ namespace Inventory_System.Forms
         {
             UpdateTotalAmount();
 
-            // Retrieve TPN using TDN.
+            //Retrieve TPN using TDN.
             if (e.RowIndex >= 0 && e.ColumnIndex == 1)
             {
                 // Access the cell value
@@ -146,10 +146,10 @@ namespace Inventory_System.Forms
                     {
                         selectedRpt.TaxPayerName = retrievedTPN.ONAME;
                     }
-                    else
-                    {
-                        selectedRpt.TaxPayerName = Validations.NO_RETRIEVED_NAME;
-                    }
+                    //else
+                    //{
+                    //    selectedRpt.TaxPayerName = Validations.NO_RETRIEVED_NAME;
+                    //}
                 }
             }
         }

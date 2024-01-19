@@ -84,6 +84,7 @@
             this.btnSaveAll.Text = "Save All";
             this.btnSaveAll.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnSaveAll.UseVisualStyleBackColor = false;
+            this.btnSaveAll.Click += new System.EventHandler(this.btnSaveAll_Click);
             // 
             // button1
             // 
@@ -106,6 +107,7 @@
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.Transparent;
+            this.panel1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("panel1.BackgroundImage")));
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel1.Controls.Add(this.btnClose);
             this.panel1.Controls.Add(this.label2);
@@ -240,6 +242,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.ClientSize = new System.Drawing.Size(1917, 1026);
             this.Controls.Add(this.dgRptList);
             this.Controls.Add(this.panel1);
