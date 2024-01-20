@@ -230,6 +230,59 @@ namespace Revised_OPTS.Service
             }
         }
 
+        public void SaveAllEPayment(List<Rpt> rptList, List<Miscellaneous> miscList, List<Business> businessList)
+        {
+            using (var dbContext = ApplicationDBContext.Create())
+            {
+                //validateDuplicateRecord(listOfRptsToSave);
+
+                AssignRefNum(rptList);
+
+                bool firstRecord = true;
+
+                //calculateTotalpaymentOfGcashAndPaymaya(rptList);
+
+                using (var scope = new TransactionScope())
+                {
+                    foreach (Rpt rpt in rptList)
+                    {
+                        rpt.Status = TaxStatus.ForPaymentVerification;
+                        rpt.EncodedBy = securityService.getLoginUser().DisplayName;
+                        rpt.EncodedDate = DateTime.Now;
+                        rptRepository.Insert(rpt);
+
+                    }
+
+                    //foreach (Rpt rpt in listOfRptsToDelete)
+                    //{
+                    //    if (rpt.RptID > 0)
+                    //    {
+                    //        rptRepository.Delete(rpt);
+                    //    }
+                    //}
+                    dbContext.SaveChanges();
+                    scope.Complete();
+                }
+            }
+        }
+
+        private void calculateTotalpaymentOfGcashAndPaymaya(List<Rpt> listOfRptsToSave)
+        {
+            using (var dbContext = ApplicationDBContext.Create())
+            {
+                decimal? totalAmount = 0;
+
+                foreach (Rpt item in listOfRptsToSave)
+                {
+                    if (item.PaymentType.Contains("GCASH"))
+                    {
+                        totalAmount = item.AmountTransferred + item.AmountTransferred;
+                    }
+                }
+            }
+        }
+
+
         private void AssignRefNum(List<Rpt> listOfPersonsToSave)
         {
             // hanapin if may existing refnum na

@@ -36,9 +36,7 @@
             this.btnSaveAll = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.tbRecordSelected = new System.Windows.Forms.TextBox();
             this.tbTotalAmountTransferred = new System.Windows.Forms.TextBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.dgRptList = new System.Windows.Forms.DataGridView();
@@ -76,7 +74,7 @@
             this.btnSaveAll.ForeColor = System.Drawing.Color.White;
             this.btnSaveAll.Image = ((System.Drawing.Image)(resources.GetObject("btnSaveAll.Image")));
             this.btnSaveAll.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnSaveAll.Location = new System.Drawing.Point(1490, 28);
+            this.btnSaveAll.Location = new System.Drawing.Point(1430, 28);
             this.btnSaveAll.Name = "btnSaveAll";
             this.btnSaveAll.Size = new System.Drawing.Size(148, 73);
             this.btnSaveAll.TabIndex = 1;
@@ -85,6 +83,8 @@
             this.btnSaveAll.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnSaveAll.UseVisualStyleBackColor = false;
             this.btnSaveAll.Click += new System.EventHandler(this.btnSaveAll_Click);
+            this.btnSaveAll.MouseEnter += new System.EventHandler(this.btnSaveAll_MouseEnter);
+            this.btnSaveAll.MouseLeave += new System.EventHandler(this.btnSaveAll_MouseLeave);
             // 
             // button1
             // 
@@ -96,7 +96,7 @@
             this.button1.ForeColor = System.Drawing.Color.White;
             this.button1.Image = ((System.Drawing.Image)(resources.GetObject("button1.Image")));
             this.button1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button1.Location = new System.Drawing.Point(1644, 28);
+            this.button1.Location = new System.Drawing.Point(1597, 28);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(127, 73);
             this.button1.TabIndex = 2;
@@ -109,13 +109,11 @@
             this.panel1.BackColor = System.Drawing.Color.Transparent;
             this.panel1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("panel1.BackgroundImage")));
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Controls.Add(this.label1);
+            this.panel1.Controls.Add(this.tbTotalAmountTransferred);
             this.panel1.Controls.Add(this.btnClose);
-            this.panel1.Controls.Add(this.label2);
             this.panel1.Controls.Add(this.button1);
             this.panel1.Controls.Add(this.btnSaveAll);
-            this.panel1.Controls.Add(this.label1);
-            this.panel1.Controls.Add(this.tbRecordSelected);
-            this.panel1.Controls.Add(this.tbTotalAmountTransferred);
             this.panel1.Controls.Add(this.pictureBox1);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
@@ -123,23 +121,6 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1917, 146);
             this.panel1.TabIndex = 207;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.BackColor = System.Drawing.Color.Transparent;
-            this.label2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.label2.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label2.ForeColor = System.Drawing.Color.White;
-            this.label2.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.label2.Location = new System.Drawing.Point(588, 46);
-            this.label2.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
-            this.label2.Name = "label2";
-            this.label2.Padding = new System.Windows.Forms.Padding(10);
-            this.label2.Size = new System.Drawing.Size(153, 39);
-            this.label2.TabIndex = 206;
-            this.label2.Text = "No. of Records:";
-            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label1
             // 
@@ -149,26 +130,14 @@
             this.label1.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.label1.ForeColor = System.Drawing.Color.White;
             this.label1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.label1.Location = new System.Drawing.Point(147, 45);
+            this.label1.Location = new System.Drawing.Point(154, 45);
             this.label1.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
             this.label1.Name = "label1";
             this.label1.Padding = new System.Windows.Forms.Padding(10);
             this.label1.Size = new System.Drawing.Size(253, 39);
-            this.label1.TabIndex = 207;
+            this.label1.TabIndex = 205;
             this.label1.Text = "Total Amount Transferred: ";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // tbRecordSelected
-            // 
-            this.tbRecordSelected.BackColor = System.Drawing.Color.OldLace;
-            this.tbRecordSelected.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.tbRecordSelected.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.tbRecordSelected.ForeColor = System.Drawing.Color.Black;
-            this.tbRecordSelected.Location = new System.Drawing.Point(747, 54);
-            this.tbRecordSelected.Name = "tbRecordSelected";
-            this.tbRecordSelected.Size = new System.Drawing.Size(60, 26);
-            this.tbRecordSelected.TabIndex = 204;
-            this.tbRecordSelected.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // tbTotalAmountTransferred
             // 
@@ -176,10 +145,10 @@
             this.tbTotalAmountTransferred.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.tbTotalAmountTransferred.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.tbTotalAmountTransferred.ForeColor = System.Drawing.Color.Black;
-            this.tbTotalAmountTransferred.Location = new System.Drawing.Point(406, 54);
+            this.tbTotalAmountTransferred.Location = new System.Drawing.Point(398, 54);
             this.tbTotalAmountTransferred.Name = "tbTotalAmountTransferred";
-            this.tbTotalAmountTransferred.Size = new System.Drawing.Size(136, 26);
-            this.tbTotalAmountTransferred.TabIndex = 205;
+            this.tbTotalAmountTransferred.Size = new System.Drawing.Size(194, 26);
+            this.tbTotalAmountTransferred.TabIndex = 204;
             this.tbTotalAmountTransferred.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // pictureBox1
@@ -220,7 +189,6 @@
             this.dgRptList.GridColor = System.Drawing.Color.DarkGray;
             this.dgRptList.Location = new System.Drawing.Point(12, 152);
             this.dgRptList.Name = "dgRptList";
-            this.dgRptList.ReadOnly = true;
             dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle3.BackColor = System.Drawing.Color.White;
             dataGridViewCellStyle3.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
@@ -248,7 +216,6 @@
             this.Controls.Add(this.panel1);
             this.Name = "AddEPaymentForm";
             this.Text = "AddEPaymentForm";
-            this.Load += new System.EventHandler(this.AddEPaymentForm_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
@@ -264,10 +231,8 @@
         private Button button1;
         private Panel panel1;
         private PictureBox pictureBox1;
-        private Label label2;
-        private Label label1;
-        private TextBox tbRecordSelected;
-        private TextBox tbTotalAmountTransferred;
         private DataGridView dgRptList;
+        private Label label1;
+        private TextBox tbTotalAmountTransferred;
     }
 }

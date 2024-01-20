@@ -335,8 +335,8 @@
             this.btnAddEpayments.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnAddEpayments.UseVisualStyleBackColor = false;
             this.btnAddEpayments.Click += new System.EventHandler(this.btnAddEpayments_Click);
-            this.btnAddEpayments.MouseEnter += new System.EventHandler(this.btnAddRptRecord_MouseEnter);
-            this.btnAddEpayments.MouseLeave += new System.EventHandler(this.btnAddRptRecord_MouseLeave);
+            this.btnAddEpayments.MouseEnter += new System.EventHandler(this.btnAddEpayments_MouseEnter);
+            this.btnAddEpayments.MouseLeave += new System.EventHandler(this.btnAddEpayments_MouseLeave);
             // 
             // MainForm
             // 

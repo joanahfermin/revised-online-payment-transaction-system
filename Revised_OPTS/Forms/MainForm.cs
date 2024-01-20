@@ -540,5 +540,19 @@ namespace Revised_OPTS
             AddEPaymentForm addEPaymentForm = new AddEPaymentForm();
             addEPaymentForm.ShowDialog();
         }
+
+        private void btnAddEpayments_MouseEnter(object sender, EventArgs e)
+        {
+            originalBackgroundImageRpt = btnAddEpayments.BackgroundImage;
+            btnAddEpayments.BackgroundImage = null;
+
+            Color customColor = Color.FromArgb(23, 45, 74);
+            btnAddEpayments.BackColor = customColor;
+        }
+
+        private void btnAddEpayments_MouseLeave(object sender, EventArgs e)
+        {
+            btnAddEpayments.BackgroundImage = originalBackgroundImageRpt;
+        }
     }
 }

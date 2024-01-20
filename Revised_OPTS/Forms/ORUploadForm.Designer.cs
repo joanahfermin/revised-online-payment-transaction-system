@@ -312,7 +312,7 @@
             this.btnUploadReceipt.ForeColor = System.Drawing.Color.White;
             this.btnUploadReceipt.Image = ((System.Drawing.Image)(resources.GetObject("btnUploadReceipt.Image")));
             this.btnUploadReceipt.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnUploadReceipt.Location = new System.Drawing.Point(659, 32);
+            this.btnUploadReceipt.Location = new System.Drawing.Point(648, 32);
             this.btnUploadReceipt.Name = "btnUploadReceipt";
             this.btnUploadReceipt.Size = new System.Drawing.Size(201, 73);
             this.btnUploadReceipt.TabIndex = 204;

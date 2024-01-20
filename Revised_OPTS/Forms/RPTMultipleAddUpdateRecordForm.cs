@@ -31,6 +31,7 @@ namespace Inventory_System.Forms
         Color customColor = Color.FromArgb(6, 19, 36);
 
         private DynamicGridContainer<Rpt> DynamicGridContainer;
+        private NotificationHelper NotificationHelper = new NotificationHelper();
 
         public RPTMultipleAddUpdateRecordForm()
         {
@@ -47,6 +48,7 @@ namespace Inventory_System.Forms
             panel1.BackColor = customColor;
             btnSaveRecord.BackColor = customColor;
             btnClose.BackColor = customColor;
+
         }
 
         private void DgRptAddUpdateForm_CellClick(object? sender, DataGridViewCellEventArgs e)
@@ -238,14 +240,8 @@ namespace Inventory_System.Forms
                 return;
             }
 
-            notifyUserAndRefreshRecord(firstTaxdecRecord);
+            NotificationHelper.notifyUserAndRefreshRecord(firstTaxdecRecord);
             btnClose_Click(sender, e);
-        }
-
-        public void notifyUserAndRefreshRecord(string keyWord)
-        {
-            MessageBox.Show("Record successfully saved.");
-            MainForm.Instance.Search(keyWord);
         }
 
         private void btnSaveRecord_MouseEnter(object sender, EventArgs e)
