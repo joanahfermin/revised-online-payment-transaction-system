@@ -86,7 +86,7 @@ namespace Inventory_System.Forms
                         ep.BillerId = columnArray[4];
                         ep.BillerInfo1 = columnArray[5]; //YEAR
                         ep.Quarter = Quarter.FULL_YEAR; //CREATE QUARTER BECAUSE THERE'S NO QUARTER IN THE GCASH/PAYMAYA EXCEL FILE.
-                        ep.BillerInfo2 = columnArray[6];
+                        ep.BillerInfo2 = columnArray[6].ToUpper();
                         ep.BillingSelection = BillingSelectionUtil.CLASS1; //CREATE BILLING SELECTION BECAUSE THERE'S NO B.SELECTION IN THE GCASH/PAYMAYA EXCEL FILE.
                         ep.BillerInfo3 = columnArray[7];
                         ep.AmountDue = Convert.ToDecimal(columnArray[9]);
@@ -107,29 +107,6 @@ namespace Inventory_System.Forms
             }
         }
 
-        private Rpt convertToRpt(ElectronicPayment ep)
-        {
-            Rpt rpt = new Rpt();
-
-            rpt.TaxDec = ep.BillerId.ToString();
-            rpt.TaxPayerName = ep.BillerInfo2;
-            rpt.AmountToPay = ep.AmountTransferred;
-            rpt.AmountTransferred = ep.AmountTransferred;
-            rpt.TotalAmountTransferred = ep.AmountTransferred;
-            rpt.ExcessShortAmount = 0;// excessShortAmount;
-            rpt.Bank = ep.ServiceProvider;
-            rpt.YearQuarter = ep.BillerInfo1;
-            rpt.Quarter = ep.Quarter;
-            rpt.PaymentType = null;
-            rpt.BillingSelection = ep.BillingSelection;
-            rpt.Status = TaxStatus.ForPaymentVerification;
-            rpt.RequestingParty = ep.BillerInfo3;
-            rpt.PaymentDate = ep.Date;
-
-            return rpt;
-
-        }
-
         private void btnSaveAll_Click(object sender, EventArgs e)
         {
             TaxUniqueKeyFormat taxUniqueKeyFormat = new TaxUniqueKeyFormat();
@@ -144,16 +121,47 @@ namespace Inventory_System.Forms
                 foreach (DataGridViewRow row in dgRptList.Rows)
                 {
                     ElectronicPayment ep = (ElectronicPayment)row.DataBoundItem;
-
+                    //RPT
                     if (taxUniqueKeyFormat.isRPTTaxDecFormat(ep.BillerId))
                     {
-                        rptToSaveList.Add(convertToRpt(ep));
+                        rptToSaveList.Add(ProcessEPaymentRpt(ep));
                         firstRecordSearchMainFormRef = ep.BillerId;
                     }
-
-                    else if (true)
+                    //BUSINESS
+                    else if (taxUniqueKeyFormat.isOPnumberFormatBusiness(ep.BillerRef))
                     {
-
+                        businessToSaveList.Add(ProcessEPaymentBusiness(ep));
+                        firstRecordSearchMainFormRef = ep.BillerRef;
+                    }
+                    //MISC - OCCUPATIONAL PERMIT
+                    else if (taxUniqueKeyFormat.isOPnumberFormatOccuPermit(ep.BillerRef))
+                    {
+                        miscToSaveList.Add(ProcessEPaymentMiscOccuPermit(ep));
+                        firstRecordSearchMainFormRef = ep.BillerRef;
+                    }
+                    //MISC - OVR TTMD
+                    else if (taxUniqueKeyFormat.isOPnumberFormatOvrTTMD(ep.BillerRef))
+                    {
+                        miscToSaveList.Add(ProcessEPaymentMiscOvrTtmd(ep));
+                        firstRecordSearchMainFormRef = ep.BillerRef;
+                    }
+                    //MISC - OVR DPOS
+                    else if (taxUniqueKeyFormat.isOPnumberFormatOvrDPOS(ep.BillerRef))
+                    {
+                        miscToSaveList.Add(ProcessEPaymentMiscOvrDpos(ep));
+                        firstRecordSearchMainFormRef = ep.BillerRef;
+                    }
+                    //MISC - MARKET
+                    else if (taxUniqueKeyFormat.isOPnumberFormatMarketMDAD(ep.BillerInfo3))
+                    {
+                        miscToSaveList.Add(ProcessEPaymentMiscMarket(ep));
+                        firstRecordSearchMainFormRef = ep.BillerRef;
+                    }
+                    //MISC - ZONING
+                    else if (taxUniqueKeyFormat.isOPnumberFormatZoning(ep.BillerRef))
+                    {
+                        miscToSaveList.Add(ProcessEPaymentMiscZoning(ep));
+                        firstRecordSearchMainFormRef = ep.BillerRef;
                     }
                 }
 
@@ -169,6 +177,47 @@ namespace Inventory_System.Forms
                     return;
                 }
             }
+        }
+
+        private Rpt ProcessEPaymentRpt(ElectronicPayment ep)
+        {
+            Rpt rpt = ConversionHelper.ConvertToRpt(ep);
+            return rpt;
+        }
+
+        private Miscellaneous ProcessEPaymentMiscOccuPermit(ElectronicPayment ep)
+        {
+            Miscellaneous misc = ConversionHelper.ConvertToMiscOccuPermit(ep);
+            return misc;
+        }
+
+        private Miscellaneous ProcessEPaymentMiscOvrTtmd(ElectronicPayment ep)
+        {
+            Miscellaneous misc = ConversionHelper.ConvertToMiscOvrTtmd(ep);
+            return misc;
+        }
+
+        private Miscellaneous ProcessEPaymentMiscOvrDpos(ElectronicPayment ep)
+        {
+            Miscellaneous misc = ConversionHelper.ConvertToMiscOvrDpos(ep);
+            return misc;
+        }
+        private Miscellaneous ProcessEPaymentMiscMarket(ElectronicPayment ep)
+        {
+            Miscellaneous misc = ConversionHelper.ConvertToMiscMarket(ep);
+            return misc;
+        }
+
+        private Miscellaneous ProcessEPaymentMiscZoning(ElectronicPayment ep)
+        {
+            Miscellaneous misc = ConversionHelper.ConvertToMiscZoning(ep);
+            return misc;
+        }
+
+        private Business ProcessEPaymentBusiness(ElectronicPayment ep)
+        {
+            Business bus = ConversionHelper.ConvertToBusiness(ep);
+            return bus;
         }
 
         private void btnClose_Click(object sender, EventArgs e)

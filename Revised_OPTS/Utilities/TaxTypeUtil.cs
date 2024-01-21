@@ -12,6 +12,10 @@ namespace Revised_OPTS.Utilities
         public const string REALPROPERTYTAX = "REAL PROPERTY TAX";
         public const string MISCELLANEOUS_OCCUPERMIT = "OCCUPATIONAL PERMIT";
         public const string MISCELLANEOUS_OVR = "OVR";
+
+        //public const string MISCELLANEOUS_OVR_TTMD = "OVR TTMD";
+        //public const string MISCELLANEOUS_OVR_DPOS = "OVR DPOS";
+
         public const string MISCELLANEOUS_LIQUOR = "LIQUOR";
         public const string MISCELLANEOUS_MARKET = "MARKET";
         public const string MISCELLANEOUS_ZONING = "ZONING";

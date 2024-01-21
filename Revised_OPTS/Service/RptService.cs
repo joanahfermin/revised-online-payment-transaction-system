@@ -250,8 +250,9 @@ namespace Revised_OPTS.Service
                         rpt.EncodedBy = securityService.getLoginUser().DisplayName;
                         rpt.EncodedDate = DateTime.Now;
                         rptRepository.Insert(rpt);
-
                     }
+                    dbContext.SaveChanges();
+                    scope.Complete();
 
                     //foreach (Rpt rpt in listOfRptsToDelete)
                     //{
@@ -260,8 +261,7 @@ namespace Revised_OPTS.Service
                     //        rptRepository.Delete(rpt);
                     //    }
                     //}
-                    dbContext.SaveChanges();
-                    scope.Complete();
+
                 }
             }
         }

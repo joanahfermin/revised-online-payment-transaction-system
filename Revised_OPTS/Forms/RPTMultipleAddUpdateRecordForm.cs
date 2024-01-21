@@ -209,7 +209,7 @@ namespace Inventory_System.Forms
         private void btnSaveRecord_Click(object sender, EventArgs e)
         {
             string firstTaxdecRecord = null;
-            decimal totalAmountTransferred = Convert.ToDecimal(tbTotalAmountTransferred.Text);
+             decimal totalAmountTransferred = Convert.ToDecimal(tbTotalAmountTransferred.Text);
 
             List<Rpt> listOfRptsToSave = DynamicGridContainer.GetData();
             List<Rpt> listOfRptsToDelete = DynamicGridContainer.GetDataToDelete();
