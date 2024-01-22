@@ -401,6 +401,7 @@ namespace Revised_OPTS.Service
 
                     Rpt rpt = rptRepository.Get(pix.RptId);
                     rpt.UploadedBy = securityService.getLoginUser().DisplayName;
+                    rpt.ORAttachedDate = DateTime.Now;
                     rptRepository.Update(rpt);
 
                     PictureRepository.Insert(pix);
