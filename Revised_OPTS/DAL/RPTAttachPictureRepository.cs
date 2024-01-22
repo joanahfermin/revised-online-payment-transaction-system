@@ -15,15 +15,5 @@ namespace Inventory_System.DAL
         {
             return getDbSet().FirstOrDefault(p => p.RptId == rptId && p.DocumentType == DocumentType.RECEIPT);
         }
-
-        public void DeleteORByRptid(long rptId)
-        {
-            RPTAttachPicture recordToDelete = getRptReceipt(rptId);
-
-            if (recordToDelete != null)
-            {
-                getDbSet().Remove(recordToDelete);
-            }
-        }
     }
 }

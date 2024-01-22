@@ -17,9 +17,9 @@ namespace Inventory_System.Utilities
 
             rpt.TaxDec = ep.BillerId.ToString();
             rpt.TaxPayerName = ep.BillerInfo2;
-            rpt.AmountToPay = ep.AmountTransferred;
-            rpt.AmountTransferred = ep.AmountTransferred;
-            rpt.TotalAmountTransferred = ep.AmountTransferred;
+            rpt.AmountToPay = ep.AmountDue;
+            rpt.AmountTransferred = ep.AmountDue;
+            rpt.TotalAmountTransferred = ep.AmountDue;
             rpt.ExcessShortAmount = 0;// excessShortAmount;
             rpt.Bank = ep.ServiceProvider;
             rpt.YearQuarter = ep.BillerInfo1;
@@ -39,11 +39,11 @@ namespace Inventory_System.Utilities
 
             bus.Business_Type = null;
             bus.MP_Number = ep.BillerId;
-            bus.TaxpayersName = ep.BillerInfo2;
-            bus.BusinessName = null;
+            //bus.TaxpayersName = ep.BillerInfo2;
+            //bus.BusinessName = null;
             bus.BillNumber = ep.BillerRef;
-            bus.BillAmount = ep.AmountTransferred;
-            bus.BillAmount = ep.AmountTransferred;
+            bus.BillAmount = ep.AmountDue;
+            bus.TotalAmount = ep.AmountDue;
             bus.PaymentChannel = ep.ServiceProvider;
             //bus.Year = ep.BillerInfo1;
             //bus.Qtrs = ep.Quarter;
@@ -63,12 +63,12 @@ namespace Inventory_System.Utilities
             misc.OrderOfPaymentNum = ep.BillerRef;
             misc.ModeOfPayment = ep.ServiceProvider;
             misc.OPATrackingNum = ep.BillerId.ToString();
-            misc.AmountToBePaid = ep.AmountTransferred;
-            misc.TransferredAmount = ep.AmountTransferred;
+            misc.AmountToBePaid = ep.AmountDue;
+            misc.TransferredAmount = ep.AmountDue;
             misc.ExcessShort = 0;
             misc.PaymentDate = ep.Date;
             misc.Status = TaxStatus.ForPaymentVerification;
-            misc.RequestingParty = ep.BillerInfo3;
+            //misc.RequestingParty = ep.BillerInfo3;
 
             return misc;
         }
@@ -82,8 +82,8 @@ namespace Inventory_System.Utilities
             misc.OrderOfPaymentNum = ep.BillerRef;
             misc.ModeOfPayment = ep.ServiceProvider;
             misc.OPATrackingNum = ep.BillerId.ToString();
-            misc.AmountToBePaid = ep.AmountTransferred;
-            misc.TransferredAmount = ep.AmountTransferred;
+            misc.AmountToBePaid = ep.AmountDue;
+            misc.TransferredAmount = ep.AmountDue;
             misc.ExcessShort = 0;
             misc.PaymentDate = ep.Date;
             misc.Status = TaxStatus.ForPaymentVerification;
@@ -101,8 +101,8 @@ namespace Inventory_System.Utilities
             misc.OrderOfPaymentNum = ep.BillerRef;
             misc.ModeOfPayment = ep.ServiceProvider;
             misc.OPATrackingNum = ep.BillerId.ToString();
-            misc.AmountToBePaid = ep.AmountTransferred;
-            misc.TransferredAmount = ep.AmountTransferred;
+            misc.AmountToBePaid = ep.AmountDue;
+            misc.TransferredAmount = ep.AmountDue;
             misc.ExcessShort = 0;
             misc.PaymentDate = ep.Date;
             misc.Status = TaxStatus.ForPaymentVerification;
@@ -120,8 +120,8 @@ namespace Inventory_System.Utilities
             misc.OrderOfPaymentNum = ep.BillerInfo3;
             misc.ModeOfPayment = ep.ServiceProvider;
             misc.OPATrackingNum = ep.BillerRef;
-            misc.AmountToBePaid = ep.AmountTransferred;
-            misc.TransferredAmount = ep.AmountTransferred;
+            misc.AmountToBePaid = ep.AmountDue;
+            misc.TransferredAmount = ep.AmountDue;
             misc.ExcessShort = 0;
             misc.PaymentDate = ep.Date;
             misc.Status = TaxStatus.ForPaymentVerification;
@@ -137,9 +137,9 @@ namespace Inventory_System.Utilities
             misc.TaxpayersName = ep.BillerInfo2;
             misc.OrderOfPaymentNum = ep.BillerRef;
             misc.ModeOfPayment = ep.ServiceProvider;
-            //misc.OPATrackingNum = ep.BillerId.ToString();
-            misc.AmountToBePaid = ep.AmountTransferred;
-            misc.TransferredAmount = ep.AmountTransferred;
+            misc.OPATrackingNum = ep.BillerId;
+            misc.AmountToBePaid = ep.AmountDue;
+            misc.TransferredAmount = ep.AmountDue;
             misc.ExcessShort = 0;
             misc.PaymentDate = ep.Date;
             misc.Status = TaxStatus.ForPaymentVerification;
@@ -147,7 +147,5 @@ namespace Inventory_System.Utilities
 
             return misc;
         }
-
-
     }
 }

@@ -71,6 +71,8 @@ namespace Inventory_System.Forms
 
                 long rptID = rptRecord.RptID;
                 rptService.DeleteAttachedOR(rptID);
+                rptService.DeleteAttachedOR(rptID);
+
                 loadRptReceipt(rptRecord.RptID);
             }
         }
@@ -210,7 +212,7 @@ namespace Inventory_System.Forms
                     //    loadRptReceipt(selectedRptRecord.RptID);
                     //    dgRptList.FirstDisplayedScrollingRowIndex = counter;
                     //}
-                    counter++;
+                    //counter++;
                 }
             }
             else

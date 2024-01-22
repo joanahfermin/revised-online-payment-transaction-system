@@ -19,7 +19,6 @@ namespace Inventory_System.Model
         public string? BillingSelection { get; set; } 
         public string? BillerInfo3 { get; set; } //COLUMN H
         public decimal? AmountDue { get; set; } //COLUMN J
-        public decimal? AmountTransferred { get; set; } //COLUMN J
         public DateTime? Date { get; set; } //COLUMN M
     }
 }

@@ -21,6 +21,8 @@ namespace Revised_OPTS.Service
         /// Provides the IRptRepository instance from the RepositoryFactory.
         /// </summary>
         IRptRepository rptRepository = RepositoryFactory.Instance.GetRptRepository();
+        IBusinessRepository businessRepository = RepositoryFactory.Instance.GetBusinessRepository();
+        IMiscRepository miscRepository = RepositoryFactory.Instance.GetMiscRepository();
 
         /// <summary>
         /// Provides the IBankRepository instance from the RepositoryFactory.
@@ -252,6 +254,23 @@ namespace Revised_OPTS.Service
                         rpt.EncodedDate = DateTime.Now;
                         rptRepository.Insert(rpt);
                     }
+
+                    foreach (Business bus in businessList)
+                    {
+                        bus.Status = TaxStatus.ForPaymentVerification;
+                        bus.EncodedBy = securityService.getLoginUser().DisplayName;
+                        bus.EncodedDate = DateTime.Now;
+                        businessRepository.Insert(bus);
+                    }
+
+                    foreach (Miscellaneous misc in miscList)
+                    {
+                        misc.Status = TaxStatus.ForPaymentVerification;
+                        misc.EncodedBy = securityService.getLoginUser().DisplayName;
+                        misc.EncodedDate = DateTime.Now;
+                        miscRepository.Insert(misc);
+                    }
+
                     dbContext.SaveChanges();
                     scope.Complete();
 
@@ -267,21 +286,21 @@ namespace Revised_OPTS.Service
             }
         }
 
-        private void calculateTotalpaymentOfGcashAndPaymaya(List<Rpt> listOfRptsToSave)
-        {
-            using (var dbContext = ApplicationDBContext.Create())
-            {
-                decimal? totalAmount = 0;
+        //private void calculateTotalpaymentOfGcashAndPaymaya(List<Rpt> listOfRptsToSave)
+        //{
+        //    using (var dbContext = ApplicationDBContext.Create())
+        //    {
+        //        decimal? totalAmount = 0;
 
-                foreach (Rpt item in listOfRptsToSave)
-                {
-                    if (item.PaymentType.Contains("GCASH"))
-                    {
-                        totalAmount = item.AmountTransferred + item.AmountTransferred;
-                    }
-                }
-            }
-        }
+        //        foreach (Rpt item in listOfRptsToSave)
+        //        {
+        //            if (item.PaymentType.Contains("GCASH"))
+        //            {
+        //                totalAmount = item.AmountTransferred + item.AmountTransferred;
+        //            }
+        //        }
+        //    }
+        //}
 
 
         private void AssignRefNum(List<Rpt> listOfPersonsToSave)
@@ -437,24 +456,19 @@ namespace Revised_OPTS.Service
 
         public void DeleteAttachedOR(long rptId)
         {
-            //using (var dbContext = ApplicationDBContext.Create())
-            //{
-            //    using (var scope = new TransactionScope())
-            //    {
-            //        pictureRepository.DeleteORByRptid(rptId);
-
-            //        dbContext.SaveChanges();
-            //        scope.Complete();
-            //    }
-            //}
-
+            //INSERT THE DISPLAY NAME OF THE USER WHO DELETED THE O.R IN LASTUPDATEDBY
             try
             {
                 using (var dbContext = ApplicationDBContext.Create())
                 {
                     using (var scope = new TransactionScope())
                     {
-                        pictureRepository.DeleteORByRptid(rptId);
+
+                        RPTAttachPicture existing = pictureRepository.getRptReceipt(rptId);
+                        if (existing != null)
+                        {
+                            pictureRepository.PhysicalDelete(existing);
+                        }
                         dbContext.SaveChanges();
                         scope.Complete();
                         MessageBox.Show("Successfully deleted OR.");

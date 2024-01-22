@@ -86,11 +86,10 @@ namespace Inventory_System.Forms
                         ep.BillerId = columnArray[4];
                         ep.BillerInfo1 = columnArray[5]; //YEAR
                         ep.Quarter = Quarter.FULL_YEAR; //CREATE QUARTER BECAUSE THERE'S NO QUARTER IN THE GCASH/PAYMAYA EXCEL FILE.
-                        ep.BillerInfo2 = columnArray[6].ToUpper();
+                        ep.BillerInfo2 = columnArray[6];
                         ep.BillingSelection = BillingSelectionUtil.CLASS1; //CREATE BILLING SELECTION BECAUSE THERE'S NO B.SELECTION IN THE GCASH/PAYMAYA EXCEL FILE.
                         ep.BillerInfo3 = columnArray[7];
                         ep.AmountDue = Convert.ToDecimal(columnArray[9]);
-                        ep.AmountTransferred = ep.AmountDue;
 
                         if (DateTime.TryParse(columnArray[12], out DateTime date))
                         {
