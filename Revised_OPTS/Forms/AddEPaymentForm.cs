@@ -1,4 +1,7 @@
-﻿using Inventory_System.Exception;
+﻿using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Spreadsheet;
+using DocumentFormat.OpenXml;
+using Inventory_System.Exception;
 using Inventory_System.Model;
 using Inventory_System.Utilities;
 using Revised_OPTS.Model;
@@ -231,6 +234,11 @@ namespace Inventory_System.Forms
 
         private void btnPrintReport_Click(object sender, EventArgs e)
         {
+            GenerateTemporaryTaxesList();
+
+            GenerateSheet(rptToSaveList);
+
+            /*
             object Nothing = System.Reflection.Missing.Value;
             var app = new Microsoft.Office.Interop.Excel.Application();
             app.Visible = true;
@@ -240,8 +248,66 @@ namespace Inventory_System.Forms
 
             GenerateTemporaryTaxesList();
             GenerateSheet(workBook, "RPT", rptToSaveList);
+            */
         }
 
+        private void GenerateSheet(List<Rpt>  rptToSaveList)
+        {
+            // Generate a filename in My Documents folder.
+            string fileName = $"GcashPayMaya_{DateTime.Now:yyyyMMdd_HHmmss}_{Guid.NewGuid()}.xlsx";
+            string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), fileName);
+
+            // Create the excel file
+            using (var spreadsheetDocument = SpreadsheetDocument.Create(filePath, SpreadsheetDocumentType.Workbook))
+            {
+                // Add a WorkbookPart to the document
+                var workbookPart = spreadsheetDocument.AddWorkbookPart();
+                workbookPart.Workbook = new Workbook();
+
+                // Add a WorksheetPart to the WorkbookPart
+                var worksheetPart = workbookPart.AddNewPart<WorksheetPart>();
+                worksheetPart.Worksheet = new Worksheet(new SheetData());
+
+                // Add a Sheets to the Workbook
+                var sheets = spreadsheetDocument.WorkbookPart.Workbook.AppendChild(new Sheets());
+                sheets.Append(new Sheet() { Id = spreadsheetDocument.WorkbookPart.GetIdOfPart(worksheetPart), SheetId = 1, Name = "Sheet1" });
+
+                // Get the sheet data
+                var sheetData = worksheetPart.Worksheet.GetFirstChild<SheetData>();
+
+                // Add data to the sheet
+                var row = new Row();
+                row.Append(CreateCell("A1", "Header1"));
+                row.Append(CreateCell("B1", "Header2"));
+                sheetData.AppendChild(row);
+
+                for (int i = 1; i <= 5; i++)
+                {
+                    row = new Row();
+                    row.Append(CreateCell($"A{i + 1}", $"Data{i}_Column1"));
+                    row.Append(CreateCell($"B{i + 1}", $"Data{i}_Column2"));
+                    sheetData.AppendChild(row);
+                }
+            }
+
+            //Open the excel file
+            System.Diagnostics.Process.Start("excel.exe", filePath);
+        }
+
+        private static Cell CreateCell(string cellReference, string cellValue)
+        {
+            // Create a cell with specified reference and value
+            var cell = new Cell()
+            {
+                CellReference = cellReference,
+                DataType = CellValues.String,
+                CellValue = new CellValue(cellValue)
+            };
+
+            return cell;
+        }
+
+        /*
         private void GenerateSheet(Microsoft.Office.Interop.Excel.Workbook workBook, string sheetName, List<Rpt> rptToSaveList)
         {
             Microsoft.Office.Interop.Excel.Worksheet worksheet = (Microsoft.Office.Interop.Excel.Worksheet)workBook.Sheets.Add(Type.Missing, workBook.Sheets[workBook.Sheets.Count], 1, Microsoft.Office.Interop.Excel.XlSheetType.xlWorksheet);
@@ -271,7 +337,7 @@ namespace Inventory_System.Forms
                 worksheet.Cells[row, 6] = $"=sum(F5:F{row - 1})";
             }
         }
-
+        */
 
         private void btnClose_Click(object sender, EventArgs e)
         {
