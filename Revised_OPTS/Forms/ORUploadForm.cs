@@ -14,6 +14,7 @@ using System.Windows.Forms;
 using OpenCvSharp;
 using OpenCvSharp.Extensions;
 using Inventory_System.Utilities;
+using Inventory_System.Exception;
 
 namespace Inventory_System.Forms
 {
@@ -49,11 +50,29 @@ namespace Inventory_System.Forms
             dgRptList.CellFormatting += dgRptList_CellFormatting;
 
             ContextMenuStrip contextMenuStrip1 = new ContextMenuStrip();
+
             ToolStripMenuItem menuItemSearch = new ToolStripMenuItem("Search");
             menuItemSearch.Click += MenuItemSearch_Click;
 
+            ToolStripMenuItem menuItemDeleteOR = new ToolStripMenuItem("Delete OR");
+            menuItemDeleteOR.Click += MenuItemDeleteOR_Click;
+
             contextMenuStrip1.Items.Add(menuItemSearch);
+            contextMenuStrip1.Items.Add(menuItemDeleteOR);
             dgRptList.ContextMenuStrip = contextMenuStrip1;
+        }
+
+        private void MenuItemDeleteOR_Click(object? sender, EventArgs e)
+        {
+            DataGridViewRow selectedRow = dgRptList.CurrentRow;
+            if (selectedRow != null)
+            {
+                Rpt rptRecord = selectedRow.DataBoundItem as Rpt;
+
+                long rptID = rptRecord.RptID;
+                rptService.DeleteAttachedOR(rptID);
+                loadRptReceipt(rptRecord.RptID);
+            }
         }
 
         private void MenuItemSearch_Click(object? sender, EventArgs e)

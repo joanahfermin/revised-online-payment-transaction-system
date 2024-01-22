@@ -37,7 +37,8 @@ namespace Revised_OPTS.Service
         /// </summary>
         //IRptService rptService = ServiceFactory.Instance.GetRptService();
 
-        IRPTAttachPictureRepository PictureRepository = RepositoryFactory.Instance.GetRPTAttachPictureRepository();
+        IRPTAttachPictureRepository pictureRepository = RepositoryFactory.Instance.GetRPTAttachPictureRepository();
+
         public Rpt Get(object id)
         {
             using (var dbContext = ApplicationDBContext.Create())
@@ -389,33 +390,40 @@ namespace Revised_OPTS.Service
 
         public void UploadReceipt(RPTAttachPicture pix)
         {
-            using (var dbContext = ApplicationDBContext.Create())
+            try
             {
-                using (var scope = new TransactionScope())
+                using (var dbContext = ApplicationDBContext.Create())
                 {
-                    RPTAttachPicture existing = PictureRepository.getRptReceipt(pix.RptId);
-                    if (existing != null && existing.PictureId>0)
+                    using (var scope = new TransactionScope())
                     {
-                        PictureRepository.PhysicalDelete(existing);
+                        RPTAttachPicture existing = pictureRepository.getRptReceipt(pix.RptId);
+                        if (existing != null && existing.PictureId > 0)
+                        {
+                            pictureRepository.PhysicalDelete(existing);
+                        }
+
+                        Rpt rpt = rptRepository.Get(pix.RptId);
+                        rpt.UploadedBy = securityService.getLoginUser().DisplayName;
+                        rpt.ORAttachedDate = DateTime.Now;
+                        rptRepository.Update(rpt);
+
+                        pictureRepository.Insert(pix);
+                        dbContext.SaveChanges();
+                        scope.Complete();
                     }
-
-                    Rpt rpt = rptRepository.Get(pix.RptId);
-                    rpt.UploadedBy = securityService.getLoginUser().DisplayName;
-                    rpt.ORAttachedDate = DateTime.Now;
-                    rptRepository.Update(rpt);
-
-                    PictureRepository.Insert(pix);
-                    dbContext.SaveChanges();
-                    scope.Complete();
                 }
-            }                
+            }
+            catch (RptException ex)
+            {
+                throw new("Error uploading OR.", ex);
+            }
         }
 
         public RPTAttachPicture getRptReceipt(long rptId)
         {
             using (var dbContext = ApplicationDBContext.Create())
             {
-                return PictureRepository.getRptReceipt(rptId);
+                return pictureRepository.getRptReceipt(rptId);
             }
         }
 
@@ -425,7 +433,38 @@ namespace Revised_OPTS.Service
             {
                 return rptRepository.RetrieveBySameRefNumInUploadingEpayment(taxdec);
             }
+        }
 
+        public void DeleteAttachedOR(long rptId)
+        {
+            //using (var dbContext = ApplicationDBContext.Create())
+            //{
+            //    using (var scope = new TransactionScope())
+            //    {
+            //        pictureRepository.DeleteORByRptid(rptId);
+
+            //        dbContext.SaveChanges();
+            //        scope.Complete();
+            //    }
+            //}
+
+            try
+            {
+                using (var dbContext = ApplicationDBContext.Create())
+                {
+                    using (var scope = new TransactionScope())
+                    {
+                        pictureRepository.DeleteORByRptid(rptId);
+                        dbContext.SaveChanges();
+                        scope.Complete();
+                        MessageBox.Show("Successfully deleted OR.");
+                    }
+                }
+            }
+            catch (RptException ex)
+            {
+                throw new("Error deleting attached OR.", ex);
+            }
         }
     }
 }

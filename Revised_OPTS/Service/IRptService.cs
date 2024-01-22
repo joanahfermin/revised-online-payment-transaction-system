@@ -31,5 +31,6 @@ namespace Revised_OPTS.Service
 
         void UploadReceipt(RPTAttachPicture pix);
         RPTAttachPicture getRptReceipt(long rptId);
+        void DeleteAttachedOR(long rptId);
     }
 }

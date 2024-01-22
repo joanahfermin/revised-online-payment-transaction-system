@@ -11,5 +11,6 @@ namespace Inventory_System.DAL
     internal interface IRPTAttachPictureRepository : IRepository<RPTAttachPicture>
     {
         RPTAttachPicture getRptReceipt(long rptId);
+        void DeleteORByRptid(long rptId);
     }
 }
