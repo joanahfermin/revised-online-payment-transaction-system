@@ -456,7 +456,6 @@ namespace Revised_OPTS.Service
 
         public void DeleteAttachedOR(long rptId)
         {
-            //INSERT THE DISPLAY NAME OF THE USER WHO DELETED THE O.R IN LASTUPDATEDBY
             try
             {
                 using (var dbContext = ApplicationDBContext.Create())
