@@ -237,18 +237,6 @@ namespace Inventory_System.Forms
             GenerateTemporaryTaxesList();
 
             GenerateSheet(rptToSaveList);
-
-            /*
-            object Nothing = System.Reflection.Missing.Value;
-            var app = new Microsoft.Office.Interop.Excel.Application();
-            app.Visible = true;
-            Microsoft.Office.Interop.Excel.Workbook workBook = app.Workbooks.Add(Nothing);
-            Microsoft.Office.Interop.Excel.Worksheet worksheet = (Microsoft.Office.Interop.Excel.Worksheet)workBook.Sheets[1];
-            worksheet.Name = "WorkSheet";
-
-            GenerateTemporaryTaxesList();
-            GenerateSheet(workBook, "RPT", rptToSaveList);
-            */
         }
 
         private void GenerateSheet(List<Rpt>  rptToSaveList)
@@ -291,7 +279,7 @@ namespace Inventory_System.Forms
             }
 
             //Open the excel file
-            System.Diagnostics.Process.Start("excel.exe", filePath);
+            System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo { FileName = filePath, UseShellExecute = true });
         }
 
         private static Cell CreateCell(string cellReference, string cellValue)
@@ -307,38 +295,6 @@ namespace Inventory_System.Forms
             return cell;
         }
 
-        /*
-        private void GenerateSheet(Microsoft.Office.Interop.Excel.Workbook workBook, string sheetName, List<Rpt> rptToSaveList)
-        {
-            Microsoft.Office.Interop.Excel.Worksheet worksheet = (Microsoft.Office.Interop.Excel.Worksheet)workBook.Sheets.Add(Type.Missing, workBook.Sheets[workBook.Sheets.Count], 1, Microsoft.Office.Interop.Excel.XlSheetType.xlWorksheet);
-            worksheet.Name = sheetName;
-
-            if (taxUniqueKeyFormat.isRPTTaxDecFormat(ep.BillerId))
-            {
-                int row = 5;
-                int counter = 1;
-
-                foreach (Rpt rpt in rptToSaveList)
-                {
-                    worksheet.Cells[row, 1] = rpt.Bank; 
-                    worksheet.Cells[row, 2] = rpt.Bank; 
-                    worksheet.Cells[row, 3] = rpt.TaxDec; 
-                    worksheet.Cells[row, 4] = rpt.YearQuarter; 
-                    worksheet.Cells[row, 5] = rpt.TaxPayerName; 
-                    worksheet.Cells[row, 6] = rpt.AmountTransferred; 
-                    worksheet.Cells[row, 7] = rpt.PaymentDate; 
-                    row++;
-                    counter++;
-                }
-
-                worksheet.Cells[row, 5] = "Net Amount:";
-                //worksheet.Cells[row, 5].Style.HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignRight;
-                worksheet.Range[worksheet.Cells[row, 5], worksheet.Cells[row, 5]].HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignRight;
-                worksheet.Cells[row, 6] = $"=sum(F5:F{row - 1})";
-            }
-        }
-        */
-
         private void btnClose_Click(object sender, EventArgs e)
         {
             this.Close();
@@ -349,8 +305,8 @@ namespace Inventory_System.Forms
             originalBackgroundImageNonRpt = btnSaveAll.BackgroundImage;
             btnSaveAll.BackgroundImage = null;
 
-            Color customColor = Color.FromArgb(23, 45, 74);
-            btnSaveAll.BackColor = customColor;
+            //Color customColor = Color.FromArgb(23, 45, 74);
+            //btnSaveAll.BackColor = customColor;
         }
 
         private void btnSaveAll_MouseLeave(object sender, EventArgs e)
