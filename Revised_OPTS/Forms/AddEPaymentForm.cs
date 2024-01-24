@@ -108,10 +108,6 @@ namespace Inventory_System.Forms
                         }
                         data.Add(ep);
                     }
-                    else
-                    {
-                        MessageBox.Show("Invalid copy of data.");
-                    }
                 }
                 dgRptList.DataSource = data;
             }
@@ -239,7 +235,7 @@ namespace Inventory_System.Forms
             GenerateSheet(rptToSaveList, businessToSaveList);
         }
 
-        private void GenerateSheet(List<Rpt>  rptToSaveList, List<Business> businessToSaveList)
+        private void GenerateSheet(List<Rpt> rptToSaveList, List<Business> businessToSaveList)
         {
             // Generate a filename in My Documents folder.
             string fileName = $"GcashPayMaya_{DateTime.Now:yyyyMMdd_HHmmss}_{Guid.NewGuid()}.xlsx";
@@ -253,94 +249,148 @@ namespace Inventory_System.Forms
                 workbookPart.Workbook = new Workbook();
 
                 // Add a Sheets to the Workbook
-                var sheets = spreadsheetDocument.WorkbookPart.Workbook.AppendChild(new Sheets());
+                Sheets sheets = spreadsheetDocument.WorkbookPart.Workbook.AppendChild(new Sheets());
 
-                // Add a WorksheetPart to the WorkbookPart
-                var worksheetPart = workbookPart.AddNewPart<WorksheetPart>();
-                worksheetPart.Worksheet = new Worksheet(new SheetData());
+                CreateRptSheet(sheets, workbookPart, spreadsheetDocument, rptToSaveList);
+                CreateBusinessSheet(sheets, workbookPart, spreadsheetDocument, businessToSaveList);
 
-                // Add sheet to the document
-                sheets.Append(new Sheet() { Id = spreadsheetDocument.WorkbookPart.GetIdOfPart(worksheetPart), SheetId = 1, Name = "RPT" });
-                // Get the sheet data
-                var sheetData = worksheetPart.Worksheet.GetFirstChild<SheetData>();
-
-                // Add data to the sheet
-                sheetData.AppendChild(new Row());
-                sheetData.AppendChild(new Row());
-                sheetData.AppendChild(new Row());
-                sheetData.AppendChild(new Row());
-
-                var row = new Row();
-                row.Append(CreateCell("A5", ""));
-                row.Append(CreateCell("B5", "BANK"));
-                row.Append(CreateCell("C5", "TAX DEC. NO."));
-                row.Append(CreateCell("D5", "YEAR"));
-                row.Append(CreateCell("E5", "TAXPAYER NAME"));
-                row.Append(CreateCell("F5", "AMOUNT DUE"));
-                row.Append(CreateCell("G5", "PAYMENT DATE"));
-                sheetData.AppendChild(row);
-
-                int rowIndex = 6;
-                int count = 1;
-
-                foreach (var rpt in rptToSaveList)
-                {
-                    row = new Row();
-                    row.Append(CreateCell($"A{rowIndex}", count.ToString()));
-                    row.Append(CreateCell($"B{rowIndex}", rpt.Bank));
-                    row.Append(CreateCell($"C{rowIndex}", rpt.TaxDec));
-                    row.Append(CreateCell($"D{rowIndex}", rpt.YearQuarter));
-                    row.Append(CreateCell($"E{rowIndex}", rpt.TaxPayerName));
-                    row.Append(CreateCell($"F{rowIndex}", rpt.AmountTransferred?.ToString(("N2"))));
-                    row.Append(CreateCell($"G{rowIndex}", rpt.PaymentDate.ToString()));
-                    sheetData.AppendChild(row);
-                    count++;
-                    rowIndex++;
-                }
-
-                // Add a WorksheetPart to the WorkbookPart
-                var worksheetPartBusiness = workbookPart.AddNewPart<WorksheetPart>();
-                worksheetPartBusiness.Worksheet = new Worksheet(new SheetData());
-
-                sheets.Append(new Sheet() { Id = spreadsheetDocument.WorkbookPart.GetIdOfPart(worksheetPartBusiness), SheetId = 2, Name = "BUSINESS" });
-                var businessSheetData = worksheetPartBusiness.Worksheet.GetFirstChild<SheetData>();
-
-                // Add data to the sheet
-                businessSheetData.AppendChild(new Row());
-                businessSheetData.AppendChild(new Row());
-                businessSheetData.AppendChild(new Row());
-                businessSheetData.AppendChild(new Row());
-
-                var bussinessRow = new Row();
-                bussinessRow.Append(CreateCell("A5", ""));
-                bussinessRow.Append(CreateCell("B5", "BILL NUMBER"));
-                bussinessRow.Append(CreateCell("C5", "SERVICE PROVIDER"));
-                bussinessRow.Append(CreateCell("D5", "MP NUMBER"));
-                bussinessRow.Append(CreateCell("E5", "AMOUNT DUE"));
-                bussinessRow.Append(CreateCell("F5", "PAYMENT DATE"));
-                businessSheetData.AppendChild(bussinessRow);
-
-                int bussinessRowIndex = 6;
-                count = 1;
-
-                foreach (Business bus in businessToSaveList)
-                {
-                    bussinessRow = new Row(); // Create a new row instance for each iteration
-                    bussinessRow.Append(CreateCell($"A{bussinessRowIndex}", count.ToString()));
-                    bussinessRow.Append(CreateCell($"B{bussinessRowIndex}", bus.BillNumber));
-                    bussinessRow.Append(CreateCell($"C{bussinessRowIndex}", bus.PaymentChannel));
-                    bussinessRow.Append(CreateCell($"D{bussinessRowIndex}", bus.MP_Number));
-                    bussinessRow.Append(CreateCell($"E{bussinessRowIndex}", bus.TotalAmount?.ToString(("N2"))));
-                    bussinessRow.Append(CreateCell($"F{bussinessRowIndex}", bus.DateOfPayment.ToString()));
-                    businessSheetData.AppendChild(bussinessRow);
-                    count++;
-                    bussinessRowIndex++;
-                }
+                //TO DO: CREATE MISC SHEET
             }
 
             //Open the excel file
             System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo { FileName = filePath, UseShellExecute = true });
         }
+
+        private void CreateRptSheet(Sheets sheets, WorkbookPart workbookPart, SpreadsheetDocument spreadsheetDocument, List<Rpt> rptToSaveList)
+        {
+            // Add a WorksheetPart to the WorkbookPart
+            var worksheetPart = workbookPart.AddNewPart<WorksheetPart>();
+            worksheetPart.Worksheet = new Worksheet(new SheetData());
+
+            // Add sheet to the document
+            sheets.Append(new Sheet() { Id = spreadsheetDocument.WorkbookPart.GetIdOfPart(worksheetPart), SheetId = 1, Name = "RPT" });
+            // Get the sheet data
+            var sheetData = worksheetPart.Worksheet.GetFirstChild<SheetData>();
+
+            // Add data to the sheet
+            sheetData.AppendChild(new Row());
+            sheetData.AppendChild(new Row());
+            sheetData.AppendChild(new Row());
+            sheetData.AppendChild(new Row());
+
+            var row = new Row();
+            row.Append(CreateCell("A5", ""));
+            row.Append(CreateCell("B5", "BANK"));
+            row.Append(CreateCell("C5", "TAX DEC. NO."));
+            row.Append(CreateCell("D5", "YEAR"));
+            row.Append(CreateCell("E5", "TAXPAYER NAME"));
+            row.Append(CreateCell("F5", "AMOUNT DUE"));
+            row.Append(CreateCell("G5", "PAYMENT DATE"));
+            sheetData.AppendChild(row);
+
+            int rowIndex = 6;
+            int count = 1;
+
+            foreach (var rpt in rptToSaveList)
+            {
+                row = new Row();
+                row.Append(CreateCell($"A{rowIndex}", count.ToString()));
+                row.Append(CreateCell($"B{rowIndex}", rpt.Bank));
+                row.Append(CreateCell($"C{rowIndex}", rpt.TaxDec));
+                row.Append(CreateCell($"D{rowIndex}", rpt.YearQuarter));
+                row.Append(CreateCell($"E{rowIndex}", rpt.TaxPayerName));
+                row.Append(CreateCell($"F{rowIndex}", rpt.AmountTransferred?.ToString(("N2"))));
+                row.Append(CreateCell($"G{rowIndex}", rpt.PaymentDate.ToString()));
+                sheetData.AppendChild(row);
+                count++;
+                rowIndex++;
+            }
+        }
+
+        private void CreateBusinessSheet(Sheets sheets, WorkbookPart workbookPart, SpreadsheetDocument spreadsheetDocument, List<Business> businessToSaveList)
+        {
+            // Add a WorksheetPart to the WorkbookPart
+            var worksheetPartBusiness = workbookPart.AddNewPart<WorksheetPart>();
+            worksheetPartBusiness.Worksheet = new Worksheet(new SheetData());
+
+            sheets.Append(new Sheet() { Id = spreadsheetDocument.WorkbookPart.GetIdOfPart(worksheetPartBusiness), SheetId = 2, Name = "BUSINESS" });
+            var businessSheetData = worksheetPartBusiness.Worksheet.GetFirstChild<SheetData>();
+
+            // Add data to the sheet
+            businessSheetData.AppendChild(new Row());
+            businessSheetData.AppendChild(new Row());
+            businessSheetData.AppendChild(new Row());
+            businessSheetData.AppendChild(new Row());
+
+            var bussinessRow = new Row();
+            bussinessRow.Append(CreateCell("A5", ""));
+            bussinessRow.Append(CreateCell("B5", "BILL NUMBER"));
+            bussinessRow.Append(CreateCell("C5", "SERVICE PROVIDER"));
+            bussinessRow.Append(CreateCell("D5", "MP NUMBER"));
+            bussinessRow.Append(CreateCell("E5", "AMOUNT DUE"));
+            bussinessRow.Append(CreateCell("F5", "PAYMENT DATE"));
+            businessSheetData.AppendChild(bussinessRow);
+
+            int bussinessRowIndex = 6;
+            int count = 1;
+
+            foreach (Business bus in businessToSaveList)
+            {
+                bussinessRow = new Row(); // Create a new row instance for each iteration
+                bussinessRow.Append(CreateCell($"A{bussinessRowIndex}", count.ToString()));
+                bussinessRow.Append(CreateCell($"B{bussinessRowIndex}", bus.BillNumber));
+                bussinessRow.Append(CreateCell($"C{bussinessRowIndex}", bus.PaymentChannel));
+                bussinessRow.Append(CreateCell($"D{bussinessRowIndex}", bus.MP_Number));
+                bussinessRow.Append(CreateCell($"E{bussinessRowIndex}", bus.TotalAmount?.ToString(("N2"))));
+                bussinessRow.Append(CreateCell($"F{bussinessRowIndex}", bus.DateOfPayment.ToString()));
+                businessSheetData.AppendChild(bussinessRow);
+                count++;
+                bussinessRowIndex++;
+            }
+        }
+
+        private void CreateMiscSheet(Sheets sheets, WorkbookPart workbookPart, SpreadsheetDocument spreadsheetDocument, List<Business> miscToSaveList)
+        {
+            // Add a WorksheetPart to the WorkbookPart
+            var worksheetPartBusiness = workbookPart.AddNewPart<WorksheetPart>();
+            worksheetPartBusiness.Worksheet = new Worksheet(new SheetData());
+
+            sheets.Append(new Sheet() { Id = spreadsheetDocument.WorkbookPart.GetIdOfPart(worksheetPartBusiness), SheetId = 2, Name = "BUSINESS" });
+            var businessSheetData = worksheetPartBusiness.Worksheet.GetFirstChild<SheetData>();
+
+            // Add data to the sheet
+            businessSheetData.AppendChild(new Row());
+            businessSheetData.AppendChild(new Row());
+            businessSheetData.AppendChild(new Row());
+            businessSheetData.AppendChild(new Row());
+
+            var bussinessRow = new Row();
+            bussinessRow.Append(CreateCell("A5", ""));
+            bussinessRow.Append(CreateCell("B5", "BILL NUMBER"));
+            bussinessRow.Append(CreateCell("C5", "SERVICE PROVIDER"));
+            bussinessRow.Append(CreateCell("D5", "MP NUMBER"));
+            bussinessRow.Append(CreateCell("E5", "AMOUNT DUE"));
+            bussinessRow.Append(CreateCell("F5", "PAYMENT DATE"));
+            businessSheetData.AppendChild(bussinessRow);
+
+            int bussinessRowIndex = 6;
+            int count = 1;
+
+            foreach (Business bus in businessToSaveList)
+            {
+                bussinessRow = new Row(); // Create a new row instance for each iteration
+                bussinessRow.Append(CreateCell($"A{bussinessRowIndex}", count.ToString()));
+                bussinessRow.Append(CreateCell($"B{bussinessRowIndex}", bus.BillNumber));
+                bussinessRow.Append(CreateCell($"C{bussinessRowIndex}", bus.PaymentChannel));
+                bussinessRow.Append(CreateCell($"D{bussinessRowIndex}", bus.MP_Number));
+                bussinessRow.Append(CreateCell($"E{bussinessRowIndex}", bus.TotalAmount?.ToString(("N2"))));
+                bussinessRow.Append(CreateCell($"F{bussinessRowIndex}", bus.DateOfPayment.ToString()));
+                businessSheetData.AppendChild(bussinessRow);
+                count++;
+                bussinessRowIndex++;
+            }
+        }
+
 
         private static Cell CreateCell(string cellReference, string cellValue)
         {
