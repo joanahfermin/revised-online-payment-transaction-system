@@ -129,6 +129,7 @@ namespace Inventory_System.Utilities
 
             return misc;
         }
+
         public static Miscellaneous ConvertToMiscZoning(ElectronicPayment ep)
         {
             Miscellaneous misc = new Miscellaneous();
@@ -147,5 +148,25 @@ namespace Inventory_System.Utilities
 
             return misc;
         }
+
+        public static Miscellaneous ConvertToMiscLiquor(ElectronicPayment ep)
+        {
+            Miscellaneous misc = new Miscellaneous();
+
+            misc.MiscType = TaxTypeUtil.MISCELLANEOUS_LIQUOR;
+            misc.TaxpayersName = ep.BillerInfo2;
+            misc.OrderOfPaymentNum = ep.BillerRef;
+            misc.ModeOfPayment = ep.ServiceProvider;
+            //misc.OPATrackingNum = ep.BillerId;
+            misc.AmountToBePaid = ep.AmountDue;
+            misc.TransferredAmount = ep.AmountDue;
+            misc.ExcessShort = 0;
+            misc.PaymentDate = ep.Date;
+            misc.Status = TaxStatus.ForPaymentVerification;
+            misc.RequestingParty = ep.BillerInfo3;
+
+            return misc;
+        }
+
     }
 }

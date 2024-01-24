@@ -184,6 +184,13 @@ namespace Inventory_System.Forms
                     miscToSaveList.Add(ProcessEPaymentMiscZoning(ep));
                     firstRecordSearchMainFormRef = ep.BillerRef;
                 }
+                //MISC - LIQUOR
+                else if (taxUniqueKeyFormat.isOPnumberFormatLiquorLLRB(ep.BillerRef))
+                {
+                    miscToSaveList.Add(ProcessEPaymentMiscLiquor(ep));
+                    firstRecordSearchMainFormRef = ep.BillerRef;
+                }
+
             }
         }
 
@@ -222,6 +229,13 @@ namespace Inventory_System.Forms
             return misc;
         }
 
+        private Miscellaneous ProcessEPaymentMiscLiquor(ElectronicPayment ep)
+        {
+            Miscellaneous misc = ConversionHelper.ConvertToMiscLiquor(ep);
+            return misc;
+        }
+
+
         private Business ProcessEPaymentBusiness(ElectronicPayment ep)
         {
             Business bus = ConversionHelper.ConvertToBusiness(ep);
@@ -232,10 +246,10 @@ namespace Inventory_System.Forms
         {
             //add data to each taxes list to be able to utilize later for the report
             GenerateTemporaryTaxesList();
-            GenerateSheet(rptToSaveList, businessToSaveList);
+            GenerateSheet(rptToSaveList, businessToSaveList, miscToSaveList);
         }
 
-        private void GenerateSheet(List<Rpt> rptToSaveList, List<Business> businessToSaveList)
+        private void GenerateSheet(List<Rpt> rptToSaveList, List<Business> businessToSaveList, List<Miscellaneous> miscToSaveList)
         {
             // Generate a filename in My Documents folder.
             string fileName = $"GcashPayMaya_{DateTime.Now:yyyyMMdd_HHmmss}_{Guid.NewGuid()}.xlsx";
@@ -253,8 +267,7 @@ namespace Inventory_System.Forms
 
                 CreateRptSheet(sheets, workbookPart, spreadsheetDocument, rptToSaveList);
                 CreateBusinessSheet(sheets, workbookPart, spreadsheetDocument, businessToSaveList);
-
-                //TO DO: CREATE MISC SHEET
+                CreateMiscSheet(sheets, workbookPart, spreadsheetDocument, miscToSaveList);
             }
 
             //Open the excel file
@@ -349,48 +362,57 @@ namespace Inventory_System.Forms
             }
         }
 
-        private void CreateMiscSheet(Sheets sheets, WorkbookPart workbookPart, SpreadsheetDocument spreadsheetDocument, List<Business> miscToSaveList)
+        private void CreateMiscSheet(Sheets sheets, WorkbookPart workbookPart, SpreadsheetDocument spreadsheetDocument, List<Miscellaneous> miscToSaveList)
         {
-            // Add a WorksheetPart to the WorkbookPart
-            var worksheetPartBusiness = workbookPart.AddNewPart<WorksheetPart>();
-            worksheetPartBusiness.Worksheet = new Worksheet(new SheetData());
-
-            sheets.Append(new Sheet() { Id = spreadsheetDocument.WorkbookPart.GetIdOfPart(worksheetPartBusiness), SheetId = 2, Name = "BUSINESS" });
-            var businessSheetData = worksheetPartBusiness.Worksheet.GetFirstChild<SheetData>();
-
-            // Add data to the sheet
-            businessSheetData.AppendChild(new Row());
-            businessSheetData.AppendChild(new Row());
-            businessSheetData.AppendChild(new Row());
-            businessSheetData.AppendChild(new Row());
-
-            var bussinessRow = new Row();
-            bussinessRow.Append(CreateCell("A5", ""));
-            bussinessRow.Append(CreateCell("B5", "BILL NUMBER"));
-            bussinessRow.Append(CreateCell("C5", "SERVICE PROVIDER"));
-            bussinessRow.Append(CreateCell("D5", "MP NUMBER"));
-            bussinessRow.Append(CreateCell("E5", "AMOUNT DUE"));
-            bussinessRow.Append(CreateCell("F5", "PAYMENT DATE"));
-            businessSheetData.AppendChild(bussinessRow);
-
-            int bussinessRowIndex = 6;
-            int count = 1;
-
-            foreach (Business bus in businessToSaveList)
+            UInt32 sheetCounter = 3;
+            foreach (string miscType in TaxTypeUtil.ALL_MISC_TAX_TYPE)
             {
-                bussinessRow = new Row(); // Create a new row instance for each iteration
-                bussinessRow.Append(CreateCell($"A{bussinessRowIndex}", count.ToString()));
-                bussinessRow.Append(CreateCell($"B{bussinessRowIndex}", bus.BillNumber));
-                bussinessRow.Append(CreateCell($"C{bussinessRowIndex}", bus.PaymentChannel));
-                bussinessRow.Append(CreateCell($"D{bussinessRowIndex}", bus.MP_Number));
-                bussinessRow.Append(CreateCell($"E{bussinessRowIndex}", bus.TotalAmount?.ToString(("N2"))));
-                bussinessRow.Append(CreateCell($"F{bussinessRowIndex}", bus.DateOfPayment.ToString()));
-                businessSheetData.AppendChild(bussinessRow);
-                count++;
-                bussinessRowIndex++;
+                // Add a WorksheetPart to the WorkbookPart
+                var worksheetPartMisc = workbookPart.AddNewPart<WorksheetPart>();
+                worksheetPartMisc.Worksheet = new Worksheet(new SheetData());
+
+                sheets.Append(new Sheet() { Id = spreadsheetDocument.WorkbookPart.GetIdOfPart(worksheetPartMisc), SheetId = sheetCounter, Name = miscType });
+                var miscSheetData = worksheetPartMisc.Worksheet.GetFirstChild<SheetData>();
+                sheetCounter++;
+
+                // Add data to the sheet
+                miscSheetData.AppendChild(new Row());
+                miscSheetData.AppendChild(new Row());
+                miscSheetData.AppendChild(new Row());
+                miscSheetData.AppendChild(new Row());
+
+                var miscRow = new Row();
+                miscRow.Append(CreateCell("A5", ""));
+                miscRow.Append(CreateCell("B5", "BILL NUMBER"));
+                miscRow.Append(CreateCell("C5", "SERVICE PROVIDER"));
+                miscRow.Append(CreateCell("D5", "OPA TRACKING NUMBER"));
+                miscRow.Append(CreateCell("E5", "TAXPAYER NAME"));
+                miscRow.Append(CreateCell("F5", "AMOUNT DUE"));
+                miscRow.Append(CreateCell("G5", "PAYMENT DATE"));
+                miscSheetData.AppendChild(miscRow);
+
+                int miscOccuPermitRowIndex = 6;
+                int count = 1;
+
+                foreach (Miscellaneous misc in miscToSaveList)
+                {
+                    if (miscType == misc.MiscType)
+                    {
+                        miscRow = new Row(); // Create a new row instance for each iteration
+                        miscRow.Append(CreateCell($"A{miscOccuPermitRowIndex}", count.ToString()));
+                        miscRow.Append(CreateCell($"B{miscOccuPermitRowIndex}", misc.OrderOfPaymentNum));
+                        miscRow.Append(CreateCell($"C{miscOccuPermitRowIndex}", misc.ModeOfPayment));
+                        miscRow.Append(CreateCell($"D{miscOccuPermitRowIndex}", misc.OPATrackingNum));
+                        miscRow.Append(CreateCell($"E{miscOccuPermitRowIndex}", misc.TaxpayersName));
+                        miscRow.Append(CreateCell($"F{miscOccuPermitRowIndex}", misc.TransferredAmount?.ToString(("N2"))));
+                        miscRow.Append(CreateCell($"G{miscOccuPermitRowIndex}", misc.PaymentDate.ToString()));
+                        miscSheetData.AppendChild(miscRow);
+                        count++;
+                        miscOccuPermitRowIndex++;
+                    }
+                }
             }
         }
-
 
         private static Cell CreateCell(string cellReference, string cellValue)
         {
