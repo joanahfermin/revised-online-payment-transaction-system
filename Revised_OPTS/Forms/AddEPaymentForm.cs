@@ -31,8 +31,8 @@ namespace Inventory_System.Forms
 
         IRptService rptService = ServiceFactory.Instance.GetRptService();
 
-        ElectronicPayment ep = new ElectronicPayment();
         TaxUniqueKeyFormat taxUniqueKeyFormat = new TaxUniqueKeyFormat();
+
         List<Rpt> rptToSaveList = new List<Rpt>();
         List<Miscellaneous> miscToSaveList = new List<Miscellaneous>();
         List<Business> businessToSaveList = new List<Business>();
@@ -89,7 +89,7 @@ namespace Inventory_System.Forms
 
                     if (columnArray.Length >= 13)
                     {
-                        //ElectronicPayment ep = new ElectronicPayment();//xxx
+                        ElectronicPayment ep = new ElectronicPayment();//xxx
                         ep.EpaymentRef = columnArray[0];
                         ep.EpaymentTransactionRef = columnArray[1];
                         ep.BillerRef = columnArray[2];
@@ -234,12 +234,12 @@ namespace Inventory_System.Forms
 
         private void btnPrintReport_Click(object sender, EventArgs e)
         {
+            //add data to each taxes list to be able to utilize later for the report
             GenerateTemporaryTaxesList();
-
-            GenerateSheet(rptToSaveList);
+            GenerateSheet(rptToSaveList, businessToSaveList);
         }
 
-        private void GenerateSheet(List<Rpt>  rptToSaveList)
+        private void GenerateSheet(List<Rpt>  rptToSaveList, List<Business> businessToSaveList)
         {
             // Generate a filename in My Documents folder.
             string fileName = $"GcashPayMaya_{DateTime.Now:yyyyMMdd_HHmmss}_{Guid.NewGuid()}.xlsx";
@@ -252,29 +252,89 @@ namespace Inventory_System.Forms
                 var workbookPart = spreadsheetDocument.AddWorkbookPart();
                 workbookPart.Workbook = new Workbook();
 
+                // Add a Sheets to the Workbook
+                var sheets = spreadsheetDocument.WorkbookPart.Workbook.AppendChild(new Sheets());
+
                 // Add a WorksheetPart to the WorkbookPart
                 var worksheetPart = workbookPart.AddNewPart<WorksheetPart>();
                 worksheetPart.Worksheet = new Worksheet(new SheetData());
 
-                // Add a Sheets to the Workbook
-                var sheets = spreadsheetDocument.WorkbookPart.Workbook.AppendChild(new Sheets());
-                sheets.Append(new Sheet() { Id = spreadsheetDocument.WorkbookPart.GetIdOfPart(worksheetPart), SheetId = 1, Name = "Sheet1" });
-
+                // Add sheet to the document
+                sheets.Append(new Sheet() { Id = spreadsheetDocument.WorkbookPart.GetIdOfPart(worksheetPart), SheetId = 1, Name = "RPT" });
                 // Get the sheet data
                 var sheetData = worksheetPart.Worksheet.GetFirstChild<SheetData>();
 
                 // Add data to the sheet
+                sheetData.AppendChild(new Row());
+                sheetData.AppendChild(new Row());
+                sheetData.AppendChild(new Row());
+                sheetData.AppendChild(new Row());
+
                 var row = new Row();
-                row.Append(CreateCell("A1", "Header1"));
-                row.Append(CreateCell("B1", "Header2"));
+                row.Append(CreateCell("A5", ""));
+                row.Append(CreateCell("B5", "BANK"));
+                row.Append(CreateCell("C5", "TAX DEC. NO."));
+                row.Append(CreateCell("D5", "YEAR"));
+                row.Append(CreateCell("E5", "TAXPAYER NAME"));
+                row.Append(CreateCell("F5", "AMOUNT DUE"));
+                row.Append(CreateCell("G5", "PAYMENT DATE"));
                 sheetData.AppendChild(row);
 
-                for (int i = 1; i <= 5; i++)
+                int rowIndex = 6;
+                int count = 1;
+
+                foreach (var rpt in rptToSaveList)
                 {
                     row = new Row();
-                    row.Append(CreateCell($"A{i + 1}", $"Data{i}_Column1"));
-                    row.Append(CreateCell($"B{i + 1}", $"Data{i}_Column2"));
+                    row.Append(CreateCell($"A{rowIndex}", count.ToString()));
+                    row.Append(CreateCell($"B{rowIndex}", rpt.Bank));
+                    row.Append(CreateCell($"C{rowIndex}", rpt.TaxDec));
+                    row.Append(CreateCell($"D{rowIndex}", rpt.YearQuarter));
+                    row.Append(CreateCell($"E{rowIndex}", rpt.TaxPayerName));
+                    row.Append(CreateCell($"F{rowIndex}", rpt.AmountTransferred?.ToString(("N2"))));
+                    row.Append(CreateCell($"G{rowIndex}", rpt.PaymentDate.ToString()));
                     sheetData.AppendChild(row);
+                    count++;
+                    rowIndex++;
+                }
+
+                // Add a WorksheetPart to the WorkbookPart
+                var worksheetPartBusiness = workbookPart.AddNewPart<WorksheetPart>();
+                worksheetPartBusiness.Worksheet = new Worksheet(new SheetData());
+
+                sheets.Append(new Sheet() { Id = spreadsheetDocument.WorkbookPart.GetIdOfPart(worksheetPartBusiness), SheetId = 2, Name = "BUSINESS" });
+                var businessSheetData = worksheetPartBusiness.Worksheet.GetFirstChild<SheetData>();
+
+                // Add data to the sheet
+                businessSheetData.AppendChild(new Row());
+                businessSheetData.AppendChild(new Row());
+                businessSheetData.AppendChild(new Row());
+                businessSheetData.AppendChild(new Row());
+
+                var bussinessRow = new Row();
+                bussinessRow.Append(CreateCell("A5", ""));
+                bussinessRow.Append(CreateCell("B5", "BILL NUMBER"));
+                bussinessRow.Append(CreateCell("C5", "SERVICE PROVIDER"));
+                bussinessRow.Append(CreateCell("D5", "MP NUMBER"));
+                bussinessRow.Append(CreateCell("E5", "AMOUNT DUE"));
+                bussinessRow.Append(CreateCell("F5", "PAYMENT DATE"));
+                businessSheetData.AppendChild(bussinessRow);
+
+                int bussinessRowIndex = 6;
+                count = 1;
+
+                foreach (Business bus in businessToSaveList)
+                {
+                    bussinessRow = new Row(); // Create a new row instance for each iteration
+                    bussinessRow.Append(CreateCell($"A{bussinessRowIndex}", count.ToString()));
+                    bussinessRow.Append(CreateCell($"B{bussinessRowIndex}", bus.BillNumber));
+                    bussinessRow.Append(CreateCell($"C{bussinessRowIndex}", bus.PaymentChannel));
+                    bussinessRow.Append(CreateCell($"D{bussinessRowIndex}", bus.MP_Number));
+                    bussinessRow.Append(CreateCell($"E{bussinessRowIndex}", bus.TotalAmount?.ToString(("N2"))));
+                    bussinessRow.Append(CreateCell($"F{bussinessRowIndex}", bus.DateOfPayment.ToString()));
+                    businessSheetData.AppendChild(bussinessRow);
+                    count++;
+                    bussinessRowIndex++;
                 }
             }
 
@@ -295,18 +355,13 @@ namespace Inventory_System.Forms
             return cell;
         }
 
-        private void btnClose_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
-
         private void btnSaveAll_MouseEnter(object sender, EventArgs e)
         {
             originalBackgroundImageNonRpt = btnSaveAll.BackgroundImage;
             btnSaveAll.BackgroundImage = null;
 
-            //Color customColor = Color.FromArgb(23, 45, 74);
-            //btnSaveAll.BackColor = customColor;
+            System.Drawing.Color customColor = System.Drawing.Color.FromArgb(23, 45, 74);
+            btnSaveAll.BackColor = customColor;
         }
 
         private void btnSaveAll_MouseLeave(object sender, EventArgs e)
@@ -314,5 +369,37 @@ namespace Inventory_System.Forms
             btnSaveAll.BackgroundImage = originalBackgroundImageNonRpt;
         }
 
+        private void btnClose_MouseEnter(object sender, EventArgs e)
+        {
+            originalBackgroundImageNonRpt = btnClose.BackgroundImage;
+            btnClose.BackgroundImage = null;
+
+            System.Drawing.Color customColor = System.Drawing.Color.FromArgb(23, 45, 74);
+            btnClose.BackColor = customColor;
+        }
+
+        private void btnClose_MouseLeave(object sender, EventArgs e)
+        {
+            btnClose.BackgroundImage = originalBackgroundImageNonRpt;
+        }
+
+        private void btnPrintReport_MouseEnter(object sender, EventArgs e)
+        {
+            originalBackgroundImageNonRpt = btnPrintReport.BackgroundImage;
+            btnPrintReport.BackgroundImage = null;
+
+            System.Drawing.Color customColor = System.Drawing.Color.FromArgb(23, 45, 74);
+            btnPrintReport.BackColor = customColor;
+        }
+
+        private void btnPrintReport_MouseLeave(object sender, EventArgs e)
+        {
+            btnPrintReport.BackgroundImage = originalBackgroundImageNonRpt;
+        }
+
+        private void btnClose_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
     }
 }
