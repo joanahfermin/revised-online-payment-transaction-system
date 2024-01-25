@@ -235,7 +235,6 @@ namespace Inventory_System.Forms
             return misc;
         }
 
-
         private Business ProcessEPaymentBusiness(ElectronicPayment ep)
         {
             Business bus = ConversionHelper.ConvertToBusiness(ep);
@@ -280,6 +279,11 @@ namespace Inventory_System.Forms
             var worksheetPart = workbookPart.AddNewPart<WorksheetPart>();
             worksheetPart.Worksheet = new Worksheet(new SheetData());
 
+            // Add styles to the cells
+            WorkbookStylesPart stylePart = workbookPart.AddNewPart<WorkbookStylesPart>();
+            stylePart.Stylesheet = GenerateStylesheet();
+            stylePart.Stylesheet.Save();
+
             // Add sheet to the document
             sheets.Append(new Sheet() { Id = spreadsheetDocument.WorkbookPart.GetIdOfPart(worksheetPart), SheetId = 1, Name = "RPT" });
             // Get the sheet data
@@ -303,6 +307,7 @@ namespace Inventory_System.Forms
 
             int rowIndex = 6;
             int count = 1;
+            decimal totalAmountTransferred = 0;
 
             foreach (var rpt in rptToSaveList)
             {
@@ -312,20 +317,25 @@ namespace Inventory_System.Forms
                 row.Append(CreateCell($"C{rowIndex}", rpt.TaxDec));
                 row.Append(CreateCell($"D{rowIndex}", rpt.YearQuarter));
                 row.Append(CreateCell($"E{rowIndex}", rpt.TaxPayerName));
-
-                //decimal amountTransferred;
-                //if (decimal.TryParse(rpt.AmountTransferred?.ToString(("N2")), out amountTransferred))
-                //{
-                //    // Add the decimal value to the Excel cell with numeric data type
-                //    row.Append(CreateCell($"F{rowIndex}", amountTransferred, CellValues.Number));
-                //}
-
-                row.Append(CreateCell($"F{rowIndex}", rpt.AmountTransferred?.ToString()));
+                row.Append(CreateDecimalCell($"F{rowIndex}", rpt.AmountTransferred ?? 0));
                 row.Append(CreateCell($"G{rowIndex}", rpt.PaymentDate.ToString()));
                 sheetData.AppendChild(row);
+
+                totalAmountTransferred += rpt.AmountTransferred ?? 0;
+
                 count++;
                 rowIndex++;
             }
+            // Add a row for the total
+            row = new Row();
+            row.Append(CreateCell($"A{rowIndex}", ""));
+            row.Append(CreateCell($"B{rowIndex}", ""));
+            row.Append(CreateCell($"C{rowIndex}", ""));
+            row.Append(CreateCell($"D{rowIndex}", ""));
+            row.Append(CreateCell($"E{rowIndex}", "TOTAL PAYMENT"));
+            row.Append(CreateDecimalCell($"F{rowIndex}", totalAmountTransferred));
+            row.Append(CreateCell($"G{rowIndex}", ""));
+            sheetData.AppendChild(row);
         }
 
         private void CreateBusinessSheet(Sheets sheets, WorkbookPart workbookPart, SpreadsheetDocument spreadsheetDocument, List<Business> businessToSaveList)
@@ -333,6 +343,11 @@ namespace Inventory_System.Forms
             // Add a WorksheetPart to the WorkbookPart
             var worksheetPartBusiness = workbookPart.AddNewPart<WorksheetPart>();
             worksheetPartBusiness.Worksheet = new Worksheet(new SheetData());
+
+            //// Add styles to the cells
+            //WorkbookStylesPart stylePart = workbookPart.AddNewPart<WorkbookStylesPart>();
+            //stylePart.Stylesheet = GenerateStylesheet();
+            //stylePart.Stylesheet.Save();
 
             sheets.Append(new Sheet() { Id = spreadsheetDocument.WorkbookPart.GetIdOfPart(worksheetPartBusiness), SheetId = 2, Name = "BUSINESS" });
             var businessSheetData = worksheetPartBusiness.Worksheet.GetFirstChild<SheetData>();
@@ -354,6 +369,7 @@ namespace Inventory_System.Forms
 
             int bussinessRowIndex = 6;
             int count = 1;
+            decimal totalAmountTransferred = 0;
 
             foreach (Business bus in businessToSaveList)
             {
@@ -362,20 +378,25 @@ namespace Inventory_System.Forms
                 bussinessRow.Append(CreateCell($"B{bussinessRowIndex}", bus.BillNumber));
                 bussinessRow.Append(CreateCell($"C{bussinessRowIndex}", bus.PaymentChannel));
                 bussinessRow.Append(CreateCell($"D{bussinessRowIndex}", bus.MP_Number));
-
-                //decimal amountTransferred;
-                //if (decimal.TryParse(bus.TotalAmount?.ToString(("N2")), out amountTransferred))
-                //{
-                //    // Add the decimal value to the Excel cell with numeric data type
-                //    bussinessRow.Append(CreateCell($"F{bussinessRowIndex}", amountTransferred, CellValues.Number));
-                //}
-
-                bussinessRow.Append(CreateCell($"E{bussinessRowIndex}", bus.TotalAmount?.ToString(("N2"))));
+                bussinessRow.Append(CreateDecimalCell($"E{bussinessRowIndex}", bus.TotalAmount ?? 0));
                 bussinessRow.Append(CreateCell($"F{bussinessRowIndex}", bus.DateOfPayment.ToString()));
                 businessSheetData.AppendChild(bussinessRow);
+
+                totalAmountTransferred += bus.TotalAmount ?? 0;
+
                 count++;
                 bussinessRowIndex++;
             }
+            // Add a row for the total
+            bussinessRow = new Row();
+            bussinessRow.Append(CreateCell($"A{bussinessRowIndex}", ""));
+            bussinessRow.Append(CreateCell($"B{bussinessRowIndex}", ""));
+            bussinessRow.Append(CreateCell($"C{bussinessRowIndex}", ""));
+            bussinessRow.Append(CreateCell($"D{bussinessRowIndex}", "TOTAL PAYMENT"));
+            bussinessRow.Append(CreateDecimalCell($"E{bussinessRowIndex}", totalAmountTransferred));
+            bussinessRow.Append(CreateCell($"F{bussinessRowIndex}", ""));
+            bussinessRow.Append(CreateCell($"G{bussinessRowIndex}", ""));
+            businessSheetData.AppendChild(bussinessRow);
         }
 
         private void CreateMiscSheet(Sheets sheets, WorkbookPart workbookPart, SpreadsheetDocument spreadsheetDocument, List<Miscellaneous> miscToSaveList)
@@ -386,6 +407,11 @@ namespace Inventory_System.Forms
                 // Add a WorksheetPart to the WorkbookPart
                 var worksheetPartMisc = workbookPart.AddNewPart<WorksheetPart>();
                 worksheetPartMisc.Worksheet = new Worksheet(new SheetData());
+
+                //// Add styles to the cells
+                //WorkbookStylesPart stylePart = workbookPart.AddNewPart<WorkbookStylesPart>();
+                //stylePart.Stylesheet = GenerateStylesheet();
+                //stylePart.Stylesheet.Save();
 
                 sheets.Append(new Sheet() { Id = spreadsheetDocument.WorkbookPart.GetIdOfPart(worksheetPartMisc), SheetId = sheetCounter, Name = miscType });
                 var miscSheetData = worksheetPartMisc.Worksheet.GetFirstChild<SheetData>();
@@ -407,62 +433,190 @@ namespace Inventory_System.Forms
                 miscRow.Append(CreateCell("G5", "PAYMENT DATE"));
                 miscSheetData.AppendChild(miscRow);
 
-                int miscOccuPermitRowIndex = 6;
+                int miscRowIndex = 6;
                 int count = 1;
+                decimal totalAmountTransferred = 0;
 
                 foreach (Miscellaneous misc in miscToSaveList)
                 {
                     if (miscType == misc.MiscType)
                     {
                         miscRow = new Row(); // Create a new row instance for each iteration
-                        miscRow.Append(CreateCell($"A{miscOccuPermitRowIndex}", count.ToString()));
-                        miscRow.Append(CreateCell($"B{miscOccuPermitRowIndex}", misc.OrderOfPaymentNum));
-                        miscRow.Append(CreateCell($"C{miscOccuPermitRowIndex}", misc.ModeOfPayment));
-                        miscRow.Append(CreateCell($"D{miscOccuPermitRowIndex}", misc.OPATrackingNum));
-                        miscRow.Append(CreateCell($"E{miscOccuPermitRowIndex}", misc.TaxpayersName));
-
-                        //decimal amountTransferred;
-                        //if (decimal.TryParse(misc.TransferredAmount?.ToString("N2"), out amountTransferred))
-                        //{
-                        //    // Add the decimal value to the Excel cell with numeric data type
-                        //    miscRow.Append(CreateCell($"F{miscOccuPermitRowIndex}", amountTransferred, CellValues.Number));
-                        //}
-
-                        miscRow.Append(CreateCell($"F{miscOccuPermitRowIndex}", misc.TransferredAmount?.ToString(("N2"))));
-                        miscRow.Append(CreateCell($"G{miscOccuPermitRowIndex}", misc.PaymentDate.ToString()));
+                        miscRow.Append(CreateCell($"A{miscRowIndex}", count.ToString()));
+                        miscRow.Append(CreateCell($"B{miscRowIndex}", misc.OrderOfPaymentNum));
+                        miscRow.Append(CreateCell($"C{miscRowIndex}", misc.ModeOfPayment));
+                        miscRow.Append(CreateCell($"D{miscRowIndex}", misc.OPATrackingNum));
+                        miscRow.Append(CreateCell($"E{miscRowIndex}", misc.TaxpayersName));
+                        miscRow.Append(CreateDecimalCell($"F{miscRowIndex}", misc.TransferredAmount ?? 0));
+                        miscRow.Append(CreateCell($"G{miscRowIndex}", misc.PaymentDate.ToString()));
                         miscSheetData.AppendChild(miscRow);
+
+                        totalAmountTransferred += misc.TransferredAmount ?? 0;
+
                         count++;
-                        miscOccuPermitRowIndex++;
+                        miscRowIndex++;
                     }
                 }
+                // Add a row for the total
+                miscRow = new Row();
+                miscRow.Append(CreateCell($"A{miscRowIndex}", ""));
+                miscRow.Append(CreateCell($"B{miscRowIndex}", ""));
+                miscRow.Append(CreateCell($"C{miscRowIndex}", ""));
+                miscRow.Append(CreateCell($"D{miscRowIndex}", ""));
+                miscRow.Append(CreateCell($"E{miscRowIndex}", "TOTAL PAYMENT"));
+                miscRow.Append(CreateDecimalCell($"F{miscRowIndex}", totalAmountTransferred));
+                miscRow.Append(CreateCell($"G{miscRowIndex}", ""));
+                miscSheetData.AppendChild(miscRow);
             }
         }
 
-        //private static Cell CreateCell(string cellReference, object cellValue, CellValues? dataType = null)
-        //{
-        //    var cell = new Cell()
-        //    {
-        //        CellReference = cellReference
-        //    };
+        private static Stylesheet GenerateStylesheet()
+        {
+            Stylesheet ss = new Stylesheet();
 
-        //    if (cellValue != null)
-        //    {
-        //        cell.CellValue = new CellValue(cellValue.ToString());
+            Fonts fts = new Fonts();
+            DocumentFormat.OpenXml.Spreadsheet.Font ft = new DocumentFormat.OpenXml.Spreadsheet.Font();
+            FontName ftn = new FontName();
+            ftn.Val = "Calibri";
+            FontSize ftsz = new FontSize();
+            ftsz.Val = 11;
+            ft.FontName = ftn;
+            ft.FontSize = ftsz;
+            fts.Append(ft);
+            fts.Count = (uint)fts.ChildElements.Count;
 
-        //        if (dataType.HasValue)
-        //        {
-        //            cell.DataType = new EnumValue<CellValues>(dataType.Value);
-        //        }
+            Fills fills = new Fills();
+            Fill fill;
+            PatternFill patternFill;
+            fill = new Fill();
+            patternFill = new PatternFill();
+            patternFill.PatternType = PatternValues.None;
+            fill.PatternFill = patternFill;
+            fills.Append(fill);
+            fill = new Fill();
+            patternFill = new PatternFill();
+            patternFill.PatternType = PatternValues.Gray125;
+            fill.PatternFill = patternFill;
+            fills.Append(fill);
+            fills.Count = (uint)fills.ChildElements.Count;
 
-        //        // Special handling for DateTime values
-        //        if (cellValue is DateTime)
-        //        {
-        //            cell.StyleIndex = (UInt32Value)1U; // Apply a style index for date formatting
-        //        }
-        //    }
+            Borders borders = new Borders();
+            Border border = new Border();
+            border.LeftBorder = new LeftBorder();
+            border.RightBorder = new RightBorder();
+            border.TopBorder = new TopBorder();
+            border.BottomBorder = new BottomBorder();
+            border.DiagonalBorder = new DiagonalBorder();
+            borders.Append(border);
+            borders.Count = (uint)borders.ChildElements.Count;
 
-        //    return cell;
-        //}        
+            CellStyleFormats csfs = new CellStyleFormats();
+            CellFormat cf = new CellFormat();
+            cf.NumberFormatId = 0;
+            cf.FontId = 0;
+            cf.FillId = 0;
+            cf.BorderId = 0;
+            csfs.Append(cf);
+            csfs.Count = (uint)csfs.ChildElements.Count;
+
+            uint iExcelIndex = 164;
+            NumberingFormats nfs = new NumberingFormats();
+            CellFormats cfs = new CellFormats();
+
+            cf = new CellFormat();
+            cf.NumberFormatId = 0;
+            cf.FontId = 0;
+            cf.FillId = 0;
+            cf.BorderId = 0;
+            cf.FormatId = 0;
+            cfs.Append(cf);
+
+            NumberingFormat nf;
+            nf = new NumberingFormat();
+            nf.NumberFormatId = iExcelIndex++;
+            nf.FormatCode = "dd/mm/yyyy hh:mm:ss";
+            nfs.Append(nf);
+            cf = new CellFormat();
+            cf.NumberFormatId = nf.NumberFormatId;
+            cf.FontId = 0;
+            cf.FillId = 0;
+            cf.BorderId = 0;
+            cf.FormatId = 0;
+            cf.ApplyNumberFormat = true;
+            cfs.Append(cf);
+
+            nf = new NumberingFormat();
+            nf.NumberFormatId = iExcelIndex++;
+            nf.FormatCode = "#,##0.0000";
+            nfs.Append(nf);
+            cf = new CellFormat();
+            cf.NumberFormatId = nf.NumberFormatId;
+            cf.FontId = 0;
+            cf.FillId = 0;
+            cf.BorderId = 0;
+            cf.FormatId = 0;
+            cf.ApplyNumberFormat = true;
+            cfs.Append(cf);
+
+            // #,##0.00 is also Excel style index 4
+            nf = new NumberingFormat();
+            nf.NumberFormatId = iExcelIndex++;
+            nf.FormatCode = "#,##0.00";
+            nfs.Append(nf);
+            cf = new CellFormat();
+            cf.NumberFormatId = nf.NumberFormatId;
+            cf.FontId = 0;
+            cf.FillId = 0;
+            cf.BorderId = 0;
+            cf.FormatId = 0;
+            cf.ApplyNumberFormat = true;
+            cfs.Append(cf);
+
+            // @ is also Excel style index 49
+            nf = new NumberingFormat();
+            nf.NumberFormatId = iExcelIndex++;
+            nf.FormatCode = "@";
+            nfs.Append(nf);
+            cf = new CellFormat();
+            cf.NumberFormatId = nf.NumberFormatId;
+            cf.FontId = 0;
+            cf.FillId = 0;
+            cf.BorderId = 0;
+            cf.FormatId = 0;
+            cf.ApplyNumberFormat = true;
+            cfs.Append(cf);
+
+            nfs.Count = (uint)nfs.ChildElements.Count;
+            cfs.Count = (uint)cfs.ChildElements.Count;
+
+            ss.Append(nfs);
+            ss.Append(fts);
+            ss.Append(fills);
+            ss.Append(borders);
+            ss.Append(csfs);
+            ss.Append(cfs);
+
+            CellStyles css = new CellStyles();
+            CellStyle cs = new CellStyle();
+            cs.Name = "Normal";
+            cs.FormatId = 0;
+            cs.BuiltinId = 0;
+            css.Append(cs);
+            css.Count = (uint)css.ChildElements.Count;
+            ss.Append(css);
+
+            DifferentialFormats dfs = new DifferentialFormats();
+            dfs.Count = 0;
+            ss.Append(dfs);
+
+            TableStyles tss = new TableStyles();
+            tss.Count = 0;
+            tss.DefaultTableStyle = "TableStyleMedium9";
+            tss.DefaultPivotStyle = "PivotStyleLight16";
+            ss.Append(tss);
+
+            return ss;
+        }
 
         private static Cell CreateCell(string cellReference, string cellValue)
         {
@@ -474,6 +628,19 @@ namespace Inventory_System.Forms
                 CellValue = new CellValue(cellValue)
             };
 
+            return cell;
+        }
+
+        private static Cell CreateDecimalCell(string cellReference, decimal cellValue)
+        {
+            // Create a cell with specified reference and value
+            var cell = new Cell()
+            {
+                CellReference = cellReference,
+                DataType = CellValues.Number, // tell excel this is a number
+                CellValue = new CellValue(cellValue),
+                StyleIndex = 3 // Use #,##0.00
+            };
             return cell;
         }
 
