@@ -61,20 +61,20 @@ namespace Revised_OPTS.Forms
             btnClose.BackColor = customColor;
 
             btnSaveRecord.Visible = false;
-            cbTaxType.Text = TaxTypeUtil.REALPROPERTYTAX;
+            cbTaxType.Text = TaxTypeUtil.BUSINESS;
         }
 
         public AllTaxesAddUpdateRecordForm(long id, string taxType)
         {
             dynamicControlContainer = new DynamicControlContainer(this);
 
-            if (taxType == TaxTypeUtil.REALPROPERTYTAX)
-            {
-                rpt = rptService.Get(id);
-                rptId = rpt.RptID;
-                retrieveTaxTypeFromMainForm = taxType;
-            }
-            else if (taxType == TaxTypeUtil.BUSINESS)
+            //if (taxType == TaxTypeUtil.REALPROPERTYTAX)
+            //{
+            //    rpt = rptService.Get(id);
+            //    rptId = rpt.RptID;
+            //    retrieveTaxTypeFromMainForm = taxType;
+            //}
+            /*else */if (taxType == TaxTypeUtil.BUSINESS)
             {
                 business = businessService.Get(id);
                 businessId = business.BusinessID;
@@ -104,12 +104,12 @@ namespace Revised_OPTS.Forms
             cbTaxType.Text = retrieveTaxTypeFromMainForm;
             cbTaxType.Enabled = false;
 
-            if (retrieveTaxTypeFromMainForm == TaxTypeUtil.REALPROPERTYTAX)
-            {
-                rpt = rptService.Get(rptId);
-                dynamicControlContainer.PopulateDynamicControls(retrieveTaxTypeFromMainForm, rpt);
-            }
-            else if (retrieveTaxTypeFromMainForm == TaxTypeUtil.BUSINESS)
+            //if (retrieveTaxTypeFromMainForm == TaxTypeUtil.REALPROPERTYTAX)
+            //{
+            //    rpt = rptService.Get(rptId);
+            //    dynamicControlContainer.PopulateDynamicControls(retrieveTaxTypeFromMainForm, rpt);
+            //}
+            /*else */if (retrieveTaxTypeFromMainForm == TaxTypeUtil.BUSINESS)
             {
                 business = businessService.Get(businessId);
                 dynamicControlContainer.PopulateDynamicControls(retrieveTaxTypeFromMainForm, business);
@@ -238,46 +238,56 @@ namespace Revised_OPTS.Forms
 
             btnSaveRecord.Visible = true;
 
-            if (taxType == TaxTypeUtil.REALPROPERTYTAX)
-            {
-                Control TaxDecTextBox = dynamicControlContainer.FindControlByName(taxType, "TaxDec");
-                TaxDecTextBox.TextChanged += TaxDecTextBox_TextChanged;
-            }
             if (taxType == TaxTypeUtil.BUSINESS)
             {
                 Control MP_NumberTextBox = dynamicControlContainer.FindControlByName(taxType, "MP_Number");
-                MP_NumberTextBox.TextChanged += MP_NumberTextBox_TextChanged;
+                MP_NumberTextBox.KeyDown += MP_NumberTextBox_KeyDown;
+                MP_NumberTextBox.Leave += MP_NumberTextBox_Leave;
             }
-            else if (taxType == TaxTypeUtil.MISCELLANEOUS_OCCUPERMIT)
+            else if (taxType != TaxTypeUtil.BUSINESS)
             {
-                Control MiscOrderOfPaymentNumTextBox = dynamicControlContainer.FindControlByName(taxType, "OrderOfPaymentNum");
-                MiscOrderOfPaymentNumTextBox.TextChanged += MiscOrderOfPaymentNumTextBox_TextChanged;
-            }
-            //else
-            //{
-            //    MessageBox.Show("NOT YET IMPLEMENTED.");
-            //}
-        }
+                foreach (string miscTaxType in TaxTypeUtil.ALL_MISC_TAX_TYPE)
+                {
+                    taxType = miscTaxType;
 
-        private void TaxDecTextBox_TextChanged(object sender, EventArgs e)
-        {
-            string taxType = cbTaxType.Text;
-            Control TaxdecTextBox = dynamicControlContainer.FindControlByName(taxType, "TaxDec");
-            Control TaxPayerNameTextBox = dynamicControlContainer.FindControlByName(taxType, "TaxPayerName");
-
-            RptTaxbillTPN rptRetrieveTaxpayerName = rptRetrieveTaxpayerNameRep.retrieveByTDN(TaxdecTextBox.Text);
-
-            if (rptRetrieveTaxpayerName != null)
-            {
-                TaxPayerNameTextBox.Text = rptRetrieveTaxpayerName.ONAME;
+                    if (taxType == TaxTypeUtil.MISCELLANEOUS_OCCUPERMIT || taxType == TaxTypeUtil.MISCELLANEOUS_OVR ||
+                        taxType == TaxTypeUtil.MISCELLANEOUS_MARKET || taxType == TaxTypeUtil.MISCELLANEOUS_ZONING ||
+                        taxType == TaxTypeUtil.MISCELLANEOUS_LIQUOR)
+                    {
+                        Control MiscOrderOfPaymentNumTextBox = dynamicControlContainer.FindControlByName(taxType, "OrderOfPaymentNum");
+                        MiscOrderOfPaymentNumTextBox.KeyDown += MiscOrderOfPaymentNumTextBox_Keydown;
+                        MiscOrderOfPaymentNumTextBox.Leave += MiscOrderOfPaymentNumTextBox_Leave;
+                    }
+                }
             }
             else
             {
-                TaxPayerNameTextBox.Text = Validations.NO_RETRIEVED_NAME;
+                MessageBox.Show("NOT YET IMPLEMENTED.");
             }
         }
 
-        private void MP_NumberTextBox_TextChanged(object sender, EventArgs e)
+        private void MiscOrderOfPaymentNumTextBox_Leave(object? sender, EventArgs e)
+        {
+            RetrieveTPNforAllMisc();
+        }
+
+        private void MiscOrderOfPaymentNumTextBox_Keydown(object? sender, KeyEventArgs e)
+        {
+            RetrieveTPNforAllMisc();
+        }
+
+        private void MP_NumberTextBox_Leave(object? sender, EventArgs e)
+        {
+            RetrieveTPNforBusiness();
+        }
+
+        private void MP_NumberTextBox_KeyDown(object? sender, KeyEventArgs e)
+        {
+            RetrieveTPNforBusiness();
+        }
+
+        //based on MP Number.
+        private void RetrieveTPNforBusiness()
         {
             string taxType = cbTaxType.Text;
             Control MP_NumberTextBox = dynamicControlContainer.FindControlByName(taxType, "MP_Number");
@@ -293,9 +303,11 @@ namespace Revised_OPTS.Forms
             {
                 BusinessNameTextBox.Text = Validations.NO_RETRIEVED_NAME;
             }
+
         }
 
-        private void MiscOrderOfPaymentNumTextBox_TextChanged(object sender, EventArgs e)
+        //based on Bill Number.
+        private void RetrieveTPNforAllMisc()
         {
             string taxType = cbTaxType.Text;
             Control OrderOfPaymentNum = dynamicControlContainer.FindControlByName(taxType, "OrderOfPaymentNum");
@@ -325,25 +337,7 @@ namespace Revised_OPTS.Forms
                 return;
             }
 
-            if (taxType == TaxTypeUtil.REALPROPERTYTAX)
-            {
-                if (rpt != null)
-                {
-                    dynamicControlContainer.CopyDynamicProperties(rpt, taxType);
-                    rptService.Update(rpt);
-                    searchKeyword = rpt.TaxDec;
-                }
-                else
-                {
-                    Rpt rpt = new Rpt();
-                    dynamicControlContainer.CopyDynamicProperties(rpt, taxType);
-                    rptService.Insert(rpt);
-                    searchKeyword = rpt.TaxDec;
-                }
-                notifyUserAndRefreshRecord(searchKeyword);
-            }
-
-            else if (taxType == TaxTypeUtil.BUSINESS)
+            if (taxType == TaxTypeUtil.BUSINESS)
             {
                 if (business != null)
                 {

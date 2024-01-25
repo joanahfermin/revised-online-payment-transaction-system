@@ -176,7 +176,7 @@ namespace Inventory_System.Forms
                 else if (taxUniqueKeyFormat.isOPnumberFormatMarketMDAD(ep.BillerInfo3))
                 {
                     miscToSaveList.Add(ProcessEPaymentMiscMarket(ep));
-                    firstRecordSearchMainFormRef = ep.BillerRef;
+                    firstRecordSearchMainFormRef = ep.BillerInfo3;
                 }
                 //MISC - ZONING
                 else if (taxUniqueKeyFormat.isOPnumberFormatZoning(ep.BillerRef))

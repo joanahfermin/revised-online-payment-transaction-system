@@ -134,7 +134,7 @@ namespace Inventory_System.Utilities
         {
             Miscellaneous misc = new Miscellaneous();
 
-            misc.MiscType = TaxTypeUtil.MISCELLANEOUS_MARKET;
+            misc.MiscType = TaxTypeUtil.MISCELLANEOUS_ZONING;
             misc.TaxpayersName = ep.BillerInfo2;
             misc.OrderOfPaymentNum = ep.BillerRef;
             misc.ModeOfPayment = ep.ServiceProvider;
@@ -167,6 +167,5 @@ namespace Inventory_System.Utilities
 
             return misc;
         }
-
     }
 }
