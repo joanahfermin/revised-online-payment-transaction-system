@@ -312,7 +312,15 @@ namespace Inventory_System.Forms
                 row.Append(CreateCell($"C{rowIndex}", rpt.TaxDec));
                 row.Append(CreateCell($"D{rowIndex}", rpt.YearQuarter));
                 row.Append(CreateCell($"E{rowIndex}", rpt.TaxPayerName));
-                row.Append(CreateCell($"F{rowIndex}", rpt.AmountTransferred?.ToString(("N2"))));
+
+                //decimal amountTransferred;
+                //if (decimal.TryParse(rpt.AmountTransferred?.ToString(("N2")), out amountTransferred))
+                //{
+                //    // Add the decimal value to the Excel cell with numeric data type
+                //    row.Append(CreateCell($"F{rowIndex}", amountTransferred, CellValues.Number));
+                //}
+
+                row.Append(CreateCell($"F{rowIndex}", rpt.AmountTransferred?.ToString()));
                 row.Append(CreateCell($"G{rowIndex}", rpt.PaymentDate.ToString()));
                 sheetData.AppendChild(row);
                 count++;
@@ -354,6 +362,14 @@ namespace Inventory_System.Forms
                 bussinessRow.Append(CreateCell($"B{bussinessRowIndex}", bus.BillNumber));
                 bussinessRow.Append(CreateCell($"C{bussinessRowIndex}", bus.PaymentChannel));
                 bussinessRow.Append(CreateCell($"D{bussinessRowIndex}", bus.MP_Number));
+
+                //decimal amountTransferred;
+                //if (decimal.TryParse(bus.TotalAmount?.ToString(("N2")), out amountTransferred))
+                //{
+                //    // Add the decimal value to the Excel cell with numeric data type
+                //    bussinessRow.Append(CreateCell($"F{bussinessRowIndex}", amountTransferred, CellValues.Number));
+                //}
+
                 bussinessRow.Append(CreateCell($"E{bussinessRowIndex}", bus.TotalAmount?.ToString(("N2"))));
                 bussinessRow.Append(CreateCell($"F{bussinessRowIndex}", bus.DateOfPayment.ToString()));
                 businessSheetData.AppendChild(bussinessRow);
@@ -404,6 +420,14 @@ namespace Inventory_System.Forms
                         miscRow.Append(CreateCell($"C{miscOccuPermitRowIndex}", misc.ModeOfPayment));
                         miscRow.Append(CreateCell($"D{miscOccuPermitRowIndex}", misc.OPATrackingNum));
                         miscRow.Append(CreateCell($"E{miscOccuPermitRowIndex}", misc.TaxpayersName));
+
+                        //decimal amountTransferred;
+                        //if (decimal.TryParse(misc.TransferredAmount?.ToString("N2"), out amountTransferred))
+                        //{
+                        //    // Add the decimal value to the Excel cell with numeric data type
+                        //    miscRow.Append(CreateCell($"F{miscOccuPermitRowIndex}", amountTransferred, CellValues.Number));
+                        //}
+
                         miscRow.Append(CreateCell($"F{miscOccuPermitRowIndex}", misc.TransferredAmount?.ToString(("N2"))));
                         miscRow.Append(CreateCell($"G{miscOccuPermitRowIndex}", misc.PaymentDate.ToString()));
                         miscSheetData.AppendChild(miscRow);
@@ -413,6 +437,32 @@ namespace Inventory_System.Forms
                 }
             }
         }
+
+        //private static Cell CreateCell(string cellReference, object cellValue, CellValues? dataType = null)
+        //{
+        //    var cell = new Cell()
+        //    {
+        //        CellReference = cellReference
+        //    };
+
+        //    if (cellValue != null)
+        //    {
+        //        cell.CellValue = new CellValue(cellValue.ToString());
+
+        //        if (dataType.HasValue)
+        //        {
+        //            cell.DataType = new EnumValue<CellValues>(dataType.Value);
+        //        }
+
+        //        // Special handling for DateTime values
+        //        if (cellValue is DateTime)
+        //        {
+        //            cell.StyleIndex = (UInt32Value)1U; // Apply a style index for date formatting
+        //        }
+        //    }
+
+        //    return cell;
+        //}        
 
         private static Cell CreateCell(string cellReference, string cellValue)
         {
