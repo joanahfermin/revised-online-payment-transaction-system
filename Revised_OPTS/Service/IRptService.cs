@@ -23,8 +23,8 @@ namespace Revised_OPTS.Service
 
         void Insert(Rpt rpt);
         void Update(Rpt rpt);
-        void UpdateSelectedRecordsStatus(List<Rpt> rpt);
-        void RevertSelectedRecordStatus(Rpt rpt);
+        void UpdateSelectedRecordsStatus(List<Rpt> rpt, string status);
+        void RevertSelectedRecordStatus(List<Rpt> rpt);
         void Delete(Rpt rpt);
         void SaveAll(List<Rpt> rpt, List<Rpt> rptToDelte, decimal totalAmountTransferred);
         void SaveAllEPayment(List<Rpt> rpt, List<Miscellaneous> misc, List<Business> bussiness);

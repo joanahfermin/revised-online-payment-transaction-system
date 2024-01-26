@@ -9,6 +9,6 @@ namespace Revised_OPTS.DAL
 {
     internal interface IBusinessRepository : IRepository<Business>
     {
-        List<Business> retrieveBySearchKeyword(string mpNum);
+        List<Business> retrieveBySearchKeyword(string billNumber);
     }
 }

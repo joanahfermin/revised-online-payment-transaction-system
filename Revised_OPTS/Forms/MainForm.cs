@@ -16,6 +16,11 @@ namespace Revised_OPTS
         IMiscService miscService = ServiceFactory.Instance.GetMiscService();
         IBusinessService businessService = ServiceFactory.Instance.GetBusinessService();
 
+        private const int RPT_RECORD_TYPE = 1;
+        private const int MISC_RECORD_TYPE = 2;
+        private const int BUSINESS_RECORD_TYPE = 3;
+        private int CURRENT_RECORD_TYPE = 0;
+
         private Image originalBackgroundImageNonRpt;
         private Image originalBackgroundImageRpt;
 
@@ -157,50 +162,48 @@ namespace Revised_OPTS
 
         private void MenuItemRevertStatus_Click(object? sender, EventArgs e)
         {
-            DataGridViewRow selectedRow = DgMainForm.CurrentRow;
+            DataGridViewSelectedRowCollection selectedRows = DgMainForm.SelectedRows;
 
-            if (selectedRow != null)
+            if (selectedRows != null)
             {
-                if (CURRENT_RECORD_TYPE == RPT_RECORD_TYPE)
-                {
-                    Rpt rptRecord = selectedRow.DataBoundItem as Rpt;
-                    if (rptRecord.Status != null)
-                    {
-                        //TO DO: STATUS MAPPING.
-                        DialogResult result = MessageBox.Show("Are you sure you want to revert the staus to it's previous status?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                List<Rpt> rptList = new List<Rpt>();
+                List<Business> businessList = new List<Business>();
 
-                        if (result == DialogResult.Yes)
+                foreach (DataGridViewRow row in selectedRows)
+                {
+                    object item = row.DataBoundItem;
+
+                    if (item is Rpt)
+                    {
+                        Rpt rpt = item as Rpt;
+                        if (rpt.Status == TaxStatus.ForPaymentValidation)
                         {
-                            rptService.RevertSelectedRecordStatus(rptRecord);
-                            MessageBox.Show("Operation completed successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                            DgMainForm.Refresh();
+                            rptList.Add(rpt);
                         }
                     }
-                    else
+                    else if (item is Business)
                     {
-                        MessageBox.Show("Action cancelled. No status were reverted.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    }
-                }
-                else if (CURRENT_RECORD_TYPE == BUSINESS_RECORD_TYPE)
-                {
-                    Business businessRecord = selectedRow.DataBoundItem as Business;
-                    if (businessRecord.Status != null)
-                    {
-                        //TO DO: STATUS MAPPING.
-                        DialogResult result = MessageBox.Show("Are you sure you want to revert the staus to it's previous status?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-
-                        if (result == DialogResult.Yes)
+                        Business business = item as Business;
+                        if (business.Status == TaxStatus.ForPaymentValidation)
                         {
-                            businessService.RevertSelectedRecordStatus(businessRecord);
-                            MessageBox.Show("Operation completed successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                            DgMainForm.Refresh();
+                            businessList.Add(business);
                         }
                     }
-                    else
+                }
+
+                if (rptList.Count > 0 || businessList.Count > 0 )
+                {
+                    DialogResult result = MessageBox.Show("Are you sure you want to update the status of the selected records?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                    if (result == DialogResult.Yes)
                     {
-                        MessageBox.Show("Action cancelled. No status were reverted.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        rptService.RevertSelectedRecordStatus(rptList);
+                        businessService.RevertSelectedRecordStatus(businessList);
+                        MessageBox.Show("Operation completed successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        DgMainForm.Refresh();
                     }
                 }
+                //TO DO: MISC
             }
         }
 
@@ -208,64 +211,46 @@ namespace Revised_OPTS
         {
             DataGridViewSelectedRowCollection selectedRows = DgMainForm.SelectedRows;
 
-            if (CURRENT_RECORD_TYPE == RPT_RECORD_TYPE)
+            if (selectedRows != null)
             {
                 List<Rpt> rptList = new List<Rpt>();
-                foreach (DataGridViewRow row in selectedRows)
-                {
-                    //conversion of row to Rpt
-                    Rpt selectedRptRecord = row.DataBoundItem as Rpt;
-
-                    if (selectedRptRecord.Status == TaxStatus.ForPaymentVerification)
-                    {
-                        rptList.Add(selectedRptRecord);
-                    }
-                }
-                if (rptList.Count > 0)
-                {
-                    DialogResult result = MessageBox.Show("Are you sure you want to update the status of the selected records?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-
-                    if (result == DialogResult.Yes)
-                    {
-                        rptService.UpdateSelectedRecordsStatus(rptList);
-                        MessageBox.Show("Operation completed successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        DgMainForm.Refresh();
-                    }
-                }
-                else
-                {
-                    MessageBox.Show("No records selected for payment verification.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-            }
-            else if (CURRENT_RECORD_TYPE == BUSINESS_RECORD_TYPE)
-            {
                 List<Business> businessList = new List<Business>();
+
                 foreach (DataGridViewRow row in selectedRows)
                 {
-                    //conversion of row to Rpt
-                    Business selectedRptRecord = row.DataBoundItem as Business;
+                    object item = row.DataBoundItem;
 
-                    if (selectedRptRecord.Status == TaxStatus.ForPaymentVerification)
+                    if (item is Rpt)
                     {
-                        businessList.Add(selectedRptRecord);
+                        Rpt rpt = item as Rpt;
+                        if (rpt.Status == TaxStatus.ForPaymentVerification)
+                        {
+                            rptList.Add(rpt);
+                        }
+                    }
+                    else if (item is Business)
+                    {
+                        Business business = item as Business;
+                        if (business.Status == TaxStatus.ForPaymentVerification)
+                        {
+                            businessList.Add(business);
+                        }
                     }
                 }
-                if (businessList.Count > 0)
+
+                if (rptList.Count > 0 || businessList.Count > 0)
                 {
-                    // Display confirmation box
                     DialogResult result = MessageBox.Show("Are you sure you want to update the status of the selected records?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
                     if (result == DialogResult.Yes)
                     {
-                        businessService.UpdateSelectedRecordsStatus(businessList);
+                        rptService.UpdateSelectedRecordsStatus(rptList, TaxStatus.ForPaymentValidation);
+                        businessService.UpdateSelectedRecordsStatus(businessList, TaxStatus.ForPaymentValidation);
                         MessageBox.Show("Operation completed successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         DgMainForm.Refresh();
                     }
                 }
-                else
-                {
-                    MessageBox.Show("No records selected for payment verification.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
+                //TO DO: MISC
             }
         }
 
@@ -340,22 +325,18 @@ namespace Revised_OPTS
                 }
                 else if (CURRENT_RECORD_TYPE == BUSINESS_RECORD_TYPE)
                 {
-                    Business selectedRptRecord = row.DataBoundItem as Business;
-                    if (selectedRptRecord.MP_Number.Equals(searchedUniqueKey, StringComparison.OrdinalIgnoreCase))
+                    Business selectedBusinessRecord = row.DataBoundItem as Business;
+                    if (selectedBusinessRecord.BillNumber.Equals(searchedUniqueKey, StringComparison.OrdinalIgnoreCase))
                     {
                         row.Selected = true;
                         selectedRowCount++;
+                        DgMainForm.FirstDisplayedScrollingRowIndex = counter;
                     }
                 }
                 counter++;
             }
             tbRecordSelected.Text = selectedRowCount.ToString();
         }
-
-        private const int RPT_RECORD_TYPE = 1;
-        private const int MISC_RECORD_TYPE = 2;
-        private const int BUSINESS_RECORD_TYPE = 3;
-        private int CURRENT_RECORD_TYPE = 0;
 
         public void Search(string searchRecordinDB)
         {

@@ -24,11 +24,11 @@ namespace Revised_OPTS.Service
             }
         }
 
-        public List<Business> RetrieveBySearchKeyword(string mpNum)
+        public List<Business> RetrieveBySearchKeyword(string billNumber)
         {
             using (var dbContext = ApplicationDBContext.Create())
             {
-                return businessRepository.retrieveBySearchKeyword(mpNum);
+                return businessRepository.retrieveBySearchKeyword(billNumber);
             }
         }
 
@@ -53,46 +53,49 @@ namespace Revised_OPTS.Service
 
         }
 
-        public void RevertSelectedRecordStatus(Business business)
+        public void RevertSelectedRecordStatus(List<Business> businessList)
         {
             using (var dbContext = ApplicationDBContext.Create())
             {
-                if (business.Status == TaxStatus.ForPaymentValidation)
+                foreach (Business business in businessList)
                 {
-                    business.Status = TaxStatus.ForPaymentVerification;
-                    business.VerifiedBy = null;
-                    business.VerifiedDate = null;
-                    businessRepository.Update(business);
-                }
-                else if (business.Status == TaxStatus.ForORUpload)
-                {
-                    business.Status = TaxStatus.ForPaymentValidation;
-                    business.ValidatedBy = null;
-                    business.ValidatedDate = null;
-                    businessRepository.Update(business);
-                }
-                else if (business.Status == TaxStatus.ForORPickup)
-                {
-                    //TO DO: DELETE THE UPLOADED PHOTO ONCE THE STATUS IS REVERTED.
-                    business.Status = TaxStatus.ForPaymentValidation;
-                    business.UploadedBy = null;
-                    business.UploadedDate = null;
-                    businessRepository.Update(business);
-                }
-                else if (business.Status == TaxStatus.Released)
-                {
-                    business.Status = TaxStatus.ForORPickup;
-                    business.ReleasedBy = null;
-                    business.ReleasedDate = null;
-                    business.RepName = null;
-                    business.RepContactNumber = null;
-                    businessRepository.Update(business);
+                    if (business.Status == TaxStatus.ForPaymentValidation)
+                    {
+                        business.Status = TaxStatus.ForPaymentVerification;
+                        business.VerifiedBy = null;
+                        business.VerifiedDate = null;
+                        businessRepository.Update(business);
+                    }
+                    else if (business.Status == TaxStatus.ForORUpload)
+                    {
+                        business.Status = TaxStatus.ForPaymentValidation;
+                        business.ValidatedBy = null;
+                        business.ValidatedDate = null;
+                        businessRepository.Update(business);
+                    }
+                    else if (business.Status == TaxStatus.ForORPickup)
+                    {
+                        //TO DO: DELETE THE UPLOADED PHOTO ONCE THE STATUS IS REVERTED.
+                        business.Status = TaxStatus.ForPaymentValidation;
+                        business.UploadedBy = null;
+                        business.UploadedDate = null;
+                        businessRepository.Update(business);
+                    }
+                    else if (business.Status == TaxStatus.Released)
+                    {
+                        business.Status = TaxStatus.ForORPickup;
+                        business.ReleasedBy = null;
+                        business.ReleasedDate = null;
+                        //business.RepName = null;
+                        //business.RepContactNumber = null;
+                        businessRepository.Update(business);
+                    }
                 }
                 dbContext.SaveChanges();
             }
         }
 
-        public void UpdateSelectedRecordsStatus(List<Business> businessList)
+        public void UpdateSelectedRecordsStatus(List<Business> businessList, string status)
         {
             using (var dbContext = ApplicationDBContext.Create())
             {
@@ -100,7 +103,7 @@ namespace Revised_OPTS.Service
                 {
                     foreach (Business business in businessList)
                     {
-                        business.Status = TaxStatus.ForPaymentValidation;
+                        business.Status = status;
                         business.VerifiedBy = securityService.getLoginUser().DisplayName;
                         business.VerifiedDate = DateTime.Now;
                         businessRepository.Update(business);

@@ -31,7 +31,7 @@ namespace Revised_OPTS.Model
         public string? RequestingParty { get; set; }
         public string? EncodedBy { get; set; }
         public DateTime? EncodedDate { get; set; }
-        public string? RefNum { get; set; }
+        //public string? RefNum { get; set; }
         public string? RPTremarks { get; set; }
 
         //public string SentBy { get; set; }

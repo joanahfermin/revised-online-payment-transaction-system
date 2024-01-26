@@ -273,7 +273,10 @@ namespace Revised_OPTS.Forms
 
         private void MiscOrderOfPaymentNumTextBox_Keydown(object? sender, KeyEventArgs e)
         {
-            RetrieveTPNforAllMisc();
+            if (e.KeyCode == Keys.Enter)
+            {
+                RetrieveTPNforAllMisc();
+            }
         }
 
         private void MP_NumberTextBox_Leave(object? sender, EventArgs e)
@@ -283,7 +286,10 @@ namespace Revised_OPTS.Forms
 
         private void MP_NumberTextBox_KeyDown(object? sender, KeyEventArgs e)
         {
-            RetrieveTPNforBusiness();
+            if (e.KeyData == Keys.Enter)
+            {
+                RetrieveTPNforBusiness();
+            }
         }
 
         //based on MP Number.

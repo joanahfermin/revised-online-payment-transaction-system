@@ -18,7 +18,7 @@ namespace Inventory_System.Utilities
 
         public static bool isBusiness(string bus)
         {
-            Regex re = new Regex(BusinessFormat.MP_FORMAT);
+            Regex re = new Regex(BusinessFormat.BUSINESS_BILLNUM_FORMAT);
             return re.IsMatch(bus.Trim());
         }
 

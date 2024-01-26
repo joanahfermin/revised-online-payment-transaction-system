@@ -10,13 +10,13 @@ namespace Revised_OPTS.Service
     internal interface IBusinessService
     {
         Business Get(object id);
-        List<Business> RetrieveBySearchKeyword(string mpNum);
+        List<Business> RetrieveBySearchKeyword(string billNumber);
 
         void Insert(Business business);
         void Update(Business business);
 
-        void RevertSelectedRecordStatus(Business business);
-        void UpdateSelectedRecordsStatus(List<Business> businessList);
+        void RevertSelectedRecordStatus(List<Business> business);
+        void UpdateSelectedRecordsStatus(List<Business> businessList, string status);
 
     }
 }

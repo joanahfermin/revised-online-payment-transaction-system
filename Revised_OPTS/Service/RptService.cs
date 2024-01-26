@@ -240,6 +240,8 @@ namespace Revised_OPTS.Service
                 //validateDuplicateRecord(listOfRptsToSave);
 
                 AssignRefNum(rptList);
+                AssignRefNum(businessList);
+                AssignRefNum(miscList);
 
                 bool firstRecord = true;
 
@@ -303,10 +305,10 @@ namespace Revised_OPTS.Service
         //}
 
 
-        private void AssignRefNum(List<Rpt> listOfPersonsToSave)
+        private void AssignRefNum(IEnumerable<BasePrimaryEntity> listOfEntityToSave)
         {
             // hanapin if may existing refnum na
-            string RefNum = listOfPersonsToSave.Where(person => !string.IsNullOrEmpty(person.RefNum)).Select(person => person.RefNum).FirstOrDefault();
+            string RefNum = listOfEntityToSave.Where(person => !string.IsNullOrEmpty(person.RefNum)).Select(person => person.RefNum).FirstOrDefault();
 
             // if wala existing, gawa tayo bago
             if (RefNum == null)
@@ -315,9 +317,9 @@ namespace Revised_OPTS.Service
             }
 
             // gamitin na refnum
-            foreach (Rpt rpt in listOfPersonsToSave)
+            foreach (BasePrimaryEntity entity in listOfEntityToSave)
             {
-                rpt.RefNum = RefNum;
+                entity.RefNum = RefNum;
             }
         }
 
@@ -335,7 +337,7 @@ namespace Revised_OPTS.Service
             }
         }
 
-        public void UpdateSelectedRecordsStatus(List<Rpt> rptList)
+        public void UpdateSelectedRecordsStatus(List<Rpt> rptList, string status)
         {
             using (var dbContext = ApplicationDBContext.Create())
             {
@@ -343,7 +345,7 @@ namespace Revised_OPTS.Service
                 {
                     foreach (Rpt rpt in rptList)
                     {
-                        rpt.Status = TaxStatus.ForPaymentValidation;
+                        rpt.Status = status;
                         rpt.VerifiedBy = securityService.getLoginUser().DisplayName;
                         rpt.VerifiedDate = DateTime.Now;
                         rptRepository.Update(rpt);
@@ -354,40 +356,43 @@ namespace Revised_OPTS.Service
             }
         }
 
-        public void RevertSelectedRecordStatus(Rpt rpt)
+        public void RevertSelectedRecordStatus(List<Rpt> rptList)
         {
             using (var dbContext = ApplicationDBContext.Create())
             {
-                if (rpt.Status == TaxStatus.ForPaymentValidation)
+                foreach (Rpt rpt in rptList)
                 {
-                    rpt.Status = TaxStatus.ForPaymentVerification;
-                    rpt.VerifiedBy = null;
-                    rpt.VerifiedDate = null;
-                    rptRepository.Update(rpt);
-                }
-                else if (rpt.Status == TaxStatus.ForORUpload)
-                {
-                    rpt.Status = TaxStatus.ForPaymentValidation;
-                    rpt.ValidatedBy = null;
-                    rpt.ValidatedDate = null;
-                    rptRepository.Update(rpt);
-                }
-                else if (rpt.Status == TaxStatus.ForORPickup)
-                {
-                    //TO DO: DELETE THE UPLOADED PHOTO ONCE THE STATUS IS REVERTED.
-                    rpt.Status = TaxStatus.ForPaymentValidation;
-                    rpt.UploadedBy = null;
-                    rpt.UploadedDate = null;
-                    rptRepository.Update(rpt);
-                }
-                else if (rpt.Status == TaxStatus.Released)
-                {
-                    rpt.Status = TaxStatus.ForORPickup;
-                    rpt.ReleasedBy = null;
-                    rpt.ReleasedDate = null;
-                    rpt.RepName = null;
-                    rpt.ContactNumber = null;
-                    rptRepository.Update(rpt);
+                    if (rpt.Status == TaxStatus.ForPaymentValidation)
+                    {
+                        rpt.Status = TaxStatus.ForPaymentVerification;
+                        rpt.VerifiedBy = null;
+                        rpt.VerifiedDate = null;
+                        rptRepository.Update(rpt);
+                    }
+                    else if (rpt.Status == TaxStatus.ForORUpload)
+                    {
+                        rpt.Status = TaxStatus.ForPaymentValidation;
+                        rpt.ValidatedBy = null;
+                        rpt.ValidatedDate = null;
+                        rptRepository.Update(rpt);
+                    }
+                    else if (rpt.Status == TaxStatus.ForORPickup)
+                    {
+                        //TO DO: DELETE THE UPLOADED PHOTO ONCE THE STATUS IS REVERTED.
+                        rpt.Status = TaxStatus.ForPaymentValidation;
+                        rpt.UploadedBy = null;
+                        rpt.UploadedDate = null;
+                        rptRepository.Update(rpt);
+                    }
+                    else if (rpt.Status == TaxStatus.Released)
+                    {
+                        rpt.Status = TaxStatus.ForORPickup;
+                        rpt.ReleasedBy = null;
+                        rpt.ReleasedDate = null;
+                        rpt.RepName = null;
+                        rpt.ContactNumber = null;
+                        rptRepository.Update(rpt);
+                    }
                 }
                 dbContext.SaveChanges();
             }

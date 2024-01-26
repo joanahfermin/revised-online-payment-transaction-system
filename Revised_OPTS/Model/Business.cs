@@ -29,6 +29,7 @@ namespace Revised_OPTS.Model
         public string? Qtrs { get; set; }
         public string? Status { get; set; }
         public string? PaymentChannel { get; set; }
+        //public string? RefNum { get; set; }
         public string? VerifiedBy { get; set; }
         public DateTime? VerifiedDate { get; set; }
         public DateTime? DateOfPayment { get; set; }
@@ -44,11 +45,11 @@ namespace Revised_OPTS.Model
 
         public string? ReleasedBy { get; set; }
         public DateTime? ReleasedDate { get; set; }
-        public string? RepName { get; set; }
-        public string? RepContactNumber { get; set; }
+        //public string? RepName { get; set; }
+        //public string? RepContactNumber { get; set; }
 
-        //public bool DeletedRecord { get; set; } = false;
-        public int DuplicateRecord { get; set; } = 0;
+        public bool DeletedRecord { get; set; } = false;
+        public bool DuplicateRecord { get; set; } = false;
 
 
     }
