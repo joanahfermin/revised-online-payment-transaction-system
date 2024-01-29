@@ -21,5 +21,10 @@ namespace Inventory_System.DAL
             return null;
             //return getDbSet().Where(e => e.RefNo == mpNum).FirstOrDefault();
         }
+
+        List<BusinessMasterDetailTPN> IBusinessMasterDetailTPNRepository.retrieveByBillNumber(List<string> billingNumberList)
+        {
+            return getDbSet().Where(e => billingNumberList.Contains(e.BillNo) && e.TaxpayerName != null).ToList();
+        }
     }
 }

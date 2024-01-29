@@ -107,7 +107,6 @@
             this.dtRegularDate.Name = "dtRegularDate";
             this.dtRegularDate.Size = new System.Drawing.Size(136, 27);
             this.dtRegularDate.TabIndex = 4;
-            this.dtRegularDate.ValueChanged += new System.EventHandler(this.SearchRecords);
             // 
             // dgRptList
             // 

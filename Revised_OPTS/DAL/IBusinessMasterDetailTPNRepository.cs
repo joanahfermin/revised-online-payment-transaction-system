@@ -12,5 +12,6 @@ namespace Inventory_System.DAL
     {
         BusinessMasterDetailTPN retrieveByMpNo(string mpNum);
 
+        List<BusinessMasterDetailTPN> retrieveByBillNumber(List<string> billingNumberList);
     }
 }

@@ -10,6 +10,6 @@ namespace Inventory_System.Model
     public class BasePrimaryEntity
     {
         public int? DeletedRecord { get; set; } = 0;
-        public string RefNum { get; set; }
+        public string? RefNum { get; set; }
     }
 }

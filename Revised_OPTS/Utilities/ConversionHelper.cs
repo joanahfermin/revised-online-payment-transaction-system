@@ -39,8 +39,10 @@ namespace Inventory_System.Utilities
 
             bus.Business_Type = null;
             bus.MP_Number = ep.BillerId;
-            //bus.TaxpayersName = ep.BillerInfo2;
-            //bus.BusinessName = null;
+
+            bus.TaxpayersName = ep.BillerInfo2;
+            bus.BusinessName = null;
+
             bus.BillNumber = ep.BillerRef;
             bus.BillAmount = ep.AmountDue;
             bus.TotalAmount = ep.AmountDue;

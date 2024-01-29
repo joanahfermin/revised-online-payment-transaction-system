@@ -14,5 +14,9 @@ namespace Revised_OPTS.Service
 
         void Insert(Miscellaneous misc);
         void Update(Miscellaneous misc);
+
+        void RevertSelectedRecordStatus(List<Miscellaneous> misc);
+        void UpdateSelectedRecordsStatus(List<Miscellaneous> miscList, string status);
+
     }
 }

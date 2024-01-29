@@ -1,6 +1,8 @@
 ﻿using Amazon.IdentityManagement.Model;
 using Inventory_System.Model;
+using Inventory_System.Utilities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Revised_OPTS.Model;
 using System;
 using System.Collections.Generic;
@@ -33,6 +35,25 @@ namespace Revised_OPTS.DAL
                 .Options;
             CurrentInstance = new ApplicationDBContext(options);
             return CurrentInstance;
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            /*
+            var converter = new ValueConverter<bool?, int?>(
+            v => v.HasValue ? (v.Value ? 1 : 0) : (int?)null,
+            v => v.HasValue ? (v.Value == 1) : (bool?)null);
+
+            modelBuilder.Entity<Miscellaneous>()
+                .Property(e => e.DeletedRecord)
+                .HasConversion(converter);*/
+           // /*
+            modelBuilder.Entity<Miscellaneous>()
+                .Property(e => e.DeletedRecord)
+                .HasConversion(new DeletedRecordBoolToIntConverter());
+            //*/
+
+            // Configure other entities and their properties here...
         }
 
         public ApplicationDBContext(DbContextOptions<ApplicationDBContext> options) : base(options)

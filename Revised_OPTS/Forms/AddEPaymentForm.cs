@@ -17,6 +17,8 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Inventory_System.DAL;
+using Revised_OPTS.DAL;
 
 namespace Inventory_System.Forms
 {
@@ -30,6 +32,8 @@ namespace Inventory_System.Forms
         private DynamicGridContainer<Rpt> DynamicGridContainer;
 
         IRptService rptService = ServiceFactory.Instance.GetRptService();
+        IBusinessMasterDetailTPNRepository busMasterdetailTPNRepository = RepositoryFactory.Instance.GetBusinessRetrieveTaxpayerNameRepository();
+
 
         TaxUniqueKeyFormat taxUniqueKeyFormat = new TaxUniqueKeyFormat();
 
@@ -191,6 +195,24 @@ namespace Inventory_System.Forms
                     firstRecordSearchMainFormRef = ep.BillerRef;
                 }
 
+            }
+
+            List<string> billNumberList = businessToSaveList.Select(b => b.BillNumber).ToList();
+            List<BusinessMasterDetailTPN> retrievedNames = busMasterdetailTPNRepository.retrieveByBillNumber(billNumberList);
+
+            foreach (Business bus in businessToSaveList)
+            {
+                if (bus.TaxpayersName == null || bus.TaxpayersName == String.Empty)
+                {
+                    foreach  (BusinessMasterDetailTPN busName in retrievedNames)
+                    {
+                        if (bus.BillNumber == busName.BillNo)
+                        {
+                            bus.TaxpayersName = busName.TaxpayerName;
+                            bus.BusinessName = busName.BusinessName;
+                        }
+                    }
+                }
             }
         }
 
@@ -361,10 +383,11 @@ namespace Inventory_System.Forms
             var bussinessRow = new Row();
             bussinessRow.Append(CreateCell("A5", ""));
             bussinessRow.Append(CreateCell("B5", "BILL NUMBER"));
-            bussinessRow.Append(CreateCell("C5", "SERVICE PROVIDER"));
-            bussinessRow.Append(CreateCell("D5", "MP NUMBER"));
-            bussinessRow.Append(CreateCell("E5", "AMOUNT DUE"));
-            bussinessRow.Append(CreateCell("F5", "PAYMENT DATE"));
+            bussinessRow.Append(CreateCell("C5", "TAXPAYER'S NAME"));
+            bussinessRow.Append(CreateCell("D5", "SERVICE PROVIDER"));
+            bussinessRow.Append(CreateCell("E5", "MP NUMBER"));
+            bussinessRow.Append(CreateCell("F5", "AMOUNT DUE"));
+            bussinessRow.Append(CreateCell("G5", "PAYMENT DATE"));
             businessSheetData.AppendChild(bussinessRow);
 
             int bussinessRowIndex = 6;
@@ -376,10 +399,11 @@ namespace Inventory_System.Forms
                 bussinessRow = new Row(); // Create a new row instance for each iteration
                 bussinessRow.Append(CreateCell($"A{bussinessRowIndex}", count.ToString()));
                 bussinessRow.Append(CreateCell($"B{bussinessRowIndex}", bus.BillNumber));
-                bussinessRow.Append(CreateCell($"C{bussinessRowIndex}", bus.PaymentChannel));
-                bussinessRow.Append(CreateCell($"D{bussinessRowIndex}", bus.MP_Number));
-                bussinessRow.Append(CreateDecimalCell($"E{bussinessRowIndex}", bus.TotalAmount ?? 0));
-                bussinessRow.Append(CreateCell($"F{bussinessRowIndex}", bus.DateOfPayment.ToString()));
+                bussinessRow.Append(CreateCell($"C{bussinessRowIndex}", bus.TaxpayersName));
+                bussinessRow.Append(CreateCell($"D{bussinessRowIndex}", bus.PaymentChannel));
+                bussinessRow.Append(CreateCell($"E{bussinessRowIndex}", bus.MP_Number));
+                bussinessRow.Append(CreateDecimalCell($"F{bussinessRowIndex}", bus.TotalAmount ?? 0));
+                bussinessRow.Append(CreateCell($"G{bussinessRowIndex}", bus.DateOfPayment.ToString()));
                 businessSheetData.AppendChild(bussinessRow);
 
                 totalAmountTransferred += bus.TotalAmount ?? 0;

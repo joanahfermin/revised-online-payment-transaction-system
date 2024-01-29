@@ -8,12 +8,13 @@ using System.Threading.Tasks;
 
 namespace Inventory_System.Model
 {
-    [Table("V_BusinessMasterDetail")]
+    [Table("V_BusBillingMaster")]
 
     internal class BusinessMasterDetailTPN
     {
         [Key]
-        public string RefNo { get; set; }
+        public string BillNo { get; set; }
+        public string TaxpayerName { get; set; }
         public string BusinessName { get; set; }
 
     }

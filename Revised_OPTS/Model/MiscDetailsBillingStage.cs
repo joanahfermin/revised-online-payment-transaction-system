@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Inventory_System.Model
 {
-    [Table("MiscDetailsBillingSTAGE")]
+    [Table("V_MiscMasterBilling")]
 
     internal class MiscDetailsBillingStage
     {

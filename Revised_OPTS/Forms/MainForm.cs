@@ -168,6 +168,7 @@ namespace Revised_OPTS
             {
                 List<Rpt> rptList = new List<Rpt>();
                 List<Business> businessList = new List<Business>();
+                List<Miscellaneous> miscList = new List<Miscellaneous>();
 
                 foreach (DataGridViewRow row in selectedRows)
                 {
@@ -189,9 +190,16 @@ namespace Revised_OPTS
                             businessList.Add(business);
                         }
                     }
+                    else if (item is Miscellaneous)
+                    {
+                        Miscellaneous misc = item as Miscellaneous;
+                        if (misc.Status == TaxStatus.ForPaymentValidation)
+                        {
+                            miscList.Add(misc);
+                        }
+                    }
                 }
-
-                if (rptList.Count > 0 || businessList.Count > 0 )
+                if (rptList.Count > 0 || businessList.Count > 0 || miscList.Count > 0)
                 {
                     DialogResult result = MessageBox.Show("Are you sure you want to update the status of the selected records?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
@@ -199,11 +207,11 @@ namespace Revised_OPTS
                     {
                         rptService.RevertSelectedRecordStatus(rptList);
                         businessService.RevertSelectedRecordStatus(businessList);
+                        miscService.RevertSelectedRecordStatus(miscList);
                         MessageBox.Show("Operation completed successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         DgMainForm.Refresh();
                     }
                 }
-                //TO DO: MISC
             }
         }
 
@@ -215,6 +223,7 @@ namespace Revised_OPTS
             {
                 List<Rpt> rptList = new List<Rpt>();
                 List<Business> businessList = new List<Business>();
+                List<Miscellaneous> miscList = new List<Miscellaneous>();
 
                 foreach (DataGridViewRow row in selectedRows)
                 {
@@ -236,9 +245,17 @@ namespace Revised_OPTS
                             businessList.Add(business);
                         }
                     }
+                    else if (item is Miscellaneous)
+                    {
+                        Miscellaneous misc = item as Miscellaneous;
+                        if (misc.Status == TaxStatus.ForPaymentVerification)
+                        {
+                            miscList.Add(misc);
+                        }
+                    }
                 }
 
-                if (rptList.Count > 0 || businessList.Count > 0)
+                if (rptList.Count > 0 || businessList.Count > 0 || miscList.Count > 0)
                 {
                     DialogResult result = MessageBox.Show("Are you sure you want to update the status of the selected records?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
@@ -246,11 +263,11 @@ namespace Revised_OPTS
                     {
                         rptService.UpdateSelectedRecordsStatus(rptList, TaxStatus.ForPaymentValidation);
                         businessService.UpdateSelectedRecordsStatus(businessList, TaxStatus.ForPaymentValidation);
+                        miscService.UpdateSelectedRecordsStatus(miscList, TaxStatus.ForPaymentValidation);
                         MessageBox.Show("Operation completed successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         DgMainForm.Refresh();
                     }
                 }
-                //TO DO: MISC
             }
         }
 
@@ -396,7 +413,7 @@ namespace Revised_OPTS
                 else if (selectedRow.DataBoundItem is Business businessSelectedRecord)
                 {
                     Business businessRecord = selectedRow.DataBoundItem as Business;
-                    selectedRecordFormat = businessRecord.MP_Number;
+                    selectedRecordFormat = businessRecord.BillNumber;
                     selectedRecordId = businessRecord.BusinessID;
 
                 }
