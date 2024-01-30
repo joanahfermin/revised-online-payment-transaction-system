@@ -350,6 +350,16 @@ namespace Revised_OPTS
                         DgMainForm.FirstDisplayedScrollingRowIndex = counter;
                     }
                 }
+                else if (CURRENT_RECORD_TYPE == MISC_RECORD_TYPE)
+                {
+                    Miscellaneous selectedMiscRecord = row.DataBoundItem as Miscellaneous;
+                    if (selectedMiscRecord.OrderOfPaymentNum.Equals(searchedUniqueKey, StringComparison.OrdinalIgnoreCase))
+                    {
+                        row.Selected = true;
+                        selectedRowCount++;
+                        DgMainForm.FirstDisplayedScrollingRowIndex = counter;
+                    }
+                }
                 counter++;
             }
             tbRecordSelected.Text = selectedRowCount.ToString();
