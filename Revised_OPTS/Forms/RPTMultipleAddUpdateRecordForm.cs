@@ -209,7 +209,7 @@ namespace Inventory_System.Forms
         private void btnSaveRecord_Click(object sender, EventArgs e)
         {
             string firstTaxdecRecord = null;
-             decimal totalAmountTransferred = Convert.ToDecimal(tbTotalAmountTransferred.Text);
+            decimal totalAmountTransferred = Convert.ToDecimal(tbTotalAmountTransferred.Text);
 
             List<Rpt> listOfRptsToSave = DynamicGridContainer.GetData();
             List<Rpt> listOfRptsToDelete = DynamicGridContainer.GetDataToDelete();
@@ -233,6 +233,14 @@ namespace Inventory_System.Forms
             try
             {
                 rptService.SaveAll(listOfRptsToSave, listOfRptsToDelete, totalAmountTransferred);
+            }
+            catch (RptDuplicateRecordException ex)
+            {
+                MessageBox.Show(ex.Message);
+
+                RptExistingRecordForm rptDuplicateForm = new RptExistingRecordForm(ex.duplicateRptList);
+                rptDuplicateForm.ShowDialog();
+                return;
             }
             catch (RptException ex)
             {

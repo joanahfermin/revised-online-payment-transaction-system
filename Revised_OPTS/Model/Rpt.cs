@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace Revised_OPTS.Model
 {
     [Table("Jo_RPT")]
-    internal class Rpt: BasePrimaryEntity, ICloneable
+    public class Rpt: BasePrimaryEntity, ICloneable
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

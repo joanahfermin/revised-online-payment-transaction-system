@@ -129,6 +129,15 @@ namespace Inventory_System.Forms
                     NotificationHelper.notifyUserAndRefreshRecord(firstRecordSearchMainFormRef);
                     btnClose_Click(sender, e);
                 }
+                catch (RptDuplicateRecordException ex)
+                {
+                    MessageBox.Show(ex.Message);
+
+                    RptExistingRecordForm rptDuplicateForm = new RptExistingRecordForm(ex.duplicateRptList);
+                    rptDuplicateForm.ShowDialog();
+                    return;
+                }
+
                 catch (RptException ex)
                 {
                     MessageBox.Show(ex.Message);

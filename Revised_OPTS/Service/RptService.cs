@@ -1,5 +1,6 @@
 ﻿using Inventory_System.DAL;
 using Inventory_System.Exception;
+using Inventory_System.Forms;
 using Inventory_System.Model;
 using Inventory_System.Service;
 using Revised_OPTS.DAL;
@@ -166,7 +167,9 @@ namespace Revised_OPTS.Service
                 obj.TaxDec,
                 obj.YearQuarter,
                 obj.Quarter,
-                obj.BillingSelection
+                obj.BillingSelection,
+                obj.DeletedRecord,
+                obj.DuplicateRecord,
             })
             .Where(group => group.Count() > 1)
             .SelectMany(group => group);
@@ -180,15 +183,17 @@ namespace Revised_OPTS.Service
                 }
             }
 
+            //retrieve existing record from the database.
+            List<Rpt> allDuplicateRpts = new List<Rpt>();
             foreach (Rpt rpt in listOfRptsToSave)
             {
-                List<Rpt> existingRecord = rptRepository.checkExistingRecord(rpt);
-
-                if (existingRecord.Count > 0)
-                {
-                    //throw new RptException("There is an existing record/s detected in the database. Please update or delete the old record/s.");
-                    throw new RptException($"There is an existing record/s detected in the database. Please update or delete the old record/s. TDN = {rpt.TaxDec}");
-                }
+                List<Rpt> existingRecordList = rptRepository.checkExistingRecord(rpt);
+                allDuplicateRpts.AddRange(existingRecordList);
+            }
+            if (allDuplicateRpts.Count > 0)
+            {
+                string allTaxdec = string.Join(", " , allDuplicateRpts.Select(t => t.TaxDec).ToHashSet());
+                throw new RptDuplicateRecordException($"There is an existing record/s detected in the database. Please update or delete the old record/s. TDN = {allTaxdec}", allDuplicateRpts);
             }
         }
 
@@ -237,7 +242,7 @@ namespace Revised_OPTS.Service
         {
             using (var dbContext = ApplicationDBContext.Create())
             {
-                //validateDuplicateRecord(listOfRptsToSave);
+                validateDuplicateRecord(rptList);
 
                 AssignRefNum(rptList);
                 AssignRefNum(businessList);
@@ -484,5 +489,13 @@ namespace Revised_OPTS.Service
                 throw new("Error deleting attached OR.", ex);
             }
         }
+
+        //List<Rpt> IRptService.DetectExistingRecord(string taxdec, string year, string quarter, string billingSelection)
+        //{
+        //    using (var dbContext = ApplicationDBContext.Create())
+        //    {
+        //        return rptRepository.DetectExistingRecord(taxdec, year, quarter, billingSelection);
+        //    }
+        //}
     }
 }
