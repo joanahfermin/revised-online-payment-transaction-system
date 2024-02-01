@@ -11,7 +11,7 @@ namespace Revised_OPTS.Model
 {
     [Table("Jo_MISC")]
 
-    public class Miscellaneous : BasePrimaryEntity
+    public class Miscellaneous : BasePrimaryEntity, ICloneable
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -54,6 +54,10 @@ namespace Revised_OPTS.Model
         //public string LastORNo { get; set; }
         //public string PRC_IBP_No { get; set; }
 
+        public object Clone()
+        {
+            return this.MemberwiseClone();
+        }
 
     }
 }

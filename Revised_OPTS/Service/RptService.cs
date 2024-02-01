@@ -273,6 +273,44 @@ namespace Revised_OPTS.Service
             }
         }
 
+        private void validateDuplicateRecord(List<Rpt> rptList, List<Miscellaneous> miscList, List<Business> businessList)
+        {
+            List<Rpt> duplicateRptList = new List<Rpt>();
+            try
+            {
+                validateRptDuplicateRecord(rptList);
+            }
+            catch (DuplicateRecordException ex)
+            {
+                duplicateRptList = ex.duplicateRptList;
+            }
+
+            List<Business> duplicateBusinessList = new List<Business>();
+            try
+            {
+                validateBusinessDuplicateRecord(businessList);
+            }
+            catch (DuplicateRecordException ex)
+            {
+                duplicateBusinessList = ex.duplicateBusList;
+            }
+
+            List<Miscellaneous> duplicateMiscList = new List<Miscellaneous>();
+            try
+            {
+                validateMiscDuplicateRecord(miscList);
+            }
+            catch (DuplicateRecordException ex)
+            {
+                duplicateMiscList = ex.duplicateMiscList;
+            }
+
+            if (duplicateRptList.Any() || duplicateBusinessList.Any() || duplicateMiscList.Any())
+            {
+                throw new DuplicateRecordException(" ", duplicateRptList, duplicateBusinessList, duplicateMiscList);
+            }
+        }
+
         //saving all rpt record in the add/update multiple record form.
         public void SaveAll(List<Rpt> listOfRptsToSave, List<Rpt> listOfRptsToDelete, decimal totalAmountTransferred)
         {
@@ -312,44 +350,6 @@ namespace Revised_OPTS.Service
                     dbContext.SaveChanges();
                     scope.Complete();
                 }
-            }
-        }
-
-        private void validateDuplicateRecord(List<Rpt> rptList, List<Miscellaneous> miscList, List<Business> businessList)
-        {
-            List<Rpt> duplicateRptList = new List<Rpt>();
-            try
-            {
-                validateRptDuplicateRecord(rptList);
-            }
-            catch (DuplicateRecordException ex)
-            {
-                duplicateRptList = ex.duplicateRptList;
-            }
-
-            List<Business> duplicateBusinessList = new List<Business>();
-            try
-            {
-                validateBusinessDuplicateRecord(businessList);
-            }
-            catch (DuplicateRecordException ex)
-            {
-                duplicateBusinessList = ex.duplicateBusList;
-            }
-
-            List<Miscellaneous> duplicateMiscList = new List<Miscellaneous>();
-            try
-            {
-                validateMiscDuplicateRecord(miscList);
-            }
-            catch (DuplicateRecordException ex)
-            {
-                duplicateMiscList = ex.duplicateMiscList;
-            }
-
-            if (duplicateRptList.Any() || duplicateBusinessList.Any() || duplicateMiscList.Any())
-            {
-                throw new DuplicateRecordException(" ", duplicateRptList, duplicateBusinessList, duplicateMiscList);
             }
         }
 

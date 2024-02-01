@@ -25,6 +25,7 @@ namespace Inventory_System.DAL
         List<BusinessMasterDetailTPN> IBusinessMasterDetailTPNRepository.retrieveByBillNumber(List<string> billingNumberList)
         {
             return getDbSet().Where(e => billingNumberList.Contains(e.BillNo) && e.TaxpayerName != null).ToList();
+            //return null;
         }
     }
 }

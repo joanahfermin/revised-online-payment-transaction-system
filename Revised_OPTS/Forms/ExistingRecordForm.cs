@@ -19,6 +19,7 @@ namespace Inventory_System.Forms
         IRptService rptService = ServiceFactory.Instance.GetRptService();
         private DynamicGridContainer<Rpt> RptDynamicGridContainer;
         private DynamicGridContainer<Business> BusinessDynamicGridContainer;
+        private DynamicGridContainer<Miscellaneous> MiscDynamicGridContainer;
 
         public ExistingRecordForm(List<Rpt> existingRecordList, List<Miscellaneous> existingMiscRecordList, List<Business> existingBusRecordList)
         {
@@ -30,6 +31,8 @@ namespace Inventory_System.Forms
             this.WindowState = FormWindowState.Maximized;
 
             RptDynamicGridContainer.PopulateData(existingRecordList);
+            BusinessDynamicGridContainer.PopulateData(existingBusRecordList);
+            //MiscDynamicGridContainer.PopulateData(existingMiscRecordList);
         }
 
         private void InitializeRptDataGridView()

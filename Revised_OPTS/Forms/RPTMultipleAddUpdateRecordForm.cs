@@ -238,7 +238,7 @@ namespace Inventory_System.Forms
             {
                 MessageBox.Show(ex.Message);
 
-                ExistingRecordForm rptDuplicateForm = new ExistingRecordForm(ex.duplicateRptList);
+                ExistingRecordForm rptDuplicateForm = new ExistingRecordForm(ex.duplicateRptList, new List<Miscellaneous>(), new List<Business>());
                 rptDuplicateForm.ShowDialog();
                 return;
             }
