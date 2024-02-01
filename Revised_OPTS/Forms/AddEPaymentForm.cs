@@ -129,7 +129,7 @@ namespace Inventory_System.Forms
                     NotificationHelper.notifyUserAndRefreshRecord(firstRecordSearchMainFormRef);
                     btnClose_Click(sender, e);
                 }
-                catch (RptDuplicateRecordException ex)
+                catch (DuplicateRecordException ex)
                 {
                     MessageBox.Show(ex.Message);
 

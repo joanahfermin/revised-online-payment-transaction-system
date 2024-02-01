@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace Revised_OPTS.Model
 {
     [Table("Jo_Business")]
-    internal class Business : BasePrimaryEntity, ICloneable
+    public class Business : BasePrimaryEntity, ICloneable
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

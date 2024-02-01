@@ -159,7 +159,7 @@ namespace Revised_OPTS.Service
             }
         }
 
-        private void validateDuplicateRecord(List<Rpt> listOfRptsToSave)
+        private void validateRptDuplicateRecord(List<Rpt> listOfRptsToSave)
         {
             var duplicates = listOfRptsToSave
             .GroupBy(obj => new
@@ -193,15 +193,92 @@ namespace Revised_OPTS.Service
             if (allDuplicateRpts.Count > 0)
             {
                 string allTaxdec = string.Join(", " , allDuplicateRpts.Select(t => t.TaxDec).ToHashSet());
-                throw new RptDuplicateRecordException($"There is an existing record/s detected in the database. Please update or delete the old record/s. TDN = {allTaxdec}", allDuplicateRpts);
+                throw new DuplicateRecordException($"There is an existing record/s detected in the database. Please update or delete the old record/s. TDN = {allTaxdec}", allDuplicateRpts);
             }
         }
 
+        private void validateBusinessDuplicateRecord(List<Business> listOfBusToSave)
+        {
+            var duplicates = listOfBusToSave
+            .GroupBy(obj => new
+            {
+                obj.BillNumber,
+                //obj.YearQuarter,
+                //obj.Quarter,
+                //obj.BillingSelection,
+                obj.DeletedRecord,
+                obj.DuplicateRecord,
+            })
+            .Where(group => group.Count() > 1)
+            .SelectMany(group => group);
+
+            if (duplicates.Any())
+            {
+                foreach (var duplicate in duplicates)
+                {
+                    //throw new RptException("Submitted record(s) contains duplicate(s). TDN = " + duplicate.TaxDec);
+                    throw new RptException($"Submitted record(s) contains duplicate(s). Bill Number = {duplicate.BillNumber}");
+                }
+            }
+
+            //retrieve existing record from the database.
+            List<Business> allDuplicateBus = new List<Business>();
+            foreach (Business bus in listOfBusToSave)
+            {
+                List<Business> existingRecordList = businessRepository.checkExistingRecord(bus);
+                allDuplicateBus.AddRange(existingRecordList);
+            }
+            if (allDuplicateBus.Count > 0)
+            {
+                string allBillNumber = string.Join(", ", allDuplicateBus.Select(t => t.BillNumber).ToHashSet());
+                throw new DuplicateRecordException($"There is an existing record/s detected in the database. Please update or delete the old record/s. Bill Number = {allBillNumber}", allDuplicateBus);
+            }
+        }
+
+        private void validateMiscDuplicateRecord(List<Miscellaneous> listOfMiscToSave)
+        {
+            var duplicates = listOfMiscToSave
+            .GroupBy(obj => new
+            {
+                obj.OrderOfPaymentNum,
+                //obj.YearQuarter,
+                //obj.Quarter,
+                //obj.BillingSelection,
+                obj.DeletedRecord,
+                obj.DuplicateRecord,
+            })
+            .Where(group => group.Count() > 1)
+            .SelectMany(group => group);
+
+            if (duplicates.Any())
+            {
+                foreach (var duplicate in duplicates)
+                {
+                    //throw new RptException("Submitted record(s) contains duplicate(s). TDN = " + duplicate.TaxDec);
+                    throw new RptException($"Submitted record(s) contains duplicate(s). Bill Number = {duplicate.OrderOfPaymentNum}");
+                }
+            }
+
+            //retrieve existing record from the database.
+            List<Miscellaneous> allDuplicateMisc = new List<Miscellaneous>();
+            foreach (Miscellaneous misc in listOfMiscToSave)
+            {
+                List<Miscellaneous> existingRecordList = miscRepository.checkExistingRecord(misc);
+                allDuplicateMisc.AddRange(existingRecordList);
+            }
+            if (allDuplicateMisc.Count > 0)
+            {
+                string allTaxdec = string.Join(", ", allDuplicateMisc.Select(t => t.OrderOfPaymentNum).ToHashSet());
+                throw new DuplicateRecordException($"There is an existing record/s detected in the database. Please update or delete the old record/s. Bill Number = {allTaxdec}", allDuplicateMisc);
+            }
+        }
+
+        //saving all rpt record in the add/update multiple record form.
         public void SaveAll(List<Rpt> listOfRptsToSave, List<Rpt> listOfRptsToDelete, decimal totalAmountTransferred)
         {
             using (var dbContext = ApplicationDBContext.Create())
             {
-                validateDuplicateRecord(listOfRptsToSave);
+                validateRptDuplicateRecord(listOfRptsToSave);
 
                 AssignRefNum(listOfRptsToSave);
                 bool firstRecord = true;
@@ -238,11 +315,54 @@ namespace Revised_OPTS.Service
             }
         }
 
+        private void validateDuplicateRecord(List<Rpt> rptList, List<Miscellaneous> miscList, List<Business> businessList)
+        {
+            List<Rpt> duplicateRptList = new List<Rpt>();
+            try
+            {
+                validateRptDuplicateRecord(rptList);
+            }
+            catch (DuplicateRecordException ex)
+            {
+                duplicateRptList = ex.duplicateRptList;
+            }
+
+            List<Business> duplicateBusinessList = new List<Business>();
+            try
+            {
+                validateBusinessDuplicateRecord(businessList);
+            }
+            catch (DuplicateRecordException ex)
+            {
+                duplicateBusinessList = ex.duplicateBusList;
+            }
+
+            List<Miscellaneous> duplicateMiscList = new List<Miscellaneous>();
+            try
+            {
+                validateMiscDuplicateRecord(miscList);
+            }
+            catch (DuplicateRecordException ex)
+            {
+                duplicateMiscList = ex.duplicateMiscList;
+            }
+
+            if (duplicateRptList.Any() || duplicateBusinessList.Any() || duplicateMiscList.Any())
+            {
+                throw new DuplicateRecordException(" ", duplicateRptList, duplicateBusinessList, duplicateMiscList);
+            }
+        }
+
+        //save records copy/paste from gcashpaymaya excel
         public void SaveAllEPayment(List<Rpt> rptList, List<Miscellaneous> miscList, List<Business> businessList)
         {
             using (var dbContext = ApplicationDBContext.Create())
             {
-                validateDuplicateRecord(rptList);
+                //validateRptDuplicateRecord(rptList);
+                //validateBusinessDuplicateRecord(businessList);
+                //validateMiscDuplicateRecord(miscList);
+
+                validateDuplicateRecord(rptList, miscList, businessList);
 
                 AssignRefNum(rptList);
                 AssignRefNum(businessList);

@@ -10,6 +10,18 @@ namespace Revised_OPTS.DAL
 {
     internal class MiscRepository : BaseRepository<Miscellaneous>, IMiscRepository
     {
+        public List<Miscellaneous> checkExistingRecord(Miscellaneous misc)
+        {
+            return getDbSet()
+        .Where(jo => jo.OrderOfPaymentNum == misc.OrderOfPaymentNum
+            //&& jo.YearQuarter == rpt.YearQuarter
+            //&& jo.Quarter == rpt.Quarter
+            && jo.DeletedRecord == 0
+            && jo.DuplicateRecord == 1
+            && jo.MiscID != misc.MiscID)
+        .ToList();
+        }
+
         public List<Miscellaneous> retrieveBySearchKeyword(string billNum)
         {
             //return getDbSet().Where(m => m.OrderOfPaymentNum.Contains(billNum)).ToList();

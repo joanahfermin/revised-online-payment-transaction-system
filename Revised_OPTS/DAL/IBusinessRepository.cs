@@ -10,5 +10,7 @@ namespace Revised_OPTS.DAL
     internal interface IBusinessRepository : IRepository<Business>
     {
         List<Business> retrieveBySearchKeyword(string billNumber);
+        List<Business> checkExistingRecord(Business bus);
+
     }
 }

@@ -14,13 +14,13 @@ using System.Windows.Forms;
 
 namespace Inventory_System.Forms
 {
-    public partial class RptExistingRecordForm : Form
+    public partial class ExistingRecordForm : Form
     {
         IRptService rptService = ServiceFactory.Instance.GetRptService();
         private DynamicGridContainer<Rpt> RptDynamicGridContainer;
         private DynamicGridContainer<Business> BusinessDynamicGridContainer;
 
-        public RptExistingRecordForm(List<Rpt> existingRecordList)
+        public ExistingRecordForm(List<Rpt> existingRecordList, List<Miscellaneous> existingMiscRecordList, List<Business> existingBusRecordList)
         {
             InitializeComponent();
             InitializeRptDataGridView();

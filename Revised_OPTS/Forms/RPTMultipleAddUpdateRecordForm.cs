@@ -234,7 +234,7 @@ namespace Inventory_System.Forms
             {
                 rptService.SaveAll(listOfRptsToSave, listOfRptsToDelete, totalAmountTransferred);
             }
-            catch (RptDuplicateRecordException ex)
+            catch (DuplicateRecordException ex)
             {
                 MessageBox.Show(ex.Message);
 

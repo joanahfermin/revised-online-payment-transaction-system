@@ -39,5 +39,16 @@ namespace Revised_OPTS.DAL
                 .ToList();
         }
 
+        public List<Business> checkExistingRecord(Business bus)
+        {
+            return getDbSet()
+                    .Where(jo => jo.BillNumber == bus.BillNumber
+                        //&& jo.YearQuarter == rpt.YearQuarter
+                        //&& jo.Quarter == rpt.Quarter
+                        && jo.DeletedRecord == false
+                        && jo.DuplicateRecord == true
+                        && jo.BusinessID != bus.BusinessID)
+                    .ToList();
+        }
     }
 }
