@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace Revised_OPTS.Model
 {
     [Table("Jo_Business")]
-    internal class Business : BasePrimaryEntity
+    internal class Business : BasePrimaryEntity, ICloneable
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -51,6 +51,9 @@ namespace Revised_OPTS.Model
         public bool DeletedRecord { get; set; } = false;
         public bool DuplicateRecord { get; set; } = false;
 
-
+        public object Clone()
+        {
+            return this.MemberwiseClone();
+        }
     }
 }

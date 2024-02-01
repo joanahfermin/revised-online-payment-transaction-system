@@ -17,7 +17,8 @@ namespace Inventory_System.Forms
     public partial class RptExistingRecordForm : Form
     {
         IRptService rptService = ServiceFactory.Instance.GetRptService();
-        private DynamicGridContainer<Rpt> DynamicGridContainer;
+        private DynamicGridContainer<Rpt> RptDynamicGridContainer;
+        private DynamicGridContainer<Business> BusinessDynamicGridContainer;
 
         public RptExistingRecordForm(List<Rpt> existingRecordList)
         {
@@ -28,7 +29,7 @@ namespace Inventory_System.Forms
             DgRptAddUpdateForm.DefaultCellStyle.Font = new Font("Tahoma", 12, FontStyle.Regular);
             this.WindowState = FormWindowState.Maximized;
 
-            DynamicGridContainer.PopulateData(existingRecordList);
+            RptDynamicGridContainer.PopulateData(existingRecordList);
         }
 
         private void InitializeRptDataGridView()
@@ -51,7 +52,7 @@ namespace Inventory_System.Forms
                 new DynamicGridInfo{PropertyName="RequestingParty", Label = "Email Address" },
                 new DynamicGridInfo{PropertyName="RPTremarks", Label = "Remarks"},
             };
-            DynamicGridContainer = new DynamicGridContainer<Rpt>(DgRptAddUpdateForm, gridInfoArray, true, true);
+            RptDynamicGridContainer = new DynamicGridContainer<Rpt>(DgRptAddUpdateForm, gridInfoArray, true, true);
         }
 
         private void InitializeBusinessDataGridView()
@@ -77,9 +78,8 @@ namespace Inventory_System.Forms
                 new DynamicGridInfo{PropertyName="RequestingParty", Label = "Email Address" },
                 new DynamicGridInfo{PropertyName="BussinessRemarks", Label = "Remarks"},
             };
-            DynamicGridContainer = new DynamicGridContainer<Rpt>(DgRptAddUpdateForm, gridInfoArray, true, true);
+            BusinessDynamicGridContainer = new DynamicGridContainer<Business>(DgBusAddUpdateForm, gridInfoArray, true, true);
         }
-
 
         private void btnClose_Click(object sender, EventArgs e)
         {
