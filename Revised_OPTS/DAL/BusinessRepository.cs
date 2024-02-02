@@ -46,7 +46,7 @@ namespace Revised_OPTS.DAL
                         //&& jo.YearQuarter == rpt.YearQuarter
                         //&& jo.Quarter == rpt.Quarter
                         && jo.DeletedRecord == false
-                        && jo.DuplicateRecord == true
+                        && jo.DuplicateRecord == false
                         && jo.BusinessID != bus.BusinessID)
                     .ToList();
         }

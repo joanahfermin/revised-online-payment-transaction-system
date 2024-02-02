@@ -125,7 +125,7 @@ namespace Inventory_System.Forms
 
                 try
                 {
-                    rptService.SaveAllEPayment(rptToSaveList, miscToSaveList, businessToSaveList);
+                    rptService.SaveAllEPayment(rptToSaveList, businessToSaveList, miscToSaveList);
                     NotificationHelper.notifyUserAndRefreshRecord(firstRecordSearchMainFormRef);
                     btnClose_Click(sender, e);
                 }
@@ -133,8 +133,8 @@ namespace Inventory_System.Forms
                 {
                     MessageBox.Show(ex.Message);
 
-                    ExistingRecordForm rptDuplicateForm = new ExistingRecordForm(ex.duplicateRptList, ex.duplicateMiscList, ex.duplicateBusList);
-                    rptDuplicateForm.ShowDialog();
+                    ExistingRecordForm DuplicateForm = new ExistingRecordForm(ex.duplicateRptList, ex.duplicateBusList, ex.duplicateMiscList);
+                    DuplicateForm.ShowDialog();
                     return;
                 }
 

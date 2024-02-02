@@ -17,7 +17,7 @@ namespace Revised_OPTS.DAL
             //&& jo.YearQuarter == rpt.YearQuarter
             //&& jo.Quarter == rpt.Quarter
             && jo.DeletedRecord == 0
-            && jo.DuplicateRecord == 1
+            && jo.DuplicateRecord == 0
             && jo.MiscID != misc.MiscID)
         .ToList();
         }

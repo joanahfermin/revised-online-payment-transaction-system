@@ -27,7 +27,7 @@ namespace Revised_OPTS.Service
         void RevertSelectedRecordStatus(List<Rpt> rpt);
         void Delete(Rpt rpt);
         void SaveAll(List<Rpt> rpt, List<Rpt> rptToDelte, decimal totalAmountTransferred);
-        void SaveAllEPayment(List<Rpt> rpt, List<Miscellaneous> misc, List<Business> bussiness);
+        void SaveAllEPayment(List<Rpt> rpt, List<Business> bussiness, List<Miscellaneous> misc);
 
         void UploadReceipt(RPTAttachPicture pix);
         RPTAttachPicture getRptReceipt(long rptId);

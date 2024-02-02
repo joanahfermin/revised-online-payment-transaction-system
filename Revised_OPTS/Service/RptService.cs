@@ -273,7 +273,7 @@ namespace Revised_OPTS.Service
             }
         }
 
-        private void validateDuplicateRecord(List<Rpt> rptList, List<Miscellaneous> miscList, List<Business> businessList)
+        private void validateDuplicateRecord(List<Rpt> rptList, List<Business> businessList, List<Miscellaneous> miscList)
         {
             List<Rpt> duplicateRptList = new List<Rpt>();
             try
@@ -307,7 +307,7 @@ namespace Revised_OPTS.Service
 
             if (duplicateRptList.Any() || duplicateBusinessList.Any() || duplicateMiscList.Any())
             {
-                throw new DuplicateRecordException(" ", duplicateRptList, duplicateBusinessList, duplicateMiscList);
+                throw new DuplicateRecordException("Existing record(s) detected.", duplicateRptList, duplicateBusinessList, duplicateMiscList);
             }
         }
 
@@ -354,15 +354,11 @@ namespace Revised_OPTS.Service
         }
 
         //save records copy/paste from gcashpaymaya excel
-        public void SaveAllEPayment(List<Rpt> rptList, List<Miscellaneous> miscList, List<Business> businessList)
+        public void SaveAllEPayment(List<Rpt> rptList, List<Business> businessList, List<Miscellaneous> miscList)
         {
             using (var dbContext = ApplicationDBContext.Create())
             {
-                //validateRptDuplicateRecord(rptList);
-                //validateBusinessDuplicateRecord(businessList);
-                //validateMiscDuplicateRecord(miscList);
-
-                validateDuplicateRecord(rptList, miscList, businessList);
+                validateDuplicateRecord(rptList, businessList, miscList);
 
                 AssignRefNum(rptList);
                 AssignRefNum(businessList);

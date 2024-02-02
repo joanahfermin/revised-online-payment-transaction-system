@@ -48,7 +48,6 @@ namespace Inventory_System.Forms
             panel1.BackColor = customColor;
             btnSaveRecord.BackColor = customColor;
             btnClose.BackColor = customColor;
-
         }
 
         private void DgRptAddUpdateForm_CellClick(object? sender, DataGridViewCellEventArgs e)
@@ -238,7 +237,7 @@ namespace Inventory_System.Forms
             {
                 MessageBox.Show(ex.Message);
 
-                ExistingRecordForm rptDuplicateForm = new ExistingRecordForm(ex.duplicateRptList, new List<Miscellaneous>(), new List<Business>());
+                ExistingRecordForm rptDuplicateForm = new ExistingRecordForm(ex.duplicateRptList, new List<Business>(), new List<Miscellaneous>());
                 rptDuplicateForm.ShowDialog();
                 return;
             }

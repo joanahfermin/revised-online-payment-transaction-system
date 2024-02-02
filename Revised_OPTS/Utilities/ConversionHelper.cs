@@ -21,7 +21,7 @@ namespace Inventory_System.Utilities
             rpt.AmountTransferred = ep.AmountDue;
             rpt.TotalAmountTransferred = ep.AmountDue;
             rpt.ExcessShortAmount = 0;// excessShortAmount;
-            rpt.Bank = ep.ServiceProvider;
+            rpt.Bank = ep.ServiceProvider.ToUpper();
             rpt.YearQuarter = ep.BillerInfo1;
             rpt.Quarter = ep.Quarter;
             rpt.PaymentType = null;
@@ -40,15 +40,20 @@ namespace Inventory_System.Utilities
             bus.Business_Type = null;
             bus.MP_Number = ep.BillerId;
 
-            bus.TaxpayersName = ep.BillerInfo2;
+            bus.TaxpayersName = ep.BillerInfo2.ToUpper();
             bus.BusinessName = null;
 
-            bus.BillNumber = ep.BillerRef;
+            bus.BillNumber = ep.BillerRef.ToUpper();
             bus.BillAmount = ep.AmountDue;
             bus.TotalAmount = ep.AmountDue;
-            bus.PaymentChannel = ep.ServiceProvider;
+            bus.PaymentChannel = ep.ServiceProvider.ToUpper();
+
             //bus.Year = ep.BillerInfo1;
             //bus.Qtrs = ep.Quarter;
+
+            bus.Year = "-";
+            bus.Qtrs = "-";
+
             bus.Status = TaxStatus.ForPaymentVerification;
             bus.RequestingParty = ep.BillerInfo3;
             bus.DateOfPayment = ep.Date;
@@ -62,8 +67,8 @@ namespace Inventory_System.Utilities
 
             misc.MiscType = TaxTypeUtil.MISCELLANEOUS_OCCUPERMIT;
             misc.TaxpayersName = ep.BillerInfo2.ToUpper();
-            misc.OrderOfPaymentNum = ep.BillerRef;
-            misc.ModeOfPayment = ep.ServiceProvider;
+            misc.OrderOfPaymentNum = ep.BillerRef.ToUpper();
+            misc.ModeOfPayment = ep.ServiceProvider.ToUpper();
             misc.OPATrackingNum = ep.BillerId.ToString();
             misc.AmountToBePaid = ep.AmountDue;
             misc.TransferredAmount = ep.AmountDue;
@@ -80,10 +85,10 @@ namespace Inventory_System.Utilities
             Miscellaneous misc = new Miscellaneous();
 
             misc.MiscType = TaxTypeUtil.MISCELLANEOUS_OVR;
-            misc.TaxpayersName = ep.BillerInfo2;
-            misc.OrderOfPaymentNum = ep.BillerRef;
-            misc.ModeOfPayment = ep.ServiceProvider;
-            misc.OPATrackingNum = ep.BillerId.ToString();
+            misc.TaxpayersName = ep.BillerInfo2.ToUpper();
+            misc.OrderOfPaymentNum = ep.BillerRef.ToUpper();
+            misc.ModeOfPayment = ep.ServiceProvider.ToUpper();
+            misc.OPATrackingNum = ep.BillerId.ToString().ToUpper();
             misc.AmountToBePaid = ep.AmountDue;
             misc.TransferredAmount = ep.AmountDue;
             misc.ExcessShort = 0;
@@ -99,10 +104,10 @@ namespace Inventory_System.Utilities
             Miscellaneous misc = new Miscellaneous();
 
             misc.MiscType = TaxTypeUtil.MISCELLANEOUS_OVR;
-            misc.TaxpayersName = ep.BillerInfo2;
-            misc.OrderOfPaymentNum = ep.BillerRef;
-            misc.ModeOfPayment = ep.ServiceProvider;
-            misc.OPATrackingNum = ep.BillerId.ToString();
+            misc.TaxpayersName = ep.BillerInfo2.ToUpper();
+            misc.OrderOfPaymentNum = ep.BillerRef.ToUpper();
+            misc.ModeOfPayment = ep.ServiceProvider.ToUpper();
+            misc.OPATrackingNum = ep.BillerId.ToString().ToUpper();
             misc.AmountToBePaid = ep.AmountDue;
             misc.TransferredAmount = ep.AmountDue;
             misc.ExcessShort = 0;
@@ -119,9 +124,9 @@ namespace Inventory_System.Utilities
 
             misc.MiscType = TaxTypeUtil.MISCELLANEOUS_MARKET;
             misc.TaxpayersName = ep.BillerInfo1.ToUpper();
-            misc.OrderOfPaymentNum = ep.BillerInfo3;
-            misc.ModeOfPayment = ep.ServiceProvider;
-            misc.OPATrackingNum = ep.BillerRef;
+            misc.OrderOfPaymentNum = ep.BillerInfo3.ToUpper();
+            misc.ModeOfPayment = ep.ServiceProvider.ToUpper();
+            misc.OPATrackingNum = ep.BillerRef.ToUpper();
             misc.AmountToBePaid = ep.AmountDue;
             misc.TransferredAmount = ep.AmountDue;
             misc.ExcessShort = 0;
@@ -137,10 +142,10 @@ namespace Inventory_System.Utilities
             Miscellaneous misc = new Miscellaneous();
 
             misc.MiscType = TaxTypeUtil.MISCELLANEOUS_ZONING;
-            misc.TaxpayersName = ep.BillerInfo2;
-            misc.OrderOfPaymentNum = ep.BillerRef;
-            misc.ModeOfPayment = ep.ServiceProvider;
-            misc.OPATrackingNum = ep.BillerId;
+            misc.TaxpayersName = ep.BillerInfo2.ToUpper();
+            misc.OrderOfPaymentNum = ep.BillerRef.ToUpper();
+            misc.ModeOfPayment = ep.ServiceProvider.ToUpper();
+            misc.OPATrackingNum = ep.BillerId.ToUpper();
             misc.AmountToBePaid = ep.AmountDue;
             misc.TransferredAmount = ep.AmountDue;
             misc.ExcessShort = 0;
@@ -156,9 +161,9 @@ namespace Inventory_System.Utilities
             Miscellaneous misc = new Miscellaneous();
 
             misc.MiscType = TaxTypeUtil.MISCELLANEOUS_LIQUOR;
-            misc.TaxpayersName = ep.BillerInfo2;
-            misc.OrderOfPaymentNum = ep.BillerRef;
-            misc.ModeOfPayment = ep.ServiceProvider;
+            misc.TaxpayersName = ep.BillerInfo2.ToUpper();
+            misc.OrderOfPaymentNum = ep.BillerRef.ToUpper();
+            misc.ModeOfPayment = ep.ServiceProvider.ToUpper();
             //misc.OPATrackingNum = ep.BillerId;
             misc.AmountToBePaid = ep.AmountDue;
             misc.TransferredAmount = ep.AmountDue;

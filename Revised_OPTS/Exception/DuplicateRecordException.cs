@@ -17,16 +17,16 @@ namespace Inventory_System.Exception
         {
         }
 
-        public DuplicateRecordException(string message, List<Rpt> DuplicateRptList) : base(message)
-        {
-            duplicateRptList = DuplicateRptList;
-        }
-
         public DuplicateRecordException(string message, List<Rpt> DuplicateRptList, List<Business> DuplicateBusList, List<Miscellaneous> DuplicateMiscList) : base(message)
         {
             duplicateRptList = DuplicateRptList;
             duplicateBusList = DuplicateBusList;
             duplicateMiscList = DuplicateMiscList;
+        }
+
+        public DuplicateRecordException(string message, List<Rpt> DuplicateRptList) : base(message)
+        {
+            duplicateRptList = DuplicateRptList;
         }
 
         public DuplicateRecordException(string message, List<Business> DuplicateBusList) : base(message)

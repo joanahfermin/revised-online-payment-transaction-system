@@ -21,18 +21,22 @@ namespace Inventory_System.Forms
         private DynamicGridContainer<Business> BusinessDynamicGridContainer;
         private DynamicGridContainer<Miscellaneous> MiscDynamicGridContainer;
 
-        public ExistingRecordForm(List<Rpt> existingRecordList, List<Miscellaneous> existingMiscRecordList, List<Business> existingBusRecordList)
+        public ExistingRecordForm(List<Rpt> existingRecordList, List<Business> existingBusRecordList, List<Miscellaneous> existingMiscRecordList)
         {
             InitializeComponent();
             InitializeRptDataGridView();
             InitializeBusinessDataGridView();
+            InitializeMiscDataGridView();
 
             DgRptAddUpdateForm.DefaultCellStyle.Font = new Font("Tahoma", 12, FontStyle.Regular);
+            DgBusAddUpdateForm.DefaultCellStyle.Font = new Font("Tahoma", 12, FontStyle.Regular);
+            DgMiscAddUpdateForm.DefaultCellStyle.Font = new Font("Tahoma", 12, FontStyle.Regular);
+
             this.WindowState = FormWindowState.Maximized;
 
             RptDynamicGridContainer.PopulateData(existingRecordList);
             BusinessDynamicGridContainer.PopulateData(existingBusRecordList);
-            //MiscDynamicGridContainer.PopulateData(existingMiscRecordList);
+            MiscDynamicGridContainer.PopulateData(existingMiscRecordList);
         }
 
         private void InitializeRptDataGridView()
@@ -41,7 +45,7 @@ namespace Inventory_System.Forms
             string[] bankNames = bankList.Select(bank => bank.BankName).ToList().ToArray();
 
             DynamicGridInfo[] gridInfoArray = new DynamicGridInfo[] {
-                new DynamicGridInfo{PropertyName="RptID", Label = "ID", isReadOnly = true },
+                new DynamicGridInfo{PropertyName="RptID", Label = "Rpt ID", isReadOnly = true },
                 new DynamicGridInfo{PropertyName="TaxDec", Label = "TDN", isRequired=true },
                 new DynamicGridInfo{PropertyName="TaxPayerName", Label = "TaxPayer's Name", isRequired=true },
                 new DynamicGridInfo{PropertyName="AmountToPay", Label = "Bill Amount", isRequired=true },
@@ -64,7 +68,7 @@ namespace Inventory_System.Forms
             string[] bankNames = bankList.Select(bank => bank.BankName).ToList().ToArray();
 
             DynamicGridInfo[] gridInfoArray = new DynamicGridInfo[] {
-                new DynamicGridInfo{PropertyName="BusinessID", Label = "BusID", isReadOnly = true },
+                new DynamicGridInfo{PropertyName="BusinessID", Label = "Bus. ID", isReadOnly = true },
                 new DynamicGridInfo{PropertyName="Business_Type", Label = "Business Type", isRequired=true },
                 new DynamicGridInfo{PropertyName="MP_Number", Label = "MP Number", isRequired=true },
                 new DynamicGridInfo{PropertyName="TaxpayersName", Label = "TaxPayer's Name", isRequired=true },
@@ -74,15 +78,38 @@ namespace Inventory_System.Forms
                 new DynamicGridInfo{PropertyName="MiscFees", Label = "Misc. Fees", isRequired=true },
                 new DynamicGridInfo{PropertyName="TotalAmount", Label = "Total Amount Transferred", isRequired=true },
                 new DynamicGridInfo{PropertyName="PaymentChannel", Label = "Bank", GridType = DynamicGridType.ComboBox, ComboboxChoices = bankNames, isRequired=true },
-                new DynamicGridInfo{PropertyName="PaymentDate", Label = "Payment Date", GridType = DynamicGridType.DatetimePicker, isRequired=true },
+                new DynamicGridInfo{PropertyName="DateOfPayment", Label = "Payment Date", GridType = DynamicGridType.DatetimePicker, isRequired=true },
                 new DynamicGridInfo{PropertyName="Year", Label = "Year", decimalValue = true},
-                new DynamicGridInfo{PropertyName="Qtrs", Label = "Quarter", GridType=DynamicGridType.ComboBox, ComboboxChoices = Quarter.ALL_QUARTER, isRequired=true },
+                new DynamicGridInfo{PropertyName="Qtrs", Label = "Quarter", GridType=DynamicGridType.ComboBox, ComboboxChoices = Quarter.ALL_QUARTER, isRequired=false },
                 new DynamicGridInfo{PropertyName="Status", Label = "Status", GridType=DynamicGridType.ComboBox, ComboboxChoices = TaxStatus.STATUS, isRequired=true },
                 new DynamicGridInfo{PropertyName="RequestingParty", Label = "Email Address" },
                 new DynamicGridInfo{PropertyName="BussinessRemarks", Label = "Remarks"},
             };
             BusinessDynamicGridContainer = new DynamicGridContainer<Business>(DgBusAddUpdateForm, gridInfoArray, true, true);
         }
+
+        private void InitializeMiscDataGridView()
+        {
+            List<Bank> bankList = rptService.GetAllBanks();
+            string[] bankNames = bankList.Select(bank => bank.BankName).ToList().ToArray();
+
+            DynamicGridInfo[] gridInfoArray = new DynamicGridInfo[] {
+                new DynamicGridInfo{PropertyName="MiscID", Label = "Misc. ID", isReadOnly = true },
+                new DynamicGridInfo{PropertyName="MiscType", Label = "Misc. Type", isRequired=true },
+                new DynamicGridInfo{PropertyName="TaxpayersName", Label = "TaxPayer's Name", isRequired=true },
+                new DynamicGridInfo{PropertyName="OrderOfPaymentNum", Label = "Bill Number", isRequired=true },
+                new DynamicGridInfo{PropertyName="OPATrackingNum", Label = "OPA Tracking No.", isRequired=true },
+                new DynamicGridInfo{PropertyName="AmountToBePaid", Label = "Bill Amount", isRequired=true },
+                new DynamicGridInfo{PropertyName="TransferredAmount", Label = "Total Amount Transferred", isRequired=true },
+                new DynamicGridInfo{PropertyName="ModeOfPayment", Label = "Bank", GridType = DynamicGridType.ComboBox, ComboboxChoices = bankNames, isRequired=true },
+                new DynamicGridInfo{PropertyName="PaymentDate", Label = "Payment Date", GridType = DynamicGridType.DatetimePicker, isRequired=true },
+                new DynamicGridInfo{PropertyName="Status", Label = "Status", GridType=DynamicGridType.ComboBox, ComboboxChoices = TaxStatus.STATUS, isRequired=true },
+                new DynamicGridInfo{PropertyName="RequestingParty", Label = "Email Address" },
+                new DynamicGridInfo{PropertyName="Remarks", Label = "Remarks"},
+            };
+            MiscDynamicGridContainer = new DynamicGridContainer<Miscellaneous>(DgMiscAddUpdateForm, gridInfoArray, true, true);
+        }
+
 
         private void btnClose_Click(object sender, EventArgs e)
         {
