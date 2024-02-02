@@ -71,9 +71,8 @@ namespace Inventory_System.Forms
 
                 long rptID = rptRecord.RptID;
                 rptService.DeleteAttachedOR(rptID);
-                rptService.DeleteAttachedOR(rptID);
-
                 loadRptReceipt(rptRecord.RptID);
+
             }
         }
 
@@ -135,7 +134,6 @@ namespace Inventory_System.Forms
             videoCapture = new VideoCapture(0);
             videoCapture.Open(0);
 
-            
             if (videoCapture.IsOpened())
             {
                 videoCapture.FrameHeight = 1920;
@@ -169,6 +167,7 @@ namespace Inventory_System.Forms
                 }
             }
         }
+
         private void rbElectronic_CheckedChanged(object sender, EventArgs e)
         {
             tbElectronicTaxDec.Enabled = true;
@@ -199,20 +198,20 @@ namespace Inventory_System.Forms
             {
                 dgRptList.DataSource = rptService.RetrieveBySameRefNumInUploadingEpayment(tbElectronicTaxDec.Text);
 
-                //dgRptList.ClearSelection();
+                dgRptList.ClearSelection();
                 int counter = 0;
 
                 foreach (DataGridViewRow row in dgRptList.Rows)
                 {
                     Rpt selectedRptRecord = row.DataBoundItem as Rpt;
 
-                    //if (selectedRptRecord.TaxDec.Equals(tbElectronicTaxDec.Text, StringComparison.OrdinalIgnoreCase))
-                    //{
-                    //    row.Selected = true;
-                    //    loadRptReceipt(selectedRptRecord.RptID);
-                    //    dgRptList.FirstDisplayedScrollingRowIndex = counter;
-                    //}
-                    //counter++;
+                    if (selectedRptRecord.TaxDec.Equals(tbElectronicTaxDec.Text, StringComparison.OrdinalIgnoreCase))
+                    {
+                        row.Selected = true;
+                        loadRptReceipt(selectedRptRecord.RptID);
+                        dgRptList.FirstDisplayedScrollingRowIndex = counter;
+                    }
+                    counter++;
                 }
             }
             else
@@ -284,15 +283,29 @@ namespace Inventory_System.Forms
                 rptService.UploadReceipt(rptAttachPicture);
                 loadRptReceipt(rpt.RptID);
 
-                // Give user few second to see the photo and then select the next record
-                Task.Delay(1000).ContinueWith(_ =>
+                if (selectedRow.Index < dgRptList.Rows.Count - 1)
                 {
-                    int currentRowIndex = dgRptList.CurrentCell.RowIndex;
-                    if (currentRowIndex < dgRptList.Rows.Count - 1)
+                    //Give user few second to see the photo and then select the next record
+                    int currentIndex = selectedRow.Index;
+                    int nextIndex = currentIndex + 1;
+                    Task.Delay(1000).ContinueWith(_ =>
                     {
-                        dgRptList.CurrentCell = dgRptList.Rows[currentRowIndex + 1].Cells[dgRptList.CurrentCell.ColumnIndex];
-                    }
-                }, TaskScheduler.FromCurrentSynchronizationContext());
+                        //dgRptList.Rows[currentIndex].Selected = false;
+                        //dgRptList.Rows[nextIndex].Selected = true;
+                        dgRptList.CurrentCell = dgRptList.Rows[nextIndex].Cells[dgRptList.CurrentCell.ColumnIndex];
+                    }, TaskScheduler.FromCurrentSynchronizationContext());
+                }
+
+
+                ////Give user few second to see the photo and then select the next record
+                //Task.Delay(5000).ContinueWith(_ =>
+                //{
+                //    int currentRowIndex = dgRptList.CurrentCell.RowIndex;
+                //    if (currentRowIndex < dgRptList.Rows.Count - 1)
+                //    {
+                //        dgRptList.CurrentCell = dgRptList.Rows[currentRowIndex + 1].Cells[dgRptList.CurrentCell.ColumnIndex];
+                //    }
+                //}, TaskScheduler.FromCurrentSynchronizationContext());
             }
         }
 
