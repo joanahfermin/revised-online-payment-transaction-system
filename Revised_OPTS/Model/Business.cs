@@ -35,6 +35,8 @@ namespace Revised_OPTS.Model
         public DateTime? DateOfPayment { get; set; }
         public string? ValidatedBy { get; set; }
         public DateTime? ValidatedDate { get; set; }
+        public string? TransmittedBy { get; set; }
+        public DateTime? TransmittedDate { get; set; }
         public string? RequestingParty { get; set; }
         public string? ContactNumber { get; set; }
         public string? BussinessRemarks { get; set; }

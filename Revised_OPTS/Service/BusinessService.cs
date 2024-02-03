@@ -103,10 +103,27 @@ namespace Revised_OPTS.Service
                 {
                     foreach (Business business in businessList)
                     {
-                        business.Status = status;
-                        business.VerifiedBy = securityService.getLoginUser().DisplayName;
-                        business.VerifiedDate = DateTime.Now;
-                        businessRepository.Update(business);
+                        if (business.Status == TaxStatus.ForPaymentVerification)
+                        {
+                            business.Status = status;
+                            business.VerifiedBy = securityService.getLoginUser().DisplayName;
+                            business.VerifiedDate = DateTime.Now;
+                            businessRepository.Update(business);
+                        }
+                        else if (business.Status == TaxStatus.ForPaymentValidation)
+                        {
+                            business.Status = status;
+                            business.ValidatedBy = securityService.getLoginUser().DisplayName;
+                            business.ValidatedDate = DateTime.Now;
+                            businessRepository.Update(business);
+                        }
+                        else if (business.Status == TaxStatus.ForTransmittal)
+                        {
+                            business.Status = status;
+                            business.TransmittedBy = securityService.getLoginUser().DisplayName;
+                            business.TransmittedDate = DateTime.Now;
+                            businessRepository.Update(business);
+                        }
                     }
                     dbContext.SaveChanges();
                     scope.Complete();

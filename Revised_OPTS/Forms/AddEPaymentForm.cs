@@ -213,7 +213,7 @@ namespace Inventory_System.Forms
             {
                 if (bus.TaxpayersName == null || bus.TaxpayersName == String.Empty)
                 {
-                    foreach  (BusinessMasterDetailTPN busName in retrievedNames)
+                    foreach (BusinessMasterDetailTPN busName in retrievedNames)
                     {
                         if (bus.BillNumber == busName.BillNo)
                         {

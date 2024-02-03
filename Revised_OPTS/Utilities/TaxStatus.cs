@@ -14,6 +14,9 @@ namespace Revised_OPTS.Utilities
         public const string ForORPickup = "FOR O.R PICK UP";
         public const string Released = "RELEASED";
 
+        public const string ForTransmittal = "FOR TRANSMITTAL";
+        public const string Transmitted = "TRANSMITTED";
+
         public static string[] STATUS = { ForPaymentVerification, ForPaymentValidation, ForORUpload, ForORPickup, Released };
     }
 }

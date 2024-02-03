@@ -52,7 +52,8 @@ namespace Revised_OPTS
             { "TotalAmount", "Transferred Amount" }, { "MiscFees", "Misc. Fees" }, { "Year", "Year" },
             { "Qtrs", "Quarter" }, { "Status", "Status" }, { "PaymentChannel", "Bank" },
             { "VerifiedBy", "Verified By" }, { "VerifiedDate", "Verified Date" }, { "DateOfPayment", "Payment Date" },
-            { "ValidatedBy", "Validated By" }, { "ValidatedDate", "Validated Date" }, { "RequestingParty", "Email Address" },
+            { "ValidatedBy", "Validated By" }, { "ValidatedDate", "Validated Date" },
+            { "TransmittedBy", "Transmitted By" }, { "TransmittedDate", "Transmitted Date" }, { "RequestingParty", "Email Address" },
             { "EncodedDate", "Encoded Date" }, { "BussinessRemarks", "Remarks" }, { "EncodedBy", "Encoded By" },
             { "ContactNumber", "Contact Number" }, { "UploadedBy", "Uploaded By" }, { "UploadedDate", "Uploaded Date" },
                      { "ReleasedBy", "Released By" }, { "ReleasedDate", "Released Date" }, { "RepName", "Representative Name" }, { "RepContactNumber", "Rep. Contact Number" },
@@ -82,15 +83,27 @@ namespace Revised_OPTS
             menuItemDelete.Click += MenuItemDelete_Click;
             ToolStripMenuItem menuItemEdit = new ToolStripMenuItem("Edit");
             menuItemEdit.Click += MenuItemEdit_Click;
-            ToolStripMenuItem menuItemVerifiedPayment = new ToolStripMenuItem("Payment Verified");
-            menuItemVerifiedPayment.Click += MenuItemVerifiedPayment_Click;
+
+            ToolStripMenuItem menuItemValidatePayment = new ToolStripMenuItem("Validate Payment");
+            menuItemValidatePayment.Click += MenuItemValidatePayment_Click;
+            ToolStripMenuItem menuItemVerifyPayment = new ToolStripMenuItem("Verify Payment");
+            menuItemVerifyPayment.Click += MenuItemVerifiedPayment_Click;
+            ToolStripMenuItem menuItemReleaseReceipt = new ToolStripMenuItem("Release Receipt");
+            menuItemReleaseReceipt.Click += MenuItemReleaseReceipt_Click;
+
             ToolStripMenuItem menuItemRevertStatus = new ToolStripMenuItem("Revert Status");
             menuItemRevertStatus.Click += MenuItemRevertStatus_Click;
 
+            ToolStripMenuItem menuItemForTransmittal = new ToolStripMenuItem("Transmit Receipt");
+            menuItemForTransmittal.Click += MenuItemTransmitReceipt_Click;
+
             contextMenuStrip1.Items.Add(menuItemDelete);
             contextMenuStrip1.Items.Add(menuItemEdit);
-            contextMenuStrip1.Items.Add(menuItemVerifiedPayment);
+            contextMenuStrip1.Items.Add(menuItemReleaseReceipt);
             contextMenuStrip1.Items.Add(menuItemRevertStatus);
+            contextMenuStrip1.Items.Add(menuItemValidatePayment);
+            contextMenuStrip1.Items.Add(menuItemVerifyPayment);
+
             DgMainForm.ContextMenuStrip = contextMenuStrip1;
         }
 
@@ -160,6 +173,55 @@ namespace Revised_OPTS
             }
         }
 
+        private void MenuItemReleaseReceipt_Click(object? sender, EventArgs e)
+        {
+            DataGridViewSelectedRowCollection selectedRows = DgMainForm.SelectedRows;
+            string forORUpload = TaxStatus.ForORUpload;
+            string forORPickup = TaxStatus.ForORPickup;
+
+            if (selectedRows != null)
+            {
+                List<Rpt> rptList = new List<Rpt>();
+
+                int countInvalid = 0;
+
+                foreach (DataGridViewRow row in selectedRows)
+                {
+                    object item = row.DataBoundItem;
+
+                    if (item is Rpt)
+                    {
+                        Rpt rpt = item as Rpt;
+
+                        if (rpt.Status == forORUpload || rpt.Status == forORPickup)
+                        {
+                            rptList.Add(rpt);
+                        }
+                        else
+                        {
+                            countInvalid++;
+                        }
+                    }
+                }
+                if (countInvalid > 0)
+                {
+                    MessageBox.Show($"Selected record(s) are not {forORUpload}/{forORPickup} and will not be executed.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+
+                if (rptList.Count > 0)
+                {
+                    DialogResult result = MessageBox.Show("Are you sure you want to update the status of the selected records?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                    if (result == DialogResult.Yes)
+                    {
+                        rptService.UpdateSelectedRecordsStatus(rptList, TaxStatus.Released);
+                        MessageBox.Show("Operation completed successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        DgMainForm.Refresh();
+                    }
+                }
+            }
+        }
+
         private void MenuItemRevertStatus_Click(object? sender, EventArgs e)
         {
             DataGridViewSelectedRowCollection selectedRows = DgMainForm.SelectedRows;
@@ -177,26 +239,17 @@ namespace Revised_OPTS
                     if (item is Rpt)
                     {
                         Rpt rpt = item as Rpt;
-                        if (rpt.Status == TaxStatus.ForPaymentValidation)
-                        {
-                            rptList.Add(rpt);
-                        }
+                        rptList.Add(rpt);
                     }
                     else if (item is Business)
                     {
                         Business business = item as Business;
-                        if (business.Status == TaxStatus.ForPaymentValidation)
-                        {
-                            businessList.Add(business);
-                        }
+                        businessList.Add(business);
                     }
                     else if (item is Miscellaneous)
                     {
                         Miscellaneous misc = item as Miscellaneous;
-                        if (misc.Status == TaxStatus.ForPaymentValidation)
-                        {
-                            miscList.Add(misc);
-                        }
+                        miscList.Add(misc);
                     }
                 }
                 if (rptList.Count > 0 || businessList.Count > 0 || miscList.Count > 0)
@@ -215,15 +268,24 @@ namespace Revised_OPTS
             }
         }
 
-        private void MenuItemVerifiedPayment_Click(object? sender, EventArgs e)
+        private void MenuItemTransmitReceipt_Click(object? sender, EventArgs e)
         {
             DataGridViewSelectedRowCollection selectedRows = DgMainForm.SelectedRows;
+            string forPaymentValidation = TaxStatus.ForPaymentValidation;
+        }
+
+        private void MenuItemValidatePayment_Click(object? sender, EventArgs e)
+        {
+            DataGridViewSelectedRowCollection selectedRows = DgMainForm.SelectedRows;
+            string forPaymentValidation = TaxStatus.ForPaymentValidation;
 
             if (selectedRows != null)
             {
                 List<Rpt> rptList = new List<Rpt>();
                 List<Business> businessList = new List<Business>();
                 List<Miscellaneous> miscList = new List<Miscellaneous>();
+
+                int countInvalid = 0;
 
                 foreach (DataGridViewRow row in selectedRows)
                 {
@@ -232,27 +294,120 @@ namespace Revised_OPTS
                     if (item is Rpt)
                     {
                         Rpt rpt = item as Rpt;
-                        if (rpt.Status == TaxStatus.ForPaymentVerification)
+                        if (rpt.Status == TaxStatus.ForPaymentValidation)
                         {
                             rptList.Add(rpt);
+                        }
+                        else
+                        {
+                            countInvalid++;
                         }
                     }
                     else if (item is Business)
                     {
                         Business business = item as Business;
-                        if (business.Status == TaxStatus.ForPaymentVerification)
+                        if (business.Status == TaxStatus.ForPaymentValidation)
                         {
                             businessList.Add(business);
+                        }
+                        else
+                        {
+                            countInvalid++;
                         }
                     }
                     else if (item is Miscellaneous)
                     {
                         Miscellaneous misc = item as Miscellaneous;
-                        if (misc.Status == TaxStatus.ForPaymentVerification)
+                        if (misc.Status == TaxStatus.ForPaymentValidation)
                         {
                             miscList.Add(misc);
                         }
+                        else
+                        {
+                            countInvalid++;
+                        }
                     }
+                }
+
+                if (countInvalid > 0)
+                {
+                    MessageBox.Show($"Selected record(s) are not {forPaymentValidation} and will not be executed.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+
+                if (rptList.Count > 0 || businessList.Count > 0 || miscList.Count > 0)
+                {
+                    DialogResult result = MessageBox.Show("Are you sure you want to update the status of the selected records?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                    if (result == DialogResult.Yes)
+                    {
+                        rptService.UpdateSelectedRecordsStatus(rptList, TaxStatus.ForORUpload);
+                        businessService.UpdateSelectedRecordsStatus(businessList, TaxStatus.ForTransmittal);
+                        miscService.UpdateSelectedRecordsStatus(miscList, TaxStatus.ForORUpload);
+                        MessageBox.Show("Operation completed successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        DgMainForm.Refresh();
+                    }
+                }
+            }
+        }
+
+        private void MenuItemVerifiedPayment_Click(object? sender, EventArgs e)
+        {
+            DataGridViewSelectedRowCollection selectedRows = DgMainForm.SelectedRows;
+            string forPaymentVerification = TaxStatus.ForPaymentVerification;
+
+            if (selectedRows != null)
+            {
+                List<Rpt> rptList = new List<Rpt>();
+                List<Business> businessList = new List<Business>();
+                List<Miscellaneous> miscList = new List<Miscellaneous>();
+
+                int invalidCount = 0;
+
+                foreach (DataGridViewRow row in selectedRows)
+                {
+                    object item = row.DataBoundItem;
+
+                    if (item is Rpt)
+                    {
+                        Rpt rpt = item as Rpt;
+                        if (rpt.Status == forPaymentVerification)
+                        {
+                            rptList.Add(rpt);
+                        }
+                        else
+                        {
+                            invalidCount++;
+                        }
+                    }
+                    else if (item is Business)
+                    {
+                        Business business = item as Business;
+                        if (business.Status == forPaymentVerification)
+                        {
+                            businessList.Add(business);
+                        }
+                        else
+                        {
+                            invalidCount++;
+                        }
+                    }
+                    else if (item is Miscellaneous)
+                    {
+                        Miscellaneous misc = item as Miscellaneous;
+                        if (misc.Status == forPaymentVerification)
+                        {
+                            miscList.Add(misc);
+                        }
+                        else
+                        {
+                            invalidCount++;
+                        }
+                    }
+                }
+
+                if (invalidCount > 0)
+                {
+                    MessageBox.Show($"Selected record(s) are not {forPaymentVerification} and will not be executed.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
 
                 if (rptList.Count > 0 || businessList.Count > 0 || miscList.Count > 0)
@@ -291,6 +446,7 @@ namespace Revised_OPTS
             }
         }
 
+        //all decimal columns shall have thousand separators and decimal points.
         private void DgMainForm_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
             if (e.Value is decimal decimalValue)
@@ -318,6 +474,7 @@ namespace Revised_OPTS
             DgMainForm.DefaultCellStyle.SelectionBackColor = Color.AliceBlue;
         }
 
+        //search records based on keyvalueformat.
         private void tbSearch_KeyDown(object sender, KeyEventArgs e)
         {
             string searchedUniqueKey = tbSearch.Text;
@@ -365,6 +522,7 @@ namespace Revised_OPTS
             tbRecordSelected.Text = selectedRowCount.ToString();
         }
 
+        //retrieve records based on keyvalueformat.
         public void Search(string searchRecordinDB)
         {
             if (SearchBusinessFormat.isTDN(searchRecordinDB))
@@ -386,6 +544,7 @@ namespace Revised_OPTS
             }
         }
 
+        //populate datagridview
         private void ShowDataInDataGridView<T>(Dictionary<string, string> columnMappings, List<T> dataList)
         {
             DgMainForm.Columns.Clear();
@@ -409,6 +568,7 @@ namespace Revised_OPTS
             DgMainForm.ColumnHeadersDefaultCellStyle.SelectionBackColor = Color.DarkSalmon;
         }
 
+        //get the selected record's keyvalueformat.
         private void DgMainForm_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0)
@@ -436,16 +596,18 @@ namespace Revised_OPTS
             }
         }
 
+        //get the selected record's id then user can edit the record.
         private void DgMainForm_DoubleClick(object sender, EventArgs e)
         {
             bool isRptTDNFormatCorrect = SearchBusinessFormat.isTDN(selectedRecordFormat);
-            bool isBusinessMpNumFormatCorrect = SearchBusinessFormat.isBusiness(selectedRecordFormat);
+            bool isBusinessBillNumFormatCorrect = SearchBusinessFormat.isBusiness(selectedRecordFormat);
+            //TO DO: MISC (isMisc
  
             if (isRptTDNFormatCorrect)
             {
                 MenuItemEdit_Click(sender, e);
             }
-            else if (isBusinessMpNumFormatCorrect)
+            else if (isBusinessBillNumFormatCorrect)
             {
                 Business retrieveBusinessRecord = businessService.Get(selectedRecordId);
                 string taxType = TaxTypeUtil.BUSINESS;

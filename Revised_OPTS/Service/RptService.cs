@@ -466,10 +466,27 @@ namespace Revised_OPTS.Service
                 {
                     foreach (Rpt rpt in rptList)
                     {
-                        rpt.Status = status;
-                        rpt.VerifiedBy = securityService.getLoginUser().DisplayName;
-                        rpt.VerifiedDate = DateTime.Now;
-                        rptRepository.Update(rpt);
+                        if (rpt.Status == TaxStatus.ForPaymentVerification)
+                        {
+                            rpt.Status = status;
+                            rpt.VerifiedBy = securityService.getLoginUser().DisplayName;
+                            rpt.VerifiedDate = DateTime.Now;
+                            rptRepository.Update(rpt);
+                        }
+                        else if (rpt.Status == TaxStatus.ForPaymentValidation)
+                        {
+                            rpt.Status = status;
+                            rpt.ValidatedBy = securityService.getLoginUser().DisplayName;
+                            rpt.ValidatedDate = DateTime.Now;
+                            rptRepository.Update(rpt);
+                        }
+                        else if (rpt.Status == TaxStatus.ForORUpload || rpt.Status == TaxStatus.ForORPickup)
+                        {
+                            rpt.Status = status;
+                            rpt.ReleasedBy = securityService.getLoginUser().DisplayName;
+                            rpt.ReleasedDate = DateTime.Now;
+                            rptRepository.Update(rpt);
+                        }
                     }
                     dbContext.SaveChanges();
                     scope.Complete();
@@ -499,7 +516,6 @@ namespace Revised_OPTS.Service
                     }
                     else if (rpt.Status == TaxStatus.ForORPickup)
                     {
-                        //TO DO: DELETE THE UPLOADED PHOTO ONCE THE STATUS IS REVERTED.
                         rpt.Status = TaxStatus.ForPaymentValidation;
                         rpt.UploadedBy = null;
                         rpt.UploadedDate = null;
