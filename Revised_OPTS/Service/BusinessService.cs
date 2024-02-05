@@ -1,4 +1,5 @@
-﻿using Inventory_System.Service;
+﻿using Inventory_System.Exception;
+using Inventory_System.Service;
 using Revised_OPTS.DAL;
 using Revised_OPTS.Model;
 using Revised_OPTS.Utilities;
@@ -32,13 +33,18 @@ namespace Revised_OPTS.Service
             }
         }
 
-        public void Insert(Business business)
+        public void Insert(List<Business> businessList)
         {
             using (var dbContext = ApplicationDBContext.Create())
             {
-                business.EncodedBy = securityService.getLoginUser().DisplayName;
-                business.EncodedDate = DateTime.Now;
-                businessRepository.Insert(business);
+                validateBusinessDuplicateRecord(businessList);
+
+                foreach (Business bus in businessList)
+                {
+                    bus.EncodedBy = securityService.getLoginUser().DisplayName;
+                    bus.EncodedDate = DateTime.Now;
+                    businessRepository.Insert(bus);
+                }
                 dbContext.SaveChanges();
             }
         }
@@ -47,10 +53,14 @@ namespace Revised_OPTS.Service
         {
             using (var dbContext = ApplicationDBContext.Create())
             {
+                List<Business> businessList = new List<Business>();
+                businessList.Add(business);
+
+                validateBusinessDuplicateRecord(businessList);
+
                 businessRepository.Update(business);
                 dbContext.SaveChanges();
             }
-
         }
 
         public void RevertSelectedRecordStatus(List<Business> businessList)
@@ -130,5 +140,44 @@ namespace Revised_OPTS.Service
                 }
             }
         }
+
+        public void validateBusinessDuplicateRecord(List<Business> listOfBusToSave)
+        {
+            var duplicates = listOfBusToSave
+            .GroupBy(obj => new
+            {
+                obj.BillNumber,
+                //obj.YearQuarter,
+                //obj.Quarter,
+                //obj.BillingSelection,
+                obj.DeletedRecord,
+                obj.DuplicateRecord,
+            })
+            .Where(group => group.Count() > 1)
+            .SelectMany(group => group);
+
+            if (duplicates.Any())
+            {
+                foreach (var duplicate in duplicates)
+                {
+                    //throw new RptException("Submitted record(s) contains duplicate(s). TDN = " + duplicate.TaxDec);
+                    throw new RptException($"Submitted record(s) contains duplicate(s). Bill Number = {duplicate.BillNumber}");
+                }
+            }
+
+            //retrieve existing record from the database.
+            List<Business> allDuplicateBus = new List<Business>();
+            foreach (Business bus in listOfBusToSave)
+            {
+                List<Business> existingRecordList = businessRepository.checkExistingRecord(bus);
+                allDuplicateBus.AddRange(existingRecordList);
+            }
+            if (allDuplicateBus.Count > 0)
+            {
+                string allBillNumber = string.Join(", ", allDuplicateBus.Select(t => t.BillNumber).ToHashSet());
+                throw new DuplicateRecordException($"There is an existing record/s detected in the database. Please update or delete the old record/s. Bill Number = {allBillNumber}", allDuplicateBus);
+            }
+        }
+
     }
 }

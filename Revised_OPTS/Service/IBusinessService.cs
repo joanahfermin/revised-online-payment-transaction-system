@@ -12,11 +12,13 @@ namespace Revised_OPTS.Service
         Business Get(object id);
         List<Business> RetrieveBySearchKeyword(string billNumber);
 
-        void Insert(Business business);
+        void Insert(List<Business> business);
         void Update(Business business);
 
         void RevertSelectedRecordStatus(List<Business> business);
         void UpdateSelectedRecordsStatus(List<Business> businessList, string status);
+
+        void validateBusinessDuplicateRecord(List<Business> listOfBusToSave);
 
     }
 }

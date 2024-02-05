@@ -35,6 +35,8 @@ namespace Revised_OPTS.Service
         /// </summary>
         ISecurityService securityService = ServiceFactory.Instance.GetSecurityService();
 
+        IBusinessService businessService = ServiceFactory.Instance.GetBusinessService();
+
         /// <summary>
         /// Provides the IRptService instance from the ServiceFactory.
         /// </summary>
@@ -197,44 +199,6 @@ namespace Revised_OPTS.Service
             }
         }
 
-        private void validateBusinessDuplicateRecord(List<Business> listOfBusToSave)
-        {
-            var duplicates = listOfBusToSave
-            .GroupBy(obj => new
-            {
-                obj.BillNumber,
-                //obj.YearQuarter,
-                //obj.Quarter,
-                //obj.BillingSelection,
-                obj.DeletedRecord,
-                obj.DuplicateRecord,
-            })
-            .Where(group => group.Count() > 1)
-            .SelectMany(group => group);
-
-            if (duplicates.Any())
-            {
-                foreach (var duplicate in duplicates)
-                {
-                    //throw new RptException("Submitted record(s) contains duplicate(s). TDN = " + duplicate.TaxDec);
-                    throw new RptException($"Submitted record(s) contains duplicate(s). Bill Number = {duplicate.BillNumber}");
-                }
-            }
-
-            //retrieve existing record from the database.
-            List<Business> allDuplicateBus = new List<Business>();
-            foreach (Business bus in listOfBusToSave)
-            {
-                List<Business> existingRecordList = businessRepository.checkExistingRecord(bus);
-                allDuplicateBus.AddRange(existingRecordList);
-            }
-            if (allDuplicateBus.Count > 0)
-            {
-                string allBillNumber = string.Join(", ", allDuplicateBus.Select(t => t.BillNumber).ToHashSet());
-                throw new DuplicateRecordException($"There is an existing record/s detected in the database. Please update or delete the old record/s. Bill Number = {allBillNumber}", allDuplicateBus);
-            }
-        }
-
         private void validateMiscDuplicateRecord(List<Miscellaneous> listOfMiscToSave)
         {
             var duplicates = listOfMiscToSave
@@ -288,7 +252,7 @@ namespace Revised_OPTS.Service
             List<Business> duplicateBusinessList = new List<Business>();
             try
             {
-                validateBusinessDuplicateRecord(businessList);
+                businessService.validateBusinessDuplicateRecord(businessList);
             }
             catch (DuplicateRecordException ex)
             {

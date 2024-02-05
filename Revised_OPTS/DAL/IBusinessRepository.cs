@@ -11,6 +11,5 @@ namespace Revised_OPTS.DAL
     {
         List<Business> retrieveBySearchKeyword(string billNumber);
         List<Business> checkExistingRecord(Business bus);
-
     }
 }

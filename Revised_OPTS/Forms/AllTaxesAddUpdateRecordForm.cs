@@ -1,5 +1,6 @@
 ﻿using Inventory_System.DAL;
 using Inventory_System.Exception;
+using Inventory_System.Forms;
 using Inventory_System.Model;
 using Inventory_System.Service;
 using Inventory_System.Utilities;
@@ -343,40 +344,56 @@ namespace Revised_OPTS.Forms
                 return;
             }
 
-            if (taxType == TaxTypeUtil.BUSINESS)
+            try
             {
-                if (business != null)
+                if (taxType == TaxTypeUtil.BUSINESS)
                 {
-                    dynamicControlContainer.CopyDynamicProperties(business, taxType);
-                    businessService.Update(business);
-                    searchKeyword = business.MP_Number;
+                    if (business != null)
+                    {
+                        dynamicControlContainer.CopyDynamicProperties(business, taxType);
+                        businessService.Update(business);
+                        searchKeyword = business.BillNumber;
+                    }
+                    else
+                    {
+                        Business business = new Business();
+                        dynamicControlContainer.CopyDynamicProperties(business, taxType);
+
+                        //created businessList to cater the parameter of the method validateBusinessRecord in the businessService.
+                        List<Business> businessList = new List<Business>();
+                        businessList.Add(business);
+
+                        businessService.Insert(businessList);
+                        searchKeyword = business.BillNumber;
+                    }
+                    notifyUserAndRefreshRecord(searchKeyword);
                 }
                 else
                 {
-                    Business business = new Business();
-                    dynamicControlContainer.CopyDynamicProperties(business, taxType);
-                    businessService.Insert(business);
-                    searchKeyword = business.MP_Number;
+                    if (misc != null)
+                    {
+                        dynamicControlContainer.CopyDynamicProperties(misc, taxType);
+                        miscService.Update(misc);
+                        searchKeyword = misc.OrderOfPaymentNum;
+                    }
+                    else
+                    {
+                        Miscellaneous misc = new Miscellaneous();
+                        dynamicControlContainer.CopyDynamicProperties(misc, taxType);
+                        misc.MiscType = taxType;
+                        miscService.Insert(misc);
+                        searchKeyword = misc.OrderOfPaymentNum;
+                    }
+                    notifyUserAndRefreshRecord(searchKeyword);
                 }
-                notifyUserAndRefreshRecord(searchKeyword);
             }
-            else
+            catch (DuplicateRecordException ex)
             {
-                if (misc != null)
-                {
-                    dynamicControlContainer.CopyDynamicProperties(misc, taxType);
-                    miscService.Update(misc);
-                    searchKeyword = misc.OrderOfPaymentNum;
-                }
-                else
-                {
-                    Miscellaneous misc = new Miscellaneous();
-                    dynamicControlContainer.CopyDynamicProperties(misc, taxType);
-                    misc.MiscType = taxType;
-                    miscService.Insert(misc);
-                    searchKeyword = misc.OrderOfPaymentNum;
-                }
-                notifyUserAndRefreshRecord(searchKeyword);
+                MessageBox.Show(ex.Message);
+
+                ExistingRecordForm DuplicateForm = new ExistingRecordForm(new List<Rpt>(), ex.duplicateBusList, new List<Miscellaneous>());
+                DuplicateForm.ShowDialog();
+                return;
             }
             btnClose_Click(sender, e);
         }
