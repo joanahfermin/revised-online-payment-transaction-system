@@ -37,6 +37,8 @@ namespace Revised_OPTS.Service
 
         IBusinessService businessService = ServiceFactory.Instance.GetBusinessService();
 
+        IMiscService miscService = ServiceFactory.Instance.GetMiscService();
+
         /// <summary>
         /// Provides the IRptService instance from the ServiceFactory.
         /// </summary>
@@ -199,43 +201,6 @@ namespace Revised_OPTS.Service
             }
         }
 
-        private void validateMiscDuplicateRecord(List<Miscellaneous> listOfMiscToSave)
-        {
-            var duplicates = listOfMiscToSave
-            .GroupBy(obj => new
-            {
-                obj.OrderOfPaymentNum,
-                //obj.YearQuarter,
-                //obj.Quarter,
-                //obj.BillingSelection,
-                obj.DeletedRecord,
-                obj.DuplicateRecord,
-            })
-            .Where(group => group.Count() > 1)
-            .SelectMany(group => group);
-
-            if (duplicates.Any())
-            {
-                foreach (var duplicate in duplicates)
-                {
-                    //throw new RptException("Submitted record(s) contains duplicate(s). TDN = " + duplicate.TaxDec);
-                    throw new RptException($"Submitted record(s) contains duplicate(s). Bill Number = {duplicate.OrderOfPaymentNum}");
-                }
-            }
-
-            //retrieve existing record from the database.
-            List<Miscellaneous> allDuplicateMisc = new List<Miscellaneous>();
-            foreach (Miscellaneous misc in listOfMiscToSave)
-            {
-                List<Miscellaneous> existingRecordList = miscRepository.checkExistingRecord(misc);
-                allDuplicateMisc.AddRange(existingRecordList);
-            }
-            if (allDuplicateMisc.Count > 0)
-            {
-                string allTaxdec = string.Join(", ", allDuplicateMisc.Select(t => t.OrderOfPaymentNum).ToHashSet());
-                throw new DuplicateRecordException($"There is an existing record/s detected in the database. Please update or delete the old record/s. Bill Number = {allTaxdec}", allDuplicateMisc);
-            }
-        }
 
         private void validateDuplicateRecord(List<Rpt> rptList, List<Business> businessList, List<Miscellaneous> miscList)
         {
@@ -262,7 +227,7 @@ namespace Revised_OPTS.Service
             List<Miscellaneous> duplicateMiscList = new List<Miscellaneous>();
             try
             {
-                validateMiscDuplicateRecord(miscList);
+                miscService.validateMiscDuplicateRecord(miscList);
             }
             catch (DuplicateRecordException ex)
             {

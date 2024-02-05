@@ -1,4 +1,5 @@
-﻿using Inventory_System.Service;
+﻿using Inventory_System.Exception;
+using Inventory_System.Service;
 using Revised_OPTS.DAL;
 using Revised_OPTS.Model;
 using Revised_OPTS.Utilities;
@@ -32,14 +33,19 @@ namespace Revised_OPTS.Service
             }
         }
 
-        public void Insert(Miscellaneous misc)
+        public void Insert(List<Miscellaneous> miscList)
         {
             using (var dbContext = ApplicationDBContext.Create())
             {
-                misc.ExcessShort = misc.TransferredAmount - misc.AmountToBePaid;
-                misc.EncodedBy = securityService.getLoginUser().DisplayName;
-                misc.EncodedDate = DateTime.Now;
-                miscRepository.Insert(misc);
+                validateMiscDuplicateRecord(miscList);
+
+                foreach (Miscellaneous misc in miscList)
+                {
+                    misc.ExcessShort = misc.TransferredAmount - misc.AmountToBePaid;
+                    misc.EncodedBy = securityService.getLoginUser().DisplayName;
+                    misc.EncodedDate = DateTime.Now;
+                    miscRepository.Insert(misc);
+                }
                 dbContext.SaveChanges();
             }
         }
@@ -48,6 +54,11 @@ namespace Revised_OPTS.Service
         {
             using (var dbContext = ApplicationDBContext.Create())
             {
+                List<Miscellaneous> miscList = new List<Miscellaneous>();
+                miscList.Add(misc);
+
+                validateMiscDuplicateRecord(miscList);
+
                 miscRepository.Update(misc);
                 dbContext.SaveChanges();
             }
@@ -111,6 +122,44 @@ namespace Revised_OPTS.Service
                     dbContext.SaveChanges();
                     scope.Complete();
                 }
+            }
+        }
+
+        public void validateMiscDuplicateRecord(List<Miscellaneous> listOfMiscToSave)
+        {
+            var duplicates = listOfMiscToSave
+            .GroupBy(obj => new
+            {
+                obj.OrderOfPaymentNum,
+                //obj.YearQuarter,
+                //obj.Quarter,
+                //obj.BillingSelection,
+                obj.DeletedRecord,
+                obj.DuplicateRecord,
+            })
+            .Where(group => group.Count() > 1)
+            .SelectMany(group => group);
+
+            if (duplicates.Any())
+            {
+                foreach (var duplicate in duplicates)
+                {
+                    //throw new RptException("Submitted record(s) contains duplicate(s). TDN = " + duplicate.TaxDec);
+                    throw new RptException($"Submitted record(s) contains duplicate(s). Bill Number = {duplicate.OrderOfPaymentNum}");
+                }
+            }
+
+            //retrieve existing record from the database.
+            List<Miscellaneous> allDuplicateMisc = new List<Miscellaneous>();
+            foreach (Miscellaneous misc in listOfMiscToSave)
+            {
+                List<Miscellaneous> existingRecordList = miscRepository.checkExistingRecord(misc);
+                allDuplicateMisc.AddRange(existingRecordList);
+            }
+            if (allDuplicateMisc.Count > 0)
+            {
+                string allTaxdec = string.Join(", ", allDuplicateMisc.Select(t => t.OrderOfPaymentNum).ToHashSet());
+                throw new DuplicateRecordException($"There is an existing record/s detected in the database. Please update or delete the old record/s. Bill Number = {allTaxdec}", allDuplicateMisc);
             }
         }
     }

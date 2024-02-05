@@ -104,8 +104,9 @@ namespace Inventory_System.Forms
                 new DynamicGridInfo{PropertyName="ModeOfPayment", Label = "Bank", GridType = DynamicGridType.ComboBox, ComboboxChoices = bankNames, isRequired=true },
                 new DynamicGridInfo{PropertyName="PaymentDate", Label = "Payment Date", GridType = DynamicGridType.DatetimePicker, isRequired=true },
                 new DynamicGridInfo{PropertyName="Status", Label = "Status", GridType=DynamicGridType.ComboBox, ComboboxChoices = TaxStatus.STATUS, isRequired=true },
+                new DynamicGridInfo{PropertyName="RefNum", Label = "Reference Number" },
                 new DynamicGridInfo{PropertyName="RequestingParty", Label = "Email Address" },
-                new DynamicGridInfo{PropertyName="Remarks", Label = "Remarks"},
+                new DynamicGridInfo{PropertyName="Remarks", Label = "Remarks" },
             };
             MiscDynamicGridContainer = new DynamicGridContainer<Miscellaneous>(DgMiscAddUpdateForm, gridInfoArray, true, true);
         }

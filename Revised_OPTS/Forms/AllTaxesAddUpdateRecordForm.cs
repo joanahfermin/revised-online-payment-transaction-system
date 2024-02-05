@@ -343,10 +343,9 @@ namespace Revised_OPTS.Forms
             {
                 return;
             }
-
-            try
+            if (taxType == TaxTypeUtil.BUSINESS)
             {
-                if (taxType == TaxTypeUtil.BUSINESS)
+                try
                 {
                     if (business != null)
                     {
@@ -367,8 +366,21 @@ namespace Revised_OPTS.Forms
                         searchKeyword = business.BillNumber;
                     }
                     notifyUserAndRefreshRecord(searchKeyword);
+
                 }
-                else
+                catch (DuplicateRecordException ex)
+                {
+
+                    MessageBox.Show(ex.Message);
+
+                    ExistingRecordForm DuplicateForm = new ExistingRecordForm(new List<Rpt>(), ex.duplicateBusList, new List<Miscellaneous>());
+                    DuplicateForm.ShowDialog();
+                    return;
+                }
+            }
+            else
+            {
+                try
                 {
                     if (misc != null)
                     {
@@ -378,22 +390,25 @@ namespace Revised_OPTS.Forms
                     }
                     else
                     {
+                        List<Miscellaneous> miscList = new List<Miscellaneous>();
                         Miscellaneous misc = new Miscellaneous();
                         dynamicControlContainer.CopyDynamicProperties(misc, taxType);
                         misc.MiscType = taxType;
-                        miscService.Insert(misc);
+                        miscList.Add(misc);
+
+                        miscService.Insert(miscList);
                         searchKeyword = misc.OrderOfPaymentNum;
                     }
                     notifyUserAndRefreshRecord(searchKeyword);
                 }
-            }
-            catch (DuplicateRecordException ex)
-            {
-                MessageBox.Show(ex.Message);
+                catch (DuplicateRecordException ex)
+                {
+                    MessageBox.Show(ex.Message);
 
-                ExistingRecordForm DuplicateForm = new ExistingRecordForm(new List<Rpt>(), ex.duplicateBusList, new List<Miscellaneous>());
-                DuplicateForm.ShowDialog();
-                return;
+                    ExistingRecordForm DuplicateForm = new ExistingRecordForm(new List<Rpt>(), new List<Business>(), ex.duplicateMiscList);
+                    DuplicateForm.ShowDialog();
+                    return;
+                }
             }
             btnClose_Click(sender, e);
         }

@@ -76,6 +76,7 @@ namespace Inventory_System.Utilities
             misc.PaymentDate = ep.Date;
             misc.Status = TaxStatus.ForPaymentVerification;
             //misc.RequestingParty = ep.BillerInfo3;
+            //misc.RequestingParty = "-";
 
             return misc;
         }
