@@ -183,7 +183,7 @@ namespace Revised_OPTS.Service
                 foreach (var duplicate in duplicates)
                 {
                     //throw new RptException("Submitted record(s) contains duplicate(s). TDN = " + duplicate.TaxDec);
-                    throw new RptException($"Submitted record(s) contains duplicate(s). TDN = {duplicate.TaxDec}");
+                    throw new RptException($"Operation invalid. You are trying to insert records that has duplicate(s). TDN = {duplicate.TaxDec}");
                 }
             }
 
