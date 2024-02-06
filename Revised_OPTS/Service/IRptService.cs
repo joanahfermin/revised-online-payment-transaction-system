@@ -26,8 +26,9 @@ namespace Revised_OPTS.Service
         void UpdateSelectedRecordsStatus(List<Rpt> rpt, string status);
         void RevertSelectedRecordStatus(List<Rpt> rpt);
         void Delete(Rpt rpt);
-        void SaveAll(List<Rpt> rpt, List<Rpt> rptToDelte, decimal totalAmountTransferred);
+        void SaveAll(List<Rpt> rpt, List<Rpt> rptToDelete, decimal totalAmountTransferred);
         void SaveAllEPayment(List<Rpt> rpt, List<Business> bussiness, List<Miscellaneous> misc);
+        void UpdateAllinDuplicateRecordForm(List<Rpt> listOfRptsToSave);
 
         void UploadReceipt(RPTAttachPicture pix);
         RPTAttachPicture getRptReceipt(long rptId);

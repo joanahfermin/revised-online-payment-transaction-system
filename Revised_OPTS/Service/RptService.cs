@@ -240,6 +240,33 @@ namespace Revised_OPTS.Service
             }
         }
 
+        public void UpdateAllinDuplicateRecordForm(List<Rpt> listOfRptsToSave)
+        {
+            try
+            {
+                using (var dbContext = ApplicationDBContext.Create())
+                {
+                    using (var scope = new TransactionScope())
+                    {
+                        foreach (Rpt rpt in listOfRptsToSave)
+                        {
+                            rpt.LastUpdateBy = securityService.getLoginUser().DisplayName;
+                            rpt.LastUpdateDate = DateTime.Now.ToString();
+
+                            rptRepository.Update(rpt);
+                        }
+                        dbContext.SaveChanges();
+                        scope.Complete();
+                    }
+                }
+            }
+            catch (RptException ex)
+            {
+
+                throw new RptException("Invalid action.");
+            }
+        }
+
         //saving all rpt record in the add/update multiple record form.
         public void SaveAll(List<Rpt> listOfRptsToSave, List<Rpt> listOfRptsToDelete, decimal totalAmountTransferred)
         {
@@ -333,7 +360,6 @@ namespace Revised_OPTS.Service
                     //        rptRepository.Delete(rpt);
                     //    }
                     //}
-
                 }
             }
         }
@@ -550,13 +576,5 @@ namespace Revised_OPTS.Service
                 throw new("Error deleting attached OR.", ex);
             }
         }
-
-        //List<Rpt> IRptService.DetectExistingRecord(string taxdec, string year, string quarter, string billingSelection)
-        //{
-        //    using (var dbContext = ApplicationDBContext.Create())
-        //    {
-        //        return rptRepository.DetectExistingRecord(taxdec, year, quarter, billingSelection);
-        //    }
-        //}
     }
 }

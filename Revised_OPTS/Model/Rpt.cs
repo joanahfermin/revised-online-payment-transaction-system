@@ -70,8 +70,8 @@ namespace Revised_OPTS.Model
         //public bool SendReceiptReady { get; set; } = false;
         //public string CreatedBy { get; set; }
         //public DateTime? CreatedDate { get; set; }
-        //public string LastUpdateBy { get; set; }
-        //public DateTime? LastUpdateDate { get; set; }
+        public string? LastUpdateBy { get; set; }
+        public string? LastUpdateDate { get; set; }
 
         public DateTime? ORConfirmDate { get; set; }
         public DateTime? ORAttachedDate { get; set; }

@@ -1,4 +1,5 @@
 ﻿using Inventory_System.DAL;
+using Inventory_System.Exception;
 using Inventory_System.Model;
 using Inventory_System.Utilities;
 using Revised_OPTS.DAL;
@@ -88,18 +89,18 @@ namespace Inventory_System.Forms
 
             DynamicGridInfo[] gridInfoArray = new DynamicGridInfo[] {
                 new DynamicGridInfo{PropertyName="RptID", Label = "Rpt ID", isReadOnly = true },
-                new DynamicGridInfo{PropertyName="TaxDec", Label = "TDN", isRequired=true },
-                new DynamicGridInfo{PropertyName="TaxPayerName", Label = "TaxPayer's Name", isRequired=true },
-                new DynamicGridInfo{PropertyName="AmountToPay", Label = "Bill Amount", isRequired=true },
-                new DynamicGridInfo{PropertyName="TotalAmountTransferred", Label = "Total Amount Transferred", isRequired=true },
-                new DynamicGridInfo{PropertyName="Bank", Label = "Bank", GridType = DynamicGridType.ComboBox, ComboboxChoices = bankNames, isRequired=true },
-                new DynamicGridInfo{PropertyName="PaymentDate", Label = "Payment Date", GridType = DynamicGridType.DatetimePicker, isRequired=true },
+                new DynamicGridInfo{PropertyName="TaxDec", Label = "TDN", isRequired=true, isReadOnly = true  },
+                new DynamicGridInfo{PropertyName="TaxPayerName", Label = "TaxPayer's Name", isRequired=true, isReadOnly = true  },
+                new DynamicGridInfo{PropertyName="AmountToPay", Label = "Bill Amount", isRequired=true, isReadOnly = true  },
+                new DynamicGridInfo{PropertyName="TotalAmountTransferred", Label = "Total Amount Transferred", isRequired=true, isReadOnly = true  },
+                new DynamicGridInfo{PropertyName="Bank", Label = "Bank", GridType = DynamicGridType.ComboBox, ComboboxChoices = bankNames, isRequired=true, isReadOnly = true  },
+                new DynamicGridInfo{PropertyName="PaymentDate", Label = "Payment Date", GridType = DynamicGridType.DatetimePicker, isRequired=true, isReadOnly = true  },
                 new DynamicGridInfo{PropertyName="YearQuarter", Label = "Year", decimalValue = true, isRequired=true},
                 new DynamicGridInfo{PropertyName="Quarter", Label = "Quarter", GridType=DynamicGridType.ComboBox, ComboboxChoices = Quarter.ALL_QUARTER, isRequired=true },
                 new DynamicGridInfo{PropertyName="Status", Label = "Status", GridType=DynamicGridType.ComboBox, ComboboxChoices = TaxStatus.STATUS, isReadOnly = true },
                 new DynamicGridInfo{PropertyName="BillingSelection", Label = "Billing Selection", GridType=DynamicGridType.ComboBox, ComboboxChoices = BillingSelectionUtil.ALL_BILLING_SELECTION, isRequired=true },
-                new DynamicGridInfo{PropertyName="RequestingParty", Label = "Email Address" },
-                new DynamicGridInfo{PropertyName="RPTremarks", Label = "Remarks"},
+                new DynamicGridInfo{PropertyName="RequestingParty", Label = "Email Address", isReadOnly = true },
+                new DynamicGridInfo{PropertyName="RPTremarks", Label = "Remarks", isReadOnly = true },
             };
             RptDynamicGridContainer = new DynamicGridContainer<Rpt>(DgRptAddUpdateForm, gridInfoArray, true, true);
         }
@@ -160,7 +161,17 @@ namespace Inventory_System.Forms
 
         private void btnSaveRecord_Click(object sender, EventArgs e)
         {
+            List<Rpt> listOfRptsToSave = RptDynamicGridContainer.GetData();
 
+            try
+            {
+                rptService.UpdateAllinDuplicateRecordForm(listOfRptsToSave);
+            }
+            catch (RptException ex)
+            {
+                MessageBox.Show(ex.Message);
+                return;
+            }
         }
 
         private void btnSaveRecord_MouseEnter(object sender, EventArgs e)
