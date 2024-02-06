@@ -50,6 +50,7 @@
             this.btnORUpload = new System.Windows.Forms.Button();
             this.btnAddEpayments = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
+            this.btnReport = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.DgMainForm)).BeginInit();
             this.MainDGRightClick.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -137,7 +138,7 @@
             this.SearchLabel.ForeColor = System.Drawing.Color.White;
             this.SearchLabel.Image = ((System.Drawing.Image)(resources.GetObject("SearchLabel.Image")));
             this.SearchLabel.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.SearchLabel.Location = new System.Drawing.Point(139, 32);
+            this.SearchLabel.Location = new System.Drawing.Point(140, 38);
             this.SearchLabel.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
             this.SearchLabel.Name = "SearchLabel";
             this.SearchLabel.Padding = new System.Windows.Forms.Padding(10);
@@ -151,9 +152,9 @@
             this.tbSearch.BackColor = System.Drawing.Color.AliceBlue;
             this.tbSearch.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.tbSearch.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.tbSearch.Location = new System.Drawing.Point(270, 40);
+            this.tbSearch.Location = new System.Drawing.Point(271, 46);
             this.tbSearch.Name = "tbSearch";
-            this.tbSearch.Size = new System.Drawing.Size(463, 27);
+            this.tbSearch.Size = new System.Drawing.Size(445, 27);
             this.tbSearch.TabIndex = 1;
             this.tbSearch.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.tbSearch.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbSearch_KeyDown);
@@ -168,7 +169,7 @@
             this.btnNonRptAddNewRecord.ForeColor = System.Drawing.Color.White;
             this.btnNonRptAddNewRecord.Image = ((System.Drawing.Image)(resources.GetObject("btnNonRptAddNewRecord.Image")));
             this.btnNonRptAddNewRecord.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnNonRptAddNewRecord.Location = new System.Drawing.Point(765, 14);
+            this.btnNonRptAddNewRecord.Location = new System.Drawing.Point(778, 14);
             this.btnNonRptAddNewRecord.Name = "btnNonRptAddNewRecord";
             this.btnNonRptAddNewRecord.Size = new System.Drawing.Size(179, 74);
             this.btnNonRptAddNewRecord.TabIndex = 3;
@@ -198,11 +199,11 @@
             this.btnAddRptRecord.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.btnAddRptRecord.Image = ((System.Drawing.Image)(resources.GetObject("btnAddRptRecord.Image")));
             this.btnAddRptRecord.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnAddRptRecord.Location = new System.Drawing.Point(950, 14);
+            this.btnAddRptRecord.Location = new System.Drawing.Point(963, 13);
             this.btnAddRptRecord.Name = "btnAddRptRecord";
-            this.btnAddRptRecord.Size = new System.Drawing.Size(292, 74);
+            this.btnAddRptRecord.Size = new System.Drawing.Size(242, 74);
             this.btnAddRptRecord.TabIndex = 4;
-            this.btnAddRptRecord.Text = "Add Multiple RPT Records";
+            this.btnAddRptRecord.Text = "Add RPT Record(s) ";
             this.btnAddRptRecord.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnAddRptRecord.UseVisualStyleBackColor = false;
             this.btnAddRptRecord.Click += new System.EventHandler(this.btnAddRptRecord_Click);
@@ -308,7 +309,7 @@
             this.btnORUpload.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.btnORUpload.Image = ((System.Drawing.Image)(resources.GetObject("btnORUpload.Image")));
             this.btnORUpload.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnORUpload.Location = new System.Drawing.Point(1467, 14);
+            this.btnORUpload.Location = new System.Drawing.Point(1430, 14);
             this.btnORUpload.Name = "btnORUpload";
             this.btnORUpload.Size = new System.Drawing.Size(170, 74);
             this.btnORUpload.TabIndex = 202;
@@ -328,7 +329,7 @@
             this.btnAddEpayments.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.btnAddEpayments.Image = ((System.Drawing.Image)(resources.GetObject("btnAddEpayments.Image")));
             this.btnAddEpayments.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnAddEpayments.Location = new System.Drawing.Point(1248, 14);
+            this.btnAddEpayments.Location = new System.Drawing.Point(1211, 14);
             this.btnAddEpayments.Name = "btnAddEpayments";
             this.btnAddEpayments.Size = new System.Drawing.Size(213, 74);
             this.btnAddEpayments.TabIndex = 4;
@@ -347,14 +348,34 @@
             this.label4.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point);
             this.label4.ForeColor = System.Drawing.Color.White;
             this.label4.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.label4.Location = new System.Drawing.Point(255, 4);
+            this.label4.Location = new System.Drawing.Point(254, 13);
             this.label4.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
             this.label4.Name = "label4";
             this.label4.Padding = new System.Windows.Forms.Padding(10);
-            this.label4.Size = new System.Drawing.Size(406, 34);
+            this.label4.Size = new System.Drawing.Size(418, 34);
             this.label4.TabIndex = 206;
-            this.label4.Text = "*Search the unique key (RPT - TDN, BUSINES & MISC - BILL NUMBER)";
+            this.label4.Text = "*Search the unique key (RPT: TDN, BUSINES and MISC: BILL NUMBER)";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // btnReport
+            // 
+            this.btnReport.BackColor = System.Drawing.Color.Transparent;
+            this.btnReport.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnReport.BackgroundImage")));
+            this.btnReport.FlatAppearance.BorderSize = 0;
+            this.btnReport.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnReport.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.btnReport.Image = ((System.Drawing.Image)(resources.GetObject("btnReport.Image")));
+            this.btnReport.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnReport.Location = new System.Drawing.Point(1606, 14);
+            this.btnReport.Name = "btnReport";
+            this.btnReport.Size = new System.Drawing.Size(137, 74);
+            this.btnReport.TabIndex = 202;
+            this.btnReport.Text = "Report";
+            this.btnReport.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnReport.UseVisualStyleBackColor = false;
+            this.btnReport.Click += new System.EventHandler(this.btnReport_Click);
+            this.btnReport.MouseEnter += new System.EventHandler(this.btnReport_MouseEnter);
+            this.btnReport.MouseLeave += new System.EventHandler(this.btnReport_MouseLeave);
             // 
             // MainForm
             // 
@@ -365,7 +386,6 @@
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.ClientSize = new System.Drawing.Size(1817, 758);
             this.Controls.Add(this.label4);
-            this.Controls.Add(this.btnORUpload);
             this.Controls.Add(this.btnAddEpayments);
             this.Controls.Add(this.btnAddRptRecord);
             this.Controls.Add(this.pictureBox1);
@@ -379,6 +399,8 @@
             this.Controls.Add(this.tbTotalBillAmount);
             this.Controls.Add(this.tbTotalAmountTransferred);
             this.Controls.Add(this.tbSearch);
+            this.Controls.Add(this.btnReport);
+            this.Controls.Add(this.btnORUpload);
             this.ForeColor = System.Drawing.Color.White;
             this.Name = "MainForm";
             this.Text = "Form1";
@@ -411,5 +433,6 @@
         private Button btnORUpload;
         private Button btnAddEpayments;
         private Label label4;
+        private Button btnReport;
     }
 }

@@ -1,4 +1,7 @@
-﻿using Inventory_System.Utilities;
+﻿using Inventory_System.DAL;
+using Inventory_System.Model;
+using Inventory_System.Utilities;
+using Revised_OPTS.DAL;
 using Revised_OPTS.Model;
 using Revised_OPTS.Service;
 using Revised_OPTS.Utilities;
@@ -17,9 +20,15 @@ namespace Inventory_System.Forms
     public partial class ExistingRecordForm : Form
     {
         IRptService rptService = ServiceFactory.Instance.GetRptService();
+        IRPTAttachPictureRepository rptAttachPictureRepository = RepositoryFactory.Instance.GetRPTAttachPictureRepository();
+
         private DynamicGridContainer<Rpt> RptDynamicGridContainer;
         private DynamicGridContainer<Business> BusinessDynamicGridContainer;
         private DynamicGridContainer<Miscellaneous> MiscDynamicGridContainer;
+
+        private Image originalBackgroundImage;
+
+        private long RptID = 0;
 
         public ExistingRecordForm(List<Rpt> existingRecordList, List<Business> existingBusRecordList, List<Miscellaneous> existingMiscRecordList)
         {
@@ -37,6 +46,39 @@ namespace Inventory_System.Forms
             RptDynamicGridContainer.PopulateData(existingRecordList);
             BusinessDynamicGridContainer.PopulateData(existingBusRecordList);
             MiscDynamicGridContainer.PopulateData(existingMiscRecordList);
+
+            DgRptAddUpdateForm.SelectionChanged += DgRptAddUpdateForm_SelectionChanged;
+        }
+
+        private void DgRptAddUpdateForm_SelectionChanged(object? sender, EventArgs e)
+        {
+            DataGridViewRow selectedRow = DgRptAddUpdateForm.CurrentRow;
+
+            if (selectedRow != null)
+            {
+                Rpt selectedRpt = (Rpt)selectedRow.DataBoundItem;
+                if (selectedRpt != null)
+                {
+                    RptID = selectedRpt.RptID;
+                    loadRptReceipt(RptID);
+                }
+            }
+        }
+
+        public void loadRptReceipt(long rptId)
+        {
+            if (pbReceipt.Image != null)
+            {
+                pbReceipt.Image.Dispose();
+            }
+            pbReceipt.Image = null;
+
+            RPTAttachPicture pix = rptService.getRptReceipt(rptId);
+            if (pix != null)
+            {
+                pbReceipt.Image = Image.FromStream(new MemoryStream(pix.FileData));
+                pbReceipt.SizeMode = PictureBoxSizeMode.StretchImage;
+            }
         }
 
         private void InitializeRptDataGridView()
@@ -54,7 +96,7 @@ namespace Inventory_System.Forms
                 new DynamicGridInfo{PropertyName="PaymentDate", Label = "Payment Date", GridType = DynamicGridType.DatetimePicker, isRequired=true },
                 new DynamicGridInfo{PropertyName="YearQuarter", Label = "Year", decimalValue = true, isRequired=true},
                 new DynamicGridInfo{PropertyName="Quarter", Label = "Quarter", GridType=DynamicGridType.ComboBox, ComboboxChoices = Quarter.ALL_QUARTER, isRequired=true },
-                new DynamicGridInfo{PropertyName="Status", Label = "Status", GridType=DynamicGridType.ComboBox, ComboboxChoices = TaxStatus.STATUS, isRequired=true },
+                new DynamicGridInfo{PropertyName="Status", Label = "Status", GridType=DynamicGridType.ComboBox, ComboboxChoices = TaxStatus.STATUS, isReadOnly = true },
                 new DynamicGridInfo{PropertyName="BillingSelection", Label = "Billing Selection", GridType=DynamicGridType.ComboBox, ComboboxChoices = BillingSelectionUtil.ALL_BILLING_SELECTION, isRequired=true },
                 new DynamicGridInfo{PropertyName="RequestingParty", Label = "Email Address" },
                 new DynamicGridInfo{PropertyName="RPTremarks", Label = "Remarks"},
@@ -81,7 +123,7 @@ namespace Inventory_System.Forms
                 new DynamicGridInfo{PropertyName="DateOfPayment", Label = "Payment Date", GridType = DynamicGridType.DatetimePicker, isRequired=true },
                 new DynamicGridInfo{PropertyName="Year", Label = "Year", decimalValue = true},
                 new DynamicGridInfo{PropertyName="Qtrs", Label = "Quarter", GridType=DynamicGridType.ComboBox, ComboboxChoices = Quarter.ALL_QUARTER, isRequired=false },
-                new DynamicGridInfo{PropertyName="Status", Label = "Status", GridType=DynamicGridType.ComboBox, ComboboxChoices = TaxStatus.STATUS, isRequired=true },
+                new DynamicGridInfo{PropertyName="Status", Label = "Status", GridType=DynamicGridType.ComboBox, ComboboxChoices = TaxStatus.STATUS, isReadOnly = true },
                 new DynamicGridInfo{PropertyName="RequestingParty", Label = "Email Address" },
                 new DynamicGridInfo{PropertyName="BussinessRemarks", Label = "Remarks"},
             };
@@ -103,14 +145,13 @@ namespace Inventory_System.Forms
                 new DynamicGridInfo{PropertyName="TransferredAmount", Label = "Total Amount Transferred", isRequired=true },
                 new DynamicGridInfo{PropertyName="ModeOfPayment", Label = "Bank", GridType = DynamicGridType.ComboBox, ComboboxChoices = bankNames, isRequired=true },
                 new DynamicGridInfo{PropertyName="PaymentDate", Label = "Payment Date", GridType = DynamicGridType.DatetimePicker, isRequired=true },
-                new DynamicGridInfo{PropertyName="Status", Label = "Status", GridType=DynamicGridType.ComboBox, ComboboxChoices = TaxStatus.STATUS, isRequired=true },
+                new DynamicGridInfo{PropertyName="Status", Label = "Status", GridType=DynamicGridType.ComboBox, ComboboxChoices = TaxStatus.STATUS, isReadOnly = true },
                 new DynamicGridInfo{PropertyName="RefNum", Label = "Reference Number" },
                 new DynamicGridInfo{PropertyName="RequestingParty", Label = "Email Address" },
                 new DynamicGridInfo{PropertyName="Remarks", Label = "Remarks" },
             };
             MiscDynamicGridContainer = new DynamicGridContainer<Miscellaneous>(DgMiscAddUpdateForm, gridInfoArray, true, true);
         }
-
 
         private void btnClose_Click(object sender, EventArgs e)
         {
@@ -120,6 +161,34 @@ namespace Inventory_System.Forms
         private void btnSaveRecord_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void btnSaveRecord_MouseEnter(object sender, EventArgs e)
+        {
+            originalBackgroundImage = btnSaveRecord.BackgroundImage;
+            btnSaveRecord.BackgroundImage = null;
+
+            Color customColor = Color.FromArgb(23, 45, 74);
+            btnSaveRecord.BackColor = customColor;
+        }
+
+        private void btnSaveRecord_MouseLeave(object sender, EventArgs e)
+        {
+            btnSaveRecord.BackgroundImage = originalBackgroundImage;
+        }
+
+        private void btnClose_MouseEnter(object sender, EventArgs e)
+        {
+            originalBackgroundImage = btnClose.BackgroundImage;
+            btnClose.BackgroundImage = null;
+
+            Color customColor = Color.FromArgb(23, 45, 74);
+            btnClose.BackColor = customColor;
+        }
+
+        private void btnClose_MouseLeave(object sender, EventArgs e)
+        {
+            btnClose.BackgroundImage = originalBackgroundImage;
         }
     }
 }

@@ -724,5 +724,25 @@ namespace Revised_OPTS
         {
             btnAddEpayments.BackgroundImage = originalBackgroundImageRpt;
         }
+
+        private void btnReport_MouseEnter(object sender, EventArgs e)
+        {
+            originalBackgroundImageRpt = btnReport.BackgroundImage;
+            btnReport.BackgroundImage = null;
+
+            Color customColor = Color.FromArgb(23, 45, 74);
+            btnReport.BackColor = customColor;
+        }
+
+        private void btnReport_MouseLeave(object sender, EventArgs e)
+        {
+            btnReport.BackgroundImage = originalBackgroundImageRpt;
+        }
+
+        private void btnReport_Click(object sender, EventArgs e)
+        {
+            ReportForm reportForm = new ReportForm();
+            reportForm.ShowDialog();
+        }
     }
 }
