@@ -89,7 +89,7 @@ namespace Revised_OPTS.Service
         {
             using (var dbContext = ApplicationDBContext.Create())
             {
-                return rptRepository.retrieveBySearchKeyword(tdn);
+                return SpecialSort(rptRepository.retrieveBySearchKeyword(tdn));
             }
         }
 
@@ -409,8 +409,34 @@ namespace Revised_OPTS.Service
         {
             using (var dbContext = ApplicationDBContext.Create())
             {
-                return rptRepository.retrieveBySameRefNumAndReqParty(refNum, reqParty);
+                List<Rpt> tempList = rptRepository.retrieveBySameRefNumAndReqParty(refNum, reqParty);
+                return SpecialSort(tempList);
             }
+        }
+
+        //correct sorting of rpt record if data pasted in the system has additional record.
+        //NOTE: invalid, in case record to be added is the same as the taxdec of the original record.
+        public List<Rpt> SpecialSort(List<Rpt> rptList)
+        {
+            List<Rpt> resultList = new List<Rpt>();
+            List<long> processedRpdIDList = new List<long>(resultList.Count);
+            foreach(Rpt rpt in rptList)
+            {
+                if(!processedRpdIDList.Contains(rpt.RptID))
+                {
+                    resultList.Add(rpt);
+                    processedRpdIDList.Add(rpt.RptID);
+                    foreach (Rpt rpt2 in rptList)
+                    {
+                        if (!processedRpdIDList.Contains(rpt2.RptID) && rpt.TaxDec == rpt2.TaxDec)
+                        {
+                            resultList.Add(rpt2);
+                            processedRpdIDList.Add(rpt2.RptID);
+                        }
+                    }
+                }
+            }
+            return resultList;
         }
 
         public void UpdateSelectedRecordsStatus(List<Rpt> rptList, string status)
@@ -547,7 +573,7 @@ namespace Revised_OPTS.Service
         {
             using (var dbContext = ApplicationDBContext.Create())
             {
-                return rptRepository.RetrieveBySameRefNumInUploadingEpayment(taxdec);
+                return SpecialSort(rptRepository.RetrieveBySameRefNumInUploadingEpayment(taxdec));
             }
         }
 

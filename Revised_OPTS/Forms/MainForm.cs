@@ -34,9 +34,8 @@ namespace Revised_OPTS
             { "TaxDec", "TDN" }, { "TaxPayerName", "TaxPayer's Name" }, { "AmountToPay", "Bill Amount" },
             { "AmountTransferred", "Transferred Amount" }, { "TotalAmountTransferred", "Total Amount Transferred" }, { "ExcessShortAmount", "Excess/Short" },
             { "Bank", "Bank" }, { "YearQuarter", "Year" }, { "Quarter", "Quarter" },
-            /*{ "PaymentType", "Payment Type" },*/ { "BillingSelection", "Billing Selection" }, { "Status", "Status" },
-            { "RequestingParty", "Email Address" }, { "EncodedBy", "Encoded By" }, { "EncodedDate", "Encoded Date" },
-                    { "RefNum", "Reference No." }, { "RPTremarks", "Remarks" },
+            /*{ "PaymentType", "Payment Type" },*/ { "BillingSelection", "Billing Selection" }, { "Status", "Status" }, { "RefNum", "Reference No." },
+            { "RequestingParty", "Email Address" }, { "EncodedBy", "Encoded By" }, { "EncodedDate", "Encoded Date" }, { "RPTremarks", "Remarks" },
 
             { "VerifiedBy", "VerifiedBy" }, { "PaymentDate", "Payment Date" }, { "VerifiedDate", "Verified Date" },
             { "ValidatedBy", "Validated By" }, { "ValidatedDate", "Validated Date" }, { "UploadedBy", "Uploaded By" },
