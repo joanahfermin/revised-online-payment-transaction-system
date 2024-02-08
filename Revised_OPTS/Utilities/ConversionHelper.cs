@@ -133,7 +133,7 @@ namespace Inventory_System.Utilities
             misc.ExcessShort = 0;
             misc.PaymentDate = ep.Date;
             misc.Status = TaxStatus.ForPaymentVerification;
-            misc.RequestingParty = ep.BillerInfo2;
+            //misc.RequestingParty = ep.BillerInfo2;
 
             return misc;
         }

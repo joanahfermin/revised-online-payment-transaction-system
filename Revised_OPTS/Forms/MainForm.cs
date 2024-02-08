@@ -49,7 +49,7 @@ namespace Revised_OPTS
             { "Business_Type", "Bus. Type" }, { "MP_Number", "M.P Number" }, { "BillNumber", "Bill Number" }, 
             { "TaxpayersName", "TaxPayer's Name" }, { "BusinessName", "Business Name" }, { "BillAmount", "Bill Amount" },
             { "TotalAmount", "Transferred Amount" }, { "MiscFees", "Misc. Fees" }, { "Year", "Year" },
-            { "Qtrs", "Quarter" }, { "Status", "Status" }, { "PaymentChannel", "Bank" },
+            { "Qtrs", "Quarter" }, { "Status", "Status" }, { "PaymentChannel", "Bank" }, { "RefNum", "Reference No." },
             { "VerifiedBy", "Verified By" }, { "VerifiedDate", "Verified Date" }, { "DateOfPayment", "Payment Date" },
             { "ValidatedBy", "Validated By" }, { "ValidatedDate", "Validated Date" },
             { "TransmittedBy", "Transmitted By" }, { "TransmittedDate", "Transmitted Date" }, { "RequestingParty", "Email Address" },
@@ -154,7 +154,8 @@ namespace Revised_OPTS
                     Rpt selectedRptRecord = row.DataBoundItem as Rpt;
                     if (selectedRptRecord.RefNum != null)
                     {
-                        //new RPTMultipleAddUpdateRecordForm(selectedRptRecord.RefNum, selectedRptRecord.RequestingParty).Show();
+                        new RPTMultipleAddUpdateRecordForm(selectedRptRecord.RefNum, selectedRptRecord.RequestingParty).Show();
+                        MessageBox.Show("Right-click the record you want to delete to navigate the action you want to perform.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                     else
                     {
