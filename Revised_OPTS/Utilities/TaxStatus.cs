@@ -24,5 +24,8 @@ namespace Revised_OPTS.Utilities
         public const string Transmitted = "TRANSMITTED";
 
         public static string[] STATUS = { FOR_ASSESSMENT, ASSESSMENT_PRINTED, BILL_SENT, ForPaymentVerification, ForPaymentValidation, ForORUpload, ForORPickup, Released };
+
+        //public static string[] NON_COMPLETE_STATUS = { ForPaymentVerification, ForPaymentValidation, ForORUpload, ForORPickup, Released };
+
     }
 }

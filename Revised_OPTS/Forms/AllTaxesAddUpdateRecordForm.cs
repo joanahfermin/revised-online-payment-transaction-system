@@ -65,6 +65,7 @@ namespace Revised_OPTS.Forms
             cbTaxType.Text = TaxTypeUtil.BUSINESS;
         }
 
+        //TO DO: IF USER CREATES A RECORD, STATUS SHOULD BE 'FOR PAYMENT VERIFICATION', IF NOT, STATUS CAN EITHER BE 'FOR ASSESSMENT, ASSESSMENT PRINTED, BILL SENT'
         public AllTaxesAddUpdateRecordForm(long id, string taxType)
         {
             dynamicControlContainer = new DynamicControlContainer(this);
