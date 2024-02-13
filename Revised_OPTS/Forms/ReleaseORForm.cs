@@ -1,4 +1,11 @@
-﻿using System;
+﻿using Inventory_System.DAL;
+using Inventory_System.Model;
+using Inventory_System.Utilities;
+using Revised_OPTS.DAL;
+using Revised_OPTS.Model;
+using Revised_OPTS.Service;
+using Revised_OPTS.Utilities;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -14,10 +21,78 @@ namespace Inventory_System.Forms
     {
         private Image originalBackgroundImage;
 
-        public ReleaseORForm()
+        IRptService rptService = ServiceFactory.Instance.GetRptService();
+        IRPTAttachPictureRepository rptAttachPictureRepository = RepositoryFactory.Instance.GetRPTAttachPictureRepository();
+
+        private DynamicGridContainer<Rpt> RptDynamicGridContainer;
+        private long RptID = 0;
+
+        public ReleaseORForm(List<Rpt> rptList)
         {
             InitializeComponent();
+            InitializeRptDataGridView();
+
+            RptDynamicGridContainer.PopulateData(rptList);
+
+            DgRptAddUpdateForm.DefaultCellStyle.Font = new Font("Tahoma", 12, FontStyle.Regular);
             this.WindowState = FormWindowState.Maximized;
+
+            DgRptAddUpdateForm.SelectionChanged += DgRptAddUpdateForm_SelectionChanged;
+        }
+
+        private void DgRptAddUpdateForm_SelectionChanged(object? sender, EventArgs e)
+        {
+            DataGridViewRow selectedRow = DgRptAddUpdateForm.CurrentRow;
+
+            if (selectedRow != null)
+            {
+                Rpt selectedRpt = (Rpt)selectedRow.DataBoundItem;
+                if (selectedRpt != null)
+                {
+                    RptID = selectedRpt.RptID;
+                    loadRptReceipt(RptID);
+                }
+            }
+        }
+
+        private void InitializeRptDataGridView()
+        {
+            List<Bank> bankList = rptService.GetAllBanks();
+            string[] bankNames = bankList.Select(bank => bank.BankName).ToList().ToArray();
+
+            DynamicGridInfo[] gridInfoArray = new DynamicGridInfo[] {
+                //new DynamicGridInfo{PropertyName="RptID", Label = "Rpt ID", isReadOnly = true },
+                new DynamicGridInfo{PropertyName="LocCode", Label = "Location Code", isReadOnly = true },
+                new DynamicGridInfo{PropertyName="TaxDec", Label = "TDN", isRequired=true, isReadOnly = true  },
+                new DynamicGridInfo{PropertyName="TaxPayerName", Label = "TaxPayer's Name", isRequired=true, isReadOnly = true  },
+                new DynamicGridInfo{PropertyName="AmountToPay", Label = "Bill Amount", isRequired=true, isReadOnly = true  },
+                new DynamicGridInfo{PropertyName="TotalAmountTransferred", Label = "Total Amount Transferred", isRequired=true, isReadOnly = true  },
+                new DynamicGridInfo{PropertyName="Bank", Label = "Bank", GridType = DynamicGridType.ComboBox, ComboboxChoices = bankNames, isRequired=true, isReadOnly = true  },
+                new DynamicGridInfo{PropertyName="PaymentDate", Label = "Payment Date", GridType = DynamicGridType.DatetimePicker, isRequired=true, isReadOnly = true  },
+                new DynamicGridInfo{PropertyName="YearQuarter", Label = "Year", decimalValue = true, isRequired=true, isReadOnly = true},
+                new DynamicGridInfo{PropertyName="Quarter", Label = "Quarter", GridType=DynamicGridType.ComboBox, ComboboxChoices = Quarter.ALL_QUARTER, isRequired=true, isReadOnly = true },
+                new DynamicGridInfo{PropertyName="Status", Label = "Status", GridType=DynamicGridType.ComboBox, ComboboxChoices = TaxStatus.STATUS, isReadOnly = true },
+                new DynamicGridInfo{PropertyName="BillingSelection", Label = "Billing Selection", GridType=DynamicGridType.ComboBox, ComboboxChoices = BillingSelectionUtil.ALL_BILLING_SELECTION, isRequired=true, isReadOnly = true },
+                new DynamicGridInfo{PropertyName="RequestingParty", Label = "Email Address", isReadOnly = true },
+                new DynamicGridInfo{PropertyName="RPTremarks", Label = "Remarks", isReadOnly = true },
+            };
+            RptDynamicGridContainer = new DynamicGridContainer<Rpt>(DgRptAddUpdateForm, gridInfoArray, true, true);
+        }
+
+        public void loadRptReceipt(long rptId)
+        {
+            if (pbReceipt.Image != null)
+            {
+                pbReceipt.Image.Dispose();
+            }
+            pbReceipt.Image = null;
+
+            RPTAttachPicture pix = rptService.getRptReceipt(rptId);
+            if (pix != null)
+            {
+                pbReceipt.Image = Image.FromStream(new MemoryStream(pix.FileData));
+                pbReceipt.SizeMode = PictureBoxSizeMode.StretchImage;
+            }
         }
 
         private void btnSaveRecord_MouseEnter(object sender, EventArgs e)

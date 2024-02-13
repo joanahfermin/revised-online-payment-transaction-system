@@ -159,10 +159,9 @@
             // 
             // DgRptAddUpdateForm
             // 
-            this.DgRptAddUpdateForm.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.ColumnHeader;
-            this.DgRptAddUpdateForm.BackgroundColor = System.Drawing.Color.AliceBlue;
+            this.DgRptAddUpdateForm.BackgroundColor = System.Drawing.Color.White;
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.Salmon;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.LightSalmon;
             dataGridViewCellStyle1.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
             dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.MistyRose;
@@ -179,10 +178,10 @@
             dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.DgRptAddUpdateForm.DefaultCellStyle = dataGridViewCellStyle2;
             this.DgRptAddUpdateForm.EnableHeadersVisualStyles = false;
-            this.DgRptAddUpdateForm.Location = new System.Drawing.Point(12, 158);
+            this.DgRptAddUpdateForm.Location = new System.Drawing.Point(12, 161);
             this.DgRptAddUpdateForm.Name = "DgRptAddUpdateForm";
             dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.Color.Salmon;
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.LightSalmon;
             dataGridViewCellStyle3.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             dataGridViewCellStyle3.ForeColor = System.Drawing.Color.Black;
             dataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.MistyRose;
@@ -192,8 +191,8 @@
             this.DgRptAddUpdateForm.RowTemplate.DefaultCellStyle.SelectionBackColor = System.Drawing.Color.LightBlue;
             this.DgRptAddUpdateForm.RowTemplate.DefaultCellStyle.SelectionForeColor = System.Drawing.Color.Black;
             this.DgRptAddUpdateForm.RowTemplate.Height = 25;
-            this.DgRptAddUpdateForm.Size = new System.Drawing.Size(1736, 560);
-            this.DgRptAddUpdateForm.TabIndex = 8;
+            this.DgRptAddUpdateForm.Size = new System.Drawing.Size(1736, 557);
+            this.DgRptAddUpdateForm.TabIndex = 206;
             // 
             // RPTMultipleAddUpdateRecordForm
             // 
@@ -219,11 +218,11 @@
         private Panel panel1;
         private Button btnClose;
         private Button btnSaveRecord;
-        private DataGridView DgRptAddUpdateForm;
         private PictureBox pictureBox1;
         private Label SearchLabel;
         private TextBox tbTotalAmountTransferred;
         private Microsoft.Data.SqlClient.SqlCommand sqlCommand1;
         private Label label1;
+        private DataGridView DgRptAddUpdateForm;
     }
 }

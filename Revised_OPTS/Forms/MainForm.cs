@@ -218,7 +218,7 @@ namespace Revised_OPTS
                         //MessageBox.Show("Operation completed successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         //DgMainForm.Refresh();
 
-                        ReleaseORForm releaseORform = new ReleaseORForm();
+                        ReleaseORForm releaseORform = new ReleaseORForm(rptList);
                         releaseORform.Show();
                     //}
                 }
@@ -465,19 +465,18 @@ namespace Revised_OPTS
         public void DataGridUI()
         {
             DgMainForm.DefaultCellStyle.Font = new Font("Tahoma", 12, FontStyle.Regular);
-            DgMainForm.BackgroundColor = Color.White;
+            //DgMainForm.BackgroundColor = Color.White;
             this.WindowState = FormWindowState.Maximized;
-            DgMainForm.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.DisplayedCells;
-            DgMainForm.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+            //DgMainForm.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.DisplayedCells;
 
-            DgMainForm.DefaultCellStyle.BackColor = Color.AliceBlue;
+            DgMainForm.DefaultCellStyle.ForeColor = Color.Black;
 
-            DgMainForm.ColumnHeadersDefaultCellStyle.ForeColor = Color.MidnightBlue;
-            DgMainForm.GridColor = Color.DarkGray;
-            DgMainForm.CellBorderStyle = DataGridViewCellBorderStyle.Single;
-            DgMainForm.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.Raised;
+            //DgMainForm.ColumnHeadersDefaultCellStyle.ForeColor = Color.MidnightBlue;
+            //DgMainForm.GridColor = Color.DarkGray;
+            //DgMainForm.CellBorderStyle = DataGridViewCellBorderStyle.Single;
+            //DgMainForm.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.Raised;
 
-            DgMainForm.DefaultCellStyle.SelectionBackColor = Color.AliceBlue;
+            //DgMainForm.DefaultCellStyle.SelectionBackColor = Color.AliceBlue;
         }
 
         //search records based on keyvalueformat.

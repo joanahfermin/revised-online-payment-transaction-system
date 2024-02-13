@@ -197,10 +197,10 @@ namespace Inventory_System.Forms
         {   
             DgRptAddUpdateForm.DefaultCellStyle.Font = new Font("Tahoma", 12, FontStyle.Regular);
             DgRptAddUpdateForm.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.DisplayedCells;
-            DgRptAddUpdateForm.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+
             DgRptAddUpdateForm.GridColor = Color.DarkGray;
             DgRptAddUpdateForm.CellBorderStyle = DataGridViewCellBorderStyle.Single;
-            DgRptAddUpdateForm.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.Raised;
+            //DgRptAddUpdateForm.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.Raised;
 
             DgRptAddUpdateForm.ColumnHeadersDefaultCellStyle.BackColor = Color.DarkSalmon;
         }
