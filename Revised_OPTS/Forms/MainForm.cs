@@ -210,14 +210,17 @@ namespace Revised_OPTS
 
                 if (rptList.Count > 0)
                 {
-                    DialogResult result = MessageBox.Show("Are you sure you want to update the status of the selected records?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    //DialogResult result = MessageBox.Show("Are you sure you want to update the status of the selected records?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
-                    if (result == DialogResult.Yes)
-                    {
-                        rptService.UpdateSelectedRecordsStatus(rptList, TaxStatus.Released);
-                        MessageBox.Show("Operation completed successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        DgMainForm.Refresh();
-                    }
+                    //if (result == DialogResult.Yes)
+                    //{
+                        //rptService.UpdateSelectedRecordsStatus(rptList, TaxStatus.Released);
+                        //MessageBox.Show("Operation completed successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        //DgMainForm.Refresh();
+
+                        ReleaseORForm releaseORform = new ReleaseORForm();
+                        releaseORform.Show();
+                    //}
                 }
             }
         }
