@@ -226,6 +226,9 @@ namespace Revised_OPTS
         {
             DataGridViewSelectedRowCollection selectedRows = DgMainForm.SelectedRows;
 
+            RevertStatusInfoForm revertStatusInfoForm = new RevertStatusInfoForm();
+            revertStatusInfoForm.Show();
+
             if (selectedRows != null)
             {
                 List<Rpt> rptList = new List<Rpt>();
