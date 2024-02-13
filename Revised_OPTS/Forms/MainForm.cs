@@ -159,7 +159,7 @@ namespace Revised_OPTS
                     }
                     else
                     {
-                        DialogResult result = MessageBox.Show("Are you sure you want to delete the selected records?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                        DialogResult result = MessageBox.Show("Are you sure you want to delete the selected record(s)?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
                         if (result == DialogResult.Yes)
                         {

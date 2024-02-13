@@ -105,13 +105,12 @@ namespace Revised_OPTS.Service
         {
             using (var dbContext = ApplicationDBContext.Create())
             {
-                //calculatePaymentForSingleRecords();
-
                 rpt.TotalAmountTransferred = rpt.AmountTransferred;
 
                 rpt.ExcessShortAmount = rpt.TotalAmountTransferred - rpt.AmountToPay;
                 rpt.EncodedBy = securityService.getLoginUser().DisplayName;
                 rpt.EncodedDate = DateTime.Now;
+                rpt.Status = TaxStatus.ForPaymentVerification;
                 rptRepository.Insert(rpt);
                 dbContext.SaveChanges();
             }
@@ -272,39 +271,48 @@ namespace Revised_OPTS.Service
         {
             using (var dbContext = ApplicationDBContext.Create())
             {
-                validateRptDuplicateRecord(listOfRptsToSave);
-
-                AssignRefNum(listOfRptsToSave);
-                bool firstRecord = true;
-
-                calculateTotalPayment(listOfRptsToSave, totalAmountTransferred);
-
-                using (var scope = new TransactionScope())
+                if (listOfRptsToSave.Count > 1)
                 {
-                    foreach (Rpt rpt in listOfRptsToSave)
-                    {
-                        if (rpt.RptID == 0)
-                        {
-                            rpt.Status = TaxStatus.ForPaymentVerification;
-                            rpt.EncodedBy = securityService.getLoginUser().DisplayName;
-                            rpt.EncodedDate = DateTime.Now;
-                            rptRepository.Insert(rpt);
-                        }
-                        else
-                        {
-                            rptRepository.Update(rpt);
-                        }
-                    }
+                    validateRptDuplicateRecord(listOfRptsToSave);
 
-                    foreach (Rpt rpt in listOfRptsToDelete)
+                    AssignRefNum(listOfRptsToSave);
+                    bool firstRecord = true;
+
+                    calculateTotalPayment(listOfRptsToSave, totalAmountTransferred);
+
+                    using (var scope = new TransactionScope())
                     {
-                        if (rpt.RptID > 0)
+                        foreach (Rpt rpt in listOfRptsToSave)
                         {
-                            rptRepository.Delete(rpt);
+                            if (rpt.RptID == 0)
+                            {
+                                rpt.Status = TaxStatus.ForPaymentVerification;
+                                rpt.EncodedBy = securityService.getLoginUser().DisplayName;
+                                rpt.EncodedDate = DateTime.Now;
+                                rptRepository.Insert(rpt);
+                            }
+                            else
+                            {
+                                rptRepository.Update(rpt);
+                            }
                         }
+
+                        foreach (Rpt rpt in listOfRptsToDelete)
+                        {
+                            if (rpt.RptID > 0)
+                            {
+                                rptRepository.Delete(rpt);
+                            }
+                        }
+                        dbContext.SaveChanges();
+                        scope.Complete();
                     }
-                    dbContext.SaveChanges();
-                    scope.Complete();
+                }
+                else
+                {
+                    calculateTotalPayment(listOfRptsToSave, totalAmountTransferred);
+                    Rpt rpt = listOfRptsToSave[0];
+                    Insert(rpt);
                 }
             }
         }
