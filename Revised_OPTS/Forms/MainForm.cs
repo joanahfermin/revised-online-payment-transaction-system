@@ -75,6 +75,7 @@ namespace Revised_OPTS
             Instance = this;
             DgMainForm.CellFormatting += DgMainForm_CellFormatting;
             DgMainForm.SelectionChanged += DgMainForm_SelectionChanged;
+            DgMainForm.CellMouseDown += DgMainForm_MouseClick;
 
             ContextMenuStrip contextMenuStrip1 = new ContextMenuStrip();
 
@@ -635,7 +636,14 @@ namespace Revised_OPTS
         {
             if (e.Button == MouseButtons.Right)
             {
-                MainDGRightClick.Show(DgMainForm, e.Location);
+                //MainDGRightClick.Show(DgMainForm, e.Location);
+
+                //var hti = DgMainForm.HitTest(e.X, e.Y);
+                //if (hti.RowIndex >=0)
+                //{
+                //    DgMainForm.ClearSelection();
+                //    DgMainForm.Rows[hti.RowIndex].Selected = true;
+                //}
             }
         }
 
@@ -748,6 +756,17 @@ namespace Revised_OPTS
         {
             ReportForm reportForm = new ReportForm();
             reportForm.ShowDialog();
+        }
+
+        private void DgMainForm_CellContextMenuStripNeeded(object sender, DataGridViewCellContextMenuStripNeededEventArgs e)
+        {
+            int rowSelected = e.RowIndex;
+
+            if (e.RowIndex != -1 && DgMainForm.Rows[rowSelected].Selected == false)
+            {
+                DgMainForm.ClearSelection();
+                DgMainForm.Rows[rowSelected].Selected = true;
+            }
         }
     }
 }

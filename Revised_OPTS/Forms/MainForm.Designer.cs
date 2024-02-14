@@ -355,6 +355,7 @@
             this.DgMainForm.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.DgMainForm.Size = new System.Drawing.Size(1771, 694);
             this.DgMainForm.TabIndex = 207;
+            this.DgMainForm.CellContextMenuStripNeeded += new System.Windows.Forms.DataGridViewCellContextMenuStripNeededEventHandler(this.DgMainForm_CellContextMenuStripNeeded);
             // 
             // MainForm
             // 
