@@ -52,6 +52,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.cbRegularBank = new System.Windows.Forms.ComboBox();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.btnSend = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgRptList)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbVideoCapture)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbReceipt)).BeginInit();
@@ -290,7 +291,7 @@
             this.btnClose.ForeColor = System.Drawing.Color.White;
             this.btnClose.Image = ((System.Drawing.Image)(resources.GetObject("btnClose.Image")));
             this.btnClose.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnClose.Location = new System.Drawing.Point(878, 8);
+            this.btnClose.Location = new System.Drawing.Point(878, 23);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(126, 73);
             this.btnClose.TabIndex = 203;
@@ -311,11 +312,11 @@
             this.btnUploadReceipt.ForeColor = System.Drawing.Color.White;
             this.btnUploadReceipt.Image = ((System.Drawing.Image)(resources.GetObject("btnUploadReceipt.Image")));
             this.btnUploadReceipt.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnUploadReceipt.Location = new System.Drawing.Point(519, 8);
+            this.btnUploadReceipt.Location = new System.Drawing.Point(610, 23);
             this.btnUploadReceipt.Name = "btnUploadReceipt";
-            this.btnUploadReceipt.Size = new System.Drawing.Size(201, 73);
+            this.btnUploadReceipt.Size = new System.Drawing.Size(135, 73);
             this.btnUploadReceipt.TabIndex = 204;
-            this.btnUploadReceipt.Text = "Upload Receipt";
+            this.btnUploadReceipt.Text = "Upload";
             this.btnUploadReceipt.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnUploadReceipt.UseVisualStyleBackColor = false;
             this.btnUploadReceipt.Click += new System.EventHandler(this.btnUploadReceipt_Click);
@@ -353,6 +354,26 @@
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
             // 
+            // btnSend
+            // 
+            this.btnSend.BackColor = System.Drawing.Color.Transparent;
+            this.btnSend.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnSend.BackgroundImage")));
+            this.btnSend.FlatAppearance.BorderSize = 0;
+            this.btnSend.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSend.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.btnSend.ForeColor = System.Drawing.Color.White;
+            this.btnSend.Image = ((System.Drawing.Image)(resources.GetObject("btnSend.Image")));
+            this.btnSend.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnSend.Location = new System.Drawing.Point(751, 23);
+            this.btnSend.Name = "btnSend";
+            this.btnSend.Size = new System.Drawing.Size(121, 73);
+            this.btnSend.TabIndex = 204;
+            this.btnSend.Text = "Send";
+            this.btnSend.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnSend.UseVisualStyleBackColor = false;
+            this.btnSend.MouseEnter += new System.EventHandler(this.btnSend_MouseEnter);
+            this.btnSend.MouseLeave += new System.EventHandler(this.btnSend_MouseLeave);
+            // 
             // ORUploadForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -360,6 +381,7 @@
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.ClientSize = new System.Drawing.Size(1924, 1024);
             this.Controls.Add(this.btnClose);
+            this.Controls.Add(this.btnSend);
             this.Controls.Add(this.btnUploadReceipt);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.label6);
@@ -410,5 +432,6 @@
         private Label label2;
         private ComboBox cbRegularBank;
         private ContextMenuStrip contextMenuStrip1;
+        private Button btnSend;
     }
 }

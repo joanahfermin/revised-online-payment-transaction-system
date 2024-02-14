@@ -271,10 +271,10 @@ namespace Revised_OPTS.Service
         {
             using (var dbContext = ApplicationDBContext.Create())
             {
+                validateRptDuplicateRecord(listOfRptsToSave);
+
                 if (listOfRptsToSave.Count > 1)
                 {
-                    validateRptDuplicateRecord(listOfRptsToSave);
-
                     AssignRefNum(listOfRptsToSave);
                     bool firstRecord = true;
 
@@ -445,6 +445,28 @@ namespace Revised_OPTS.Service
                 }
             }
             return resultList;
+        }
+
+        public void ReleaseReceipt(List<Rpt> rptList, string status, string repName, string contactNum, string releaser)
+        {
+            using (var dbContext = ApplicationDBContext.Create())
+            {
+                using (var scope = new TransactionScope())
+                {
+                    foreach (Rpt rpt in rptList)
+                    {
+                        rpt.Status = status;
+                        rpt.RepName = repName;
+                        rpt.ContactNumber = contactNum;
+                        rpt.ReleasedBy = releaser;
+                        //rpt.ReleasedBy = securityService.getLoginUser().DisplayName;
+                        rpt.ReleasedDate = DateTime.Now;
+                        rptRepository.Update(rpt);
+                    }
+                    dbContext.SaveChanges();
+                    scope.Complete();
+                }
+            }
         }
 
         public void UpdateSelectedRecordsStatus(List<Rpt> rptList, string status)

@@ -23,6 +23,7 @@ namespace Revised_OPTS.Service
 
         void Insert(Rpt rpt);
         void Update(Rpt rpt);
+        void ReleaseReceipt(List<Rpt> rptList, string status, string repName, string contactNum, string releaser);
         void UpdateSelectedRecordsStatus(List<Rpt> rpt, string status);
         void RevertSelectedRecordStatus(List<Rpt> rpt);
         void Delete(Rpt rpt);

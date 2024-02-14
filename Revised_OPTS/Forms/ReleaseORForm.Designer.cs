@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
@@ -38,18 +39,21 @@
             this.btnSaveRecord = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.tbTotalBillAmount = new System.Windows.Forms.TextBox();
-            this.tbTotalAmountTransferred = new System.Windows.Forms.TextBox();
+            this.textRepName = new System.Windows.Forms.TextBox();
+            this.textContactNum = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.textRelesedBy = new System.Windows.Forms.TextBox();
+            this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.DgRptAddUpdateForm)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbReceipt)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             this.SuspendLayout();
             // 
             // DgRptAddUpdateForm
             // 
+            this.DgRptAddUpdateForm.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells;
             this.DgRptAddUpdateForm.BackgroundColor = System.Drawing.Color.White;
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle1.BackColor = System.Drawing.Color.LightSalmon;
@@ -82,13 +86,13 @@
             this.DgRptAddUpdateForm.RowTemplate.DefaultCellStyle.SelectionBackColor = System.Drawing.Color.LightBlue;
             this.DgRptAddUpdateForm.RowTemplate.DefaultCellStyle.SelectionForeColor = System.Drawing.Color.Black;
             this.DgRptAddUpdateForm.RowTemplate.Height = 25;
-            this.DgRptAddUpdateForm.Size = new System.Drawing.Size(1064, 836);
+            this.DgRptAddUpdateForm.Size = new System.Drawing.Size(1230, 836);
             this.DgRptAddUpdateForm.TabIndex = 205;
             // 
             // pbReceipt
             // 
             this.pbReceipt.BackColor = System.Drawing.Color.Transparent;
-            this.pbReceipt.Location = new System.Drawing.Point(1093, 12);
+            this.pbReceipt.Location = new System.Drawing.Point(1255, 12);
             this.pbReceipt.Name = "pbReceipt";
             this.pbReceipt.Size = new System.Drawing.Size(650, 970);
             this.pbReceipt.TabIndex = 206;
@@ -104,7 +108,7 @@
             this.btnClose.ForeColor = System.Drawing.Color.White;
             this.btnClose.Image = ((System.Drawing.Image)(resources.GetObject("btnClose.Image")));
             this.btnClose.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnClose.Location = new System.Drawing.Point(949, 35);
+            this.btnClose.Location = new System.Drawing.Point(1116, 34);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(126, 73);
             this.btnClose.TabIndex = 207;
@@ -125,7 +129,7 @@
             this.btnSaveRecord.ForeColor = System.Drawing.Color.White;
             this.btnSaveRecord.Image = ((System.Drawing.Image)(resources.GetObject("btnSaveRecord.Image")));
             this.btnSaveRecord.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnSaveRecord.Location = new System.Drawing.Point(759, 35);
+            this.btnSaveRecord.Location = new System.Drawing.Point(926, 34);
             this.btnSaveRecord.Name = "btnSaveRecord";
             this.btnSaveRecord.Size = new System.Drawing.Size(184, 73);
             this.btnSaveRecord.TabIndex = 208;
@@ -154,7 +158,7 @@
             this.label3.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.label3.ForeColor = System.Drawing.Color.White;
             this.label3.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.label3.Location = new System.Drawing.Point(227, 21);
+            this.label3.Location = new System.Drawing.Point(185, 22);
             this.label3.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
             this.label3.Name = "label3";
             this.label3.Padding = new System.Windows.Forms.Padding(10);
@@ -163,29 +167,29 @@
             this.label3.Text = "Represetative Name: ";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // tbTotalBillAmount
+            // textRepName
             // 
-            this.tbTotalBillAmount.BackColor = System.Drawing.Color.OldLace;
-            this.tbTotalBillAmount.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.tbTotalBillAmount.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.tbTotalBillAmount.ForeColor = System.Drawing.Color.Black;
-            this.tbTotalBillAmount.Location = new System.Drawing.Point(423, 29);
-            this.tbTotalBillAmount.Name = "tbTotalBillAmount";
-            this.tbTotalBillAmount.Size = new System.Drawing.Size(306, 26);
-            this.tbTotalBillAmount.TabIndex = 210;
-            this.tbTotalBillAmount.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.textRepName.BackColor = System.Drawing.Color.OldLace;
+            this.textRepName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.textRepName.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.textRepName.ForeColor = System.Drawing.Color.Black;
+            this.textRepName.Location = new System.Drawing.Point(381, 30);
+            this.textRepName.Name = "textRepName";
+            this.textRepName.Size = new System.Drawing.Size(207, 26);
+            this.textRepName.TabIndex = 210;
+            this.textRepName.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // tbTotalAmountTransferred
+            // textContactNum
             // 
-            this.tbTotalAmountTransferred.BackColor = System.Drawing.Color.OldLace;
-            this.tbTotalAmountTransferred.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.tbTotalAmountTransferred.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.tbTotalAmountTransferred.ForeColor = System.Drawing.Color.Black;
-            this.tbTotalAmountTransferred.Location = new System.Drawing.Point(423, 61);
-            this.tbTotalAmountTransferred.Name = "tbTotalAmountTransferred";
-            this.tbTotalAmountTransferred.Size = new System.Drawing.Size(306, 26);
-            this.tbTotalAmountTransferred.TabIndex = 211;
-            this.tbTotalAmountTransferred.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.textContactNum.BackColor = System.Drawing.Color.OldLace;
+            this.textContactNum.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.textContactNum.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.textContactNum.ForeColor = System.Drawing.Color.Black;
+            this.textContactNum.Location = new System.Drawing.Point(381, 79);
+            this.textContactNum.Name = "textContactNum";
+            this.textContactNum.Size = new System.Drawing.Size(207, 26);
+            this.textContactNum.TabIndex = 211;
+            this.textContactNum.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // label1
             // 
@@ -195,7 +199,7 @@
             this.label1.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.label1.ForeColor = System.Drawing.Color.White;
             this.label1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.label1.Location = new System.Drawing.Point(260, 53);
+            this.label1.Location = new System.Drawing.Point(218, 71);
             this.label1.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
             this.label1.Name = "label1";
             this.label1.Padding = new System.Windows.Forms.Padding(10);
@@ -212,7 +216,7 @@
             this.label2.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.label2.ForeColor = System.Drawing.Color.White;
             this.label2.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.label2.Location = new System.Drawing.Point(288, 85);
+            this.label2.Location = new System.Drawing.Point(625, 42);
             this.label2.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
             this.label2.Name = "label2";
             this.label2.Padding = new System.Windows.Forms.Padding(10);
@@ -221,28 +225,34 @@
             this.label2.Text = "Released By: ";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // textBox1
+            // textRelesedBy
             // 
-            this.textBox1.BackColor = System.Drawing.Color.OldLace;
-            this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.textBox1.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.textBox1.ForeColor = System.Drawing.Color.Black;
-            this.textBox1.Location = new System.Drawing.Point(423, 93);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(306, 26);
-            this.textBox1.TabIndex = 211;
-            this.textBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.textRelesedBy.BackColor = System.Drawing.Color.OldLace;
+            this.textRelesedBy.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.textRelesedBy.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.textRelesedBy.ForeColor = System.Drawing.Color.Black;
+            this.textRelesedBy.Location = new System.Drawing.Point(640, 79);
+            this.textRelesedBy.Name = "textRelesedBy";
+            this.textRelesedBy.Size = new System.Drawing.Size(207, 26);
+            this.textRelesedBy.TabIndex = 211;
+            this.textRelesedBy.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // errorProvider1
+            // 
+            this.errorProvider1.BlinkStyle = System.Windows.Forms.ErrorBlinkStyle.NeverBlink;
+            this.errorProvider1.ContainerControl = this;
+            this.errorProvider1.Icon = ((System.Drawing.Icon)(resources.GetObject("errorProvider1.Icon")));
             // 
             // ReleaseORForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
-            this.ClientSize = new System.Drawing.Size(1755, 1006);
-            this.Controls.Add(this.tbTotalBillAmount);
+            this.ClientSize = new System.Drawing.Size(1924, 1004);
+            this.Controls.Add(this.textRepName);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.textBox1);
-            this.Controls.Add(this.tbTotalAmountTransferred);
+            this.Controls.Add(this.textRelesedBy);
+            this.Controls.Add(this.textContactNum);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.btnClose);
             this.Controls.Add(this.btnSaveRecord);
@@ -255,6 +265,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.DgRptAddUpdateForm)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbReceipt)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -268,10 +279,11 @@
         private Button btnSaveRecord;
         private PictureBox pictureBox1;
         private Label label3;
-        private TextBox tbTotalBillAmount;
-        private TextBox tbTotalAmountTransferred;
+        private TextBox textRepName;
+        private TextBox textContactNum;
         private Label label1;
         private Label label2;
-        private TextBox textBox1;
+        private TextBox textRelesedBy;
+        private ErrorProvider errorProvider1;
     }
 }

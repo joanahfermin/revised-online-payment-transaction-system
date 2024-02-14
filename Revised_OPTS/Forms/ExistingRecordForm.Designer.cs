@@ -120,6 +120,7 @@
             // 
             // DgRptAddUpdateForm
             // 
+            this.DgRptAddUpdateForm.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells;
             this.DgRptAddUpdateForm.BackgroundColor = System.Drawing.Color.White;
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle1.BackColor = System.Drawing.Color.LightSalmon;
@@ -157,6 +158,7 @@
             // 
             // DgBusAddUpdateForm
             // 
+            this.DgBusAddUpdateForm.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells;
             this.DgBusAddUpdateForm.BackgroundColor = System.Drawing.Color.White;
             dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle4.BackColor = System.Drawing.Color.LightSalmon;
@@ -194,6 +196,7 @@
             // 
             // DgMiscAddUpdateForm
             // 
+            this.DgMiscAddUpdateForm.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells;
             this.DgMiscAddUpdateForm.BackgroundColor = System.Drawing.Color.White;
             dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle7.BackColor = System.Drawing.Color.LightSalmon;

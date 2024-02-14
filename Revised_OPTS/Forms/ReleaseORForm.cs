@@ -102,12 +102,53 @@ namespace Inventory_System.Forms
 
             Color customColor = Color.FromArgb(23, 45, 74);
             btnSaveRecord.BackColor = customColor;
-
         }
 
         private void btnSaveRecord_Click(object sender, EventArgs e)
         {
+            string repName = textRepName.Text;
+            string contactNum = textContactNum.Text;
+            string releaser = textRelesedBy.Text;
 
+            TextBox textbox = new TextBox();
+            textbox.Text = repName;
+
+            DataGridViewSelectedRowCollection selectedRows = DgRptAddUpdateForm.SelectedRows;
+
+            if (selectedRows != null)
+            {
+                List<Rpt> rptList = new List<Rpt>();
+
+                foreach (DataGridViewRow row in selectedRows)
+                {
+                    object item = row.DataBoundItem;
+                    if (item is Rpt)
+                    {
+                        Rpt rpt = item as Rpt;
+                        rptList.Add(rpt);
+                    }
+
+                    if (repName.Length == 0 || contactNum.Length == 0 || releaser.Length == 0)
+                    {
+                        Validations.validateRequired(errorProvider1, textRepName, "Rep. Name");
+                        Validations.validateRequired(errorProvider1, textContactNum, "Contact Number");
+                        Validations.validateRequired(errorProvider1, textRelesedBy, "Released By");
+                        return;
+                    }
+
+                    if (rptList.Count > 0)
+                    {
+                        DialogResult result = MessageBox.Show("Are you sure you want to update the status of the selected records?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                        if (result == DialogResult.Yes)
+                        {
+                            rptService.ReleaseReceipt(rptList, TaxStatus.Released, repName, contactNum, releaser);
+                            MessageBox.Show("Operation successfully completed.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            DgRptAddUpdateForm.Refresh();
+                        }
+                    }
+                }
+            }
         }
 
         private void btnSaveRecord_MouseLeave(object sender, EventArgs e)

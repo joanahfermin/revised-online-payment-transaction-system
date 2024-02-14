@@ -337,10 +337,23 @@ namespace Inventory_System.Forms
             btnClose.BackgroundImage = originalBackgroundImageRpt;
         }
 
+        private void btnSend_MouseEnter(object sender, EventArgs e)
+        {
+            originalBackgroundImageRpt = btnSend.BackgroundImage;
+            btnSend.BackgroundImage = null;
+
+            Color customColor = Color.FromArgb(23, 45, 74);
+            btnSend.BackColor = customColor;
+        }
+
+        private void btnSend_MouseLeave(object sender, EventArgs e)
+        {
+            btnSend.BackgroundImage = originalBackgroundImageRpt;
+        }
+
         private void btnClose_Click(object sender, EventArgs e)
         {
             this.Close();
         }
-
     }
 }
