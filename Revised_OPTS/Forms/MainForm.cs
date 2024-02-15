@@ -1,3 +1,4 @@
+using Inventory_System.Exception;
 using Inventory_System.Forms;
 using Inventory_System.Utilities;
 using Revised_OPTS.Forms;
@@ -75,7 +76,6 @@ namespace Revised_OPTS
             Instance = this;
             DgMainForm.CellFormatting += DgMainForm_CellFormatting;
             DgMainForm.SelectionChanged += DgMainForm_SelectionChanged;
-            DgMainForm.CellMouseDown += DgMainForm_MouseClick;
 
             ContextMenuStrip contextMenuStrip1 = new ContextMenuStrip();
 
@@ -92,7 +92,18 @@ namespace Revised_OPTS
             menuItemReleaseReceipt.Click += MenuItemReleaseReceipt_Click;
 
             ToolStripMenuItem menuItemRevertStatus = new ToolStripMenuItem("Revert Status");
-            menuItemRevertStatus.Click += MenuItemRevertStatus_Click;
+            ToolStripMenuItem menuItemRevertForVerificationStatus = new ToolStripMenuItem(TaxStatus.ForPaymentVerification);
+            ToolStripMenuItem menuItemRevertForValidationStatus = new ToolStripMenuItem(TaxStatus.ForPaymentValidation);
+            ToolStripMenuItem menuItemRevertForORUploadStatus = new ToolStripMenuItem(TaxStatus.ForORUpload);
+            ToolStripMenuItem menuItemRevertForORPickUpStatus = new ToolStripMenuItem(TaxStatus.ForORPickup);
+
+            menuItemRevertForVerificationStatus.Click += MenuItemRevertStatus_Click;
+            menuItemRevertForValidationStatus.Click += MenuItemRevertStatus_Click;
+            menuItemRevertForORUploadStatus.Click += MenuItemRevertStatus_Click;
+            menuItemRevertForORPickUpStatus.Click += MenuItemRevertStatus_Click;
+
+            menuItemRevertStatus.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] 
+            { menuItemRevertForVerificationStatus, menuItemRevertForValidationStatus, menuItemRevertForORUploadStatus, menuItemRevertForORPickUpStatus });
 
             ToolStripMenuItem menuItemForTransmittal = new ToolStripMenuItem("Transmit Receipt");
             menuItemForTransmittal.Click += MenuItemTransmitReceipt_Click;
@@ -230,8 +241,8 @@ namespace Revised_OPTS
         {
             DataGridViewSelectedRowCollection selectedRows = DgMainForm.SelectedRows;
 
-            RevertStatusInfoForm revertStatusInfoForm = new RevertStatusInfoForm();
-            revertStatusInfoForm.Show();
+            ToolStripMenuItem clickedSubMenuItem = (ToolStripMenuItem)sender;
+            string selectedStatusInSubMenuItemText = clickedSubMenuItem.Text;
 
             if (selectedRows != null)
             {
@@ -259,17 +270,27 @@ namespace Revised_OPTS
                         miscList.Add(misc);
                     }
                 }
+
                 if (rptList.Count > 0 || businessList.Count > 0 || miscList.Count > 0)
                 {
-                    DialogResult result = MessageBox.Show("Are you sure you want to update the status of the selected records?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    try
+                    {
+                        rptService.CheckRevertStatus(rptList, selectedStatusInSubMenuItemText);
+                    }
+                    catch (RptException ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                        return;
+                    }
 
+                    DialogResult result = MessageBox.Show("Are you sure you want to update the status of the selected records?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                     if (result == DialogResult.Yes)
                     {
-                        rptService.RevertSelectedRecordStatus(rptList);
+                        rptService.RevertSelectedRecordStatus(rptList, selectedStatusInSubMenuItemText);
                         businessService.RevertSelectedRecordStatus(businessList);
                         miscService.RevertSelectedRecordStatus(miscList);
-                        MessageBox.Show("Operation completed successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         DgMainForm.Refresh();
+                        MessageBox.Show("Operation completed successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                 }
             }
@@ -607,7 +628,6 @@ namespace Revised_OPTS
         {
             bool isRptTDNFormatCorrect = SearchBusinessFormat.isTDN(selectedRecordFormat);
             bool isBusinessBillNumFormatCorrect = SearchBusinessFormat.isBusiness(selectedRecordFormat);
-            //TO DO: MISC (isMisc
  
             if (isRptTDNFormatCorrect)
             {

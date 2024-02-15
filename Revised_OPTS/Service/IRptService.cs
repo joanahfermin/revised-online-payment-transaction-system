@@ -25,7 +25,8 @@ namespace Revised_OPTS.Service
         void Update(Rpt rpt);
         void ReleaseReceipt(List<Rpt> rptList, string status, string repName, string contactNum, string releaser);
         void UpdateSelectedRecordsStatus(List<Rpt> rpt, string status);
-        void RevertSelectedRecordStatus(List<Rpt> rpt);
+        void CheckRevertStatus(List<Rpt> rptStatusList, string selectedStatusInSubMenuItemText);
+        void RevertSelectedRecordStatus(List<Rpt> rpt, string selectedStatusInSubMenuItemText);
         void Delete(Rpt rpt);
         void SaveAll(List<Rpt> rpt, List<Rpt> rptToDelete, decimal totalAmountTransferred);
         void SaveAllEPayment(List<Rpt> rpt, List<Business> bussiness, List<Miscellaneous> misc);
