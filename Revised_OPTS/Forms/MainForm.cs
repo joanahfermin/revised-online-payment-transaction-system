@@ -276,6 +276,19 @@ namespace Revised_OPTS
                     try
                     {
                         rptService.CheckRevertStatus(rptList, selectedStatusInSubMenuItemText);
+                        bool isAttachedOr = false;
+
+                        foreach (Rpt rpt in rptList)
+                        {
+                            if (selectedStatusInSubMenuItemText == TaxStatus.ForORUpload)
+                            {
+                                isAttachedOr = true;
+                            }
+                        }
+                        if (isAttachedOr)
+                        {
+                            MessageBox.Show("Attached receipt detected. Kindly note that if an attempt is made to revert a record containing an attached receipt picture, the system will automatically delete the associated image.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        }
                     }
                     catch (RptException ex)
                     {
@@ -286,7 +299,6 @@ namespace Revised_OPTS
                     DialogResult result = MessageBox.Show("Are you sure you want to update the status of the selected records?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                     if (result == DialogResult.Yes)
                     {
-                        //rptService.CheckAttachedPicture(rptList);
                         rptService.RevertSelectedRecordStatus(rptList, selectedStatusInSubMenuItemText);
                         businessService.RevertSelectedRecordStatus(businessList);
                         miscService.RevertSelectedRecordStatus(miscList);
