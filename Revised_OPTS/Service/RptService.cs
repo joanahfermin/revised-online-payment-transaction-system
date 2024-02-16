@@ -46,6 +46,8 @@ namespace Revised_OPTS.Service
 
         IRPTAttachPictureRepository pictureRepository = RepositoryFactory.Instance.GetRPTAttachPictureRepository();
 
+        long RptID = 0;
+
         public Rpt Get(object id)
         {
             using (var dbContext = ApplicationDBContext.Create())
@@ -513,70 +515,94 @@ namespace Revised_OPTS.Service
                 {
                     throw new RptException($"The record you are trying to revert should have a status of '{TaxStatus.ForPaymentValidation}'. \n\n" +
                                          "Please be informed of the following CORRECT sequence of statuses:\n" +
-                                         "RELEASED > FOR O.R PICK UP > FOR O.R UPLOAD > FOR PAYMENT VALIDATION > FOR PAYMENT VERIFICATION");
+                                         "FOR PAYMENT VERIFICATION > FOR PAYMENT VALIDATION > FOR O.R UPLOAD > FOR O.R PICK UP > RELEASED");
                 }
 
                 else if (rpt.Status != TaxStatus.ForORUpload && expectedRevertedStatus == TaxStatus.ForPaymentValidation)
                 {
                     throw new RptException($"The record you are trying to revert should have a status of '{TaxStatus.ForORUpload}'. \n\n" +
                                          "Please be informed of the following CORRECT sequence of statuses:\n" +
-                                         "RELEASED > FOR O.R PICK UP > FOR O.R UPLOAD > FOR PAYMENT VALIDATION > FOR PAYMENT VERIFICATION");
+                                         "FOR PAYMENT VERIFICATION > FOR PAYMENT VALIDATION > FOR O.R UPLOAD > FOR O.R PICK UP > RELEASED");
                 }
 
                 else if (rpt.Status != TaxStatus.ForORPickup && expectedRevertedStatus == TaxStatus.ForORUpload)
                 {
-                    throw new RptException($"The record you are trying to revert should have a status of '{TaxStatus.ForORPickup}'. \n\n" +
+                    throw new RptException($"The record you are trying to revert should have a status of '{TaxStatus.ForORPickup}'. " +
+                        $"In order to revert the status to '{TaxStatus.ForORUpload}', you must delete the OR picture in OR Upload Form. \n\n" +
                                          "Please be informed of the following CORRECT sequence of statuses:\n" +
-                                         "RELEASED > FOR O.R PICK UP > FOR O.R UPLOAD > FOR PAYMENT VALIDATION > FOR PAYMENT VERIFICATION");
+                                         "FOR PAYMENT VERIFICATION > FOR PAYMENT VALIDATION > FOR O.R UPLOAD > FOR O.R PICK UP > RELEASED");
                 }
 
                 else if (rpt.Status != TaxStatus.Released && expectedRevertedStatus == TaxStatus.ForORPickup)
                 {
                     throw new RptException($"The record you are trying to revert should have a status of '{TaxStatus.Released}'. \n\n" +
                                          "Please be informed of the following CORRECT sequence of statuses:\n" +
-                                         "RELEASED > FOR O.R PICK UP > FOR O.R UPLOAD > FOR PAYMENT VALIDATION > FOR PAYMENT VERIFICATION");
+                                         "FOR PAYMENT VERIFICATION > FOR PAYMENT VALIDATION > FOR O.R UPLOAD > FOR O.R PICK UP > RELEASED");
                 }
             }
+        }
+
+        public bool CheckAttachedPicture(Rpt rpt)
+        {
+            RPTAttachPicture existing = pictureRepository.getRptReceipt(rpt.RptID);
+
+            if (existing.PictureId > 0)
+            {
+
+            }
+
+            return existing.PictureId > 0;
         }
 
         public void RevertSelectedRecordStatus(List<Rpt> rptList, string expectedRevertedStatus)
         {
             using (var dbContext = ApplicationDBContext.Create())
             {
-                foreach (Rpt rpt in rptList)
+                using (var scope = new TransactionScope())
                 {
-                    if (rpt.Status == TaxStatus.ForPaymentValidation)
+                    foreach (Rpt rpt in rptList)
                     {
-                        rpt.Status = expectedRevertedStatus;
-                        rpt.VerifiedBy = null;
-                        rpt.VerifiedDate = null;
-                        rptRepository.Update(rpt);
+                        if (rpt.Status == TaxStatus.ForPaymentValidation)
+                        {
+                            rpt.Status = expectedRevertedStatus;
+                            rpt.VerifiedBy = null;
+                            rpt.VerifiedDate = null;
+                            rptRepository.Update(rpt);
+                        }
+                        else if (rpt.Status == TaxStatus.ForORUpload)
+                        {
+                            rpt.Status = expectedRevertedStatus;
+                            rpt.ValidatedBy = null;
+                            rpt.ValidatedDate = null;
+                            rptRepository.Update(rpt);
+                        }
+                        else if (rpt.Status == TaxStatus.ForORPickup)
+                        {
+                            if (true)
+                            {
+                                CheckAttachedPicture(rpt);
+                                //throw new RptException("TEST");
+                                MessageBox.Show("OR Picture detected. Delete the picture first in the OR Upload form.");
+                                return;
+                            }
+                            rpt.Status = expectedRevertedStatus;
+                            rpt.UploadedBy = null;
+                            rpt.UploadedDate = null;
+                            rptRepository.Update(rpt);
+                        }
+                        else if (rpt.Status == TaxStatus.Released)
+                        {
+                            rpt.Status = expectedRevertedStatus;
+                            rpt.ReleasedBy = null;
+                            rpt.ReleasedDate = null;
+                            rpt.RepName = null;
+                            rpt.ContactNumber = null;
+                            rptRepository.Update(rpt);
+                        }
                     }
-                    else if (rpt.Status == TaxStatus.ForORUpload)
-                    {
-                        rpt.Status = TaxStatus.ForPaymentValidation;
-                        rpt.ValidatedBy = null;
-                        rpt.ValidatedDate = null;
-                        rptRepository.Update(rpt);
-                    }
-                    //else if (rpt.Status == TaxStatus.ForORPickup)
-                    //{
-                    //    rpt.Status = TaxStatus.ForPaymentValidation;
-                    //    rpt.UploadedBy = null;
-                    //    rpt.UploadedDate = null;
-                    //    rptRepository.Update(rpt);
-                    //}
-                    //else if (rpt.Status == TaxStatus.Released)
-                    //{
-                    //    rpt.Status = TaxStatus.ForORPickup;
-                    //    rpt.ReleasedBy = null;
-                    //    rpt.ReleasedDate = null;
-                    //    rpt.RepName = null;
-                    //    rpt.ContactNumber = null;
-                    //    rptRepository.Update(rpt);
-                    //}
+                    dbContext.SaveChanges();
+                    scope.Complete();
                 }
-                dbContext.SaveChanges();
             }
         }
 
