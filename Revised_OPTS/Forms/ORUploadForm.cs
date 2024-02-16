@@ -72,7 +72,7 @@ namespace Inventory_System.Forms
                 long rptID = rptRecord.RptID;
                 rptService.DeleteAttachedOR(rptID);
                 loadRptReceipt(rptRecord.RptID);
-
+                //MessageBox.Show("Successfully deleted picture.");
             }
         }
 

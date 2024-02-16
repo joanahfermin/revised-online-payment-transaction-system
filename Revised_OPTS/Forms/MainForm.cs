@@ -286,6 +286,7 @@ namespace Revised_OPTS
                     DialogResult result = MessageBox.Show("Are you sure you want to update the status of the selected records?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                     if (result == DialogResult.Yes)
                     {
+                        //rptService.CheckAttachedPicture(rptList);
                         rptService.RevertSelectedRecordStatus(rptList, selectedStatusInSubMenuItemText);
                         businessService.RevertSelectedRecordStatus(businessList);
                         miscService.RevertSelectedRecordStatus(miscList);

@@ -25,6 +25,7 @@ namespace Revised_OPTS.Service
         void Update(Rpt rpt);
         void ReleaseReceipt(List<Rpt> rptList, string status, string repName, string contactNum, string releaser);
         void UpdateSelectedRecordsStatus(List<Rpt> rpt, string status);
+        //void CheckAttachedPicture(List<Rpt> rptStatusList);
         void CheckRevertStatus(List<Rpt> rptStatusList, string selectedStatusInSubMenuItemText);
         void RevertSelectedRecordStatus(List<Rpt> rpt, string selectedStatusInSubMenuItemText);
         void Delete(Rpt rpt);

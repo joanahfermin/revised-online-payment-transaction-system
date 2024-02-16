@@ -46,8 +46,6 @@ namespace Revised_OPTS.Service
 
         IRPTAttachPictureRepository pictureRepository = RepositoryFactory.Instance.GetRPTAttachPictureRepository();
 
-        long RptID = 0;
-
         public Rpt Get(object id)
         {
             using (var dbContext = ApplicationDBContext.Create())
@@ -527,8 +525,7 @@ namespace Revised_OPTS.Service
 
                 else if (rpt.Status != TaxStatus.ForORPickup && expectedRevertedStatus == TaxStatus.ForORUpload)
                 {
-                    throw new RptException($"The record you are trying to revert should have a status of '{TaxStatus.ForORPickup}'. " +
-                        $"In order to revert the status to '{TaxStatus.ForORUpload}', you must delete the OR picture in OR Upload Form. \n\n" +
+                    throw new RptException($"The record you are trying to revert should have a status of '{TaxStatus.ForORPickup}'\n\n" +
                                          "Please be informed of the following CORRECT sequence of statuses:\n" +
                                          "FOR PAYMENT VERIFICATION > FOR PAYMENT VALIDATION > FOR O.R UPLOAD > FOR O.R PICK UP > RELEASED");
                 }
@@ -542,17 +539,24 @@ namespace Revised_OPTS.Service
             }
         }
 
-        public bool CheckAttachedPicture(Rpt rpt)
-        {
-            RPTAttachPicture existing = pictureRepository.getRptReceipt(rpt.RptID);
+        //public void CheckAttachedPicture(List<Rpt> rptList)
+        //{
+        //    List<Rpt> rptWithAttachedORList = new List<Rpt>();
 
-            if (existing.PictureId > 0)
-            {
+        //    foreach (Rpt rpt in rptList)
+        //    {
+        //        RPTAttachPicture existing = pictureRepository.getRptReceipt(rpt.RptID);
 
-            }
-
-            return existing.PictureId > 0;
-        }
+        //        if (rpt.Status == TaxStatus.ForORPickup && existing.PictureId != null)
+        //        {
+        //            rptWithAttachedORList.Add(rpt);
+        //        }
+        //    }
+        //    if (rptWithAttachedORList.Count > 0)
+        //    {
+        //        MessageBox.Show("Attached receipt detected. Kindly note that if an attempt is made to revert a record containing an attached receipt picture, the system will automatically delete the associated image.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        //    }
+        //}
 
         public void RevertSelectedRecordStatus(List<Rpt> rptList, string expectedRevertedStatus)
         {
@@ -578,13 +582,12 @@ namespace Revised_OPTS.Service
                         }
                         else if (rpt.Status == TaxStatus.ForORPickup)
                         {
-                            if (true)
+                            RPTAttachPicture existing = pictureRepository.getRptReceipt(rpt.RptID);
+                            if (existing != null)
                             {
-                                CheckAttachedPicture(rpt);
-                                //throw new RptException("TEST");
-                                MessageBox.Show("OR Picture detected. Delete the picture first in the OR Upload form.");
-                                return;
+                                pictureRepository.PhysicalDelete(existing);
                             }
+
                             rpt.Status = expectedRevertedStatus;
                             rpt.UploadedBy = null;
                             rpt.UploadedDate = null;
@@ -675,7 +678,6 @@ namespace Revised_OPTS.Service
                 {
                     using (var scope = new TransactionScope())
                     {
-
                         RPTAttachPicture existing = pictureRepository.getRptReceipt(rptId);
                         if (existing != null)
                         {
@@ -683,7 +685,7 @@ namespace Revised_OPTS.Service
                         }
                         dbContext.SaveChanges();
                         scope.Complete();
-                        MessageBox.Show("Successfully deleted OR.");
+                        MessageBox.Show("Sucessfully deleted receipt.");
                     }
                 }
             }
