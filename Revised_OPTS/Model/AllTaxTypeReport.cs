@@ -10,13 +10,13 @@ namespace Inventory_System.Model
     {
         //[Key]
         public string TaxType { get; set; }
-        //public string? BillNumber { get; set; }
-        //public string? TaxPayerName { get; set; }
-        //public decimal? Collection { get; set; }
-        //public decimal? Billing { get; set; }
+        public string? BillNumber { get; set; }
+        public string? TaxPayerName { get; set; }
+        public decimal? Collection { get; set; }
+        public decimal? Billing { get; set; }
         //public decimal TotalAmountTransferrred { get; set; }
-        //public decimal? ExcessShort { get; set; }
-        //public string? Remarks { get; set; }
+        public decimal? ExcessShort { get; set; }
+        public string? Remarks { get; set; }
 
         public object Clone()
         {

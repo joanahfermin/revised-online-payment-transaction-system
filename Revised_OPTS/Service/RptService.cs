@@ -710,24 +710,24 @@ namespace Revised_OPTS.Service
                 "FROM ( " +
                 " SELECT TaxDec, TaxPayerName, AmountTransferred as Collection,  AmountToPay as Billing, 0 as ExcessShort, RPTremarks, ValidatedDate, RPTID, EncodedDate " +
                 " FROM Jo_RPT r " +
-                " WHERE Bank in @OnlinePaymentChannels " +
+                " WHERE Bank in (SELECT BankName FROM Jo_RPT_Banks where isEBank = 1) " +
                 " and DeletedRecord = 0 and CAST(ValidatedDate AS Date)>= CAST(@FromDate AS Date) and CAST(ValidatedDate AS Date) <= CAST(@ToDate AS Date) and ValidatedBy=@UserName " +
                 " UNION " +
 
                 " SELECT TaxDec, TaxPayerName, TotalAmountTransferred as Collection, AmountToPay as Billing, ExcessShortAmount as ExcessShort, RPTremarks, (select min(ValidatedDate) from Jo_RPT r2 where r2.RefNum = r.RefNum ) as ValidatedDate, RPTID, EncodedDate " +
                 " FROM Jo_RPT r " +
-                " WHERE Bank not in @OnlinePaymentChannels and RefNum is not null " +
+                " WHERE Bank not in (SELECT BankName FROM Jo_RPT_Banks where isEBank = 1) and RefNum is not null " +
                 " and DeletedRecord = 0 and CAST(ValidatedDate AS Date)>= CAST(@FromDate AS Date) and CAST(ValidatedDate AS Date) <= CAST(@ToDate AS Date) and ValidatedBy=@UserName " +
                 " UNION " +
 
                 " SELECT TaxDec, TaxPayerName, TotalAmountTransferred as Collection, AmountToPay as Billing, ExcessShortAmount as ExcessShort, RPTremarks, ValidatedDate, RPTID, EncodedDate " +
                 " FROM Jo_RPT r " +
-                " WHERE Bank not in @OnlinePaymentChannels and RefNum is null " +
+                " WHERE Bank not in (SELECT BankName FROM Jo_RPT_Banks where isEBank = 1) and RefNum is null " +
                 " and DeletedRecord = 0 and CAST(ValidatedDate AS Date)>= CAST(@FromDate AS Date) and CAST(ValidatedDate AS Date) <= CAST(@ToDate AS Date) and ValidatedBy=@UserName " +
                 ") AS ReportView " +
                 "order by ValidatedDate, EncodedDate ",
 
-                new[] { new SqlParameter("@FromDate", dateFrom), new SqlParameter("@ToDate", dateTo), new SqlParameter("@UserName", UserName), new SqlParameter("@OnlinePaymentChannels", eBanks) }).ToList();
+                new[] { new SqlParameter("@FromDate", dateFrom), new SqlParameter("@ToDate", dateTo), new SqlParameter("@UserName", UserName) }).ToList();
             }
         }
     }

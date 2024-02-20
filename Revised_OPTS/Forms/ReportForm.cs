@@ -26,12 +26,13 @@ namespace Inventory_System.Forms
         {
             InitializeComponent();
             InitializeReportType();
-            //InitializeDynamicMapping();
 
             dynamicControlContainer = new DynamicControlContainer(this);
 
             DgReportForm.DefaultCellStyle.Font = new Font("Tahoma", 12, FontStyle.Regular);
             this.WindowState = FormWindowState.Maximized;
+
+            DgReportForm.CellFormatting += DgReportForm_CellFormatting;
         }
         public void InitializeReportType()
         {
@@ -41,18 +42,27 @@ namespace Inventory_System.Forms
             }
         }
 
-        public void InitializeDynamicMapping()
+        public void InitializeDynamicMappingAllTaxesType()
         {
             DynamicGridInfo[] gridInfoArray = new DynamicGridInfo[] {
-                new DynamicGridInfo{PropertyName="TaxType", Label = "Tax Type", isReadOnly = true },
-                new DynamicGridInfo{PropertyName="BillNumber", Label = "Bill Number", isRequired=true },
-                new DynamicGridInfo{PropertyName="TaxpayerName", Label = "Taxpayer's Name", isRequired=true },
-                new DynamicGridInfo{PropertyName="BillAmount", Label = "Bill Amount", isRequired=true },
-                new DynamicGridInfo{PropertyName="TotalAmountTransferred", Label = "Total Amount Transferred" },
-                new DynamicGridInfo{PropertyName="ExcessShort", Label = "Excess/Short"},
+                new DynamicGridInfo{PropertyName="TaxType", Label = "Tax Type" },
+                new DynamicGridInfo{PropertyName="BillNumber", Label = "Bill Number" },
+                new DynamicGridInfo{PropertyName="TaxpayerName", Label = "Taxpayer's Name" },
+                new DynamicGridInfo{PropertyName="Collection", Label = "Bill Amount", decimalValue = true },
+                new DynamicGridInfo{PropertyName="Billing", Label = "Total Amount Transferred", decimalValue = true },
+                new DynamicGridInfo{PropertyName="ExcessShort", Label = "Excess/Short", decimalValue = true},
                 new DynamicGridInfo{PropertyName="Remarks", Label = "Remarks"},
             };
             DynamicGridContainer = new DynamicGridContainer<AllTaxTypeReport>(DgReportForm, gridInfoArray, true, true);
+        }
+
+        private void DgReportForm_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (e.Value is decimal decimalValue)
+            {
+                e.Value = decimalValue.ToString("N2");
+                e.FormattingApplied = true;
+            }
         }
 
         private void cbTaxType_SelectedIndexChanged(object sender, EventArgs e)
@@ -60,11 +70,12 @@ namespace Inventory_System.Forms
             string taxType = cbTaxTypeReport.Text;
             DgReportForm.Rows.Clear();
             DgReportForm.Columns.Clear();
-            
+
             if (taxType == AllTaxTypeReportUtil.COLLECTORS_REPORT)
             {
-                InitializeDynamicMapping();
-                DgReportForm.DataSource = rptService.RetrieveByValidatedDate(dtFrom.Value, dtTo.Value);
+                InitializeDynamicMappingAllTaxesType();
+                List<AllTaxTypeReport> allTaxesValidated = rptService.RetrieveByValidatedDate(dtFrom.Value, dtTo.Value);
+                DgReportForm.DataSource = allTaxesValidated;
             }
         }
 
