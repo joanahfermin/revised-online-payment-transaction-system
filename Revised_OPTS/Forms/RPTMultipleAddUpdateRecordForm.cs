@@ -285,6 +285,5 @@ namespace Inventory_System.Forms
         {
             this.Close();
         }
-
     }
 }

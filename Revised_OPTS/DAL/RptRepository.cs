@@ -1,7 +1,10 @@
-﻿using Inventory_System.Model;
+﻿using Inventory_System.Forms;
+using Inventory_System.Model;
+using Inventory_System.Service;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Revised_OPTS.Model;
+using Revised_OPTS.Service;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +16,7 @@ namespace Revised_OPTS.DAL
     internal class RptRepository : BaseRepository<Rpt>, IRptRepository
     {
         private IBankRepository bankRepository = RepositoryFactory.Instance.GetBankRepository();
+        ISecurityService securityService = ServiceFactory.Instance.GetSecurityService();
 
         public List<Rpt> checkExistingRecord(Rpt rpt)
         {

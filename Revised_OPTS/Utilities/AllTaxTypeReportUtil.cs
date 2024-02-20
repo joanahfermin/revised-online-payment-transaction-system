@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Inventory_System.Utilities
 {
-    internal class ReportUtil
+    internal class AllTaxTypeReportUtil
     {
         public const string REGENERATE_EPAYMENTS = "ALL E-PAYMENTS";
         public const string COLLECTORS_REPORT = "ALL TAXES COLLECTED";

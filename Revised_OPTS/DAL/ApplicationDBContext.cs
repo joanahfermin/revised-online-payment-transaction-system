@@ -52,6 +52,7 @@ namespace Revised_OPTS.DAL
                 .Property(e => e.DeletedRecord)
                 .HasConversion(new DeletedRecordBoolToIntConverter());
             //*/
+            modelBuilder.Entity<AllTaxTypeReport>().HasNoKey();
 
             // Configure other entities and their properties here...
         }
@@ -87,6 +88,8 @@ namespace Revised_OPTS.DAL
         public DbSet<UserAccount> users { get; set; }
 
         public DbSet<RPTAttachPicture> rptPictures { get; set; }
+        public DbSet<AllTaxTypeReport> allTaxTypeReports { get; set; }
+
 
     }
 

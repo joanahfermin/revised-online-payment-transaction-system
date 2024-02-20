@@ -3,6 +3,8 @@ using Inventory_System.Exception;
 using Inventory_System.Forms;
 using Inventory_System.Model;
 using Inventory_System.Service;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using Revised_OPTS.DAL;
 using Revised_OPTS.Model;
 using Revised_OPTS.Utilities;
@@ -692,6 +694,40 @@ namespace Revised_OPTS.Service
             catch (RptException ex)
             {
                 throw new("Error deleting attached OR.", ex);
+            }
+        }
+
+        public List<AllTaxTypeReport> RetrieveByValidatedDate(DateTime dateFrom, DateTime dateTo)
+        {
+            using (var dbContext = ApplicationDBContext.Create())
+            {
+                string UserName = securityService.getLoginUser().DisplayName;
+                //List<string> regularBanks = bankRepository.GetRegularBanks().Select(p => p.BankName).ToList();
+                List<string> eBanks = bankRepository.GetElectronicBanks().Select(p => p.BankName).ToList();
+
+                return dbContext.allTaxTypeReports.FromSqlRaw<AllTaxTypeReport>(
+                "SELECT 'RPT' as TaxType, TaxDec as BillNumber, TaxPayerName, Collection, Billing, ExcessShort, RPTremarks as Remarks " +
+                "FROM ( " +
+                " SELECT TaxDec, TaxPayerName, AmountTransferred as Collection,  AmountToPay as Billing, 0 as ExcessShort, RPTremarks, ValidatedDate, RPTID, EncodedDate " +
+                " FROM Jo_RPT r " +
+                " WHERE Bank in @OnlinePaymentChannels " +
+                " and DeletedRecord = 0 and CAST(ValidatedDate AS Date)>= CAST(@FromDate AS Date) and CAST(ValidatedDate AS Date) <= CAST(@ToDate AS Date) and ValidatedBy=@UserName " +
+                " UNION " +
+
+                " SELECT TaxDec, TaxPayerName, TotalAmountTransferred as Collection, AmountToPay as Billing, ExcessShortAmount as ExcessShort, RPTremarks, (select min(ValidatedDate) from Jo_RPT r2 where r2.RefNum = r.RefNum ) as ValidatedDate, RPTID, EncodedDate " +
+                " FROM Jo_RPT r " +
+                " WHERE Bank not in @OnlinePaymentChannels and RefNum is not null " +
+                " and DeletedRecord = 0 and CAST(ValidatedDate AS Date)>= CAST(@FromDate AS Date) and CAST(ValidatedDate AS Date) <= CAST(@ToDate AS Date) and ValidatedBy=@UserName " +
+                " UNION " +
+
+                " SELECT TaxDec, TaxPayerName, TotalAmountTransferred as Collection, AmountToPay as Billing, ExcessShortAmount as ExcessShort, RPTremarks, ValidatedDate, RPTID, EncodedDate " +
+                " FROM Jo_RPT r " +
+                " WHERE Bank not in @OnlinePaymentChannels and RefNum is null " +
+                " and DeletedRecord = 0 and CAST(ValidatedDate AS Date)>= CAST(@FromDate AS Date) and CAST(ValidatedDate AS Date) <= CAST(@ToDate AS Date) and ValidatedBy=@UserName " +
+                ") AS ReportView " +
+                "order by ValidatedDate, EncodedDate ",
+
+                new[] { new SqlParameter("@FromDate", dateFrom), new SqlParameter("@ToDate", dateTo), new SqlParameter("@UserName", UserName), new SqlParameter("@OnlinePaymentChannels", eBanks) }).ToList();
             }
         }
     }
