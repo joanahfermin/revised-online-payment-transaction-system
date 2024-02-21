@@ -80,12 +80,20 @@ namespace Revised_OPTS
             ContextMenuStrip contextMenuStrip1 = new ContextMenuStrip();
 
             ToolStripMenuItem menuItemDelete = new ToolStripMenuItem("Delete");
-            menuItemDelete.Click += MenuItemDelete_Click;
+            ToolStripMenuItem menuItemAllRefNo = new ToolStripMenuItem("All items");
+            ToolStripMenuItem menuItemItemsInTheListOfRefNo = new ToolStripMenuItem("Some items");
+            ToolStripMenuItem menuItemOneItem = new ToolStripMenuItem("One item");
+            menuItemDelete.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[]
+            { menuItemAllRefNo, menuItemItemsInTheListOfRefNo, menuItemOneItem });
+
+            menuItemItemsInTheListOfRefNo.Click += MenuItemDelete_Click;
+
             ToolStripMenuItem menuItemEdit = new ToolStripMenuItem("Edit");
             menuItemEdit.Click += MenuItemEdit_Click;
 
             ToolStripMenuItem menuItemValidatePayment = new ToolStripMenuItem("Validate Payment");
             menuItemValidatePayment.Click += MenuItemValidatePayment_Click;
+
             ToolStripMenuItem menuItemVerifyPayment = new ToolStripMenuItem("Verify Payment");
             menuItemVerifyPayment.Click += MenuItemVerifiedPayment_Click;
             ToolStripMenuItem menuItemReleaseReceipt = new ToolStripMenuItem("Release Receipt");
@@ -157,32 +165,51 @@ namespace Revised_OPTS
 
         private void MenuItemDelete_Click(object? sender, EventArgs e)
         {
-            DataGridViewSelectedRowCollection selectedRows = DgMainForm.SelectedRows;
+            //DataGridViewSelectedRowCollection selectedRows = DgMainForm.SelectedRows;
 
-            if (selectedRows.Count > 0)
+            DataGridViewRow selectedRow = DgMainForm.CurrentRow;
+            if (selectedRow != null)
             {
-                foreach (DataGridViewRow row in selectedRows)
+                Rpt selectedRptRecord = selectedRow.DataBoundItem as Rpt;
+                if (selectedRptRecord.RefNum != null)
                 {
-                    Rpt selectedRptRecord = row.DataBoundItem as Rpt;
-                    if (selectedRptRecord.RefNum != null)
-                    {
-                        new RPTMultipleAddUpdateRecordForm(selectedRptRecord.RefNum, selectedRptRecord.RequestingParty).Show();
-                        MessageBox.Show("Right-click the record you want to delete to navigate the action you want to perform.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    }
-                    else
-                    {
-                        DialogResult result = MessageBox.Show("Are you sure you want to delete the selected record(s)?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-
-                        if (result == DialogResult.Yes)
-                        {
-                            rptService.Delete(selectedRptRecord);
-                            Search(tbSearch.Text);
-                            tbSearch.Clear();
-                            MessageBox.Show("Operation completed successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        }
-                    }
+                    new RPTMultipleAddUpdateRecordForm(selectedRptRecord.RefNum, selectedRptRecord.RequestingParty).Show();
+                    MessageBox.Show("Right-click the record you want to delete to navigate the action you want to perform.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    Rpt retrieveRptRecord = rptService.Get(selectedRecordId);
+                    string taxType = TaxTypeUtil.REALPROPERTYTAX;
+                    AllTaxesAddUpdateRecordForm updateRecord = new AllTaxesAddUpdateRecordForm(retrieveRptRecord.RptID, taxType);
+                    updateRecord.ShowDialog();
                 }
             }
+
+
+            //if (selectedRows.Count > 0)
+            //{
+            //    foreach (DataGridViewRow row in selectedRows)
+            //    {
+            //        Rpt selectedRptRecord = row.DataBoundItem as Rpt;
+            //        if (selectedRptRecord.RefNum != null)
+            //        {
+            //            new RPTMultipleAddUpdateRecordForm(selectedRptRecord.RefNum, selectedRptRecord.RequestingParty).Show();
+            //            MessageBox.Show("Right-click the record you want to delete to navigate the action you want to perform.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            //        }
+            //        else
+            //        {
+            //            DialogResult result = MessageBox.Show("Are you sure you want to delete the selected record(s)?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            //            if (result == DialogResult.Yes)
+            //            {
+            //                rptService.Delete(selectedRptRecord);
+            //                Search(tbSearch.Text);
+            //                tbSearch.Clear();
+            //                MessageBox.Show("Operation completed successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            //            }
+            //        }
+            //    }
+            //}
         }
 
         private void MenuItemReleaseReceipt_Click(object? sender, EventArgs e)

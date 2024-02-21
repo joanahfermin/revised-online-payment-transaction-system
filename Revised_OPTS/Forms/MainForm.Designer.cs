@@ -159,7 +159,7 @@
             this.tbTotalAmountTransferred.Location = new System.Drawing.Point(707, 98);
             this.tbTotalAmountTransferred.Name = "tbTotalAmountTransferred";
             this.tbTotalAmountTransferred.Size = new System.Drawing.Size(136, 26);
-            this.tbTotalAmountTransferred.TabIndex = 1;
+            this.tbTotalAmountTransferred.TabIndex = 3;
             this.tbTotalAmountTransferred.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.tbTotalAmountTransferred.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbSearch_KeyDown);
             // 
@@ -189,7 +189,7 @@
             this.tbRecordSelected.Location = new System.Drawing.Point(1040, 98);
             this.tbRecordSelected.Name = "tbRecordSelected";
             this.tbRecordSelected.Size = new System.Drawing.Size(60, 26);
-            this.tbRecordSelected.TabIndex = 1;
+            this.tbRecordSelected.TabIndex = 4;
             this.tbRecordSelected.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.tbRecordSelected.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbSearch_KeyDown);
             // 
@@ -219,7 +219,7 @@
             this.tbTotalBillAmount.Location = new System.Drawing.Point(321, 97);
             this.tbTotalBillAmount.Name = "tbTotalBillAmount";
             this.tbTotalBillAmount.Size = new System.Drawing.Size(136, 26);
-            this.tbTotalBillAmount.TabIndex = 1;
+            this.tbTotalBillAmount.TabIndex = 2;
             this.tbTotalBillAmount.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.tbTotalBillAmount.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbSearch_KeyDown);
             // 

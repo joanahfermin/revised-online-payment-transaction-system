@@ -38,6 +38,7 @@ namespace Inventory_System.Forms
             InitializeComponent();
             InitializeDataGridView();
             DataGridUI();
+
             DgRptAddUpdateForm.CellFormatting += DgRptAddUpdateForm_CellFormatting;
             DgRptAddUpdateForm.CellValueChanged += DgRptAddUpdateForm_CellValueChanged;
             DgRptAddUpdateForm.RowsRemoved += DgRptAddUpdateForm_RowsRemoved;
