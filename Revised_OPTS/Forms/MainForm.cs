@@ -87,6 +87,7 @@ namespace Revised_OPTS
             { menuItemAllRefNo, menuItemItemsInTheListOfRefNo });
 
             menuItemItemsInTheListOfRefNo.Click += MenuItemDelete_Click;
+            menuItemAllRefNo.Click += MenuItemDeleteAllRefNo_Click;
 
             ToolStripMenuItem menuItemEdit = new ToolStripMenuItem("Edit");
             menuItemEdit.Click += MenuItemEdit_Click;
@@ -163,6 +164,22 @@ namespace Revised_OPTS
             }
         }
 
+        private void MenuItemDeleteAllRefNo_Click(object? sender, EventArgs e)
+        {
+            DataGridViewSelectedRowCollection selectedRow = DgMainForm.SelectedRows;
+            if (selectedRow != null && selectedRow.Count > 0)
+            {
+                Rpt selectedRptRecord = selectedRow[0].DataBoundItem as Rpt;
+                if (selectedRptRecord.RefNum != null)
+                {
+                    new RPTMultipleAddUpdateRecordForm(selectedRptRecord.RefNum, selectedRptRecord.RequestingParty).Show();
+                    //MessageBox.Show("Right-click the record you want to delete to navigate the action you want to perform.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+
+        }
+
+
         private void MenuItemDelete_Click(object? sender, EventArgs e)
         {
             DataGridViewSelectedRowCollection selectedRow = DgMainForm.SelectedRows;
@@ -173,13 +190,6 @@ namespace Revised_OPTS
                 {
                     new RPTMultipleAddUpdateRecordForm(selectedRptRecord.RefNum, selectedRptRecord.RequestingParty).Show();
                     MessageBox.Show("Right-click the record you want to delete to navigate the action you want to perform.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-                else
-                {
-                    Rpt retrieveRptRecord = rptService.Get(selectedRecordId);
-                    string taxType = TaxTypeUtil.REALPROPERTYTAX;
-                    AllTaxesAddUpdateRecordForm updateRecord = new AllTaxesAddUpdateRecordForm(retrieveRptRecord.RptID, taxType);
-                    updateRecord.ShowDialog();
                 }
             }
 
