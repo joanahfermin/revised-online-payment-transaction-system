@@ -148,15 +148,26 @@ namespace Revised_OPTS
                         sumTotalTransferredAmount = (decimal)(selectedRptRecord.TotalAmountTransferred ?? 0) + sumTotalTransferredAmount;
                     }
                 }
+
                 else if (CURRENT_RECORD_TYPE == BUSINESS_RECORD_TYPE)
                 {
-                    Business selectedRptRecord = row.DataBoundItem as Business;
-
-                    if (selectedRptRecord != null)
+                    Business selectedBusinessRecord = row.DataBoundItem as Business;
+                    if (selectedBusinessRecord != null)
                     {
                         // Assuming AmountToPay is a property in your Rpt class and Sum is a property of AmountToPay
-                        sumBillAmount = (decimal)(selectedRptRecord.BillAmount ?? 0 ) + sumBillAmount;
-                        sumTotalTransferredAmount = (decimal)(selectedRptRecord.TotalAmount ?? 0) + sumTotalTransferredAmount;
+                        sumBillAmount = (decimal)(selectedBusinessRecord.BillAmount ?? 0) + sumBillAmount;
+                        sumTotalTransferredAmount = (decimal)(selectedBusinessRecord.TotalAmount ?? 0) + sumTotalTransferredAmount;
+                    }
+                }
+
+                else if (CURRENT_RECORD_TYPE == MISC_RECORD_TYPE)
+                {
+                    Miscellaneous selectedMiscRecord = row.DataBoundItem as Miscellaneous;
+                    if (selectedMiscRecord != null)
+                    {
+                        // Assuming AmountToPay is a property in your Rpt class and Sum is a property of AmountToPay
+                        sumBillAmount = (decimal)(selectedMiscRecord.AmountToBePaid ?? 0) + sumBillAmount;
+                        sumTotalTransferredAmount = (decimal)(selectedMiscRecord.TransferredAmount ?? 0) + sumTotalTransferredAmount;
                     }
                 }
                 tbTotalBillAmount.Text = sumBillAmount.ToString("N2");
@@ -166,19 +177,48 @@ namespace Revised_OPTS
 
         private void MenuItemDeleteAllRefNo_Click(object? sender, EventArgs e)
         {
-            DataGridViewSelectedRowCollection selectedRow = DgMainForm.SelectedRows;
-            if (selectedRow != null && selectedRow.Count > 0)
+            DataGridViewSelectedRowCollection selectedRows = DgMainForm.SelectedRows;
+            Rpt selectedRptRecord = null;
+            List<Rpt> listOfRptsToDelete = new List<Rpt>();
+            List<Rpt> listOfOtherRefNum = new List<Rpt>();
+            string otherRefNumDetectedMessage = null;
+
+            if (selectedRows.Count > 0)
             {
-                Rpt selectedRptRecord = selectedRow[0].DataBoundItem as Rpt;
-                if (selectedRptRecord.RefNum != null)
+                foreach (DataGridViewRow row in selectedRows)
                 {
-                    new RPTMultipleAddUpdateRecordForm(selectedRptRecord.RefNum, selectedRptRecord.RequestingParty).Show();
-                    //MessageBox.Show("Right-click the record you want to delete to navigate the action you want to perform.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    selectedRptRecord = row.DataBoundItem as Rpt;//XXX
+
+                    if (selectedRptRecord.RefNum != null)
+                    {
+                        listOfRptsToDelete.Add(selectedRptRecord);
+                    }
+                }
+
+                for (int i = 0; i < listOfRptsToDelete.Count; i++)
+                {
+                    if (listOfRptsToDelete[0].RefNum == listOfRptsToDelete[i].RefNum)
+                    {
+                        listOfRptsToDelete.Add(selectedRptRecord);
+                    }
+                    else
+                    {
+                        listOfOtherRefNum.Add(selectedRptRecord);
+                    }
                 }
             }
 
-        }
+            string firstRptReferenceNumber = selectedRows.Cast<DataGridViewRow>().Select(row => row.DataBoundItem)
+                    .OfType<Rpt>().Select(rpt => rpt.RefNum).FirstOrDefault();
+            if (firstRptReferenceNumber != null)
+            {
 
+            }
+            string firstMiscReferenceNumber = selectedRows.Cast<DataGridViewRow>().Select(row => row.DataBoundItem)
+                    .OfType<Miscellaneous>().Select(misc => misc.RefNum).FirstOrDefault();
+            string firstBusinessReferenceNumber = selectedRows.Cast<DataGridViewRow>().Select(row => row.DataBoundItem)
+                    .OfType<Business>().Select(b => b.RefNum).FirstOrDefault();
+        }
 
         private void MenuItemDelete_Click(object? sender, EventArgs e)
         {
