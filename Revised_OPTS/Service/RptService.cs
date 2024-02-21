@@ -274,16 +274,15 @@ namespace Revised_OPTS.Service
             using (var dbContext = ApplicationDBContext.Create())
             {
                 validateRptDuplicateRecord(listOfRptsToSave);
-
-                if (listOfRptsToSave.Count > 1)
+                using (var scope = new TransactionScope())
                 {
-                    AssignRefNum(listOfRptsToSave);
-                    bool firstRecord = true;
-
-                    calculateTotalPayment(listOfRptsToSave, totalAmountTransferred);
-
-                    using (var scope = new TransactionScope())
+                    if (listOfRptsToSave.Count > 1)
                     {
+                        AssignRefNum(listOfRptsToSave);
+                        bool firstRecord = true;
+
+                        calculateTotalPayment(listOfRptsToSave, totalAmountTransferred);
+
                         foreach (Rpt rpt in listOfRptsToSave)
                         {
                             if (rpt.RptID == 0)
@@ -298,23 +297,22 @@ namespace Revised_OPTS.Service
                                 rptRepository.Update(rpt);
                             }
                         }
-
-                        foreach (Rpt rpt in listOfRptsToDelete)
-                        {
-                            if (rpt.RptID > 0)
-                            {
-                                rptRepository.Delete(rpt);
-                            }
-                        }
-                        dbContext.SaveChanges();
-                        scope.Complete();
                     }
-                }
-                else
-                {
-                    calculateTotalPayment(listOfRptsToSave, totalAmountTransferred);
-                    Rpt rpt = listOfRptsToSave[0];
-                    Insert(rpt);
+                    else if (listOfRptsToSave.Count == 1)
+                    {
+                        calculateTotalPayment(listOfRptsToSave, totalAmountTransferred);
+                        Rpt rpt = listOfRptsToSave[0];
+                        Insert(rpt);
+                    }
+                    foreach (Rpt rptToDelete in listOfRptsToDelete)
+                    {
+                        if (rptToDelete.RptID > 0)
+                        {
+                            rptRepository.Delete(rptToDelete);
+                        }
+                    }
+                    dbContext.SaveChanges();
+                    scope.Complete();
                 }
             }
         }

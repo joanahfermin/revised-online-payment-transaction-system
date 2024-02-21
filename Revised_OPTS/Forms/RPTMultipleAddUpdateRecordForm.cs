@@ -218,11 +218,11 @@ namespace Inventory_System.Forms
             {
                 firstTaxdecRecord = listOfRptsToSave[0].TaxDec.ToString();
             }
-            else
-            {
-                MessageBox.Show("No items in the grid.");
-                return;
-            }
+            //else
+            //{
+            //    MessageBox.Show("No items in the grid.");
+            //    return;
+            //}
 
             if (!DynamicGridContainer.HaveNoErrors())
             {
@@ -248,7 +248,10 @@ namespace Inventory_System.Forms
                 return;
             }
 
-            NotificationHelper.notifyUserAndRefreshRecord(firstTaxdecRecord);
+            if (firstTaxdecRecord != null)
+            {
+                NotificationHelper.notifyUserAndRefreshRecord(firstTaxdecRecord);
+            }
             btnClose_Click(sender, e);
         }
 

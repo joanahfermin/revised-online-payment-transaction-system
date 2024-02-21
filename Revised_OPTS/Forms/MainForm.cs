@@ -82,9 +82,9 @@ namespace Revised_OPTS
             ToolStripMenuItem menuItemDelete = new ToolStripMenuItem("Delete");
             ToolStripMenuItem menuItemAllRefNo = new ToolStripMenuItem("All items");
             ToolStripMenuItem menuItemItemsInTheListOfRefNo = new ToolStripMenuItem("Some items");
-            ToolStripMenuItem menuItemOneItem = new ToolStripMenuItem("One item");
+
             menuItemDelete.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[]
-            { menuItemAllRefNo, menuItemItemsInTheListOfRefNo, menuItemOneItem });
+            { menuItemAllRefNo, menuItemItemsInTheListOfRefNo });
 
             menuItemItemsInTheListOfRefNo.Click += MenuItemDelete_Click;
 
@@ -165,12 +165,10 @@ namespace Revised_OPTS
 
         private void MenuItemDelete_Click(object? sender, EventArgs e)
         {
-            //DataGridViewSelectedRowCollection selectedRows = DgMainForm.SelectedRows;
-
-            DataGridViewRow selectedRow = DgMainForm.CurrentRow;
-            if (selectedRow != null)
+            DataGridViewSelectedRowCollection selectedRow = DgMainForm.SelectedRows;
+            if (selectedRow != null && selectedRow.Count > 0)
             {
-                Rpt selectedRptRecord = selectedRow.DataBoundItem as Rpt;
+                Rpt selectedRptRecord = selectedRow[0].DataBoundItem as Rpt;
                 if (selectedRptRecord.RefNum != null)
                 {
                     new RPTMultipleAddUpdateRecordForm(selectedRptRecord.RefNum, selectedRptRecord.RequestingParty).Show();
@@ -689,21 +687,6 @@ namespace Revised_OPTS
                     AllTaxesAddUpdateRecordForm updateRecord = new AllTaxesAddUpdateRecordForm(retrieveMiscRecord.MiscID, taxType);
                     updateRecord.ShowDialog();
                 }
-            }
-        }
-
-        private void DgMainForm_MouseClick(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Right)
-            {
-                //MainDGRightClick.Show(DgMainForm, e.Location);
-
-                //var hti = DgMainForm.HitTest(e.X, e.Y);
-                //if (hti.RowIndex >=0)
-                //{
-                //    DgMainForm.ClearSelection();
-                //    DgMainForm.Rows[hti.RowIndex].Selected = true;
-                //}
             }
         }
 
