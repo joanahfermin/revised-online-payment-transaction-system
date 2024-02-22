@@ -40,7 +40,7 @@ namespace Revised_OPTS.DAL
         public List<Rpt> retrieveBySameRefNum(string refNum)
         {
             return getDbSet().Where(j => j.RefNum == refNum && j.DeletedRecord != 1)
-            .OrderBy(j => j.RptID)/*.ThenBy(j => j.TaxDec)*/.ToList();
+            .OrderBy(j => j.RptID).ToList();
         }
 
         public List<Rpt> RetrieveBySameRefNumInUploadingEpayment(string taxdec)

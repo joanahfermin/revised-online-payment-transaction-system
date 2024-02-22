@@ -50,5 +50,11 @@ namespace Revised_OPTS.DAL
                         && jo.BusinessID != bus.BusinessID)
                     .ToList();
         }
+
+        public List<Business> retrieveBySameRefNum(string refNum)
+        {
+            return getDbSet().Where(j => j.RefNum == refNum && j.DeletedRecord == false)
+            .OrderBy(j => j.BusinessID).ToList();
+        }
     }
 }

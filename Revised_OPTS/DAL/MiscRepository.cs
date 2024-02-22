@@ -47,5 +47,10 @@ namespace Revised_OPTS.DAL
                 .ThenBy(j => j.EncodedDate)
                 .ToList();
         }
+        public List<Miscellaneous> retrieveBySameRefNum(string refNum)
+        {
+            return getDbSet().Where(j => j.RefNum == refNum && j.DeletedRecord != 1)
+            .OrderBy(j => j.MiscID).ToList();
+        }
     }
 }

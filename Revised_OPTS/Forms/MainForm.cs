@@ -47,7 +47,7 @@ namespace Revised_OPTS
 
         Dictionary<string, string> BUSINESS_DG_COLUMNS = new Dictionary<string, string>
         {
-            { "Business_Type", "Bus. Type" }, { "MP_Number", "M.P Number" }, { "BillNumber", "Bill Number" }, 
+            { "Business_Type", "Bus. Type" }, { "MP_Number", "M.P Number" }, { "BillNumber", "Bill Number" },
             { "TaxpayersName", "TaxPayer's Name" }, { "BusinessName", "Business Name" }, { "BillAmount", "Bill Amount" },
             { "TotalAmount", "Transferred Amount" }, { "MiscFees", "Misc. Fees" }, { "Year", "Year" },
             { "Qtrs", "Quarter" }, { "Status", "Status" }, { "PaymentChannel", "Bank" }, { "RefNum", "Reference No." },
@@ -62,10 +62,10 @@ namespace Revised_OPTS
         Dictionary<string, string> MISC_DG_COLUMNS = new Dictionary<string, string>
         {
             { "MiscType", "Misc Type" }, { "TaxpayersName", "TaxPayer's Name" }, { "OrderOfPaymentNum", "O.P Number" }, { "OPATrackingNum", "OPA Tracking No." },
-            { "AmountToBePaid", "Bill Amount" }, { "TransferredAmount", "Transferred Amount" }, { "ExcessShort", "Excess/Short" }, { "Status", "Status" }, 
-            { "ModeOfPayment", "Bank" }, { "PaymentDate", "Payment Date" },{ "VerifiedBy", "Verified By" }, { "VerifiedDate", "Verified Date" }, { "ValidatedBy", "Validated By" }, 
+            { "AmountToBePaid", "Bill Amount" }, { "TransferredAmount", "Transferred Amount" }, { "ExcessShort", "Excess/Short" }, { "Status", "Status" },
+            { "ModeOfPayment", "Bank" }, { "PaymentDate", "Payment Date" },{ "VerifiedBy", "Verified By" }, { "VerifiedDate", "Verified Date" }, { "ValidatedBy", "Validated By" },
             { "ValidatedDate", "Validated Date" }, { "RequestingParty", "Email Address" }, { "RefNum", "Reference No." },
-            { "EncodedDate", "Encoded Date" }, { "EncodedBy", "Encoded By" }, { "Remarks", "Remarks" }, { "ReleasedBy", "Released By" }, 
+            { "EncodedDate", "Encoded Date" }, { "EncodedBy", "Encoded By" }, { "Remarks", "Remarks" }, { "ReleasedBy", "Released By" },
             { "ReleasedDate", "Released Date" }, { "RepName", "Representative Name" }, { "ContactNumber", "Contact Number" },
         };
 
@@ -111,7 +111,7 @@ namespace Revised_OPTS
             menuItemRevertForORUploadStatus.Click += MenuItemRevertStatus_Click;
             menuItemRevertForORPickUpStatus.Click += MenuItemRevertStatus_Click;
 
-            menuItemRevertStatus.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] 
+            menuItemRevertStatus.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[]
             { menuItemRevertForVerificationStatus, menuItemRevertForValidationStatus, menuItemRevertForORUploadStatus, menuItemRevertForORPickUpStatus });
 
             ToolStripMenuItem menuItemForTransmittal = new ToolStripMenuItem("Transmit Receipt");
@@ -134,7 +134,7 @@ namespace Revised_OPTS
             DataGridViewSelectedRowCollection selectedRows = DgMainForm.SelectedRows;
             decimal sumBillAmount = 0;
             decimal sumTotalTransferredAmount = 0;
-            
+
             foreach (DataGridViewRow row in selectedRows)
             {
                 if (CURRENT_RECORD_TYPE == RPT_RECORD_TYPE)
@@ -148,7 +148,6 @@ namespace Revised_OPTS
                         sumTotalTransferredAmount = (decimal)(selectedRptRecord.TotalAmountTransferred ?? 0) + sumTotalTransferredAmount;
                     }
                 }
-
                 else if (CURRENT_RECORD_TYPE == BUSINESS_RECORD_TYPE)
                 {
                     Business selectedBusinessRecord = row.DataBoundItem as Business;
@@ -159,7 +158,6 @@ namespace Revised_OPTS
                         sumTotalTransferredAmount = (decimal)(selectedBusinessRecord.TotalAmount ?? 0) + sumTotalTransferredAmount;
                     }
                 }
-
                 else if (CURRENT_RECORD_TYPE == MISC_RECORD_TYPE)
                 {
                     Miscellaneous selectedMiscRecord = row.DataBoundItem as Miscellaneous;
@@ -178,50 +176,111 @@ namespace Revised_OPTS
         private void MenuItemDeleteAllRefNo_Click(object? sender, EventArgs e)
         {
             DataGridViewSelectedRowCollection selectedRows = DgMainForm.SelectedRows;
+            string? firstRptReferenceNumber = null;
+            string? firstBusReferenceNumber = null;
+            string? firstMiscReferenceNumber = null;
 
-            string? firstRptReferenceNumber = selectedRows.Cast<DataGridViewRow>()
+            if (selectedRows.Count > 0)
+            {
+                var sortedRptRows = selectedRows.Cast<DataGridViewRow>().OrderBy(row => row.Index);
+                firstRptReferenceNumber = sortedRptRows
+                    .Select(row => row.DataBoundItem)
+                    .OfType<Rpt>()
+                    .Select(rpt => rpt.RefNum)
+                    .First();
+
+                List<Rpt> listofRptsToDelete = new List<Rpt>();
+                int countTheList = 0;
+
+                if (firstRptReferenceNumber != null)
+                {
+                    List<Rpt> listOfRptsSameRefNum = rptService.RetrieveBySameRefNum(firstRptReferenceNumber);
+
+                    foreach (Rpt rpt in listOfRptsSameRefNum)
+                    {
+                        if (rpt.RefNum == firstRptReferenceNumber)
+                        {
+                            listofRptsToDelete.Add(rpt);
+                        }
+                        countTheList++;
+                    }
+                    DialogResult result = MessageBox.Show($"Please be informed that there are {countTheList} record(s) found in the selection. Are you sure you want to delete all the record(s) in the list of {firstRptReferenceNumber}? ", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                    if (result == DialogResult.Yes)
+                    {
+                        rptService.DeleteAll(listofRptsToDelete);
+                        Search(tbSearch.Text);
+                        tbSearch.Clear();
+                        MessageBox.Show("Operation completed successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                }
+
+                var sortedBusRows = selectedRows.Cast<DataGridViewRow>().OrderBy(row => row.Index);
+                firstBusReferenceNumber = sortedBusRows
+                    .Select(row => row.DataBoundItem)
+                    .OfType<Rpt>()
+                    .Select(rpt => rpt.RefNum)
+                    .First();
+
+                List<Business> listofBusToDelete = new List<Business>();
+                int countTheBusList = 0;
+
+                if (firstBusReferenceNumber != null)
+                {
+                    List<Business> listOfBusToDelete = businessService.RetrieveBySameRefNum(firstBusReferenceNumber);
+
+                    foreach (Business bus in listOfBusToDelete)
+                    {
+                        if (bus.RefNum == firstBusReferenceNumber)
+                        {
+                            listofBusToDelete.Add(bus);
+                        }
+                        countTheList++;
+                    }
+                    DialogResult result = MessageBox.Show($"Please be informed that there are {countTheBusList} record(s) found in the selection. Are you sure you want to delete all the record(s) in the list of {firstBusReferenceNumber}? ", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                    if (result == DialogResult.Yes)
+                    {
+                        businessService.DeleteAll(listOfBusToDelete);
+                        Search(tbSearch.Text);
+                        tbSearch.Clear();
+                        MessageBox.Show("Operation completed successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                }
+            }
+
+            var sortedMiscRows = selectedRows.Cast<DataGridViewRow>().OrderBy(row => row.Index);
+            firstMiscReferenceNumber = sortedMiscRows
                 .Select(row => row.DataBoundItem)
                 .OfType<Rpt>()
                 .Select(rpt => rpt.RefNum)
-                .FirstOrDefault();
+                .First();
 
-            List<Rpt> listofRptsToDelete = new List<Rpt>();
-            int countTheList = 0;
+            List<Miscellaneous> listofMiscToDelete = new List<Miscellaneous>();
+            int countTheMiscList = 0;
 
-            if (firstRptReferenceNumber != null)
+            if (firstMiscReferenceNumber != null)
             {
-                List<Rpt> listOfRptsSameRefNum = rptService.RetrieveBySameRefNum(firstRptReferenceNumber);
+                List<Miscellaneous> listOfMiscToDelete = miscService.RetrieveBySameRefNum(firstMiscReferenceNumber);
 
-                foreach (Rpt item in listOfRptsSameRefNum)
+                foreach (Miscellaneous misc in listOfMiscToDelete)
                 {
-                    if (item.RefNum == firstRptReferenceNumber)
+                    if (misc.RefNum == firstMiscReferenceNumber)
                     {
-                        listofRptsToDelete.Add(item);
+                        listOfMiscToDelete.Add(misc);
                     }
-                    countTheList++;
+                    countTheMiscList++;
                 }
-                DialogResult result = MessageBox.Show($"Please be informed that there are {countTheList} record(s) found in the selection. Are you sure you want to delete all the records found in the list of {firstRptReferenceNumber}? ", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                
+                DialogResult result = MessageBox.Show($"Please be informed that there are {countTheMiscList} record(s) found in the selection. Are you sure you want to delete all the record(s) in the list of {firstMiscReferenceNumber}? ", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
                 if (result == DialogResult.Yes)
                 {
-                    rptService.DeleteAll(listofRptsToDelete);
+                    miscService.DeleteAll(listOfMiscToDelete);
                     Search(tbSearch.Text);
                     tbSearch.Clear();
                     MessageBox.Show("Operation completed successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
-
-            string? firstBusinessReferenceNumber = selectedRows.Cast<DataGridViewRow>()
-                .Select(row => row.DataBoundItem)
-                .OfType<Business>().Select(b => b.RefNum)
-                .FirstOrDefault();
-
-            string? firstMiscReferenceNumber = selectedRows.Cast<DataGridViewRow>()
-                .Select(row => row.DataBoundItem)
-                .OfType<Miscellaneous>()
-                .Select(misc => misc.RefNum)
-                .FirstOrDefault();
-
         }
 
         private void MenuItemDelete_Click(object? sender, EventArgs e)

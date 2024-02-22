@@ -162,5 +162,29 @@ namespace Revised_OPTS.Service
                 throw new DuplicateRecordException($"There is an existing record/s detected in the database. Please update or delete the old record/s. Bill Number = {allTaxdec}", allDuplicateMisc);
             }
         }
+        public List<Miscellaneous> RetrieveBySameRefNum(string refNum)
+        {
+            using (var dbContext = ApplicationDBContext.Create())
+            {
+                return miscRepository.retrieveBySameRefNum(refNum);
+            }
+        }
+        public void DeleteAll(List<Miscellaneous> miscToDelete)
+        {
+            using (var dbContext = ApplicationDBContext.Create())
+            {
+                using (var scope = new TransactionScope())
+                {
+                    foreach (Miscellaneous misc in miscToDelete)
+                    {
+                        misc.DeletedRecord = 1;
+                        miscRepository.Update(misc);
+                    }
+                    dbContext.SaveChanges();
+                    scope.Complete();
+                }
+            }
+        }
+
     }
 }

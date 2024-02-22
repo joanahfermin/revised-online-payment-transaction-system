@@ -19,5 +19,7 @@ namespace Revised_OPTS.Service
         void UpdateSelectedRecordsStatus(List<Miscellaneous> miscList, string status);
 
         void validateMiscDuplicateRecord(List<Miscellaneous> listOfMiscToSave);
+        List<Miscellaneous> RetrieveBySameRefNum(string refNum);
+        void DeleteAll(List<Miscellaneous> miscToDelete);
     }
 }

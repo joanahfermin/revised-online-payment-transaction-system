@@ -17,6 +17,7 @@ namespace Revised_OPTS.Service
         IBusinessRepository businessRepository = RepositoryFactory.Instance.GetBusinessRepository();
         ISecurityService securityService = ServiceFactory.Instance.GetSecurityService();
 
+
         public Business Get(object id)
         {
             using (var dbContext = ApplicationDBContext.Create())
@@ -179,5 +180,28 @@ namespace Revised_OPTS.Service
             }
         }
 
+        public List<Business> RetrieveBySameRefNum(string refNum)
+        {
+            using (var dbContext = ApplicationDBContext.Create())
+            {
+                return businessRepository.retrieveBySameRefNum(refNum);
+            }
+        }
+        public void DeleteAll(List<Business> busToDelete)
+        {
+            using (var dbContext = ApplicationDBContext.Create())
+            {
+                using (var scope = new TransactionScope())
+                {
+                    foreach (Business bus in busToDelete)
+                    {
+                        bus.DeletedRecord = false;
+                        businessRepository.Update(bus);
+                    }
+                    dbContext.SaveChanges();
+                    scope.Complete();
+                }
+            }
+        }
     }
 }

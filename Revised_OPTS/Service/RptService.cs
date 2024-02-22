@@ -92,6 +92,7 @@ namespace Revised_OPTS.Service
             using (var dbContext = ApplicationDBContext.Create())
             {
                 return SpecialSort(rptRepository.retrieveBySearchKeyword(tdn));
+                //return /*SpecialSort*/(rptRepository.retrieveBySearchKeyword(tdn));
             }
         }
 
@@ -428,22 +429,36 @@ namespace Revised_OPTS.Service
         {
             List<Rpt> resultList = new List<Rpt>();
             List<long> processedRpdIDList = new List<long>(resultList.Count);
-            foreach(Rpt rpt in rptList)
+            HashSet<string> refNumSet = rptList.Select(rpt => rpt.RefNum).ToHashSet();
+
+            foreach(string refNum in refNumSet)
             {
-                if(!processedRpdIDList.Contains(rpt.RptID))
+                foreach (Rpt rpt in rptList)
                 {
-                    resultList.Add(rpt);
-                    processedRpdIDList.Add(rpt.RptID);
-                    foreach (Rpt rpt2 in rptList)
+                    if (rpt.RefNum != refNum)
                     {
-                        if (!processedRpdIDList.Contains(rpt2.RptID) && rpt.TaxDec == rpt2.TaxDec)
+                        continue;
+                    }
+                    if (!processedRpdIDList.Contains(rpt.RptID))
+                    {
+                        resultList.Add(rpt);
+                        processedRpdIDList.Add(rpt.RptID);
+                        foreach (Rpt rpt2 in rptList)
                         {
-                            resultList.Add(rpt2);
-                            processedRpdIDList.Add(rpt2.RptID);
+                            if (rpt2.RefNum != refNum)
+                            {
+                                continue;
+                            }
+                            if (!processedRpdIDList.Contains(rpt2.RptID) && rpt.TaxDec == rpt2.TaxDec)
+                            {
+                                resultList.Add(rpt2);
+                                processedRpdIDList.Add(rpt2.RptID);
+                            }
                         }
                     }
                 }
             }
+
             return resultList;
         }
 
