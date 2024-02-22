@@ -37,6 +37,12 @@ namespace Revised_OPTS.DAL
             .OrderBy(j => j.RptID).ThenBy(j => j.TaxDec).ToList();
         }
 
+        public List<Rpt> retrieveBySameRefNum(string refNum)
+        {
+            return getDbSet().Where(j => j.RefNum == refNum && j.DeletedRecord != 1)
+            .OrderBy(j => j.RptID)/*.ThenBy(j => j.TaxDec)*/.ToList();
+        }
+
         public List<Rpt> RetrieveBySameRefNumInUploadingEpayment(string taxdec)
         {
             return getDbSet().FromSqlRaw<Rpt>(

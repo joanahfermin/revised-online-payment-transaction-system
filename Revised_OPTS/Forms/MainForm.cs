@@ -178,46 +178,50 @@ namespace Revised_OPTS
         private void MenuItemDeleteAllRefNo_Click(object? sender, EventArgs e)
         {
             DataGridViewSelectedRowCollection selectedRows = DgMainForm.SelectedRows;
-            Rpt selectedRptRecord = null;
-            List<Rpt> listOfRptsToDelete = new List<Rpt>();
-            List<Rpt> listOfOtherRefNum = new List<Rpt>();
-            string otherRefNumDetectedMessage = null;
 
-            if (selectedRows.Count > 0)
-            {
-                foreach (DataGridViewRow row in selectedRows)
-                {
-                    selectedRptRecord = row.DataBoundItem as Rpt;//XXX
+            string? firstRptReferenceNumber = selectedRows.Cast<DataGridViewRow>()
+                .Select(row => row.DataBoundItem)
+                .OfType<Rpt>()
+                .Select(rpt => rpt.RefNum)
+                .FirstOrDefault();
 
-                    if (selectedRptRecord.RefNum != null)
-                    {
-                        listOfRptsToDelete.Add(selectedRptRecord);
-                    }
-                }
+            List<Rpt> listofRptsToDelete = new List<Rpt>();
+            int countTheList = 0;
 
-                for (int i = 0; i < listOfRptsToDelete.Count; i++)
-                {
-                    if (listOfRptsToDelete[0].RefNum == listOfRptsToDelete[i].RefNum)
-                    {
-                        listOfRptsToDelete.Add(selectedRptRecord);
-                    }
-                    else
-                    {
-                        listOfOtherRefNum.Add(selectedRptRecord);
-                    }
-                }
-            }
-
-            string firstRptReferenceNumber = selectedRows.Cast<DataGridViewRow>().Select(row => row.DataBoundItem)
-                    .OfType<Rpt>().Select(rpt => rpt.RefNum).FirstOrDefault();
             if (firstRptReferenceNumber != null)
             {
+                List<Rpt> listOfRptsSameRefNum = rptService.RetrieveBySameRefNum(firstRptReferenceNumber);
 
+                foreach (Rpt item in listOfRptsSameRefNum)
+                {
+                    if (item.RefNum == firstRptReferenceNumber)
+                    {
+                        listofRptsToDelete.Add(item);
+                    }
+                    countTheList++;
+                }
+                DialogResult result = MessageBox.Show($"Please be informed that there are {countTheList} record(s) found in the selection. Are you sure you want to delete all the records found in the list of {firstRptReferenceNumber}? ", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                
+                if (result == DialogResult.Yes)
+                {
+                    rptService.DeleteAll(listofRptsToDelete);
+                    Search(tbSearch.Text);
+                    tbSearch.Clear();
+                    MessageBox.Show("Operation completed successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
             }
-            string firstMiscReferenceNumber = selectedRows.Cast<DataGridViewRow>().Select(row => row.DataBoundItem)
-                    .OfType<Miscellaneous>().Select(misc => misc.RefNum).FirstOrDefault();
-            string firstBusinessReferenceNumber = selectedRows.Cast<DataGridViewRow>().Select(row => row.DataBoundItem)
-                    .OfType<Business>().Select(b => b.RefNum).FirstOrDefault();
+
+            string? firstBusinessReferenceNumber = selectedRows.Cast<DataGridViewRow>()
+                .Select(row => row.DataBoundItem)
+                .OfType<Business>().Select(b => b.RefNum)
+                .FirstOrDefault();
+
+            string? firstMiscReferenceNumber = selectedRows.Cast<DataGridViewRow>()
+                .Select(row => row.DataBoundItem)
+                .OfType<Miscellaneous>()
+                .Select(misc => misc.RefNum)
+                .FirstOrDefault();
+
         }
 
         private void MenuItemDelete_Click(object? sender, EventArgs e)

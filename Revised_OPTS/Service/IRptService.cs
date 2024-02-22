@@ -20,15 +20,16 @@ namespace Revised_OPTS.Service
         List<Rpt> RetrieveBySameRefNumAndReqParty(string refNum, string reqParty);
         List<Rpt> RetrieveForORUploadRegular(DateTime date, string validatedBy);
         List<Rpt> RetrieveBySameRefNumInUploadingEpayment(string taxdec);
+        List<Rpt> RetrieveBySameRefNum(string refNum);
 
         void Insert(Rpt rpt);
         void Update(Rpt rpt);
         void ReleaseReceipt(List<Rpt> rptList, string status, string repName, string contactNum, string releaser);
         void UpdateSelectedRecordsStatus(List<Rpt> rpt, string status);
-        //void CheckAttachedPicture(List<Rpt> rptStatusList);
         void CheckRevertStatus(List<Rpt> rptStatusList, string selectedStatusInSubMenuItemText);
         void RevertSelectedRecordStatus(List<Rpt> rpt, string selectedStatusInSubMenuItemText);
         void Delete(Rpt rpt);
+        void DeleteAll(List<Rpt> rptsToDelete);
         void SaveAll(List<Rpt> rpt, List<Rpt> rptToDelete, decimal totalAmountTransferred);
         void SaveAllEPayment(List<Rpt> rpt, List<Business> bussiness, List<Miscellaneous> misc);
         void UpdateAllinDuplicateRecordForm(List<Rpt> listOfRptsToSave);

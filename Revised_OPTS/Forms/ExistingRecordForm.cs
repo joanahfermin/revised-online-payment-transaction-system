@@ -99,6 +99,8 @@ namespace Inventory_System.Forms
                 new DynamicGridInfo{PropertyName="Quarter", Label = "Quarter", GridType=DynamicGridType.ComboBox, ComboboxChoices = Quarter.ALL_QUARTER, isRequired=true },
                 new DynamicGridInfo{PropertyName="Status", Label = "Status", GridType=DynamicGridType.ComboBox, ComboboxChoices = TaxStatus.STATUS, isReadOnly = true },
                 new DynamicGridInfo{PropertyName="BillingSelection", Label = "Billing Selection", GridType=DynamicGridType.ComboBox, ComboboxChoices = BillingSelectionUtil.ALL_BILLING_SELECTION, isRequired=true },
+                new DynamicGridInfo{PropertyName="EncodedBy", Label = "Encoded By", isReadOnly = true },
+                new DynamicGridInfo{PropertyName="EncodedDate", Label = "Encoded Date", GridType = DynamicGridType.DatetimePicker, isRequired=true, isReadOnly = true  },
                 new DynamicGridInfo{PropertyName="RequestingParty", Label = "Email Address", isReadOnly = true },
                 new DynamicGridInfo{PropertyName="RPTremarks", Label = "Remarks", isReadOnly = true },
             };
@@ -125,6 +127,8 @@ namespace Inventory_System.Forms
                 new DynamicGridInfo{PropertyName="Year", Label = "Year", decimalValue = true},
                 new DynamicGridInfo{PropertyName="Qtrs", Label = "Quarter", GridType=DynamicGridType.ComboBox, ComboboxChoices = Quarter.ALL_QUARTER, isRequired=false },
                 new DynamicGridInfo{PropertyName="Status", Label = "Status", GridType=DynamicGridType.ComboBox, ComboboxChoices = TaxStatus.STATUS, isReadOnly = true },
+                new DynamicGridInfo{PropertyName="EncodedBy", Label = "Encoded By", isReadOnly = true },
+                new DynamicGridInfo{PropertyName="EncodedDate", Label = "Encoded Date", GridType = DynamicGridType.DatetimePicker, isRequired=true, isReadOnly = true  },
                 new DynamicGridInfo{PropertyName="RequestingParty", Label = "Email Address" },
                 new DynamicGridInfo{PropertyName="BussinessRemarks", Label = "Remarks"},
             };
@@ -149,6 +153,8 @@ namespace Inventory_System.Forms
                 new DynamicGridInfo{PropertyName="Status", Label = "Status", GridType=DynamicGridType.ComboBox, ComboboxChoices = TaxStatus.STATUS, isReadOnly = true },
                 new DynamicGridInfo{PropertyName="RefNum", Label = "Reference Number" },
                 new DynamicGridInfo{PropertyName="RequestingParty", Label = "Email Address" },
+                new DynamicGridInfo{PropertyName="EncodedBy", Label = "Encoded By", isReadOnly = true },
+                new DynamicGridInfo{PropertyName="EncodedDate", Label = "Encoded Date", GridType = DynamicGridType.DatetimePicker, isRequired=true, isReadOnly = true  },
                 new DynamicGridInfo{PropertyName="Remarks", Label = "Remarks" },
             };
             MiscDynamicGridContainer = new DynamicGridContainer<Miscellaneous>(DgMiscAddUpdateForm, gridInfoArray, true, true);

@@ -511,28 +511,28 @@ namespace Revised_OPTS.Service
             {
                 if ( rpt.Status != TaxStatus.ForPaymentValidation && expectedRevertedStatus == TaxStatus.ForPaymentVerification)
                 {
-                    throw new RptException($"The record you are trying to revert should have a status of '{TaxStatus.ForPaymentValidation}'. \n\n" +
+                    throw new RptException($"INCORRECT STATUS DETECTED. Please check the record(s) you are trying to revert. The record(s) you are trying to revert should have a status of '{TaxStatus.ForPaymentValidation}'. \n\n" +
                                          "Please be informed of the following CORRECT sequence of statuses:\n" +
                                          "FOR PAYMENT VERIFICATION > FOR PAYMENT VALIDATION > FOR O.R UPLOAD > FOR O.R PICK UP > RELEASED");
                 }
 
                 else if (rpt.Status != TaxStatus.ForORUpload && expectedRevertedStatus == TaxStatus.ForPaymentValidation)
                 {
-                    throw new RptException($"The record you are trying to revert should have a status of '{TaxStatus.ForORUpload}'. \n\n" +
+                    throw new RptException($"INCORRECT STATUS DETECTED. Please check the record(s) you are trying to revert. The record(s) you are trying to revert should have a status of '{TaxStatus.ForORUpload}'. \n\n" +
                                          "Please be informed of the following CORRECT sequence of statuses:\n" +
                                          "FOR PAYMENT VERIFICATION > FOR PAYMENT VALIDATION > FOR O.R UPLOAD > FOR O.R PICK UP > RELEASED");
                 }
 
                 else if (rpt.Status != TaxStatus.ForORPickup && expectedRevertedStatus == TaxStatus.ForORUpload)
                 {
-                    throw new RptException($"The record you are trying to revert should have a status of '{TaxStatus.ForORPickup}'\n\n" +
+                    throw new RptException($"INCORRECT STATUS DETECTED. Please check the record(s) you are trying to revert. The record(s) you are trying to revert should have a status of '{TaxStatus.ForORPickup}'\n\n" +
                                          "Please be informed of the following CORRECT sequence of statuses:\n" +
                                          "FOR PAYMENT VERIFICATION > FOR PAYMENT VALIDATION > FOR O.R UPLOAD > FOR O.R PICK UP > RELEASED");
                 }
 
                 else if (rpt.Status != TaxStatus.Released && expectedRevertedStatus == TaxStatus.ForORPickup)
                 {
-                    throw new RptException($"The record you are trying to revert should have a status of '{TaxStatus.Released}'. \n\n" +
+                    throw new RptException($"INCORRECT STATUS DETECTED. Please check the record(s) you are trying to revert. The record(s) you are trying to revert should have a status of '{TaxStatus.Released}'. \n\n" +
                                          "Please be informed of the following CORRECT sequence of statuses:\n" +
                                          "FOR PAYMENT VERIFICATION > FOR PAYMENT VALIDATION > FOR O.R UPLOAD > FOR O.R PICK UP > RELEASED");
                 }
@@ -623,6 +623,23 @@ namespace Revised_OPTS.Service
             }
         }
 
+        public void DeleteAll(List<Rpt> rptsToDelete)
+        {
+            using (var dbContext = ApplicationDBContext.Create())
+            {
+                using (var scope = new TransactionScope())
+                {
+                    foreach (Rpt rpt in rptsToDelete)
+                    {
+                        rpt.DeletedRecord = 1;
+                        rptRepository.Update(rpt);
+                    }
+                    dbContext.SaveChanges();
+                    scope.Complete();
+                }
+            }
+        }
+
         public void UploadReceipt(RPTAttachPicture pix)
         {
             try
@@ -659,6 +676,14 @@ namespace Revised_OPTS.Service
             using (var dbContext = ApplicationDBContext.Create())
             {
                 return pictureRepository.getRptReceipt(rptId);
+            }
+        }
+
+        public List<Rpt> RetrieveBySameRefNum(string refNum)
+        {
+            using (var dbContext = ApplicationDBContext.Create())
+            {
+                return SpecialSort(rptRepository.retrieveBySameRefNum(refNum));
             }
         }
 
