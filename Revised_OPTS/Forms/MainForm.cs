@@ -173,13 +173,8 @@ namespace Revised_OPTS
             }
         }
 
-        private void MenuItemDeleteAllRefNo_Click(object? sender, EventArgs e)
+        private void DeleteAllRptWithSameRefNo(DataGridViewSelectedRowCollection selectedRows, string firstRptReferenceNumber, int count)
         {
-            DataGridViewSelectedRowCollection selectedRows = DgMainForm.SelectedRows;
-            string? firstRptReferenceNumber = null;
-            string? firstBusReferenceNumber = null;
-            string? firstMiscReferenceNumber = null;
-
             if (selectedRows.Count > 0)
             {
                 var sortedRptRows = selectedRows.Cast<DataGridViewRow>().OrderBy(row => row.Index);
@@ -187,10 +182,9 @@ namespace Revised_OPTS
                     .Select(row => row.DataBoundItem)
                     .OfType<Rpt>()
                     .Select(rpt => rpt.RefNum)
-                    .First();
+                    .FirstOrDefault();
 
                 List<Rpt> listofRptsToDelete = new List<Rpt>();
-                int countTheList = 0;
 
                 if (firstRptReferenceNumber != null)
                 {
@@ -202,9 +196,9 @@ namespace Revised_OPTS
                         {
                             listofRptsToDelete.Add(rpt);
                         }
-                        countTheList++;
+                        count++;
                     }
-                    DialogResult result = MessageBox.Show($"Please be informed that there are {countTheList} record(s) found in the selection. Are you sure you want to delete all the record(s) in the list of {firstRptReferenceNumber}? ", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    DialogResult result = MessageBox.Show($"Please be informed that there are {count} record(s) found in the selection. Are you sure you want to delete all the record(s) in the list of {firstRptReferenceNumber}? ", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
                     if (result == DialogResult.Yes)
                     {
@@ -214,16 +208,21 @@ namespace Revised_OPTS
                         MessageBox.Show("Operation completed successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                 }
+            }
+        }
 
+        private void DeleteAllBusinessWithSameRefNo(DataGridViewSelectedRowCollection selectedRows, string firstBusReferenceNumber, int count)
+        {
+            if (selectedRows.Count > 0)
+            {
                 var sortedBusRows = selectedRows.Cast<DataGridViewRow>().OrderBy(row => row.Index);
                 firstBusReferenceNumber = sortedBusRows
                     .Select(row => row.DataBoundItem)
-                    .OfType<Rpt>()
-                    .Select(rpt => rpt.RefNum)
-                    .First();
+                    .OfType<Business>()
+                    .Select(bus => bus.RefNum)
+                    .FirstOrDefault();
 
                 List<Business> listofBusToDelete = new List<Business>();
-                int countTheBusList = 0;
 
                 if (firstBusReferenceNumber != null)
                 {
@@ -235,9 +234,9 @@ namespace Revised_OPTS
                         {
                             listofBusToDelete.Add(bus);
                         }
-                        countTheList++;
+                        count++;
                     }
-                    DialogResult result = MessageBox.Show($"Please be informed that there are {countTheBusList} record(s) found in the selection. Are you sure you want to delete all the record(s) in the list of {firstBusReferenceNumber}? ", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    DialogResult result = MessageBox.Show($"Please be informed that there are {count} record(s) found in the selection. Are you sure you want to delete all the record(s) in the list of {firstBusReferenceNumber}? ", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
                     if (result == DialogResult.Yes)
                     {
@@ -248,38 +247,62 @@ namespace Revised_OPTS
                     }
                 }
             }
+        }
 
-            var sortedMiscRows = selectedRows.Cast<DataGridViewRow>().OrderBy(row => row.Index);
-            firstMiscReferenceNumber = sortedMiscRows
-                .Select(row => row.DataBoundItem)
-                .OfType<Rpt>()
-                .Select(rpt => rpt.RefNum)
-                .First();
-
-            List<Miscellaneous> listofMiscToDelete = new List<Miscellaneous>();
-            int countTheMiscList = 0;
-
-            if (firstMiscReferenceNumber != null)
+        private void DeleteAllMiscWithSameRefNo(DataGridViewSelectedRowCollection selectedRows, string firstMiscReferenceNumber, int count)
+        {
+            if (selectedRows.Count > 0)
             {
-                List<Miscellaneous> listOfMiscToDelete = miscService.RetrieveBySameRefNum(firstMiscReferenceNumber);
+                var sortedMiscRows = selectedRows.Cast<DataGridViewRow>().OrderBy(row => row.Index);
+                firstMiscReferenceNumber = sortedMiscRows
+                    .Select(row => row.DataBoundItem)
+                    .OfType<Miscellaneous>()
+                    .Select(misc => misc.RefNum)
+                    .FirstOrDefault();
 
-                foreach (Miscellaneous misc in listOfMiscToDelete)
+                List<Miscellaneous> listofMiscToDelete = new List<Miscellaneous>();
+
+                if (firstMiscReferenceNumber != null)
                 {
-                    if (misc.RefNum == firstMiscReferenceNumber)
+                    List<Miscellaneous> listOfMiscToDelete = miscService.RetrieveBySameRefNum(firstMiscReferenceNumber);
+
+                    foreach (Miscellaneous misc in listOfMiscToDelete)
                     {
-                        listOfMiscToDelete.Add(misc);
+                        if (misc.RefNum == firstMiscReferenceNumber)
+                        {
+                            listOfMiscToDelete.Add(misc);
+                        }
+                        count++;
                     }
-                    countTheMiscList++;
-                }
-                DialogResult result = MessageBox.Show($"Please be informed that there are {countTheMiscList} record(s) found in the selection. Are you sure you want to delete all the record(s) in the list of {firstMiscReferenceNumber}? ", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    DialogResult result = MessageBox.Show($"Please be informed that there are {count} record(s) found in the selection. Are you sure you want to delete all the record(s) in the list of {firstMiscReferenceNumber}? ", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
-                if (result == DialogResult.Yes)
-                {
-                    miscService.DeleteAll(listOfMiscToDelete);
-                    Search(tbSearch.Text);
-                    tbSearch.Clear();
-                    MessageBox.Show("Operation completed successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    if (result == DialogResult.Yes)
+                    {
+                        miscService.DeleteAll(listOfMiscToDelete);
+                        Search(tbSearch.Text);
+                        tbSearch.Clear();
+                        MessageBox.Show("Operation completed successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
                 }
+
+            }
+        }
+
+        private void MenuItemDeleteAllRefNo_Click(object? sender, EventArgs e)
+        {
+            DataGridViewSelectedRowCollection selectedRows = DgMainForm.SelectedRows;
+
+            string? firstRptReferenceNumber = null;
+            string? firstBusReferenceNumber = null;
+            string? firstMiscReferenceNumber = null;
+
+            int count = 0;
+
+            if (selectedRows.Count > 0)
+            {
+                DeleteAllRptWithSameRefNo(selectedRows, firstRptReferenceNumber, count);
+                DeleteAllBusinessWithSameRefNo(selectedRows, firstBusReferenceNumber, count);
+                DeleteAllMiscWithSameRefNo(selectedRows, firstMiscReferenceNumber, count);
             }
         }
 

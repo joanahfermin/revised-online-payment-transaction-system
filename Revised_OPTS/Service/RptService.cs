@@ -277,9 +277,12 @@ namespace Revised_OPTS.Service
                 validateRptDuplicateRecord(listOfRptsToSave);
                 using (var scope = new TransactionScope())
                 {
-                    if (listOfRptsToSave.Count > 1)
+                    if (listOfRptsToSave.Count > 0)
                     {
-                        AssignRefNum(listOfRptsToSave);
+                        if (listOfRptsToSave.Count > 1)
+                        {
+                            AssignRefNum(listOfRptsToSave);
+                        }
                         bool firstRecord = true;
 
                         calculateTotalPayment(listOfRptsToSave, totalAmountTransferred);
@@ -298,12 +301,6 @@ namespace Revised_OPTS.Service
                                 rptRepository.Update(rpt);
                             }
                         }
-                    }
-                    else if (listOfRptsToSave.Count == 1)
-                    {
-                        calculateTotalPayment(listOfRptsToSave, totalAmountTransferred);
-                        Rpt rpt = listOfRptsToSave[0];
-                        Insert(rpt);
                     }
                     foreach (Rpt rptToDelete in listOfRptsToDelete)
                     {
