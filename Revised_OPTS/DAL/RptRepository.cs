@@ -139,5 +139,16 @@ namespace Revised_OPTS.DAL
                 rpt.SendReceiptReady = true;
             }
         }
+
+        public int CountORUploadRemainingToSend(string uploadedBy)
+        {
+            var query = from rpt in getDbSet()
+                        where rpt.DeletedRecord != 1
+                              && rpt.Status == "FOR O.R UPLOAD"
+                              && rpt.SendReceiptReady == true
+                              && rpt.UploadedBy == uploadedBy
+                        select rpt;
+            return query.Count();
+        }
     }
 }

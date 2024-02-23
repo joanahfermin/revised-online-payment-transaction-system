@@ -673,6 +673,15 @@ namespace Revised_OPTS.Service
             }
         }
 
+        public int CountORUploadRemainingToSend(string uploadedBy)
+        {
+            using (var dbContext = ApplicationDBContext.Create())
+            {
+                return rptRepository.CountORUploadRemainingToSend(uploadedBy);
+            }
+        }
+
+
         public void UploadReceipt(RPTAttachPicture pix)
         {
             try
@@ -786,5 +795,6 @@ namespace Revised_OPTS.Service
                 new[] { new SqlParameter("@FromDate", dateFrom), new SqlParameter("@ToDate", dateTo), new SqlParameter("@UserName", UserName) }).ToList();
             }
         }
+
     }
 }

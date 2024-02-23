@@ -1,5 +1,6 @@
 using Inventory_System.Exception;
 using Inventory_System.Forms;
+using Inventory_System.Service;
 using Inventory_System.Utilities;
 using Revised_OPTS.Forms;
 using Revised_OPTS.Model;
@@ -8,7 +9,6 @@ using Revised_OPTS.Utilities;
 using System.Globalization;
 using System.Text.RegularExpressions;
 
-
 namespace Revised_OPTS
 {
     public partial class MainForm : Form
@@ -16,6 +16,9 @@ namespace Revised_OPTS
         IRptService rptService = ServiceFactory.Instance.GetRptService();
         IMiscService miscService = ServiceFactory.Instance.GetMiscService();
         IBusinessService businessService = ServiceFactory.Instance.GetBusinessService();
+        ISecurityService securityService = ServiceFactory.Instance.GetSecurityService();
+
+        private System.Windows.Forms.Timer autoUpdateScreenTimer = new System.Windows.Forms.Timer();
 
         private const int RPT_RECORD_TYPE = 1;
         private const int MISC_RECORD_TYPE = 2;
@@ -125,7 +128,24 @@ namespace Revised_OPTS
             contextMenuStrip1.Items.Add(menuItemVerifyPayment);
 
             DgMainForm.ContextMenuStrip = contextMenuStrip1;
+
+            InitializeAutoUpdateScreenTimer();
         }
+
+        private void InitializeAutoUpdateScreenTimer()
+        {
+            autoUpdateScreenTimer.Interval = 300000; // 5 minutes
+            autoUpdateScreenTimer.Tick += autoUpdateScreenTimer_Tick;
+            autoUpdateScreenTimer.Start();
+        }
+
+        private void autoUpdateScreenTimer_Tick(object sender, EventArgs e)
+        {
+            string uploadedBy = securityService.getLoginUser().DisplayName;
+            tbMailToSendCount.Text = rptService.CountORUploadRemainingToSend(uploadedBy).ToString();
+
+        }
+
 
         private void DgMainForm_SelectionChanged(object? sender, EventArgs e)
         {

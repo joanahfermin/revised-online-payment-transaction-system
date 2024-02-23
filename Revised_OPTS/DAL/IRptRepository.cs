@@ -18,5 +18,6 @@ namespace Revised_OPTS.DAL
         List<Rpt> RetrieveBySameRefNumInUploadingEpayment(string refNum);
         int CoundForORUploadWithPhoto(List<long> rptIDList);
         void ConfirmSendOrUpload(List<long> rptIDList);
+        int CountORUploadRemainingToSend(string uploadedBy);
     }
 }

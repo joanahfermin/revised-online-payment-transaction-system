@@ -51,6 +51,8 @@
             this.label4 = new System.Windows.Forms.Label();
             this.btnReport = new System.Windows.Forms.Button();
             this.DgMainForm = new System.Windows.Forms.DataGridView();
+            this.label5 = new System.Windows.Forms.Label();
+            this.tbMailToSendCount = new System.Windows.Forms.TextBox();
             this.MainDGRightClick.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DgMainForm)).BeginInit();
@@ -358,6 +360,35 @@
             this.DgMainForm.TabIndex = 207;
             this.DgMainForm.CellContextMenuStripNeeded += new System.Windows.Forms.DataGridViewCellContextMenuStripNeededEventHandler(this.DgMainForm_CellContextMenuStripNeeded);
             // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.BackColor = System.Drawing.Color.Transparent;
+            this.label5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.label5.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.label5.ForeColor = System.Drawing.Color.White;
+            this.label5.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.label5.Location = new System.Drawing.Point(1454, 89);
+            this.label5.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
+            this.label5.Name = "label5";
+            this.label5.Padding = new System.Windows.Forms.Padding(10);
+            this.label5.Size = new System.Drawing.Size(222, 39);
+            this.label5.TabIndex = 209;
+            this.label5.Text = "Remaining OR To Send:";
+            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // tbMailToSendCount
+            // 
+            this.tbMailToSendCount.BackColor = System.Drawing.Color.OldLace;
+            this.tbMailToSendCount.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.tbMailToSendCount.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.tbMailToSendCount.ForeColor = System.Drawing.Color.Black;
+            this.tbMailToSendCount.Location = new System.Drawing.Point(1698, 97);
+            this.tbMailToSendCount.Name = "tbMailToSendCount";
+            this.tbMailToSendCount.Size = new System.Drawing.Size(95, 26);
+            this.tbMailToSendCount.TabIndex = 208;
+            this.tbMailToSendCount.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -366,6 +397,8 @@
             this.BackColor = System.Drawing.Color.Gainsboro;
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.ClientSize = new System.Drawing.Size(1817, 758);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.tbMailToSendCount);
             this.Controls.Add(this.DgMainForm);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.btnAddEpayments);
@@ -414,5 +447,7 @@
         private Label label4;
         private Button btnReport;
         private DataGridView DgMainForm;
+        private Label label5;
+        private TextBox tbMailToSendCount;
     }
 }
