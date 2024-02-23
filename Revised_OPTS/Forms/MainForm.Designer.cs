@@ -141,7 +141,7 @@
             this.btnAddRptRecord.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnAddRptRecord.Location = new System.Drawing.Point(963, 13);
             this.btnAddRptRecord.Name = "btnAddRptRecord";
-            this.btnAddRptRecord.Size = new System.Drawing.Size(242, 74);
+            this.btnAddRptRecord.Size = new System.Drawing.Size(228, 74);
             this.btnAddRptRecord.TabIndex = 4;
             this.btnAddRptRecord.Text = "Add RPT Record(s) ";
             this.btnAddRptRecord.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -249,9 +249,9 @@
             this.btnORUpload.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.btnORUpload.Image = ((System.Drawing.Image)(resources.GetObject("btnORUpload.Image")));
             this.btnORUpload.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnORUpload.Location = new System.Drawing.Point(1430, 14);
+            this.btnORUpload.Location = new System.Drawing.Point(1433, 12);
             this.btnORUpload.Name = "btnORUpload";
-            this.btnORUpload.Size = new System.Drawing.Size(170, 74);
+            this.btnORUpload.Size = new System.Drawing.Size(160, 74);
             this.btnORUpload.TabIndex = 202;
             this.btnORUpload.Text = "OR Upload";
             this.btnORUpload.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -269,11 +269,11 @@
             this.btnAddEpayments.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.btnAddEpayments.Image = ((System.Drawing.Image)(resources.GetObject("btnAddEpayments.Image")));
             this.btnAddEpayments.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnAddEpayments.Location = new System.Drawing.Point(1211, 14);
+            this.btnAddEpayments.Location = new System.Drawing.Point(1197, 12);
             this.btnAddEpayments.Name = "btnAddEpayments";
-            this.btnAddEpayments.Size = new System.Drawing.Size(213, 74);
+            this.btnAddEpayments.Size = new System.Drawing.Size(230, 74);
             this.btnAddEpayments.TabIndex = 4;
-            this.btnAddEpayments.Text = "Add E-payments";
+            this.btnAddEpayments.Text = "Add E-payment(s)";
             this.btnAddEpayments.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnAddEpayments.UseVisualStyleBackColor = false;
             this.btnAddEpayments.Click += new System.EventHandler(this.btnAddEpayments_Click);
@@ -306,7 +306,7 @@
             this.btnReport.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.btnReport.Image = ((System.Drawing.Image)(resources.GetObject("btnReport.Image")));
             this.btnReport.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnReport.Location = new System.Drawing.Point(1606, 14);
+            this.btnReport.Location = new System.Drawing.Point(1599, 12);
             this.btnReport.Name = "btnReport";
             this.btnReport.Size = new System.Drawing.Size(137, 74);
             this.btnReport.TabIndex = 202;
