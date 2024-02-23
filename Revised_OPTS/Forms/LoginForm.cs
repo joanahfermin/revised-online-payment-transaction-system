@@ -1,4 +1,6 @@
 ﻿using Inventory_System.Exception;
+using Inventory_System.Job;
+using Inventory_System.Model;
 using Inventory_System.Service;
 using Revised_OPTS;
 using Revised_OPTS.Service;
@@ -19,13 +21,16 @@ namespace Inventory_System.Forms
         ISecurityService securityService = ServiceFactory.Instance.GetSecurityService();
 
         public static LoginForm INSTANCE;
+        private static AutoEmailJob autoEmailJob;
 
         public LoginForm()
         {
             InitializeComponent();
             StartPosition = FormStartPosition.CenterScreen;
             INSTANCE = this;
+
         }
+
 
         private void btnSaveRecord_Click(object sender, EventArgs e)
         {
@@ -44,6 +49,13 @@ namespace Inventory_System.Forms
             MainForm mainForm = new MainForm();
             mainForm.Show();
             this.Hide();
+
+            UserAccount account = securityService.getLoginUser();
+            if (account.isAutomatedEmailSender)
+            {
+                autoEmailJob = new AutoEmailJob();
+                autoEmailJob.Initialize();
+            }
         }
     }
 }
