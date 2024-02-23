@@ -46,8 +46,9 @@ namespace Revised_OPTS.DAL
         public List<Rpt> RetrieveBySameRefNumInUploadingEpayment(string taxdec)
         {
             return getDbSet().FromSqlRaw<Rpt>(
-                $"SELECT *FROM Jo_RPT where TaxDec LIKE @TaxDec and DeletedRecord != 1 and Status = 'FOR O.R UPLOAD' /*and Bank in (Select BankName from Jo_RPT_Banks where isEbank=1)*/ UNION " +
-                $"SELECT *FROM Jo_RPT where RefNum in (select RefNum FROM Jo_RPT where TaxDec LIKE @TaxDec) and DeletedRecord != 1 and Status = 'FOR O.R UPLOAD' " +
+                ///*and Bank in (Select BankName from Jo_RPT_Banks where isEbank=1)*/
+                $"SELECT *FROM Jo_RPT where TaxDec LIKE @TaxDec and DeletedRecord != 1 and Status = 'FOR O.R UPLOAD' and SendReceiptReady = 0 UNION " +
+                $"SELECT *FROM Jo_RPT where RefNum in (select RefNum FROM Jo_RPT where TaxDec LIKE @TaxDec) and DeletedRecord != 1 and Status = 'FOR O.R UPLOAD' and SendReceiptReady = 0 " +
                 $"order by RefNum desc, EncodedDate asc", new[] { new SqlParameter("@TaxDec", "%" + taxdec + "%") }).ToList();
         }
             /** return getDbSet()
@@ -81,8 +82,20 @@ namespace Revised_OPTS.DAL
                     rpt.ValidatedDate.HasValue &&
                     rpt.ValidatedDate.Value.Date == date.Date &&
                     regularBanks.Contains(rpt.Bank) &&
-                    rpt.ValidatedBy == validatedBy
+                    rpt.ValidatedBy == validatedBy &&
+                    rpt.SendReceiptReady == false
                 ).OrderBy(rpt => rpt.ValidatedDate).ToList();
+        }
+
+        public int CoundForORUploadWithPhoto(List<long> rptIDList)
+        {
+            var query = from rpt in getContext().Rpts
+                        where rpt.DeletedRecord != 1
+                              && rpt.Status == "FOR O.R UPLOAD"
+                              && getContext().rptPictures.Any(p => p.RptId == rpt.RptID)
+                              && rptIDList.Contains(rpt.RptID)
+                        select rpt;
+            return query.Count();
         }
 
         public List<Rpt> retrieveBySearchKeyword(string tdn)
@@ -115,6 +128,16 @@ namespace Revised_OPTS.DAL
             //          "and DeletedRecord != 1  AND RefNum IS NOT NULL AND RefNum != '' order by RefNum desc, EncodedDate asc";
 
             //return  getDbSet().FromSqlRaw(sql, parameterValue).ToList();
+        }
+
+        public void ConfirmSendOrUpload(List<long> rptIDList)
+        {
+            var rptList = getDbSet().Where(r => rptIDList.Contains(r.RptID)).ToList();
+
+            foreach (var rpt in rptList)
+            {
+                rpt.SendReceiptReady = true;
+            }
         }
     }
 }

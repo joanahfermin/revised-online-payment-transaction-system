@@ -18,6 +18,11 @@ namespace Revised_OPTS.DAL
             return ApplicationDBContext.CurrentInstance.Set<T>();
         }
 
+        protected ApplicationDBContext getContext()
+        {
+            return ApplicationDBContext.CurrentInstance;
+        }
+
         public T Get(object id)
         {
             return getDbSet().Find(id);

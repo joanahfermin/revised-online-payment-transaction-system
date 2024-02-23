@@ -104,6 +104,19 @@ namespace Revised_OPTS.Service
             }
         }
 
+        public void ConfirmSendOrUpload(List<long> RptIDList)
+        {
+            using (var dbContext = ApplicationDBContext.Create())
+            {
+                using (var scope = new TransactionScope())
+                {
+                    rptRepository.ConfirmSendOrUpload(RptIDList);
+                    dbContext.SaveChanges();
+                    scope.Complete();
+                }
+            }
+        }
+
         public void Insert(Rpt rpt)
         {
             using (var dbContext = ApplicationDBContext.Create())
@@ -649,6 +662,14 @@ namespace Revised_OPTS.Service
                     dbContext.SaveChanges();
                     scope.Complete();
                 }
+            }
+        }
+
+        public int CoundForORUploadWithPhoto(List<long> rptIDList)
+        {
+            using (var dbContext = ApplicationDBContext.Create())
+            {
+                return rptRepository.CoundForORUploadWithPhoto(rptIDList);
             }
         }
 

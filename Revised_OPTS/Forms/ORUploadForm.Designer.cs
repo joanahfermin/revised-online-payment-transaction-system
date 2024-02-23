@@ -371,6 +371,7 @@
             this.btnSend.Text = "Send";
             this.btnSend.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnSend.UseVisualStyleBackColor = false;
+            this.btnSend.Click += new System.EventHandler(this.btnSend_Click);
             this.btnSend.MouseEnter += new System.EventHandler(this.btnSend_MouseEnter);
             this.btnSend.MouseLeave += new System.EventHandler(this.btnSend_MouseLeave);
             // 

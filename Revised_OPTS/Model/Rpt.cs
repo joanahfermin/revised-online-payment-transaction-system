@@ -67,7 +67,7 @@ namespace Revised_OPTS.Model
         public int? DuplicateRecord { get; set; } = 0;
 
         //public bool SendAssessmentReady { get; set; } = false;
-        //public bool SendReceiptReady { get; set; } = false;
+        public bool SendReceiptReady { get; set; } = false;
         //public string CreatedBy { get; set; }
         //public DateTime? CreatedDate { get; set; }
         public string? LastUpdateBy { get; set; }

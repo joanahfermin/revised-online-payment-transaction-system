@@ -184,7 +184,7 @@ namespace Revised_OPTS
                 {
                     List<Rpt> searchResultList = rptService.RetrieveBySameRefNum(firstRptReferenceNumber);
                     List<Rpt> listofRptsToDelete = searchResultList.Where(rpt => rpt.RefNum == firstRptReferenceNumber).ToList();
-                    if (listofRptsToDelete.Count>0)
+                    if (listofRptsToDelete.Count > 0)
                     {
                         DialogResult result = MessageBox.Show($"Please be informed that there are {listofRptsToDelete.Count} record(s) found in the selection. Are you sure you want to delete all the record(s) in the list of {firstRptReferenceNumber}? ", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                         if (result == DialogResult.Yes)

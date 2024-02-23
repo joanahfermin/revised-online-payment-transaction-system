@@ -16,5 +16,7 @@ namespace Revised_OPTS.DAL
         List<Rpt> checkExistingRecord(Rpt rpt);
         List<Rpt> RetrieveForORUploadRegular(DateTime date, string validatedBy);
         List<Rpt> RetrieveBySameRefNumInUploadingEpayment(string refNum);
+        int CoundForORUploadWithPhoto(List<long> rptIDList);
+        void ConfirmSendOrUpload(List<long> rptIDList);
     }
 }

@@ -355,5 +355,28 @@ namespace Inventory_System.Forms
         {
             this.Close();
         }
+
+        private void btnSend_Click(object sender, EventArgs e)
+        {
+            if (dgRptList.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("No records selected.");
+                return;
+            }
+            List<long> selectedRptIDList = dgRptList.SelectedRows.Cast<DataGridViewRow>().Select(row => row.DataBoundItem).OfType<Rpt>().Select(rpt => rpt.RptID).ToList();
+            int countForORUploadWithPicture = rptService.CoundForORUploadWithPhoto(selectedRptIDList);
+            if (countForORUploadWithPicture == 0)
+            {
+                MessageBox.Show("There is no selected row that have photo and for OR Upload");
+                return;
+            }
+            DialogResult result = MessageBox.Show($"Are you sure you are sending OR for {selectedRptIDList.Count} record(s)? ", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (result == DialogResult.Yes)
+            {
+                rptService.ConfirmSendOrUpload(selectedRptIDList);
+                SearchRecords(null, null);
+                MessageBox.Show("Sent");
+            }
+        }
     }
 }
