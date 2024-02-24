@@ -24,8 +24,8 @@ namespace Inventory_System.Job
         {
             AutoEmailJobTimer = new System.Windows.Forms.Timer();
             AutoEmailJobTimer.Tick += new EventHandler(RunAutoEmail);
-            //AutoEmailJobTimer.Interval = 5*60*1000; // every 5 minutes
-            AutoEmailJobTimer.Interval = 25 * 1000; // every 5 minutes
+            AutoEmailJobTimer.Interval = 5*60*1000; // every 5 minutes
+            //AutoEmailJobTimer.Interval = 25 * 1000; // every 5 minutes
             AutoEmailJobTimer.Start();
         }
 
