@@ -1,5 +1,6 @@
 ﻿using Inventory_System.Model;
 using Inventory_System.Service;
+using Inventory_System.Utilities;
 using Revised_OPTS.Model;
 using Revised_OPTS.Service;
 using System;
@@ -23,7 +24,7 @@ namespace Inventory_System.Job
         {
             AutoEmailJobTimer = new System.Windows.Forms.Timer();
             AutoEmailJobTimer.Tick += new EventHandler(RunAutoEmail);
-            AutoEmailJobTimer.Interval = 5*60*1000; // every 5 minutes
+            //AutoEmailJobTimer.Interval = 5*60*1000; // every 5 minutes
             AutoEmailJobTimer.Interval = 25 * 1000; // every 5 minutes
             AutoEmailJobTimer.Start();
         }
@@ -48,7 +49,7 @@ namespace Inventory_System.Job
             List<Rpt> rptToSendList = rptService.ListORUploadRemainingToSend(UploadedBy);
             EmailTemplate template = systemService.GetORUploadTemplate();
 
-            /*
+            ///*
             foreach (Rpt rpt in rptToSendList)
             {
                 RPTAttachPicture RetrieveIdAndImage = rptService.getRptReceipt(rpt.RptID);
@@ -56,16 +57,25 @@ namespace Inventory_System.Job
                 string body = "ATTENTION: " + rpt.TaxPayerName + " (" + rpt.TaxDec + ") " + rpt.YearQuarter + " \n" + template.Body + "\n\n" + rpt.UploadedBy + "-CTO";
                 string subject = template.Subject + " - " + rpt.TaxDec + "(" + rpt.YearQuarter + ")";
 
-                bool result = GmailUtil.SendMail(rpt.RequestingParty, subject, body, RetrieveIdAndImage);
+                EmailAccount emailAccount = systemService.GetEmailAccount();
+                int Port = systemService.GetGmailPort();
+                    string Host = systemService.GetGmailHost();
+                MessageBox.Show(emailAccount.UserName + " " + Port + " " + Host);
 
+
+                //bool result = GmailUtil.SendMail(rpt.RequestingParty, subject, body, RetrieveIdAndImage);
+
+                /*
                 if (result == true)
                 {
                     RPTDatabase.ChangeStatusForORPickUp(rpt);
                 }
+                */
+                break;
             }
-            */
+            //*/
 
-            MessageBox.Show(template.Subject);
+            //MessageBox.Show(template.Subject);
         }
 
     }

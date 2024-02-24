@@ -60,5 +60,15 @@ namespace Revised_OPTS.DAL
         {
             return new EmailTemplateRepository();
         }
+
+        public IEmailAccountRepository GetEmailAccountRepository()
+        {
+            return new EmailAccountRepository();
+        }
+        public ISystemSettingRepository GetSystemSettingRepository()
+        {
+            return new SystemSettingRepository();
+        }
+
     }
 }

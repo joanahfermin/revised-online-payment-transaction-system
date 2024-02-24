@@ -13,6 +13,11 @@ namespace Inventory_System.Service
     {
         IEmailTemplateRepository emailTemplateRepository = RepositoryFactory.Instance.GetEmailTemplateRepository();
 
+        IEmailAccountRepository emailAccountRepository = RepositoryFactory.Instance.GetEmailAccountRepository();
+
+        ISystemSettingRepository systemSettingRepository = RepositoryFactory.Instance.GetSystemSettingRepository();
+
+
         public EmailTemplate GetORUploadTemplate()
         {
             using (var dbContext = ApplicationDBContext.Create())
@@ -20,5 +25,30 @@ namespace Inventory_System.Service
                 return emailTemplateRepository.GetORUploadTemplate();
             }
         }
+
+        public EmailAccount GetEmailAccount()
+        {
+            using (var dbContext = ApplicationDBContext.Create())
+            {
+                return emailAccountRepository.GetEmailAccount();
+            }
+        }
+
+        public int GetGmailPort()
+        {
+            using (var dbContext = ApplicationDBContext.Create())
+            {
+                return Int32.Parse(systemSettingRepository.SelectBySettingName("GMAIL_PORT").SettingValue);
+            }
+        }
+
+        public string GetGmailHost()
+        {
+            using (var dbContext = ApplicationDBContext.Create())
+            {
+                return systemSettingRepository.SelectBySettingName("GMAIL_HOST").SettingValue;
+            }
+        }
+
     }
 }

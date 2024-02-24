@@ -53,7 +53,8 @@ namespace Revised_OPTS.DAL
                 .HasConversion(new DeletedRecordBoolToIntConverter());
             //*/
             modelBuilder.Entity<AllTaxTypeReport>().HasNoKey();
-
+            modelBuilder.Entity<EmailAccount>().HasNoKey();
+            modelBuilder.Entity<SystemSetting>().HasNoKey();
             // Configure other entities and their properties here...
         }
 
@@ -91,6 +92,8 @@ namespace Revised_OPTS.DAL
         public DbSet<AllTaxTypeReport> allTaxTypeReports { get; set; }
         public DbSet<EmailTemplate> allEmailTemplates { get; set; }
 
+        public DbSet<EmailAccount> allEmailAccounts { get; set; }
+        public DbSet<SystemSetting> allSystemSettings { get; set; }
     }
 
 }
