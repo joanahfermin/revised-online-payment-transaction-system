@@ -17,7 +17,7 @@ namespace Inventory_System.Job
 
         IRptService rptService = ServiceFactory.Instance.GetRptService();
         ISecurityService securityService = ServiceFactory.Instance.GetSecurityService();
-        IEmailTemplateService emailTemplateService = ServiceFactory.Instance.GetEmailTemplateService();
+        ISystemService systemService = ServiceFactory.Instance.GetSystemService();
 
         public void Initialize()
         {
@@ -45,8 +45,25 @@ namespace Inventory_System.Job
         {
             UserAccount account = securityService.getLoginUser();
             string UploadedBy = account.DisplayName;
-            //List<Rpt> rptToSendList = rptService.ListORUploadRemainingToSend(UploadedBy);
-            EmailTemplate template = emailTemplateService.GetORUploadTemplate();
+            List<Rpt> rptToSendList = rptService.ListORUploadRemainingToSend(UploadedBy);
+            EmailTemplate template = systemService.GetORUploadTemplate();
+
+            /*
+            foreach (Rpt rpt in rptToSendList)
+            {
+                RPTAttachPicture RetrieveIdAndImage = rptService.getRptReceipt(rpt.RptID);
+
+                string body = "ATTENTION: " + rpt.TaxPayerName + " (" + rpt.TaxDec + ") " + rpt.YearQuarter + " \n" + template.Body + "\n\n" + rpt.UploadedBy + "-CTO";
+                string subject = template.Subject + " - " + rpt.TaxDec + "(" + rpt.YearQuarter + ")";
+
+                bool result = GmailUtil.SendMail(rpt.RequestingParty, subject, body, RetrieveIdAndImage);
+
+                if (result == true)
+                {
+                    RPTDatabase.ChangeStatusForORPickUp(rpt);
+                }
+            }
+            */
 
             MessageBox.Show(template.Subject);
         }

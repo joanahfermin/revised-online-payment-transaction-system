@@ -31,9 +31,9 @@ namespace Revised_OPTS.Service
             return new SecurityService();
         }
 
-        public IEmailTemplateService GetEmailTemplateService()
+        public ISystemService GetSystemService()
         {
-            return new EmailTemplateService();
+            return new SystemService();
         }
     }
 }

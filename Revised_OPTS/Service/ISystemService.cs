@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Inventory_System.Service
 {
-    internal interface IEmailTemplateService
+    internal interface ISystemService
     {
         EmailTemplate GetORUploadTemplate();
     }

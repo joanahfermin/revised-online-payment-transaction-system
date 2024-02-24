@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Inventory_System.Service
 {
-    internal class EmailTemplateService : IEmailTemplateService
+    internal class SystemService : ISystemService
     {
         IEmailTemplateRepository emailTemplateRepository = RepositoryFactory.Instance.GetEmailTemplateRepository();
 
