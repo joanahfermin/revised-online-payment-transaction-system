@@ -370,7 +370,7 @@ namespace Inventory_System.Forms
                 MessageBox.Show("There is no selected row that have photo and for OR Upload");
                 return;
             }
-            DialogResult result = MessageBox.Show($"Are you sure you are sending OR for {selectedRptIDList.Count} record(s)? ", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            DialogResult result = MessageBox.Show($"{countForORUploadWithPicture}/{selectedRptIDList.Count} Have Pictures. Are you sure you are sending OR for {countForORUploadWithPicture} record(s)? ", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (result == DialogResult.Yes)
             {
                 rptService.ConfirmSendOrUpload(selectedRptIDList);

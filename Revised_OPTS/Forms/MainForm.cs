@@ -134,7 +134,7 @@ namespace Revised_OPTS
 
         private void InitializeAutoUpdateScreenTimer()
         {
-            autoUpdateScreenTimer.Interval = 300000; // 5 minutes
+            autoUpdateScreenTimer.Interval = 2 * 60 * 1000; // 2 minutes
             autoUpdateScreenTimer.Tick += autoUpdateScreenTimer_Tick;
             autoUpdateScreenTimer.Start();
         }
