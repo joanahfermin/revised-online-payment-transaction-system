@@ -132,7 +132,13 @@ namespace Revised_OPTS.DAL
 
         public void ConfirmSendOrUpload(List<long> rptIDList)
         {
-            var rptList = getDbSet().Where(r => rptIDList.Contains(r.RptID)).ToList();
+            var query = from rpt in getContext().Rpts
+                        where rpt.DeletedRecord != 1
+                              && rpt.Status == "FOR O.R UPLOAD"
+                              && getContext().rptPictures.Any(p => p.RptId == rpt.RptID)
+                              && rptIDList.Contains(rpt.RptID)
+                        select rpt;
+            var rptList = query.ToList();
 
             foreach (var rpt in rptList)
             {

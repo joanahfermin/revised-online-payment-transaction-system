@@ -19,7 +19,7 @@ namespace Inventory_System.Utilities
     internal class GmailUtil
     {
         private static ISystemService systemService = ServiceFactory.Instance.GetSystemService();
-        /*
+
         public static bool SendMail(string recipient, string subject, string body, RPTAttachPicture attachPicture)
         {
             
@@ -81,11 +81,11 @@ namespace Inventory_System.Utilities
 
                 return true; // walang error sa pag send ng email, return natin true -> which means success.
             }
-            catch (Exception ex)
+            catch (System.Exception ex)
             {
                 return false; // may error sa pag send ng email, return natin false -> which means failed.
             }
         }
-        */
+
     }
 }

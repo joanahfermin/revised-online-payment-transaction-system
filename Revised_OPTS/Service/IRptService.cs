@@ -44,6 +44,6 @@ namespace Revised_OPTS.Service
         void ConfirmSendOrUpload(List<long> selectedRptIDList);
         int CountORUploadRemainingToSend(string uploadedBy);
         List<Rpt> ListORUploadRemainingToSend(string UploadedBy);
-
+        void ChangeStatusForORPickUp(Rpt rpt);
     }
 }

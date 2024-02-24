@@ -49,7 +49,6 @@ namespace Inventory_System.Job
             List<Rpt> rptToSendList = rptService.ListORUploadRemainingToSend(UploadedBy);
             EmailTemplate template = systemService.GetORUploadTemplate();
 
-            ///*
             foreach (Rpt rpt in rptToSendList)
             {
                 RPTAttachPicture RetrieveIdAndImage = rptService.getRptReceipt(rpt.RptID);
@@ -57,25 +56,13 @@ namespace Inventory_System.Job
                 string body = "ATTENTION: " + rpt.TaxPayerName + " (" + rpt.TaxDec + ") " + rpt.YearQuarter + " \n" + template.Body + "\n\n" + rpt.UploadedBy + "-CTO";
                 string subject = template.Subject + " - " + rpt.TaxDec + "(" + rpt.YearQuarter + ")";
 
-                EmailAccount emailAccount = systemService.GetEmailAccount();
-                int Port = systemService.GetGmailPort();
-                    string Host = systemService.GetGmailHost();
-                MessageBox.Show(emailAccount.UserName + " " + Port + " " + Host);
-
-
-                //bool result = GmailUtil.SendMail(rpt.RequestingParty, subject, body, RetrieveIdAndImage);
-
-                /*
+                bool result = GmailUtil.SendMail(rpt.RequestingParty, subject, body, RetrieveIdAndImage);
                 if (result == true)
-                {
-                    RPTDatabase.ChangeStatusForORPickUp(rpt);
+                {                    
+                    rptService.ChangeStatusForORPickUp(rpt);
                 }
-                */
                 break;
             }
-            //*/
-
-            //MessageBox.Show(template.Subject);
         }
 
     }

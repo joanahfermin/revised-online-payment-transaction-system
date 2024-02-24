@@ -804,5 +804,24 @@ namespace Revised_OPTS.Service
             }
         }
 
+        public void ChangeStatusForORPickUp(Rpt rpt)
+        {
+            string UploadedBy = securityService.getLoginUser().DisplayName;
+            using (var dbContext = ApplicationDBContext.Create())
+            {
+                using (var scope = new TransactionScope())
+                {
+                    if (rpt.UploadedBy == null)
+                    {
+                        rpt.UploadedBy = UploadedBy;
+                    }
+                    rpt.Status = TaxStatus.ForORPickup;
+                    rpt.UploadedDate = DateTime.Now;
+                    rptRepository.Update(rpt);
+                    dbContext.SaveChanges();
+                    scope.Complete();
+                }
+            }
+        }
     }
 }
