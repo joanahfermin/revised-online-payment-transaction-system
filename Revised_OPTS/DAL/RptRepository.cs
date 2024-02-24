@@ -150,5 +150,17 @@ namespace Revised_OPTS.DAL
                         select rpt;
             return query.Count();
         }
+
+        public List<Rpt> ListORUploadRemainingToSend(string uploadedBy)
+        {
+            var query = (from rpt in getDbSet()
+                        where rpt.DeletedRecord != 1
+                              && rpt.Status == "FOR O.R UPLOAD"
+                              && rpt.SendReceiptReady == true
+                              && rpt.UploadedBy == uploadedBy
+                         orderby rpt.ORConfirmDate ascending, rpt.ORAttachedDate ascending
+                         select rpt).Take(5); ;
+            return query.ToList();
+        }
     }
 }

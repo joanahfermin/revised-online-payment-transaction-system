@@ -681,6 +681,14 @@ namespace Revised_OPTS.Service
             }
         }
 
+        public List<Rpt> ListORUploadRemainingToSend(string UploadedBy)
+        {
+            using (var dbContext = ApplicationDBContext.Create())
+            {
+                return rptRepository.ListORUploadRemainingToSend(UploadedBy);
+            }
+        }
+
 
         public void UploadReceipt(RPTAttachPicture pix)
         {

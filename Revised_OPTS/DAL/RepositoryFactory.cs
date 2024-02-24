@@ -55,5 +55,10 @@ namespace Revised_OPTS.DAL
         {
             return new RPTAttachPictureRepository();
         }
+
+        public IEmailTemplateRepository GetEmailTemplateRepository()
+        {
+            return new EmailTemplateRepository();
+        }
     }
 }

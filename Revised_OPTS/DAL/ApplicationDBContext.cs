@@ -89,7 +89,7 @@ namespace Revised_OPTS.DAL
 
         public DbSet<RPTAttachPicture> rptPictures { get; set; }
         public DbSet<AllTaxTypeReport> allTaxTypeReports { get; set; }
-
+        public DbSet<EmailTemplate> allEmailTemplates { get; set; }
 
     }
 

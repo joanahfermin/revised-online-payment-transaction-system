@@ -43,5 +43,7 @@ namespace Revised_OPTS.Service
         int CoundForORUploadWithPhoto(List<long> rptIDList);
         void ConfirmSendOrUpload(List<long> selectedRptIDList);
         int CountORUploadRemainingToSend(string uploadedBy);
+        List<Rpt> ListORUploadRemainingToSend(string UploadedBy);
+
     }
 }

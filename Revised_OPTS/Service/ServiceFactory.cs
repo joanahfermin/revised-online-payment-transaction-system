@@ -31,5 +31,9 @@ namespace Revised_OPTS.Service
             return new SecurityService();
         }
 
+        public IEmailTemplateService GetEmailTemplateService()
+        {
+            return new EmailTemplateService();
+        }
     }
 }
