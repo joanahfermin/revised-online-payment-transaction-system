@@ -779,31 +779,154 @@ namespace Revised_OPTS.Service
                 List<string> eBanks = bankRepository.GetElectronicBanks().Select(p => p.BankName).ToList();
 
                 return dbContext.allTaxTypeReports.FromSqlRaw<AllTaxTypeReport>(
-                "SELECT 'RPT' as TaxType, TaxDec as BillNumber, TaxPayerName, Collection, Billing, ExcessShort, RPTremarks as Remarks " +
-                "FROM ( " +
-                " SELECT TaxDec, TaxPayerName, AmountTransferred as Collection,  AmountToPay as Billing, 0 as ExcessShort, RPTremarks, ValidatedDate, RPTID, EncodedDate " +
-                " FROM Jo_RPT r " +
-                " WHERE Bank in (SELECT BankName FROM Jo_RPT_Banks where isEBank = 1) " +
-                " and DeletedRecord = 0 and CAST(ValidatedDate AS Date)>= CAST(@FromDate AS Date) and CAST(ValidatedDate AS Date) <= CAST(@ToDate AS Date) and ValidatedBy=@UserName " +
-                " UNION " +
+                    "SELECT * FROM ( " +
+"SELECT 'RPT' as TaxType, TaxDec as BillNumber, Collection, Billing, ExcessShort, RPTremarks as Remarks, ValidatedDate, EncodedDate " +
+"FROM ( " +
+"    SELECT TaxDec, AmountToPay as Billing, AmountTransferred as Collection,  0 as ExcessShort, RPTremarks, ValidatedDate, RPTID, EncodedDate " +
+"    FROM Jo_RPT r " +
+"    WHERE Bank in (SELECT BankName FROM Jo_RPT_Banks WHERE isEBank = 1) " +
+"    AND DeletedRecord = 0 " +
+"    AND CAST(ValidatedDate AS Date) >= CAST(@FromDate AS Date) " +
+"    AND CAST(ValidatedDate AS Date) <= CAST(@ToDate AS Date) " +
+"    AND ValidatedBy = @UserName " +
+"    UNION ALL " +
+"    SELECT TaxDec, AmountToPay as Billing, TotalAmountTransferred as Collection, ExcessShortAmount as ExcessShort, RPTremarks, (SELECT MIN(ValidatedDate) FROM Jo_RPT r2 WHERE r2.RefNum = r.RefNum) as ValidatedDate, RPTID, EncodedDate " +
+"    FROM Jo_RPT r " +
+"    WHERE Bank NOT IN (SELECT BankName FROM Jo_RPT_Banks WHERE isEBank = 1) AND RefNum IS NOT NULL " +
+"    AND DeletedRecord = 0 " +
+"    AND CAST(ValidatedDate AS Date) >= CAST(@FromDate AS Date) " +
+"    AND CAST(ValidatedDate AS Date) <= CAST(@ToDate AS Date) " +
+"    AND ValidatedBy = @UserName " +
+"    UNION ALL " +
+"    SELECT TaxDec, TotalAmountTransferred as Collection, AmountToPay as Billing, ExcessShortAmount as ExcessShort, RPTremarks, ValidatedDate, RPTID, EncodedDate " +
+"    FROM Jo_RPT r " +
+"    WHERE Bank NOT IN (SELECT BankName FROM Jo_RPT_Banks WHERE isEBank = 1) AND RefNum IS NULL " +
+"    AND DeletedRecord = 0 " +
+"    AND CAST(ValidatedDate AS Date) >= CAST(@FromDate AS Date) " +
+"    AND CAST(ValidatedDate AS Date) <= CAST(@ToDate AS Date) " +
+"    AND ValidatedBy = @UserName " +
+"    ) AS sReportView " +
+"UNION ALL " +
+"SELECT 'BUSINESS' as TaxType, BillNumber as BillNumber, Collection, Billing, 0 as ExcessShort, BussinessRemarks as Remarks, ValidatedDate, EncodedDate " +
+"FROM ( " +
+"    SELECT BillNumber, BillAmount as Billing, TotalAmount as Collection, MP_Number, BussinessRemarks, ValidatedDate, EncodedDate " +
+"    FROM Jo_Business b " +
+"    WHERE PaymentChannel in (SELECT BankName FROM Jo_RPT_Banks WHERE isEBank = 1) " +
+"    AND DeletedRecord = 0 " +
+"    AND CAST(ValidatedDate AS Date) >= CAST(@FromDate AS Date) " +
+"    AND CAST(ValidatedDate AS Date) <= CAST(@ToDate AS Date) " +
+"    AND ValidatedBy = @UserName " +
+"    UNION ALL " +
+"    SELECT BillNumber, BillAmount as Billing, TotalAmount as Collection, MP_Number, BussinessRemarks, (SELECT MIN(ValidatedDate) FROM Jo_Business b2 WHERE b2.RefNum = b.RefNum) as ValidatedDate, EncodedDate " +
+"    FROM Jo_Business b " +
+"    WHERE PaymentChannel NOT IN (SELECT BankName FROM Jo_RPT_Banks WHERE isEBank = 1) AND RefNum IS NOT NULL " +
+"    AND DeletedRecord = 0 " +
+"    AND CAST(ValidatedDate AS Date) >= CAST(@FromDate AS Date) " +
+"    AND CAST(ValidatedDate AS Date) <= CAST(@ToDate AS Date) " +
+"    AND ValidatedBy = @UserName " +
+"    UNION ALL " +
+"    SELECT BillNumber, TotalAmount as Collection, BillAmount as Billing, MP_Number, BussinessRemarks, ValidatedDate, EncodedDate " +
+"    FROM Jo_Business b " +
+"    WHERE PaymentChannel NOT IN (SELECT BankName FROM Jo_RPT_Banks WHERE isEBank = 1) AND RefNum IS NULL " +
+"    AND DeletedRecord = 0 " +
+"    AND CAST(ValidatedDate AS Date) >= CAST(@FromDate AS Date) " +
+"    AND CAST(ValidatedDate AS Date) <= CAST(@ToDate AS Date) " +
+"    AND ValidatedBy = @UserName " +
+") AS BusinessReportView " +
+"UNION ALL " +
+"SELECT 'MISC' as TaxType, OrderOfPaymentNum as BillNumber, Collection, Billing, ExcessShort, Remarks, ValidatedDate, EncodedDate " +
+"FROM ( " +
+"    SELECT OrderOfPaymentNum, AmountToBePaid as Billing, TransferredAmount as Collection, ExcessShort, Remarks, ValidatedDate, EncodedDate " +
+"    FROM Jo_MISC m " +
+"    WHERE ModeOfPayment in (SELECT BankName FROM Jo_RPT_Banks WHERE isEBank = 1) " +
+"    AND DeletedRecord = 0 " +
+"    AND CAST(ValidatedDate AS Date) >= CAST(@FromDate AS Date) " +
+"    AND CAST(ValidatedDate AS Date) <= CAST(@ToDate AS Date) " +
+"    AND ValidatedBy = @UserName " +
+"    UNION ALL " +
+"    SELECT OrderOfPaymentNum, TransferredAmount as Collection, AmountToBePaid as Billing, ExcessShort, Remarks, (SELECT MIN(ValidatedDate) FROM Jo_MISC m2 WHERE m2.RefNum = m.RefNum) as ValidatedDate, EncodedDate " +
+"    FROM Jo_MISC m " +
+"    WHERE ModeOfPayment NOT IN (SELECT BankName FROM Jo_RPT_Banks WHERE isEBank = 1) AND RefNum IS NOT NULL " +
+"    AND DeletedRecord = 0 " +
+"    AND CAST(ValidatedDate AS Date) >= CAST(@FromDate AS Date) " +
+"    AND CAST(ValidatedDate AS Date) <= CAST(@ToDate AS Date) " +
+"    AND ValidatedBy = @UserName " +
+"    UNION ALL " +
+"    SELECT OrderOfPaymentNum, TransferredAmount as Collection, AmountToBePaid as Billing, ExcessShort, Remarks, ValidatedDate, EncodedDate " +
+"    FROM Jo_MISC m " +
+"    WHERE ModeOfPayment NOT IN (SELECT BankName FROM Jo_RPT_Banks WHERE isEBank = 1) AND RefNum IS NULL " +
+"    AND DeletedRecord = 0 " +
+"    AND CAST(ValidatedDate AS Date) >= CAST(@FromDate AS Date) " +
+"    AND CAST(ValidatedDate AS Date) <= CAST(@ToDate AS Date) " +
+"    AND ValidatedBy = @UserName " +
+") AS MiscReportView " +
+") AS AllReportView " +
+"ORDER BY ValidatedDate, EncodedDate;",
+                    new[] { new SqlParameter("@FromDate", dateFrom), new SqlParameter("@ToDate", dateTo), new SqlParameter("@UserName", UserName) }).ToList();
+                /*
+            return dbContext.allTaxTypeReports.FromSqlRaw<AllTaxTypeReport>(
+            "SELECT 'RPT' as TaxType, TaxDec as BillNumber, Collection, Billing, ExcessShort, RPTremarks as Remarks, ValidatedDate, EncodedDate " +
+            "FROM(SELECT TaxDec, AmountToPay as Billing, AmountTransferred as Collection, 0 as ExcessShort, RPTremarks, ValidatedDate, RPTID, EncodedDate " +
+            "FROM Jo_RPT r WHERE Bank in (SELECT BankName FROM Jo_RPT_Banks WHERE isEBank = 1) AND DeletedRecord = 0 " +
+            "AND CAST(ValidatedDate AS Date) >= CAST(@FromDate AS Date) AND CAST(ValidatedDate AS Date) <= CAST(@ToDate AS Date) AND ValidatedBy = @UserName " +
 
-                " SELECT TaxDec, TaxPayerName, TotalAmountTransferred as Collection, AmountToPay as Billing, ExcessShortAmount as ExcessShort, RPTremarks, (select min(ValidatedDate) from Jo_RPT r2 where r2.RefNum = r.RefNum ) as ValidatedDate, RPTID, EncodedDate " +
-                " FROM Jo_RPT r " +
-                " WHERE Bank not in (SELECT BankName FROM Jo_RPT_Banks where isEBank = 1) and RefNum is not null " +
-                " and DeletedRecord = 0 and CAST(ValidatedDate AS Date)>= CAST(@FromDate AS Date) and CAST(ValidatedDate AS Date) <= CAST(@ToDate AS Date) and ValidatedBy=@UserName " +
-                " UNION " +
+            " UNION ALL " +
 
-                " SELECT TaxDec, TaxPayerName, TotalAmountTransferred as Collection, AmountToPay as Billing, ExcessShortAmount as ExcessShort, RPTremarks, ValidatedDate, RPTID, EncodedDate " +
-                " FROM Jo_RPT r " +
-                " WHERE Bank not in (SELECT BankName FROM Jo_RPT_Banks where isEBank = 1) and RefNum is null " +
-                " and DeletedRecord = 0 and CAST(ValidatedDate AS Date)>= CAST(@FromDate AS Date) and CAST(ValidatedDate AS Date) <= CAST(@ToDate AS Date) and ValidatedBy=@UserName " +
-                ") AS ReportView " +
-                "order by ValidatedDate, EncodedDate ",
+            "SELECT TaxDec, TotalAmountTransferred as Collection, AmountToPay as Billing, ExcessShortAmount as ExcessShort, RPTremarks, (SELECT MIN(ValidatedDate) FROM Jo_RPT r2 WHERE r2.RefNum = r.RefNum) as ValidatedDate, RPTID, EncodedDate " +
+            "FROM Jo_RPT r WHERE Bank NOT IN(SELECT BankName FROM Jo_RPT_Banks WHERE isEBank = 1) AND RefNum IS NOT NULL AND DeletedRecord = 0 " +
+            "AND CAST(ValidatedDate AS Date) >= CAST(@FromDate AS Date) AND CAST(ValidatedDate AS Date) <= CAST(@ToDate AS Date) AND ValidatedBy = @UserName " +
 
-                new[] { new SqlParameter("@FromDate", dateFrom), new SqlParameter("@ToDate", dateTo), new SqlParameter("@UserName", UserName) }).ToList();
+            " UNION ALL " +
+
+            "SELECT TaxDec, TotalAmountTransferred as Collection, AmountToPay as Billing, ExcessShortAmount as ExcessShort, RPTremarks, ValidatedDate, RPTID, EncodedDate " +
+            "FROM Jo_RPT r WHERE Bank NOT IN(SELECT BankName FROM Jo_RPT_Banks WHERE isEBank = 1) AND RefNum IS NULL AND DeletedRecord = 0 " +
+            "AND CAST(ValidatedDate AS Date) >= CAST(@FromDate AS Date) AND CAST(ValidatedDate AS Date) <= CAST(@ToDate AS Date) AND ValidatedBy = @UserName) AS RptReportView " +
+
+            " UNION ALL " +
+
+            "SELECT 'BUSINESS' as TaxType, BillNumber as BillNumber, Collection, Billing, 0 as ExcessShort, BussinessRemarks as Remarks, ValidatedDate, EncodedDate " +
+            "FROM(SELECT BillNumber, BillAmount as Billing, TotalAmount as Collection, MP_Number, BussinessRemarks, ValidatedDate, EncodedDate FROM Jo_Business b " +
+            "WHERE PaymentChannel in (SELECT BankName FROM Jo_RPT_Banks WHERE isEBank = 1) AND DeletedRecord = 0 " +
+            "AND CAST(ValidatedDate AS Date) >= CAST(@FromDate AS Date) AND CAST(ValidatedDate AS Date) <= CAST(@ToDate AS Date) AND ValidatedBy = @UserName " +
+
+            " UNION ALL " +
+
+            "SELECT BillNumber, TotalAmount as Collection, BillAmount as Billing, MP_Number, BussinessRemarks (SELECT MIN(ValidatedDate) FROM Jo_Business b2 WHERE b2.RefNum = b.RefNum) as ValidatedDate, EncodedDate " +
+            "FROM Jo_Business b WHERE PaymentChannel NOT IN(SELECT BankName FROM Jo_RPT_Banks WHERE isEBank = 1) AND RefNum IS NOT NULL AND DeletedRecord = 0 " +
+            "AND CAST(ValidatedDate AS Date) >= CAST(@FromDate AS Date) AND CAST(ValidatedDate AS Date) <= CAST(@ToDate AS Date) AND ValidatedBy = @UserName " +
+
+            " UNION ALL " +
+
+            "SELECT BillNumber, TotalAmount as Collection, BillAmount as Billing, MP_Number, BussinessRemarks, ValidatedDate, EncodedDate FROM Jo_Business b " +
+            "WHERE PaymentChannel NOT IN(SELECT BankName FROM Jo_RPT_Banks WHERE isEBank = 1) AND RefNum IS NULL AND DeletedRecord = 0 " +
+            "AND CAST(ValidatedDate AS Date) >= CAST(@FromDate AS Date) AND CAST(ValidatedDate AS Date) <= CAST(@ToDate AS Date) AND ValidatedBy = @UserName) AS BusinessReportView " +
+
+            " UNION ALL " +
+
+            "SELECT 'MISC' as TaxType, OrderOfPaymentNum as BillNumber, Collection, Billing, ExcessShort, Remarks , ValidatedDate, EncodedDate FROM" +
+            "(SELECT OrderOfPaymentNum, AmountToBePaid as Billing, TransferredAmount as Collection, ExcessShort, Remarks, ValidatedDate, EncodedDate " +
+            "FROM Jo_MISC m WHERE ModeOfPayment in (SELECT BankName FROM Jo_RPT_Banks WHERE isEBank = 1 AND DeletedRecord = 0 " +
+            "AND CAST(ValidatedDate AS Date) >= CAST(@FromDate AS Date) AND CAST(ValidatedDate AS Date) <= CAST(@ToDate AS Date) AND ValidatedBy = @UserName " +
+
+            " UNION ALL " +
+
+            "SELECT OrderOfPaymentNum, TransferredAmount as Collection, AmountToBePaid as Billing, ExcessShort, Remarks (SELECT MIN(ValidatedDate) " +
+            "FROM Jo_MISC m2 WHERE m2.RefNum = m.RefNum) as ValidatedDate, EncodedDate FROM Jo_MISC m " +
+            "WHERE ModeOfPayment NOT IN(SELECT BankName FROM Jo_RPT_Banks WHERE isEBank = 1) AND RefNum IS NOT NULL AND DeletedRecord = 0 " +
+            "AND CAST(ValidatedDate AS Date) >= CAST(@FromDate AS Date) AND CAST(ValidatedDate AS Date) <= CAST(@ToDate AS Date) AND ValidatedBy = @UserName " +
+
+            "UNION ALL " +
+
+            "SELECT OrderOfPaymentNum, TransferredAmount as Collection, AmountToBePaid as Billing, ExcessShort, Remarks, ValidatedDate, EncodedDate FROM Jo_MISC m " +
+            "WHERE ModeOfPayment NOT IN(SELECT BankName FROM Jo_RPT_Banks WHERE isEBank = 1) AND RefNum IS NULL AND DeletedRecord = 0 " +
+            "AND CAST(ValidatedDate AS Date) >= CAST(@FromDate AS Date) AND CAST(ValidatedDate AS Date) <= CAST(@ToDate AS Date AND ValidatedBy = @UserName) AS MiscReportView " +
+            "ORDER BY ValidatedDate, EncodedDate ",
+
+            new[] { new SqlParameter("@FromDate", dateFrom), new SqlParameter("@ToDate", dateTo), new SqlParameter("@UserName", UserName) }).ToList();
+                */
             }
         }
-
+        
         public void ChangeStatusForORPickUp(Rpt rpt)
         {
             string UploadedBy = securityService.getLoginUser().DisplayName;

@@ -29,17 +29,19 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ReportForm));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             this.btnClose = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.cbTaxTypeReport = new System.Windows.Forms.ComboBox();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.tbRefNo = new System.Windows.Forms.TextBox();
             this.dtTo = new System.Windows.Forms.DateTimePicker();
             this.dtFrom = new System.Windows.Forms.DateTimePicker();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
+            this.labelDateTo = new System.Windows.Forms.Label();
+            this.labelDateFrom = new System.Windows.Forms.Label();
+            this.labelEnterRefNo = new System.Windows.Forms.Label();
             this.btnGenerate = new System.Windows.Forms.Button();
             this.DgReportForm = new System.Windows.Forms.DataGridView();
             this.panel1.SuspendLayout();
@@ -97,11 +99,13 @@
             // 
             this.panel1.BackColor = System.Drawing.Color.Transparent;
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Controls.Add(this.tbRefNo);
             this.panel1.Controls.Add(this.dtTo);
             this.panel1.Controls.Add(this.dtFrom);
-            this.panel1.Controls.Add(this.label3);
+            this.panel1.Controls.Add(this.labelDateTo);
             this.panel1.Controls.Add(this.btnClose);
-            this.panel1.Controls.Add(this.label2);
+            this.panel1.Controls.Add(this.labelDateFrom);
+            this.panel1.Controls.Add(this.labelEnterRefNo);
             this.panel1.Controls.Add(this.label1);
             this.panel1.Controls.Add(this.btnGenerate);
             this.panel1.Controls.Add(this.cbTaxTypeReport);
@@ -110,6 +114,17 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1924, 130);
             this.panel1.TabIndex = 7;
+            // 
+            // tbRefNo
+            // 
+            this.tbRefNo.BackColor = System.Drawing.Color.AliceBlue;
+            this.tbRefNo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.tbRefNo.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.tbRefNo.Location = new System.Drawing.Point(823, 32);
+            this.tbRefNo.Name = "tbRefNo";
+            this.tbRefNo.Size = new System.Drawing.Size(236, 27);
+            this.tbRefNo.TabIndex = 201;
+            this.tbRefNo.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // dtTo
             // 
@@ -135,31 +150,44 @@
             this.dtFrom.Size = new System.Drawing.Size(106, 27);
             this.dtFrom.TabIndex = 7;
             // 
-            // label3
+            // labelDateTo
             // 
-            this.label3.AutoSize = true;
-            this.label3.BackColor = System.Drawing.Color.Transparent;
-            this.label3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.label3.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label3.ForeColor = System.Drawing.Color.White;
-            this.label3.Location = new System.Drawing.Point(493, 86);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(71, 19);
-            this.label3.TabIndex = 1;
-            this.label3.Text = "Date To:";
+            this.labelDateTo.AutoSize = true;
+            this.labelDateTo.BackColor = System.Drawing.Color.Transparent;
+            this.labelDateTo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.labelDateTo.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.labelDateTo.ForeColor = System.Drawing.Color.White;
+            this.labelDateTo.Location = new System.Drawing.Point(493, 86);
+            this.labelDateTo.Name = "labelDateTo";
+            this.labelDateTo.Size = new System.Drawing.Size(71, 19);
+            this.labelDateTo.TabIndex = 1;
+            this.labelDateTo.Text = "Date To:";
             // 
-            // label2
+            // labelDateFrom
             // 
-            this.label2.AutoSize = true;
-            this.label2.BackColor = System.Drawing.Color.Transparent;
-            this.label2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.label2.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label2.ForeColor = System.Drawing.Color.White;
-            this.label2.Location = new System.Drawing.Point(265, 86);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(89, 19);
-            this.label2.TabIndex = 1;
-            this.label2.Text = "Date From:";
+            this.labelDateFrom.AutoSize = true;
+            this.labelDateFrom.BackColor = System.Drawing.Color.Transparent;
+            this.labelDateFrom.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.labelDateFrom.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.labelDateFrom.ForeColor = System.Drawing.Color.White;
+            this.labelDateFrom.Location = new System.Drawing.Point(265, 86);
+            this.labelDateFrom.Name = "labelDateFrom";
+            this.labelDateFrom.Size = new System.Drawing.Size(89, 19);
+            this.labelDateFrom.TabIndex = 1;
+            this.labelDateFrom.Text = "Date From:";
+            // 
+            // labelEnterRefNo
+            // 
+            this.labelEnterRefNo.AutoSize = true;
+            this.labelEnterRefNo.BackColor = System.Drawing.Color.Transparent;
+            this.labelEnterRefNo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.labelEnterRefNo.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.labelEnterRefNo.ForeColor = System.Drawing.Color.White;
+            this.labelEnterRefNo.Location = new System.Drawing.Point(697, 32);
+            this.labelEnterRefNo.Name = "labelEnterRefNo";
+            this.labelEnterRefNo.Size = new System.Drawing.Size(120, 19);
+            this.labelEnterRefNo.TabIndex = 1;
+            this.labelEnterRefNo.Text = "Enter Ref. No.: ";
             // 
             // btnGenerate
             // 
@@ -187,34 +215,34 @@
             this.DgReportForm.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells;
             this.DgReportForm.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.DisplayedCells;
             this.DgReportForm.BackgroundColor = System.Drawing.Color.White;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.LightSalmon;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.MistyRose;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.Desktop;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.DgReportForm.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = System.Drawing.Color.LightSalmon;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.Color.MistyRose;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.Desktop;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.DgReportForm.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
             this.DgReportForm.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(198)))), ((int)(((byte)(247)))));
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.DgReportForm.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            dataGridViewCellStyle5.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(198)))), ((int)(((byte)(247)))));
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.DgReportForm.DefaultCellStyle = dataGridViewCellStyle5;
             this.DgReportForm.EnableHeadersVisualStyles = false;
             this.DgReportForm.Location = new System.Drawing.Point(22, 151);
             this.DgReportForm.Name = "DgReportForm";
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.Color.LightSalmon;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.MistyRose;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.DgReportForm.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle6.BackColor = System.Drawing.Color.LightSalmon;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            dataGridViewCellStyle6.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.Color.MistyRose;
+            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.DgReportForm.RowHeadersDefaultCellStyle = dataGridViewCellStyle6;
             this.DgReportForm.RowTemplate.DefaultCellStyle.SelectionBackColor = System.Drawing.Color.LightBlue;
             this.DgReportForm.RowTemplate.DefaultCellStyle.SelectionForeColor = System.Drawing.Color.Black;
             this.DgReportForm.RowTemplate.Height = 25;
@@ -248,8 +276,10 @@
         private Button btnGenerate;
         private DataGridView DgReportForm;
         private DateTimePicker dtFrom;
-        private Label label2;
+        private Label labelDateFrom;
         private DateTimePicker dtTo;
-        private Label label3;
+        private Label labelDateTo;
+        private TextBox tbRefNo;
+        private Label labelEnterRefNo;
     }
 }

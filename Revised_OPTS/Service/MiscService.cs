@@ -114,11 +114,22 @@ namespace Revised_OPTS.Service
                 {
                     foreach (Miscellaneous misc in miscList)
                     {
-                        misc.Status = status;
-                        misc.VerifiedBy = securityService.getLoginUser().DisplayName;
-                        misc.VerifiedDate = DateTime.Now;
-                        miscRepository.Update(misc);
+                        if (misc.Status == TaxStatus.ForPaymentVerification)
+                        {
+                            misc.Status = status;
+                            misc.VerifiedBy = securityService.getLoginUser().DisplayName;
+                            misc.VerifiedDate = DateTime.Now;
+                            miscRepository.Update(misc);
+                        }
+                        else if (misc.Status == TaxStatus.ForPaymentValidation)
+                        {
+                            misc.Status = status;
+                            misc.ValidatedBy = securityService.getLoginUser().DisplayName;
+                            misc.ValidatedDate = DateTime.Now;
+                            miscRepository.Update(misc);
+                        }
                     }
+
                     dbContext.SaveChanges();
                     scope.Complete();
                 }

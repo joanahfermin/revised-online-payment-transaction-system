@@ -8,7 +8,7 @@ namespace Inventory_System.Model
 {
     internal class ElectronicPayment
     {
-        public string EpaymentRef { get; set; } //COLUMN A
+        public string? EpaymentRef { get; set; } //COLUMN A
         public string? EpaymentTransactionRef { get; set; } //COLUMN B
         public string? BillerRef { get; set; } //COLUMN C
         public string? ServiceProvider { get; set; } //COLUMN D (Payment channel ng lahat)
