@@ -21,7 +21,7 @@ namespace Inventory_System.Forms
         ISecurityService securityService = ServiceFactory.Instance.GetSecurityService();
 
         public static LoginForm INSTANCE;
-        private static AutoEmailJob autoEmailJob;
+        //private static AutoEmailJob autoEmailJob;
 
         public LoginForm()
         {
@@ -53,8 +53,8 @@ namespace Inventory_System.Forms
             UserAccount account = securityService.getLoginUser();
             if (account.isAutomatedEmailSender)
             {
-                autoEmailJob = new AutoEmailJob();
-                autoEmailJob.Initialize();
+                //autoEmailJob = new AutoEmailJob();
+                //autoEmailJob.Initialize();
             }
         }
     }

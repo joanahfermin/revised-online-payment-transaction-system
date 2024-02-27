@@ -27,7 +27,7 @@ namespace Revised_OPTS.Model
         public string? Quarter { get; set; }
         public string? PaymentType { get; set; }
         public string? BillingSelection { get; set; }
-        public string Status { get; set; }
+        public string? Status { get; set; }
         public string? RequestingParty { get; set; }
         public string? EncodedBy { get; set; }
         public DateTime? EncodedDate { get; set; }
@@ -67,7 +67,7 @@ namespace Revised_OPTS.Model
         public int? DuplicateRecord { get; set; } = 0;
 
         //public bool SendAssessmentReady { get; set; } = false;
-        public bool SendReceiptReady { get; set; } = false;
+        public bool? SendReceiptReady { get; set; } = false;
         //public string CreatedBy { get; set; }
         //public DateTime? CreatedDate { get; set; }
         public string? LastUpdateBy { get; set; }
