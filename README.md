@@ -22,7 +22,7 @@ By efficiently managing the tax payment workflow, the **Revised Online Payment T
 
 The codebase adheres to a structured convention, where classes are organized according to specific roles, ensuring each class maintains a singular responsibility. This design principle enhances code clarity and maintainability.
 
-Key technologies utilized in this project include:
+The development of this project involved a variety of elements and practices, including:
 
 - **C#:** The primary programming language employed for development.
 - **.NET 6.0:** Leveraged for its latest features and enhancements, providing a robust framework for building modern applications.
@@ -35,5 +35,53 @@ Key technologies utilized in this project include:
   - **Services:** Implements business logic and transaction management, ensuring cohesive application behavior.
   - **DAL (Data Access Layer):** Handles database interactions, providing a separation of concerns and promoting maintainability.
 - **OpenCVSharp:** Utilized for generating Excel reports, enabling efficient data visualization and analysis.
+- **Integration with Gmail:** To minimize work by the staff, the system automatically sends emails to taxpayers via the SMTP protocol.
+- **Copy Paste from Excel:** To add efficiency, data are sent to the department in Excel format. The system accepts pasting of those data from Excel, minimizing time and avoiding human errors.
+- **Dynamic Control Generation:** To support numerous types of tax records without generating a large codebase, the system supports dynamic generation of controls.
 
 By leveraging these technologies and adhering to sound architectural principles, the system delivers robust functionality and maintainability.
+
+## Screenshots
+
+Below are screenshots showcasing some of the system's high-level features.
+
+![Screenshot 1](screenshots/scr-01.png)
+*Login screen where users with varying roles in the department can log in.*
+
+![Screenshot 2](screenshots/scr-02.png)
+*Main view of the system where most staff work. Users can search for any tax number, retrieving all related taxes in the history belonging to the same taxpayer or grouping of taxes.*
+
+![Screenshot 3](screenshots/scr-03.png)
+*Users can perform different actions based on business scenarios and their roles.*
+
+![Screenshot 4](screenshots/scr-04.png)
+*Screen where users can insert a single record, choosing from a variety of tax types. The fields shown will change depending on the selected tax type.*
+
+![Screenshot 5](screenshots/scr-05.png)
+*Support for adding multiple records at once, increasing efficiency and handling cases where a single taxpayer pays for multiple taxes.*
+
+![Screenshot 6](screenshots/scr-06.png)
+*The system supports copy-pasting of data from Microsoft Excel.*
+
+![Screenshot 7](screenshots/scr-07.png)
+*Data can be pasted into the form as shown above, and users can save or print the data.*
+
+![Screenshot 8](screenshots/scr-08.png)
+*Feature allowing users to capture a screenshot of the receipt using a camera connected to the computer. This significantly reduces processing time for receipt emails, making it more convenient, quicker, and less error-prone.*
+
+![Screenshot 9](screenshots/scr-09.png)
+*Work in progress - the system generates various types of reports that users need to submit to different departments within the treasury.*
+
+## Challenges in the System
+
+Developing the system came with its share of challenges, which were addressed through innovative solutions:
+
+- **Learning Curve:** Delving into software development posed a significant learning curve. Juggling the acquisition of diverse technologies while tackling real-world business problems proved to be a formidable challenge. Overcoming this hurdle necessitated a commitment to continuous learning and adaptability.
+
+- **Ease of Use:** Striving for user-friendliness was essential for fostering efficiency within the online payment department team. Ensuring that the system was intuitive and efficient to use required thoughtful design and implementation decisions to streamline workflows and enhance user experience.
+
+- **Complex Calculation Logic:** Managing intricate calculation logic for handling excesses and shortages when paying groups of taxes introduced complexity. The system had to navigate numerous scenarios meticulously, which demanded careful consideration and thorough testing to ensure accuracy and reliability.
+
+- **Performance Optimization:** Optimizing system performance, especially concerning bulk data creation, was paramount. The system needed to efficiently handle the creation of nearly 1000 records simultaneously, each undergoing validation against business rules. Ensuring timely data submission and processing required rigorous optimization efforts.
+
+- **Adherence to Good Engineering Practices:** Emphasizing good engineering practices was crucial for ensuring the long-term maintainability of the codebase. Following principles such as modularization, code readability, documentation, and testing helped establish a solid foundation for future development efforts. By adhering to these practices, the codebase remains robust, scalable, and easier to maintain over time.
