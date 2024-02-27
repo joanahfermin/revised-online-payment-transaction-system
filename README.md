@@ -98,3 +98,25 @@ Developing the system brought various challenges, tackled through innovative sol
 - **Performance Optimization:** Making the system perform efficiently, especially with large data, was crucial. Optimizing performance required rigorous efforts to ensure timely data processing.
 
 - **Good Engineering Practices:** Following good engineering practices was vital for long-term maintainability. Prioritizing code organization, readability, documentation, and testing established a solid foundation for future development.
+
+## Code Statistics
+
+Using `cloc`, the following statistics were generated:
+
+```markdown
+------------------------------------------------------------------------------------
+Language                          files          blank        comment           code
+------------------------------------------------------------------------------------
+JSON                                  7              0              0          12775
+C#                                   97           1131            754           7198
+XML                                  15             11             48           5880
+C# Designer                          12             72            562           2463
+Text                                  1              0              0             84
+Markdown                              1             33              0             67
+MSBuild script                        1              8              0             56
+Visual Studio Solution                1              1              1             23
+INI                                   1              0              0             16
+C# Generated                          1              4             10             11
+------------------------------------------------------------------------------------
+SUM:                                137           1260           1375          28573
+------------------------------------------------------------------------------------
