@@ -1,4 +1,17 @@
-# Project Title: Revised Online Payment Transaction System
+# Revised Online Payment Transaction System
+
+- **Motivation:** 
+  - I started this project with the following learning objectives:
+    - Learn how to code in C#
+    - Explore good engineering practices
+    - Understand different technologies
+    - Gain experience in stakeholder interaction
+    - Learn database design principles
+    - Master user interface design
+    - Practice software deployment and testing
+    - And more. I believe that the best way to learn coding is by actually doing it.
+- **Objective:**
+  - My primary goal with this project is to create a system that helps my team in the online payment department perform their duties more efficiently.
 
 The **Revised Online Payment Transaction System** is a C# application designed to streamline the payment processing workflow within the online payment department. It facilitates the handling of various tax payments, including real property tax, business application tax, and miscellaneous taxes, by providing a comprehensive platform for monitoring payment statuses and assisting departmental staff in the tax payment process.
 
