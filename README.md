@@ -74,14 +74,14 @@ Below are screenshots showcasing some of the system's high-level features.
 
 ## Challenges in the System
 
-Developing the system came with its share of challenges, which were addressed through innovative solutions:
+Developing the system brought various challenges, tackled through innovative solutions:
 
-- **Learning Curve:** Delving into software development posed a significant learning curve. Juggling the acquisition of diverse technologies while tackling real-world business problems proved to be a formidable challenge. Overcoming this hurdle necessitated a commitment to continuous learning and adaptability.
+- **Learning Curve:** Getting started with software development was tough. Balancing learning new technologies while solving real-world problems required continual learning and adaptability.
 
-- **Ease of Use:** Striving for user-friendliness was essential for fostering efficiency within the online payment department team. Ensuring that the system was intuitive and efficient to use required thoughtful design and implementation decisions to streamline workflows and enhance user experience.
+- **Ease of Use:** Making the system user-friendly was crucial for team efficiency. Designing an intuitive system involved streamlining workflows and improving user experience.
 
-- **Complex Calculation Logic:** Managing intricate calculation logic for handling excesses and shortages when paying groups of taxes introduced complexity. The system had to navigate numerous scenarios meticulously, which demanded careful consideration and thorough testing to ensure accuracy and reliability.
+- **Complex Calculations:** Handling intricate tax calculations presented challenges. Navigating different scenarios required careful consideration and thorough testing.
 
-- **Performance Optimization:** Optimizing system performance, especially concerning bulk data creation, was paramount. The system needed to efficiently handle the creation of nearly 1000 records simultaneously, each undergoing validation against business rules. Ensuring timely data submission and processing required rigorous optimization efforts.
+- **Performance Optimization:** Making the system perform efficiently, especially with large data, was crucial. Optimizing performance required rigorous efforts to ensure timely data processing.
 
-- **Adherence to Good Engineering Practices:** Emphasizing good engineering practices was crucial for ensuring the long-term maintainability of the codebase. Following principles such as modularization, code readability, documentation, and testing helped establish a solid foundation for future development efforts. By adhering to these practices, the codebase remains robust, scalable, and easier to maintain over time.
+- **Good Engineering Practices:** Following good engineering practices was vital for long-term maintainability. Prioritizing code organization, readability, documentation, and testing established a solid foundation for future development.
