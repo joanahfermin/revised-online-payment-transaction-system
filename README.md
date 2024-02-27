@@ -17,3 +17,23 @@ It's important to note that the system does not directly handle tax payments; ra
 - **Releasing:** This module assists staff when taxpayers claim their physical receipts. The system aids in locating the group of taxes associated with a particular taxpayer and provides information on the cabinet and folder containing the physical copies for retrieval.
 
 By efficiently managing the tax payment workflow, the **Revised Online Payment Transaction System** enhances the productivity of the online payment department and ensures smoother processing of tax payments.
+
+## Technical Information
+
+The codebase adheres to a structured convention, where classes are organized according to specific roles, ensuring each class maintains a singular responsibility. This design principle enhances code clarity and maintainability.
+
+Key technologies utilized in this project include:
+
+- **C#:** The primary programming language employed for development.
+- **.NET 6.0:** Leveraged for its latest features and enhancements, providing a robust framework for building modern applications.
+- **Winforms:** Utilized for user interface (UI) development and orchestration of system workflows.
+- **Entity Framework (EF):** Employs EF as the primary Object-Relational Mapping (ORM) tool, facilitating seamless interaction with the MS SQL Server database.
+- **Entity Framework LINQ:** Leveraged extensively for database queries and interactions, enhancing code readability and efficiency.
+- **Raw SQL:** Employed for executing complex database queries, offering flexibility and control over data retrieval and manipulation.
+- **Layered Architecture:** Adopts a layered architectural approach, segregating components into distinct layers:
+  - **Winforms:** Responsible solely for UI presentation and user interaction.
+  - **Services:** Implements business logic and transaction management, ensuring cohesive application behavior.
+  - **DAL (Data Access Layer):** Handles database interactions, providing a separation of concerns and promoting maintainability.
+- **OpenCVSharp:** Utilized for generating Excel reports, enabling efficient data visualization and analysis.
+
+By leveraging these technologies and adhering to sound architectural principles, the system delivers robust functionality and maintainability.
