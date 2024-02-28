@@ -61,7 +61,7 @@ namespace Inventory_System.Forms
             DynamicGridInfo[] gridInfoArray = new DynamicGridInfo[] {
                 new DynamicGridInfo{PropertyName="TaxType", Label = "Tax Type" },
                 new DynamicGridInfo{PropertyName="BillNumber", Label = "Bill Number" },
-                new DynamicGridInfo{PropertyName="TaxpayerName", Label = "Taxpayer's Name" },
+                //new DynamicGridInfo{PropertyName="TaxpayerName", Label = "Taxpayer's Name" },
                 new DynamicGridInfo{PropertyName="Collection", Label = "Bill Amount", decimalValue = true },
                 new DynamicGridInfo{PropertyName="Billing", Label = "Total Amount Transferred", decimalValue = true },
                 new DynamicGridInfo{PropertyName="ExcessShort", Label = "Excess/Short", decimalValue = true},
@@ -79,6 +79,24 @@ namespace Inventory_System.Forms
             }
         }
 
+        private void loadCollectorsReport()
+        {
+            InitializeDynamicMappingAllTaxesType();
+
+            List<AllTaxTypeReport> allTaxesValidated = rptService.RetrieveByValidatedDate(dtFrom.Value, dtTo.Value);
+            DgReportForm.DataSource = allTaxesValidated;
+        }
+
+        private void dtFrom_ValueChanged(object sender, EventArgs e)
+        {
+            loadCollectorsReport();
+        }
+
+        private void dtTo_ValueChanged(object sender, EventArgs e)
+        {
+            loadCollectorsReport();
+        }
+
         private void cbTaxType_SelectedIndexChanged(object sender, EventArgs e)
         {
             string taxType = cbTaxTypeReport.Text;
@@ -87,16 +105,13 @@ namespace Inventory_System.Forms
 
             if (taxType == AllTaxTypeReportUtil.COLLECTORS_REPORT)
             {
-                InitializeDynamicMappingAllTaxesType();
-                List<AllTaxTypeReport> allTaxesValidated = rptService.RetrieveByValidatedDate(dtFrom.Value, dtTo.Value);
-                DgReportForm.DataSource = allTaxesValidated;
+                dtFrom.Visible = true;
+                dtTo.Visible = true;
 
                 labelEnterRefNo.Visible = false;
                 tbRefNo.Visible = false;
                 labelDateFrom.Visible = true;
                 labelDateTo.Visible = true;
-                dtFrom.Visible = true;
-                dtTo.Visible = true;
             }
             else if (taxType == AllTaxTypeReportUtil.REGENERATE_EPAYMENTS)
             {
@@ -122,8 +137,6 @@ namespace Inventory_System.Forms
 
         private void btnGenerate_Click(object sender, EventArgs e)
         {
-            //GenerateTemporaryTaxesList();
-            //GenerateSheet(rptToSaveList, businessToSaveList, miscToSaveList);
             GenerateSheet();
         }
 
@@ -151,60 +164,7 @@ namespace Inventory_System.Forms
             //Open the excel file
             System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo { FileName = filePath, UseShellExecute = true });
         }
-        /*
-        private void GenerateTemporaryTaxesList()
-        {
-            rptToSaveList.Clear();
-            businessToSaveList.Clear();
-            miscToSaveList.Clear();
-
-            foreach (DataGridViewRow row in DgReportForm.Rows)
-            {
-                AllTaxTypeReport taxType = (AllTaxTypeReport)row.DataBoundItem;
-                //RPT
-                if (taxUniqueKeyFormat.isRPTTaxDecFormat(taxType.BillNumber))
-                {
-                    rptToSaveList.Add(ProcessEPaymentRpt(taxType));
-                }
-                //BUSINESS
-                else if (taxUniqueKeyFormat.isOPnumberFormatBusiness(taxType.BillNumber))
-                {
-                    businessToSaveList.Add(ProcessEPaymentBusiness(taxType));
-                }
-                //MISC - OCCUPATIONAL PERMIT
-                else if (taxUniqueKeyFormat.isOPnumberFormatOccuPermit(taxType.BillNumber))
-                {
-                    miscToSaveList.Add(ProcessEPaymentMiscOccuPermit(taxType));
-                }
-                //MISC - OVR TTMD
-                else if (taxUniqueKeyFormat.isOPnumberFormatOvrTTMD(taxType.BillNumber))
-                {
-                    miscToSaveList.Add(ProcessEPaymentMiscOvrTtmd(taxType));
-                }
-                //MISC - OVR DPOS
-                else if (taxUniqueKeyFormat.isOPnumberFormatOvrDPOS(taxType.BillNumber))
-                {
-                    miscToSaveList.Add(ProcessEPaymentMiscOvrDpos(taxType));
-                }
-                //MISC - MARKET
-                else if (taxUniqueKeyFormat.isOPnumberFormatMarketMDAD(taxType.BillNumber))
-                {
-                    miscToSaveList.Add(ProcessEPaymentMiscMarket(taxType));
-                }
-                //MISC - ZONING
-                else if (taxUniqueKeyFormat.isOPnumberFormatZoning(taxType.BillNumber))
-                {
-                    miscToSaveList.Add(ProcessEPaymentMiscZoning(taxType));
-                }
-                //MISC - LIQUOR
-                else if (taxUniqueKeyFormat.isOPnumberFormatLiquorLLRB(taxType.BillNumber))
-                {
-                    miscToSaveList.Add(ProcessEPaymentMiscLiquor(taxType));
-                }
-            }
-        }
-        */
-
+        
         private void CreateRptSheet(Sheets sheets, WorkbookPart workbookPart, SpreadsheetDocument spreadsheetDocument/*, List<Rpt> rptToSaveList*/)
         {
             // Add a WorksheetPart to the WorkbookPart
@@ -302,16 +262,16 @@ namespace Inventory_System.Forms
             var bussinessRow = new Row();
             bussinessRow.Append(CreateCell("A5", ""));
             bussinessRow.Append(CreateCell("B5", "BILL NUMBER"));
-            bussinessRow.Append(CreateCell("C5", "TAXPAYER'S NAME"));
-            bussinessRow.Append(CreateCell("D5", "SERVICE PROVIDER"));
-            bussinessRow.Append(CreateCell("E5", "MP NUMBER"));
-            bussinessRow.Append(CreateCell("F5", "AMOUNT DUE"));
-            bussinessRow.Append(CreateCell("G5", "PAYMENT DATE"));
+            bussinessRow.Append(CreateCell("D5", "BILL AMOUNT"));
+            bussinessRow.Append(CreateCell("E5", "AMOUNT DUE"));
+            bussinessRow.Append(CreateCell("F5", "REMARKS"));
             businessSheetData.AppendChild(bussinessRow);
 
             int bussinessRowIndex = 6;
             int count = 1;
+            decimal totalBillAmount = 0;
             decimal totalAmountTransferred = 0;
+
             foreach (DataGridViewRow gridrow in DgReportForm.Rows)
             {
                 AllTaxTypeReport taxRow = (AllTaxTypeReport)gridrow.DataBoundItem;
@@ -320,18 +280,15 @@ namespace Inventory_System.Forms
                     continue;
                 }
 
-                //foreach (Business bus in businessToSaveList)
-                //{
                 bussinessRow = new Row(); // Create a new row instance for each iteration
                 bussinessRow.Append(CreateCell($"A{bussinessRowIndex}", count.ToString()));
                 bussinessRow.Append(CreateCell($"B{bussinessRowIndex}", taxRow.BillNumber));
-                bussinessRow.Append(CreateCell($"C{bussinessRowIndex}", "" /*taxRow.TaxpayersName*/));
-                bussinessRow.Append(CreateCell($"D{bussinessRowIndex}", "" /*taxRow.PaymentChannel*/));
-                bussinessRow.Append(CreateCell($"E{bussinessRowIndex}", ""/*taxRow.MP_Number*/));
-                bussinessRow.Append(CreateDecimalCell($"F{bussinessRowIndex}", taxRow.Collection ?? 0));
-                bussinessRow.Append(CreateCell($"G{bussinessRowIndex}", ""/*bus.DateOfPayment.ToString()*/));
+                bussinessRow.Append(CreateDecimalCell($"C{bussinessRowIndex}", taxRow.Billing ?? 0));
+                bussinessRow.Append(CreateDecimalCell($"D{bussinessRowIndex}", taxRow.Collection ?? 0));
+                bussinessRow.Append(CreateCell($"E{bussinessRowIndex}", taxRow.Remarks));
                 businessSheetData.AppendChild(bussinessRow);
 
+                totalBillAmount += taxRow.Billing ?? 0;
                 totalAmountTransferred += taxRow.Collection ?? 0;
 
                 count++;
@@ -341,11 +298,9 @@ namespace Inventory_System.Forms
             bussinessRow = new Row();
             bussinessRow.Append(CreateCell($"A{bussinessRowIndex}", ""));
             bussinessRow.Append(CreateCell($"B{bussinessRowIndex}", ""));
-            bussinessRow.Append(CreateCell($"C{bussinessRowIndex}", ""));
-            bussinessRow.Append(CreateCell($"D{bussinessRowIndex}", "TOTAL PAYMENT"));
-            bussinessRow.Append(CreateDecimalCell($"E{bussinessRowIndex}", totalAmountTransferred));
-            bussinessRow.Append(CreateCell($"F{bussinessRowIndex}", ""));
-            bussinessRow.Append(CreateCell($"G{bussinessRowIndex}", ""));
+            bussinessRow.Append(CreateDecimalCell($"C{bussinessRowIndex}", totalBillAmount));
+            bussinessRow.Append(CreateDecimalCell($"D{bussinessRowIndex}", totalAmountTransferred));
+            bussinessRow.Append(CreateCell($"E{bussinessRowIndex}", ""));
             businessSheetData.AppendChild(bussinessRow);
         }
 
@@ -599,56 +554,6 @@ namespace Inventory_System.Forms
             return cell;
         }
 
-        /*
-        private Rpt ProcessEPaymentRpt(AllTaxTypeReport tType)
-        {
-            Rpt rpt = ConversionHelper.ConvertToRptTest(tType);
-            return rpt;
-        }
-        */
-        /*
-        private Business ProcessEPaymentBusiness(AllTaxTypeReport tType)
-        {
-            Business bus = ConversionHelper.ConvertToBusiness(tType);
-            return bus;
-        }
-
-        private Miscellaneous ProcessEPaymentMiscOccuPermit(AllTaxTypeReport tType)
-        {
-            Miscellaneous misc = ConversionHelper.ConvertToMiscOccuPermit(tType);
-            return misc;
-        }
-        
-        private Miscellaneous ProcessEPaymentMiscOvrTtmd(AllTaxTypeReport tType)
-        {
-            Miscellaneous misc = ConversionHelper.ConvertToMiscOvrTtmd(tType);
-            return misc;
-        }
-
-        private Miscellaneous ProcessEPaymentMiscOvrDpos(AllTaxTypeReport tType)
-        {
-            Miscellaneous misc = ConversionHelper.ConvertToMiscOvrDpos(tType);
-            return misc;
-        }
-
-        private Miscellaneous ProcessEPaymentMiscMarket(AllTaxTypeReport tType)
-        {
-            Miscellaneous misc = ConversionHelper.ConvertToMiscMarket(tType);
-            return misc;
-        }
-
-        private Miscellaneous ProcessEPaymentMiscZoning(AllTaxTypeReport tType)
-        {
-            Miscellaneous misc = ConversionHelper.ConvertToMiscZoning(tType);
-            return misc;
-        }
-
-        private Miscellaneous ProcessEPaymentMiscLiquor(AllTaxTypeReport tType)
-        {
-            Miscellaneous misc = ConversionHelper.ConvertToMiscLiquor(tType);
-            return misc;
-        }
-        */
         private void btnClose_MouseEnter(object sender, EventArgs e)
         {
             originalBackgroundImageRpt = btnClose.BackgroundImage;
