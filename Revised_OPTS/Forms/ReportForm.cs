@@ -349,6 +349,17 @@ namespace Inventory_System.Forms
                     {
                         continue;
                     }
+                    if (
+                        (miscType == TaxTypeUtil.MISCELLANEOUS_OCCUPERMIT && !SearchBusinessFormat.isMiscOccuPermit(taxRow.BillNumber)) ||
+                        //(miscType == TaxTypeUtil.MISCELLANEOUS_ && !SearchBusinessFormat.isMiscOvrDpos(taxRow.BillNumber)) ||
+                        //(miscType == TaxTypeUtil.MISCELLANEOUS_ && !SearchBusinessFormat.isMiscOvrTtmd(taxRow.BillNumber)) ||
+                        (miscType == TaxTypeUtil.MISCELLANEOUS_MARKET && !SearchBusinessFormat.isMiscMarket(taxRow.BillNumber)) ||
+                        (miscType == TaxTypeUtil.MISCELLANEOUS_ZONING && !SearchBusinessFormat.isMiscZoning(taxRow.BillNumber)) ||
+                        (miscType == TaxTypeUtil.MISCELLANEOUS_LIQUOR && !SearchBusinessFormat.isMiscLiquor(taxRow.BillNumber)) 
+                        )
+                    {
+                        continue;
+                    }
 
                     //foreach (Miscellaneous misc in miscToSaveList)
                     //{
