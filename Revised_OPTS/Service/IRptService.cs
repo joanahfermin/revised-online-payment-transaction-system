@@ -45,5 +45,8 @@ namespace Revised_OPTS.Service
         int CountORUploadRemainingToSend(string uploadedBy);
         List<Rpt> ListORUploadRemainingToSend(string UploadedBy);
         void ChangeStatusForORPickUp(Rpt rpt);
+        List<Rpt> ListForLocationCodeAssignment();
+
+        void AssignmentLocationCode(List<long> rptIDList, string locationCode);
     }
 }

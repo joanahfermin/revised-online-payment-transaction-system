@@ -5,6 +5,7 @@ using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Revised_OPTS.Model;
 using Revised_OPTS.Service;
+using Revised_OPTS.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -167,6 +168,30 @@ namespace Revised_OPTS.DAL
                          orderby rpt.ORConfirmDate ascending, rpt.ORAttachedDate ascending
                          select rpt).Take(5); ;
             return query.ToList();
+        }
+
+        public List<Rpt> ListForLocationCodeAssignment()
+        {
+            var query = (from rpt in getDbSet()
+                         where rpt.DeletedRecord != 1
+                               && (
+                                    (rpt.Status == TaxStatus.ForORUpload || rpt.UploadedBy != null) ||
+                                    (rpt.Status == TaxStatus.ForORPickup)
+                               )
+                               && rpt.LocCode == null
+                         orderby rpt.ORConfirmDate ascending, rpt.ORAttachedDate ascending
+                         select rpt);
+            return query.ToList();
+        }
+        public void AssignmentLocationCode(List<long> rptIDList, string locationCode)
+        {
+            var rptEntitiesToUpdate = getDbSet().Where(r => rptIDList.Contains(r.RptID)).ToList();
+
+            // Update LocationCode for fetched entities
+            foreach (var rpt in rptEntitiesToUpdate)
+            {
+                rpt.LocCode = locationCode;
+            }
         }
     }
 }

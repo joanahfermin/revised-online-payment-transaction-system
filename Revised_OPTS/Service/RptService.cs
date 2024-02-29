@@ -883,5 +883,26 @@ namespace Revised_OPTS.Service
                 }
             }
         }
+
+        public List<Rpt> ListForLocationCodeAssignment()
+        {
+            using (var dbContext = ApplicationDBContext.Create())
+            {
+                return rptRepository.ListForLocationCodeAssignment();
+            }
+        }
+
+        public void AssignmentLocationCode(List<long> rptIDList, string locationCode)
+        {
+            using (var dbContext = ApplicationDBContext.Create())
+            {
+                using (var scope = new TransactionScope())
+                {
+                    rptRepository.AssignmentLocationCode(rptIDList, locationCode);
+                    dbContext.SaveChanges();
+                    scope.Complete();
+                }
+            }
+        }
     }
 }

@@ -920,5 +920,11 @@ namespace Revised_OPTS
                 DgMainForm.Rows[rowSelected].Selected = true;
             }
         }
+
+        private void btnAssignLocCode_Click(object sender, EventArgs e)
+        {
+            AssignLocationCodeForm frm = new AssignLocationCodeForm();
+            frm.ShowDialog();
+        }
     }
 }
