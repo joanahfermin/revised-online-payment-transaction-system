@@ -62,10 +62,18 @@ namespace Inventory_System.Forms
                 new DynamicGridInfo{PropertyName="TaxType", Label = "Tax Type" },
                 new DynamicGridInfo{PropertyName="BillNumber", Label = "Bill Number" },
                 //new DynamicGridInfo{PropertyName="TaxpayerName", Label = "Taxpayer's Name" },
-                new DynamicGridInfo{PropertyName="Collection", Label = "Bill Amount", decimalValue = true },
-                new DynamicGridInfo{PropertyName="Billing", Label = "Total Amount Transferred", decimalValue = true },
+                new DynamicGridInfo{PropertyName="Billing", Label = "Bill Amount", decimalValue = true },
+                new DynamicGridInfo{PropertyName="Collection", Label = "Total Amount Transferred", decimalValue = true },
                 new DynamicGridInfo{PropertyName="ExcessShort", Label = "Excess/Short", decimalValue = true},
                 new DynamicGridInfo{PropertyName="Remarks", Label = "Remarks"},
+            };
+            DynamicGridContainer = new DynamicGridContainer<AllTaxTypeReport>(DgReportForm, gridInfoArray, true, true);
+        }
+
+        public void InitializeDynamicMappingUserActivity()
+        {
+            DynamicGridInfo[] gridInfoArray = new DynamicGridInfo[] {
+                new DynamicGridInfo{PropertyName="TaxType", Label = "Tax Type" },
             };
             DynamicGridContainer = new DynamicGridContainer<AllTaxTypeReport>(DgReportForm, gridInfoArray, true, true);
         }
@@ -81,6 +89,7 @@ namespace Inventory_System.Forms
 
         private void loadCollectorsReport()
         {
+            DgReportForm.Columns.Clear();
             InitializeDynamicMappingAllTaxesType();
 
             List<AllTaxTypeReport> allTaxesValidated = rptService.RetrieveByValidatedDate(dtFrom.Value, dtTo.Value);
@@ -100,7 +109,7 @@ namespace Inventory_System.Forms
         private void cbTaxType_SelectedIndexChanged(object sender, EventArgs e)
         {
             string taxType = cbTaxTypeReport.Text;
-            DgReportForm.Rows.Clear();
+            //DgReportForm.Rows.Clear();
             DgReportForm.Columns.Clear();
 
             if (taxType == AllTaxTypeReportUtil.COLLECTORS_REPORT)
@@ -112,6 +121,7 @@ namespace Inventory_System.Forms
                 tbRefNo.Visible = false;
                 labelDateFrom.Visible = true;
                 labelDateTo.Visible = true;
+                loadCollectorsReport();
             }
             else if (taxType == AllTaxTypeReportUtil.REGENERATE_EPAYMENTS)
             {
@@ -132,8 +142,18 @@ namespace Inventory_System.Forms
                 labelDateTo.Visible = true;
                 dtFrom.Visible = true;
                 dtTo.Visible = true;
+
+                loadUserActivityReport();
             }
         }
+
+        private void loadUserActivityReport()
+        {
+            InitializeDynamicMappingUserActivity();
+            List<AllTaxTypeReport> allTaxesValidated = rptService.RetrieveByValidatedDate(dtFrom.Value, dtTo.Value);
+            DgReportForm.DataSource = allTaxesValidated;
+        }
+
 
         private void btnGenerate_Click(object sender, EventArgs e)
         {
@@ -192,7 +212,7 @@ namespace Inventory_System.Forms
 
             row.Append(CreateCell("B5", "BILL NUMBER"));
             row.Append(CreateCell("C5", "BILL AMOUNT"));
-            row.Append(CreateCell("D5", "TOTAL TRANSFERRED AMOUNT"));
+            row.Append(CreateCell("D5", "TOTAL AMOUNT TRANSFERRED"));
             row.Append(CreateCell("E5", "EXCESS/SHORT"));
             row.Append(CreateCell("F5", "REMARKS"));
             sheetData.AppendChild(row);
@@ -262,9 +282,9 @@ namespace Inventory_System.Forms
             var bussinessRow = new Row();
             bussinessRow.Append(CreateCell("A5", ""));
             bussinessRow.Append(CreateCell("B5", "BILL NUMBER"));
-            bussinessRow.Append(CreateCell("D5", "BILL AMOUNT"));
-            bussinessRow.Append(CreateCell("E5", "AMOUNT DUE"));
-            bussinessRow.Append(CreateCell("F5", "REMARKS"));
+            bussinessRow.Append(CreateCell("C5", "BILL AMOUNT"));
+            bussinessRow.Append(CreateCell("D5", "TOTAL AMOUNT TRANSFERRED"));
+            bussinessRow.Append(CreateCell("E5", "REMARKS"));
             businessSheetData.AppendChild(bussinessRow);
 
             int bussinessRowIndex = 6;
@@ -307,7 +327,7 @@ namespace Inventory_System.Forms
         private void CreateMiscSheet(Sheets sheets, WorkbookPart workbookPart, SpreadsheetDocument spreadsheetDocument/*, List<Miscellaneous> miscToSaveList*/)
         {
             UInt32 sheetCounter = 3;
-            foreach (string miscType in TaxTypeUtil.ALL_MISC_TAX_TYPE)
+            foreach (string miscType in TaxTypeUtil.REPORT_MISC_TAX_TYPE)
             {
                 // Add a WorksheetPart to the WorkbookPart
                 var worksheetPartMisc = workbookPart.AddNewPart<WorksheetPart>();
@@ -331,15 +351,14 @@ namespace Inventory_System.Forms
                 var miscRow = new Row();
                 miscRow.Append(CreateCell("A5", ""));
                 miscRow.Append(CreateCell("B5", "BILL NUMBER"));
-                miscRow.Append(CreateCell("C5", "SERVICE PROVIDER"));
-                miscRow.Append(CreateCell("D5", "OPA TRACKING NUMBER"));
-                miscRow.Append(CreateCell("E5", "TAXPAYER NAME"));
-                miscRow.Append(CreateCell("F5", "AMOUNT DUE"));
-                miscRow.Append(CreateCell("G5", "PAYMENT DATE"));
+                miscRow.Append(CreateCell("C5", "AMOUNT DUE"));
+                miscRow.Append(CreateCell("D5", "TOTAL AMOUNT TRANSFERRED"));
+                miscRow.Append(CreateCell("E5", "REMARKS"));
                 miscSheetData.AppendChild(miscRow);
 
                 int miscRowIndex = 6;
                 int count = 1;
+                decimal totalBillAmount = 0;
                 decimal totalAmountTransferred = 0;
 
                 foreach (DataGridViewRow gridrow in DgReportForm.Rows)
@@ -351,8 +370,8 @@ namespace Inventory_System.Forms
                     }
                     if (
                         (miscType == TaxTypeUtil.MISCELLANEOUS_OCCUPERMIT && !SearchBusinessFormat.isMiscOccuPermit(taxRow.BillNumber)) ||
-                        //(miscType == TaxTypeUtil.MISCELLANEOUS_ && !SearchBusinessFormat.isMiscOvrDpos(taxRow.BillNumber)) ||
-                        //(miscType == TaxTypeUtil.MISCELLANEOUS_ && !SearchBusinessFormat.isMiscOvrTtmd(taxRow.BillNumber)) ||
+                        (miscType == TaxTypeUtil.MISCELLANEOUS_OVR_DPOS && !SearchBusinessFormat.isMiscOvrDpos(taxRow.BillNumber)) ||
+                        (miscType == TaxTypeUtil.MISCELLANEOUS_OVR_TTMD && !SearchBusinessFormat.isMiscOvrTtmd(taxRow.BillNumber)) ||
                         (miscType == TaxTypeUtil.MISCELLANEOUS_MARKET && !SearchBusinessFormat.isMiscMarket(taxRow.BillNumber)) ||
                         (miscType == TaxTypeUtil.MISCELLANEOUS_ZONING && !SearchBusinessFormat.isMiscZoning(taxRow.BillNumber)) ||
                         (miscType == TaxTypeUtil.MISCELLANEOUS_LIQUOR && !SearchBusinessFormat.isMiscLiquor(taxRow.BillNumber)) 
@@ -366,13 +385,12 @@ namespace Inventory_System.Forms
                         miscRow = new Row(); // Create a new row instance for each iteration
                         miscRow.Append(CreateCell($"A{miscRowIndex}", count.ToString()));
                         miscRow.Append(CreateCell($"B{miscRowIndex}", taxRow.BillNumber));
-                        miscRow.Append(CreateCell($"C{miscRowIndex}", ""/*taxRow.ModeOfPayment*/));
-                        miscRow.Append(CreateCell($"D{miscRowIndex}", ""/*taxRow.OPATrackingNum*/));
-                        miscRow.Append(CreateCell($"E{miscRowIndex}", ""/*taxRow.TaxpayersName*/));
-                        miscRow.Append(CreateDecimalCell($"F{miscRowIndex}", taxRow.Collection ?? 0));
-                        //miscRow.Append(CreateCell($"G{miscRowIndex}", taxRow.PaymentDate.ToString()));
+                        miscRow.Append(CreateDecimalCell($"C{miscRowIndex}", taxRow.Billing ?? 0));
+                        miscRow.Append(CreateDecimalCell($"D{miscRowIndex}", taxRow.Collection ?? 0));
+                        miscRow.Append(CreateCell($"E{miscRowIndex}", ""));
                         miscSheetData.AppendChild(miscRow);
 
+                        totalBillAmount += taxRow.Billing ?? 0;
                         totalAmountTransferred += taxRow.Collection ?? 0;
 
                         count++;
@@ -382,11 +400,9 @@ namespace Inventory_System.Forms
                 miscRow = new Row();
                 miscRow.Append(CreateCell($"A{miscRowIndex}", ""));
                 miscRow.Append(CreateCell($"B{miscRowIndex}", ""));
-                miscRow.Append(CreateCell($"C{miscRowIndex}", ""));
-                miscRow.Append(CreateCell($"D{miscRowIndex}", ""));
-                miscRow.Append(CreateCell($"E{miscRowIndex}", "TOTAL PAYMENT"));
-                miscRow.Append(CreateDecimalCell($"F{miscRowIndex}", totalAmountTransferred));
-                miscRow.Append(CreateCell($"G{miscRowIndex}", ""));
+                miscRow.Append(CreateCell($"C{miscRowIndex}", "TOTAL PAYMENT"));
+                miscRow.Append(CreateDecimalCell($"D{miscRowIndex}", totalAmountTransferred));
+                miscRow.Append(CreateCell($"E{miscRowIndex}", ""));
                 miscSheetData.AppendChild(miscRow);
             }
         }

@@ -178,6 +178,7 @@ namespace Inventory_System.Forms
                 MessageBox.Show(ex.Message);
                 return;
             }
+            //TO DO: BUSINESS AND MISC
         }
 
         private void btnSaveRecord_MouseEnter(object sender, EventArgs e)

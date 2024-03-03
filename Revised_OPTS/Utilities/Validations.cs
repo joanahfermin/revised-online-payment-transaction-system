@@ -10,7 +10,7 @@ namespace Inventory_System.Utilities
 {
     internal class Validations
     {
-        public const string NO_RETRIEVED_NAME = "**NO RECORD FOUND IN I.T DATABASE**";
+        public const string NO_RETRIEVED_NAME = "**NO RECORD FOUND IN DATABASE: ITDDFMUDAILY2024 [V_MiscMasterBilling OR V_BusBillingMaster]**";
 
         public static bool HaveErrors(ErrorProvider ep)
         {
