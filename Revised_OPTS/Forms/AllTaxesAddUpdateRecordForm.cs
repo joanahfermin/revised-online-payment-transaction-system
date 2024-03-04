@@ -99,18 +99,30 @@ namespace Revised_OPTS.Forms
             cbTaxType.Text = retrieveTaxTypeFromMainForm;
             cbTaxType.Enabled = false;
 
-            if (retrieveTaxTypeFromMainForm == TaxTypeUtil.BUSINESS)
+            Thread newThread = new Thread(RetrieveRecord);
+            newThread.Start();
+
+        }
+
+
+        void RetrieveRecord()
+        {
+            Thread.Sleep(100);
+            Invoke(new Action(() =>
             {
-                business = businessService.Get(businessId);
-                dynamicControlContainer.PopulateDynamicControls(retrieveTaxTypeFromMainForm, business);
-            }
-            else if (retrieveTaxTypeFromMainForm == TaxTypeUtil.MISCELLANEOUS_OCCUPERMIT || retrieveTaxTypeFromMainForm == TaxTypeUtil.MISCELLANEOUS_OVR ||
-                retrieveTaxTypeFromMainForm == TaxTypeUtil.MISCELLANEOUS_MARKET || retrieveTaxTypeFromMainForm == TaxTypeUtil.MISCELLANEOUS_ZONING ||
-                retrieveTaxTypeFromMainForm == TaxTypeUtil.MISCELLANEOUS_LIQUOR)
-            {
-                misc = miscService.Get(miscId);
-                dynamicControlContainer.PopulateDynamicControls(retrieveTaxTypeFromMainForm, misc);
-            }  
+                if (retrieveTaxTypeFromMainForm == TaxTypeUtil.BUSINESS)
+                {
+                    business = businessService.Get(businessId);
+                    dynamicControlContainer.PopulateDynamicControls(retrieveTaxTypeFromMainForm, business);
+                }
+                else if (retrieveTaxTypeFromMainForm == TaxTypeUtil.MISCELLANEOUS_OCCUPERMIT || retrieveTaxTypeFromMainForm == TaxTypeUtil.MISCELLANEOUS_OVR ||
+                    retrieveTaxTypeFromMainForm == TaxTypeUtil.MISCELLANEOUS_MARKET || retrieveTaxTypeFromMainForm == TaxTypeUtil.MISCELLANEOUS_ZONING ||
+                    retrieveTaxTypeFromMainForm == TaxTypeUtil.MISCELLANEOUS_LIQUOR)
+                {
+                    misc = miscService.Get(miscId);
+                    dynamicControlContainer.PopulateDynamicControls(retrieveTaxTypeFromMainForm, misc);
+                }
+            }));
         }
 
         public void InitializeTaxType()
@@ -124,7 +136,7 @@ namespace Revised_OPTS.Forms
         public void InitializeDynamicMapping()
         {
             List<Bank> bankList = rptService.GetAllBanks();
-            string[] bankNames = bankList.Select(bank => bank.BankName).ToList().ToArray();
+            string[] bankNames = bankList.Select(bank => bank.BankName.Trim()).ToList().ToArray();
 
             //COMMON LABEL AND CONTROL
             DynamicControlInfo[] commonInfo = new DynamicControlInfo[]
