@@ -29,7 +29,6 @@ namespace Revised_OPTS.Forms
         IBusinessService businessService = ServiceFactory.Instance.GetBusinessService();
         IMiscService miscService = ServiceFactory.Instance.GetMiscService();
 
-        IRptTaxbillTPNRepository rptRetrieveTaxpayerNameRep = RepositoryFactory.Instance.GetRptRetrieveTaxpayerNameRepository();
         IBusinessMasterDetailTPNRepository businessRetrieveTaxpayerNameRep = RepositoryFactory.Instance.GetBusinessRetrieveTaxpayerNameRepository();
         IMiscDetailsBillingStageRepository miscRetrieveTaxpayerNameRep = RepositoryFactory.Instance.MiscRetrieveTaxpayerNameRepository();
 
@@ -40,11 +39,10 @@ namespace Revised_OPTS.Forms
 
         DynamicControlContainer dynamicControlContainer;
 
-        Rpt rpt;
         Business business;
         Miscellaneous misc;
         string retrieveTaxTypeFromMainForm = "";
-        long rptId = 0;
+
         long businessId = 0;
         long miscId = 0;
 
@@ -70,18 +68,13 @@ namespace Revised_OPTS.Forms
         {
             dynamicControlContainer = new DynamicControlContainer(this);
 
-            //if (taxType == TaxTypeUtil.REALPROPERTYTAX)
-            //{
-            //    rpt = rptService.Get(id);
-            //    rptId = rpt.RptID;
-            //    retrieveTaxTypeFromMainForm = taxType;
-            //}
-            /*else */if (taxType == TaxTypeUtil.BUSINESS)
+            if (taxType == TaxTypeUtil.BUSINESS)
             {
                 business = businessService.Get(id);
                 businessId = business.BusinessID;
                 retrieveTaxTypeFromMainForm = taxType;
             }
+
             else if (taxType == TaxTypeUtil.MISCELLANEOUS_OCCUPERMIT || taxType == TaxTypeUtil.MISCELLANEOUS_OVR || 
                 taxType == TaxTypeUtil.MISCELLANEOUS_ZONING || taxType == TaxTypeUtil.MISCELLANEOUS_MARKET || taxType == TaxTypeUtil.MISCELLANEOUS_LIQUOR)
             {
@@ -139,21 +132,6 @@ namespace Revised_OPTS.Forms
                     new DynamicControlInfo{PropertyName = "RequestingParty", Label = "Email Address:", ControlType = DynamicControlType.TextBox},
                     new DynamicControlInfo{PropertyName = "Status", Label = "Status: ", ControlType = DynamicControlType.ComboBox, ComboboxChoices = TaxStatus.STATUS, Enabled = false, InitialValue = TaxStatus.ForPaymentVerification},
                 };
-
-            //RPT
-            dynamicControlContainer.AddDynamicPropertyMapping(TaxTypeUtil.REALPROPERTYTAX, new DynamicControlInfo[]
-                {
-                    new DynamicControlInfo{PropertyName = "TaxDec", Label = "*TDN:", ControlType = DynamicControlType.TextBox, isRequired = true, format = BusinessFormat.TAXDEC_FORMAT},
-                    new DynamicControlInfo{PropertyName = "TaxPayerName", Label = "*TaxPayer's Name:", ControlType = DynamicControlType.TextBox, isRequired = true},
-                    new DynamicControlInfo{PropertyName = "AmountToPay", Label = "*Bill Amount:", ControlType = DynamicControlType.TextBox, InitialValue = "0.00", isRequired = true, decimalValue = true},
-                    new DynamicControlInfo{PropertyName = "AmountTransferred", Label = "*Transferred Amount:", ControlType = DynamicControlType.TextBox, InitialValue = "0.00", isRequired = true, decimalValue = true},
-                    new DynamicControlInfo{PropertyName = "Bank", Label = "*Bank: ", ControlType = DynamicControlType.ComboBox, ComboboxChoices = bankNames, isRequired = true},
-                    new DynamicControlInfo{PropertyName = "PaymentDate", Label = "Payment Date: ", ControlType = DynamicControlType.DatePicker, isRequired = true},
-                    new DynamicControlInfo{PropertyName = "YearQuarter", Label = "*Year:", ControlType = DynamicControlType.TextBox, isRequired = true},
-                    new DynamicControlInfo{PropertyName = "Quarter", Label = "Quarter: ", ControlType = DynamicControlType.ComboBox, ComboboxChoices = Quarter.ALL_QUARTER},
-                    new DynamicControlInfo{PropertyName = "BillingSelection", Label = "Billing Selection: ", ControlType = DynamicControlType.ComboBox, ComboboxChoices = BillingSelectionUtil.ALL_BILLING_SELECTION},
-                    new DynamicControlInfo{PropertyName = "RPTremarks", Label = "Remarks:", ControlType = DynamicControlType.TextBox},
-                }.Concat(commonInfo).ToArray()); ;
 
             //BUSINESS
             dynamicControlContainer.AddDynamicPropertyMapping(TaxTypeUtil.BUSINESS,
@@ -237,7 +215,7 @@ namespace Revised_OPTS.Forms
 
             if (taxType == TaxTypeUtil.BUSINESS)
             {
-                Control MP_NumberTextBox = dynamicControlContainer.FindControlByName(taxType, "MP_Number");
+                Control MP_NumberTextBox = dynamicControlContainer.FindControlByName(taxType, "BillNumber");
                 MP_NumberTextBox.KeyDown += MP_NumberTextBox_KeyDown;
                 MP_NumberTextBox.Leave += MP_NumberTextBox_Leave;
             }
