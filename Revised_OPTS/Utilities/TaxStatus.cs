@@ -25,7 +25,9 @@ namespace Revised_OPTS.Utilities
 
         public static string[] STATUS = { FOR_ASSESSMENT, ASSESSMENT_PRINTED, BILL_SENT, ForPaymentVerification, ForPaymentValidation, ForORUpload, ForORPickup, Released };
 
-        //public static string[] NON_COMPLETE_STATUS = { ForPaymentVerification, ForPaymentValidation, ForORUpload, ForORPickup, Released };
+        public static string[] BUSINESS_STATUS = { ForPaymentVerification, ForPaymentValidation, ForTransmittal, Released,  Transmitted };
+
+        public static string[] MISC_STATUS = { ForPaymentVerification, ForPaymentValidation, ForTransmittal, ForORUpload, ForORPickup, Released, Transmitted };
 
     }
 }

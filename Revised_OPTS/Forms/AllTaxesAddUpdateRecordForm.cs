@@ -101,7 +101,6 @@ namespace Revised_OPTS.Forms
 
             Thread newThread = new Thread(RetrieveRecord);
             newThread.Start();
-
         }
 
 
@@ -142,7 +141,6 @@ namespace Revised_OPTS.Forms
             DynamicControlInfo[] commonInfo = new DynamicControlInfo[]
                 {
                     new DynamicControlInfo{PropertyName = "RequestingParty", Label = "Email Address:", ControlType = DynamicControlType.TextBox},
-                    new DynamicControlInfo{PropertyName = "Status", Label = "Status: ", ControlType = DynamicControlType.ComboBox, ComboboxChoices = TaxStatus.STATUS, Enabled = false, InitialValue = TaxStatus.ForPaymentVerification},
                 };
 
             //BUSINESS
@@ -161,6 +159,7 @@ namespace Revised_OPTS.Forms
                     new DynamicControlInfo{PropertyName = "Year", Label = "*Year:", ControlType = DynamicControlType.TextBox, isRequired = true},
                     new DynamicControlInfo{PropertyName = "Qtrs", Label = "*Quarter: ", ControlType = DynamicControlType.ComboBox, ComboboxChoices = Quarter.ALL_QUARTER, isRequired = true},
                     new DynamicControlInfo{PropertyName = "MiscFees", Label = "Misc. Fees: ", ControlType = DynamicControlType.TextBox, InitialValue = "0.00"},
+                    new DynamicControlInfo{PropertyName = "Status", Label = "Status: ", ControlType = DynamicControlType.ComboBox, ComboboxChoices = TaxStatus.BUSINESS_STATUS, Enabled = false, InitialValue = TaxStatus.ForPaymentVerification},
                     new DynamicControlInfo{PropertyName = "BussinessRemarks", Label = "Remarks:", ControlType = DynamicControlType.TextBox},
                 }.Concat(commonInfo).ToArray());
 
@@ -174,6 +173,7 @@ namespace Revised_OPTS.Forms
                     new DynamicControlInfo{PropertyName = "TransferredAmount", Label = "*Transferred Amount:", ControlType = DynamicControlType.TextBox, InitialValue = "0.00", isRequired = true, decimalValue = true},
                     new DynamicControlInfo{PropertyName = "ModeOfPayment", Label = "*Bank:", ControlType = DynamicControlType.ComboBox, ComboboxChoices = bankNames, isRequired = true},
                     new DynamicControlInfo{PropertyName = "PaymentDate", Label = "*Payment Date: ", ControlType = DynamicControlType.DatePicker, isRequired = true},
+                    new DynamicControlInfo{PropertyName = "Status", Label = "Status: ", ControlType = DynamicControlType.ComboBox, ComboboxChoices = TaxStatus.MISC_STATUS, Enabled = false, InitialValue = TaxStatus.ForPaymentVerification},
                     new DynamicControlInfo{PropertyName = "Remarks", Label = "Remarks: ", ControlType = DynamicControlType.TextBox},
                 }.Concat(commonInfo).ToArray();
 
