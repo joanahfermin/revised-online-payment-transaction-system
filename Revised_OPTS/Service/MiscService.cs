@@ -35,9 +35,17 @@ namespace Revised_OPTS.Service
 
         public void Insert(List<Miscellaneous> miscList)
         {
+            Insert(miscList, true);
+        }
+
+        public void Insert(List<Miscellaneous> miscList, bool validate)
+        {
             using (var dbContext = ApplicationDBContext.Create())
             {
-                validateMiscDuplicateRecord(miscList);
+                if (validate)
+                {
+                    validateMiscDuplicateRecord(miscList);
+                }
 
                 foreach (Miscellaneous misc in miscList)
                 {

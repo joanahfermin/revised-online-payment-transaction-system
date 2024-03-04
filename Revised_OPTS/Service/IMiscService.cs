@@ -13,6 +13,7 @@ namespace Revised_OPTS.Service
         List<Miscellaneous> RetrieveBySearchKeyword(string opNum);
 
         void Insert(List<Miscellaneous> misc);
+        void Insert(List<Miscellaneous> misc, bool validate);
         void Update(Miscellaneous misc);
 
         void RevertSelectedRecordStatus(List<Miscellaneous> misc);

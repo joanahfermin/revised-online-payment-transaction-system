@@ -11,5 +11,7 @@ namespace Inventory_System.DAL
     internal interface IMiscDetailsBillingStageRepository : IRepository<MiscDetailsBillingStage>
     {
         MiscDetailsBillingStage retrieveByBillNum(string billNum);
+        List<MiscDetailsBillingStage> retrieveByBillNum(List<string> billNum);
+
     }
 }

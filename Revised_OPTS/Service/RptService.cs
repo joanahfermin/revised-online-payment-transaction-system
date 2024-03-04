@@ -216,8 +216,7 @@ namespace Revised_OPTS.Service
             }
         }
 
-
-        private void validateDuplicateRecord(List<Rpt> rptList, List<Business> businessList, List<Miscellaneous> miscList)
+        public void validateDuplicateRecord(List<Rpt> rptList, List<Business> businessList, List<Miscellaneous> miscList)
         {
             List<Rpt> duplicateRptList = new List<Rpt>();
             try
@@ -281,13 +280,21 @@ namespace Revised_OPTS.Service
                 throw new RptException("Invalid action.");
             }
         }
+        public void SaveAll(List<Rpt> listOfRptsToSave, List<Rpt> listOfRptsToDelete, decimal totalAmountTransferred)
+        {
+            SaveAll(listOfRptsToSave, listOfRptsToDelete, totalAmountTransferred, true);
+        }
+
 
         //saving all rpt record in the add/update multiple record form.
-        public void SaveAll(List<Rpt> listOfRptsToSave, List<Rpt> listOfRptsToDelete, decimal totalAmountTransferred)
+        public void SaveAll(List<Rpt> listOfRptsToSave, List<Rpt> listOfRptsToDelete, decimal totalAmountTransferred, bool validate)
         {
             using (var dbContext = ApplicationDBContext.Create())
             {
-                validateRptDuplicateRecord(listOfRptsToSave);
+                if (validate)
+                {
+                    validateRptDuplicateRecord(listOfRptsToSave);
+                }
                 using (var scope = new TransactionScope())
                 {
                     if (listOfRptsToSave.Count > 0)
@@ -326,12 +333,20 @@ namespace Revised_OPTS.Service
             }
         }
 
-        //save records copy/paste from gcashpaymaya excel
         public void SaveAllEPayment(List<Rpt> rptList, List<Business> businessList, List<Miscellaneous> miscList)
+        {
+            SaveAllEPayment(rptList, businessList, miscList, true);
+        }
+
+        //save records copy/paste from gcashpaymaya excel
+        public void SaveAllEPayment(List<Rpt> rptList, List<Business> businessList, List<Miscellaneous> miscList, bool validate)
         {
             using (var dbContext = ApplicationDBContext.Create())
             {
-                validateDuplicateRecord(rptList, businessList, miscList);
+                if (validate)
+                {
+                    validateDuplicateRecord(rptList, businessList, miscList);
+                }
 
                 AssignRefNum(rptList);
                 AssignRefNum(businessList);

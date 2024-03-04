@@ -31,8 +31,11 @@ namespace Revised_OPTS.Service
         void Delete(Rpt rpt);
         void DeleteAll(List<Rpt> rptsToDelete);
         void SaveAll(List<Rpt> rpt, List<Rpt> rptToDelete, decimal totalAmountTransferred);
+        void SaveAll(List<Rpt> rpt, List<Rpt> rptToDelete, decimal totalAmountTransferred, bool validate);
         void SaveAllEPayment(List<Rpt> rpt, List<Business> bussiness, List<Miscellaneous> misc);
+        void SaveAllEPayment(List<Rpt> rpt, List<Business> bussiness, List<Miscellaneous> misc, bool validate);
         void UpdateAllinDuplicateRecordForm(List<Rpt> listOfRptsToSave);
+        void validateDuplicateRecord(List<Rpt> rptList, List<Business> businessList, List<Miscellaneous> miscList);
 
         void UploadReceipt(RPTAttachPicture pix);
         RPTAttachPicture getRptReceipt(long rptId);

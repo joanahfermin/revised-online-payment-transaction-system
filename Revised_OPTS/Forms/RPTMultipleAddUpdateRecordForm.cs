@@ -218,11 +218,6 @@ namespace Inventory_System.Forms
             {
                 firstTaxdecRecord = listOfRptsToSave[0].TaxDec.ToString();
             }
-            //else
-            //{
-            //    MessageBox.Show("No items in the grid.");
-            //    return;
-            //}
 
             if (!DynamicGridContainer.HaveNoErrors())
             {
@@ -233,13 +228,25 @@ namespace Inventory_System.Forms
             try
             {
                 rptService.SaveAll(listOfRptsToSave, listOfRptsToDelete, totalAmountTransferred);
+                if (firstTaxdecRecord != null)
+                {
+                    NotificationHelper.notifyUserAndRefreshRecord(firstTaxdecRecord);
+                }
+                btnClose_Click(sender, e);
+
             }
             catch (DuplicateRecordException ex)
             {
-                MessageBox.Show(ex.Message);
+                DialogResult result = MessageBox.Show($"There is an existing record/s detected in the database.", "Duplicate Record Detected", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
 
-                ExistingRecordForm rptDuplicateForm = new ExistingRecordForm(ex.duplicateRptList, new List<Business>(), new List<Miscellaneous>());
-                rptDuplicateForm.ShowDialog();
+                ExistingRecordForm DuplicateForm = new ExistingRecordForm(ex.duplicateRptList, new List<Business>(), new List<Miscellaneous>());
+                DuplicateForm.ShowDialog();
+
+                if (MessageBox.Show("Would you like to continue?", "Confirm", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                {
+                    rptService.SaveAll(listOfRptsToSave, listOfRptsToDelete, totalAmountTransferred, false);
+                    MessageBox.Show("Record(s) have been successfully saved.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
                 return;
             }
             catch (RptException ex)
@@ -247,12 +254,6 @@ namespace Inventory_System.Forms
                 MessageBox.Show(ex.Message);
                 return;
             }
-
-            if (firstTaxdecRecord != null)
-            {
-                NotificationHelper.notifyUserAndRefreshRecord(firstTaxdecRecord);
-            }
-            btnClose_Click(sender, e);
         }
 
         private void btnSaveRecord_MouseEnter(object sender, EventArgs e)

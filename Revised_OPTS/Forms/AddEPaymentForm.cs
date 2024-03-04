@@ -33,7 +33,7 @@ namespace Inventory_System.Forms
 
         IRptService rptService = ServiceFactory.Instance.GetRptService();
         IBusinessMasterDetailTPNRepository busMasterdetailTPNRepository = RepositoryFactory.Instance.GetBusinessRetrieveTaxpayerNameRepository();
-
+        IMiscDetailsBillingStageRepository miscMasterdetailTPNRepository = RepositoryFactory.Instance.MiscRetrieveTaxpayerNameRepository();
 
         TaxUniqueKeyFormat taxUniqueKeyFormat = new TaxUniqueKeyFormat();
 
@@ -131,10 +131,16 @@ namespace Inventory_System.Forms
                 }
                 catch (DuplicateRecordException ex)
                 {
-                    MessageBox.Show(ex.Message);
+                    DialogResult result = MessageBox.Show($"There is an existing record/s detected in the database.", "Duplicate Record Detected", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
 
                     ExistingRecordForm DuplicateForm = new ExistingRecordForm(ex.duplicateRptList, ex.duplicateBusList, ex.duplicateMiscList);
                     DuplicateForm.ShowDialog();
+
+                    if (MessageBox.Show("Would you like to continue?", "Confirm", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                    {
+                        rptService.SaveAllEPayment(rptToSaveList, businessToSaveList, miscToSaveList, false);
+                        MessageBox.Show("Record(s) have been successfully saved.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
                     return;
                 }
 
@@ -206,21 +212,49 @@ namespace Inventory_System.Forms
 
             }
 
-            List<string> billNumberList = businessToSaveList.Select(b => b.BillNumber).ToList();
-            List<BusinessMasterDetailTPN> retrievedNames = busMasterdetailTPNRepository.retrieveByBillNumber(billNumberList);
+            List<string> billNumberBusList = businessToSaveList.Select(b => b.BillNumber).ToList();
+            List<BusinessMasterDetailTPN> retrievedNames = busMasterdetailTPNRepository.retrieveByBillNumber(billNumberBusList);
 
             foreach (Business bus in businessToSaveList)
             {
                 if (bus.TaxpayersName == null || bus.TaxpayersName == String.Empty)
                 {
                     foreach (BusinessMasterDetailTPN busName in retrievedNames)
-                    {
+                    {             //A01              //A02
                         if (bus.BillNumber == busName.BillNo)
                         {
                             bus.TaxpayersName = busName.TaxpayerName;
                             bus.BusinessName = busName.BusinessName;
                         }
                     }
+                }
+
+                if (bus.TaxpayersName == null || bus.TaxpayersName == String.Empty)
+                {
+                    bus.TaxpayersName = Validations.NO_RETRIEVED_NAME;
+                    bus.BusinessName = Validations.NO_RETRIEVED_BUSINESS_NAME;
+                }
+            }
+
+            List<string> billNumberMiscList = miscToSaveList.Select(b => b.OrderOfPaymentNum).ToList();
+            List<MiscDetailsBillingStage> miscRetrievedNames = miscMasterdetailTPNRepository.retrieveByBillNum(billNumberMiscList);
+
+            foreach (Miscellaneous misc in miscToSaveList)
+            {
+                if (misc.TaxpayersName == null || misc.TaxpayersName == String.Empty)
+                {
+                    foreach (BusinessMasterDetailTPN busName in retrievedNames)
+                    {                          
+                        if (misc.OrderOfPaymentNum == busName.BillNo)
+                        {
+                            misc.TaxpayersName = busName.TaxpayerName;
+                        }
+                    }
+                }
+
+                if (misc.TaxpayersName == null || misc.TaxpayersName == String.Empty)
+                {
+                    misc.TaxpayersName = Validations.NO_RETRIEVED_NAME;
                 }
             }
         }

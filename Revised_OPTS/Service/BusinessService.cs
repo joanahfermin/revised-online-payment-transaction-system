@@ -36,9 +36,17 @@ namespace Revised_OPTS.Service
 
         public void Insert(List<Business> businessList)
         {
+            Insert(businessList, true);
+        }
+
+        public void Insert(List<Business> businessList, bool validate)
+        {
             using (var dbContext = ApplicationDBContext.Create())
             {
-                validateBusinessDuplicateRecord(businessList);
+                if (validate)
+                {
+                    validateBusinessDuplicateRecord(businessList);
+                }
 
                 foreach (Business bus in businessList)
                 {

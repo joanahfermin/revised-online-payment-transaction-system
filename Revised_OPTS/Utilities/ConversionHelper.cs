@@ -16,17 +16,7 @@ namespace Inventory_System.Utilities
             Rpt rpt = new Rpt();
 
             rpt.TaxDec = ep.BillerId.ToString();
-
-            if (rpt.TaxPayerName != null)
-            {
-                rpt.TaxPayerName = ep.BillerInfo2.ToUpper();
-            }
-            else
-            {
-                string strMessage = Validations.NO_RETRIEVED_NAME;
-                ep.BillerInfo2 = strMessage.ToUpper();
-                rpt.TaxPayerName = ep.BillerInfo2;
-            }
+            rpt.TaxPayerName = ep.BillerInfo2.ToUpper();
             rpt.AmountToPay = ep.AmountDue;
             rpt.AmountTransferred = ep.AmountDue;
             rpt.TotalAmountTransferred = ep.AmountDue;
@@ -49,18 +39,7 @@ namespace Inventory_System.Utilities
 
             bus.Business_Type = null;
             bus.MP_Number = ep.BillerId;
-
-            if (bus.TaxpayersName != null)
-            {
-                bus.TaxpayersName = ep.BillerInfo2.ToUpper();
-            }
-            else
-            {
-                string strMessage = Validations.NO_RETRIEVED_NAME;
-                ep.BillerInfo2 = strMessage.ToUpper();
-                bus.TaxpayersName = ep.BillerInfo2;
-            }
-
+            bus.TaxpayersName = ep.BillerInfo2.ToUpper();
             bus.BusinessName = null;
 
             bus.BillNumber = ep.BillerRef.ToUpper();
@@ -86,18 +65,7 @@ namespace Inventory_System.Utilities
             Miscellaneous misc = new Miscellaneous();
 
             misc.MiscType = TaxTypeUtil.MISCELLANEOUS_OCCUPERMIT;
-
-            if (misc.TaxpayersName != null)
-            {
-                misc.TaxpayersName = ep.BillerInfo2.ToUpper();
-            }
-            else
-            {
-                string strMessage = Validations.NO_RETRIEVED_NAME;
-                ep.BillerInfo2 = strMessage.ToUpper();
-                misc.TaxpayersName = ep.BillerInfo2;
-            }
-
+            misc.TaxpayersName = ep.BillerInfo2.ToUpper();
             misc.OrderOfPaymentNum = ep.BillerRef.ToUpper();
             misc.ModeOfPayment = ep.ServiceProvider.ToUpper();
             misc.OPATrackingNum = ep.BillerId.ToString();
@@ -117,18 +85,7 @@ namespace Inventory_System.Utilities
             Miscellaneous misc = new Miscellaneous();
 
             misc.MiscType = TaxTypeUtil.MISCELLANEOUS_OVR;
-
-            if (misc.TaxpayersName != null)
-            {
-                misc.TaxpayersName = ep.BillerInfo2.ToUpper();
-            }
-            else
-            {
-                string strMessage = Validations.NO_RETRIEVED_NAME;
-                ep.BillerInfo2 = strMessage.ToUpper();
-                misc.TaxpayersName = ep.BillerInfo2;
-            }
-
+            misc.TaxpayersName = ep.BillerInfo2.ToUpper();
             misc.OrderOfPaymentNum = ep.BillerRef.ToUpper();
             misc.ModeOfPayment = ep.ServiceProvider.ToUpper();
             misc.OPATrackingNum = ep.BillerId.ToString().ToUpper();
@@ -147,18 +104,7 @@ namespace Inventory_System.Utilities
             Miscellaneous misc = new Miscellaneous();
 
             misc.MiscType = TaxTypeUtil.MISCELLANEOUS_OVR;
-
-            if (misc.TaxpayersName != null)
-            {
-                misc.TaxpayersName = ep.BillerInfo2.ToUpper();
-            }
-            else
-            {
-                string strMessage = Validations.NO_RETRIEVED_NAME;
-                ep.BillerInfo2 = strMessage.ToUpper();
-                misc.TaxpayersName = ep.BillerInfo2;
-            }
-
+            misc.TaxpayersName = ep.BillerInfo2.ToUpper();
             misc.OrderOfPaymentNum = ep.BillerRef.ToUpper();
             misc.ModeOfPayment = ep.ServiceProvider.ToUpper();
             misc.OPATrackingNum = ep.BillerId.ToString().ToUpper();
@@ -177,18 +123,7 @@ namespace Inventory_System.Utilities
             Miscellaneous misc = new Miscellaneous();
 
             misc.MiscType = TaxTypeUtil.MISCELLANEOUS_MARKET;
-
-            if (misc.TaxpayersName != null)
-            {
-                misc.TaxpayersName = ep.BillerInfo1.ToUpper();
-            }
-            else
-            {
-                string strMessage = Validations.NO_RETRIEVED_NAME;
-                ep.BillerInfo1 = strMessage.ToUpper();
-                misc.TaxpayersName = ep.BillerInfo1;
-            }
-
+            misc.TaxpayersName = ep.BillerInfo1.ToUpper();
             misc.OrderOfPaymentNum = ep.BillerInfo3.ToUpper();
             misc.ModeOfPayment = ep.ServiceProvider.ToUpper();
             misc.OPATrackingNum = ep.BillerRef.ToUpper();
@@ -207,18 +142,7 @@ namespace Inventory_System.Utilities
             Miscellaneous misc = new Miscellaneous();
 
             misc.MiscType = TaxTypeUtil.MISCELLANEOUS_ZONING;
-
-            if (misc.TaxpayersName != null)
-            {
-                misc.TaxpayersName = ep.BillerInfo2.ToUpper();
-            }
-            else
-            {
-                string strMessage = Validations.NO_RETRIEVED_NAME;
-                ep.BillerInfo2 = strMessage.ToUpper();
-                misc.TaxpayersName = ep.BillerInfo2;
-            }
-
+            misc.TaxpayersName = ep.BillerInfo2.ToUpper();
             misc.OrderOfPaymentNum = ep.BillerRef.ToUpper();
             misc.ModeOfPayment = ep.ServiceProvider.ToUpper();
             misc.OPATrackingNum = ep.BillerId.ToUpper();
@@ -237,18 +161,7 @@ namespace Inventory_System.Utilities
             Miscellaneous misc = new Miscellaneous();
 
             misc.MiscType = TaxTypeUtil.MISCELLANEOUS_LIQUOR;
-
-            if (misc.TaxpayersName != null)
-            {
-                misc.TaxpayersName = ep.BillerInfo2.ToUpper();
-            }
-            else
-            {
-                string strMessage = Validations.NO_RETRIEVED_NAME;
-                ep.BillerInfo2 = strMessage.ToUpper();
-                misc.TaxpayersName = ep.BillerInfo2;
-            }
-
+            misc.TaxpayersName = ep.BillerInfo2.ToUpper();
             misc.OrderOfPaymentNum = ep.BillerRef.ToUpper();
             misc.ModeOfPayment = ep.ServiceProvider.ToUpper();
             misc.OPATrackingNum = ep.BillerId;

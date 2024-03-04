@@ -160,11 +160,6 @@ namespace Inventory_System.Forms
             MiscDynamicGridContainer = new DynamicGridContainer<Miscellaneous>(DgMiscAddUpdateForm, gridInfoArray, true, true);
         }
 
-        private void btnClose_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
-
         private void btnSaveRecord_Click(object sender, EventArgs e)
         {
             List<Rpt> listOfRptsToSave = RptDynamicGridContainer.GetData();
@@ -178,7 +173,6 @@ namespace Inventory_System.Forms
                 MessageBox.Show(ex.Message);
                 return;
             }
-            //TO DO: BUSINESS AND MISC
         }
 
         private void btnSaveRecord_MouseEnter(object sender, EventArgs e)
@@ -208,5 +202,10 @@ namespace Inventory_System.Forms
         {
             btnClose.BackgroundImage = originalBackgroundImage;
         }
+        private void btnClose_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
     }
 }

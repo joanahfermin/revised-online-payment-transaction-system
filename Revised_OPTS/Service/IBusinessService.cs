@@ -13,6 +13,7 @@ namespace Revised_OPTS.Service
         List<Business> RetrieveBySearchKeyword(string billNumber);
 
         void Insert(List<Business> business);
+        void Insert(List<Business> business, bool validate);
         void Update(Business business);
 
         void RevertSelectedRecordStatus(List<Business> business);

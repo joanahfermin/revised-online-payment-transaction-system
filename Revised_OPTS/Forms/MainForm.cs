@@ -604,19 +604,33 @@ namespace Revised_OPTS
         private void MenuItemEdit_Click(object? sender, EventArgs e)
         {
             DataGridViewRow selectedRow = DgMainForm.CurrentRow;
+
             if (selectedRow != null)
             {
-                Rpt selectedRptRecord = selectedRow.DataBoundItem as Rpt;
-                if (selectedRptRecord.RefNum != null)
+                if (selectedRow.DataBoundItem is Rpt selectedRptRecord)
                 {
                     new RPTMultipleAddUpdateRecordForm(selectedRptRecord.RefNum, selectedRptRecord.RequestingParty).Show();
                 }
-                else
+                else if (selectedRow.DataBoundItem is Business selectedBusinessRecord)
                 {
-                    Rpt retrieveRptRecord = rptService.Get(selectedRecordId);
-                    string taxType = TaxTypeUtil.REALPROPERTYTAX;
-                    AllTaxesAddUpdateRecordForm updateRecord = new AllTaxesAddUpdateRecordForm(retrieveRptRecord.RptID, taxType);
+                    Business retrieveBusinessRecord = businessService.Get(selectedBusinessRecord.BusinessID);
+                    string taxType = TaxTypeUtil.BUSINESS;
+                    AllTaxesAddUpdateRecordForm updateRecord = new AllTaxesAddUpdateRecordForm(retrieveBusinessRecord.BusinessID, taxType);
                     updateRecord.ShowDialog();
+                }
+                else if (selectedRow.DataBoundItem is Miscellaneous selectedMiscRecord)
+                {
+                    Miscellaneous retrieveMiscRecord = miscService.Get(selectedMiscRecord.MiscID);
+                    string taxType = selectedMiscRecord.MiscType;
+
+                    foreach (string item in TaxTypeUtil.ALL_MISC_TAX_TYPE)
+                    {
+                        if (item == taxType)
+                        {
+                            AllTaxesAddUpdateRecordForm updateRecord = new AllTaxesAddUpdateRecordForm(retrieveMiscRecord.MiscID, taxType);
+                            updateRecord.ShowDialog();
+                        }
+                    }
                 }
             }
         }

@@ -11,6 +11,7 @@ namespace Inventory_System.Utilities
     internal class Validations
     {
         public const string NO_RETRIEVED_NAME = "**NO RECORD FOUND IN DATABASE: ITDDFMUDAILY2024 [V_MiscMasterBilling OR V_BusBillingMaster]**";
+        public const string NO_RETRIEVED_BUSINESS_NAME = "**NONE BUS. NAME: ITDDFMUDAILY2024 [V_MiscMasterBilling OR V_BusBillingMaster]**";
 
         public static bool HaveErrors(ErrorProvider ep)
         {

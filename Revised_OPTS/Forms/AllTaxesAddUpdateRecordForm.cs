@@ -106,12 +106,7 @@ namespace Revised_OPTS.Forms
             cbTaxType.Text = retrieveTaxTypeFromMainForm;
             cbTaxType.Enabled = false;
 
-            //if (retrieveTaxTypeFromMainForm == TaxTypeUtil.REALPROPERTYTAX)
-            //{
-            //    rpt = rptService.Get(rptId);
-            //    dynamicControlContainer.PopulateDynamicControls(retrieveTaxTypeFromMainForm, rpt);
-            //}
-            /*else */if (retrieveTaxTypeFromMainForm == TaxTypeUtil.BUSINESS)
+            if (retrieveTaxTypeFromMainForm == TaxTypeUtil.BUSINESS)
             {
                 business = businessService.Get(businessId);
                 dynamicControlContainer.PopulateDynamicControls(retrieveTaxTypeFromMainForm, business);
@@ -298,7 +293,7 @@ namespace Revised_OPTS.Forms
         private void RetrieveTPNforBusiness()
         {
             string taxType = cbTaxType.Text;
-            Control MP_NumberTextBox = dynamicControlContainer.FindControlByName(taxType, "MP_Number");
+            Control MP_NumberTextBox = dynamicControlContainer.FindControlByName(taxType, "BillNumber");
             Control BusinessNameTextBox = dynamicControlContainer.FindControlByName(taxType, "BusinessName");
 
             BusinessMasterDetailTPN businessRetrieveTaxpayerName = businessRetrieveTaxpayerNameRep.retrieveByMpNo(MP_NumberTextBox.Text);
@@ -346,6 +341,8 @@ namespace Revised_OPTS.Forms
             }
             if (taxType == TaxTypeUtil.BUSINESS)
             {
+                List<Business> businessList = new List<Business>();
+
                 try
                 {
                     if (business != null)
@@ -359,10 +356,7 @@ namespace Revised_OPTS.Forms
                         Business business = new Business();
                         dynamicControlContainer.CopyDynamicProperties(business, taxType);
 
-                        //created businessList to cater the parameter of the method validateBusinessRecord in the businessService.
-                        List<Business> businessList = new List<Business>();
                         businessList.Add(business);
-
                         businessService.Insert(businessList);
                         searchKeyword = business.BillNumber;
                     }
@@ -371,16 +365,23 @@ namespace Revised_OPTS.Forms
                 }
                 catch (DuplicateRecordException ex)
                 {
-
-                    MessageBox.Show(ex.Message);
+                    DialogResult result = MessageBox.Show($"There is an existing record/s detected in the database.", "Duplicate Record Detected", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
 
                     ExistingRecordForm DuplicateForm = new ExistingRecordForm(new List<Rpt>(), ex.duplicateBusList, new List<Miscellaneous>());
                     DuplicateForm.ShowDialog();
+
+                    if (MessageBox.Show("Would you like to continue?", "Confirm", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                    {
+                        businessService.Insert(businessList, false);
+                        MessageBox.Show("Record(s) have been successfully saved.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
                     return;
                 }
             }
             else
             {
+                List<Miscellaneous> miscList = new List<Miscellaneous>();
+
                 try
                 {
                     if (misc != null)
@@ -391,7 +392,6 @@ namespace Revised_OPTS.Forms
                     }
                     else
                     {
-                        List<Miscellaneous> miscList = new List<Miscellaneous>();
                         Miscellaneous misc = new Miscellaneous();
                         dynamicControlContainer.CopyDynamicProperties(misc, taxType);
                         misc.MiscType = taxType;
@@ -404,10 +404,16 @@ namespace Revised_OPTS.Forms
                 }
                 catch (DuplicateRecordException ex)
                 {
-                    MessageBox.Show(ex.Message);
+                    DialogResult result = MessageBox.Show($"There is an existing record/s detected in the database.", "Duplicate Record Detected", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
 
                     ExistingRecordForm DuplicateForm = new ExistingRecordForm(new List<Rpt>(), new List<Business>(), ex.duplicateMiscList);
                     DuplicateForm.ShowDialog();
+
+                    if (MessageBox.Show("Would you like to continue?", "Confirm", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                    {
+                        miscService.Insert(miscList, false);
+                        MessageBox.Show("Record(s) have been successfully saved.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
                     return;
                 }
             }
