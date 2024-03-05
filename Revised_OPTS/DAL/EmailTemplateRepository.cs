@@ -10,6 +10,7 @@ namespace Inventory_System.DAL
 {
     internal class EmailTemplateRepository : BaseRepository<EmailTemplate>, IEmailTemplateRepository
     {
+
         public EmailTemplate GetORUploadTemplate()
         {
             return getDbSet().Where(et => et.isReceipt == true && et.Deleted != 1).First();

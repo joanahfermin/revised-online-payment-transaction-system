@@ -45,7 +45,7 @@ namespace Revised_OPTS
             { "ValidatedBy", "Validated By" }, { "ValidatedDate", "Validated Date" }, { "UploadedBy", "Uploaded By" },
             { "UploadedDate", "Uploaded Date" }, { "ReleasedBy", "Released By" }, { "ReleasedDate", "Released Date" },
             { "LocCode", "Location Code" }, { "RepName", "Representative Name" }, { "ContactNumber", "Contact Number" },
-                    { "ORConfirmDate", "Receipt Confirm Date" }, { "ORAttachedDate", "Receipt Attachment Date" },
+                    { "ORAttachedDate", "O.R Picture Attached Date" },
         };
 
         Dictionary<string, string> BUSINESS_DG_COLUMNS = new Dictionary<string, string>
@@ -145,7 +145,6 @@ namespace Revised_OPTS
             tbMailToSendCount.Text = rptService.CountORUploadRemainingToSend(uploadedBy).ToString();
 
         }
-
 
         private void DgMainForm_SelectionChanged(object? sender, EventArgs e)
         {
@@ -291,32 +290,6 @@ namespace Revised_OPTS
                     MessageBox.Show("Right-click the record you want to delete to navigate the action you want to perform.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
-
-
-            //if (selectedRows.Count > 0)
-            //{
-            //    foreach (DataGridViewRow row in selectedRows)
-            //    {
-            //        Rpt selectedRptRecord = row.DataBoundItem as Rpt;
-            //        if (selectedRptRecord.RefNum != null)
-            //        {
-            //            new RPTMultipleAddUpdateRecordForm(selectedRptRecord.RefNum, selectedRptRecord.RequestingParty).Show();
-            //            MessageBox.Show("Right-click the record you want to delete to navigate the action you want to perform.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            //        }
-            //        else
-            //        {
-            //            DialogResult result = MessageBox.Show("Are you sure you want to delete the selected record(s)?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-
-            //            if (result == DialogResult.Yes)
-            //            {
-            //                rptService.Delete(selectedRptRecord);
-            //                Search(tbSearch.Text);
-            //                tbSearch.Clear();
-            //                MessageBox.Show("Operation completed successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            //            }
-            //        }
-            //    }
-            //}
         }
 
         private void MenuItemReleaseReceipt_Click(object? sender, EventArgs e)
@@ -813,6 +786,35 @@ namespace Revised_OPTS
             }
         }
 
+        private void btnEmailTemp_Click(object sender, EventArgs e)
+        {
+            EmailTemplateForm emailtempForm = new EmailTemplateForm();
+            emailtempForm.ShowDialog();
+        }
+
+        private void DgMainForm_CellContextMenuStripNeeded(object sender, DataGridViewCellContextMenuStripNeededEventArgs e)
+        {
+            int rowSelected = e.RowIndex;
+
+            if (e.RowIndex != -1 && DgMainForm.Rows[rowSelected].Selected == false)
+            {
+                DgMainForm.ClearSelection();
+                DgMainForm.Rows[rowSelected].Selected = true;
+            }
+        }
+
+        private void btnReport_Click(object sender, EventArgs e)
+        {
+            ReportForm reportForm = new ReportForm();
+            reportForm.ShowDialog();
+        }
+
+        private void btnAssignLocCode_Click(object sender, EventArgs e)
+        {
+            AssignLocationCodeForm frm = new AssignLocationCodeForm();
+            frm.ShowDialog();
+        }
+
         private void MainForm_SizeChanged(object sender, EventArgs e)
         {
             DgMainForm.Size = new Size(this.ClientSize.Width - 50, this.ClientSize.Height - 170);
@@ -918,27 +920,32 @@ namespace Revised_OPTS
             btnReport.BackgroundImage = originalBackgroundImageRpt;
         }
 
-        private void btnReport_Click(object sender, EventArgs e)
+        private void btnAssignLocCode_MouseEnter(object sender, EventArgs e)
         {
-            ReportForm reportForm = new ReportForm();
-            reportForm.ShowDialog();
+            originalBackgroundImageRpt = btnAssignLocCode.BackgroundImage;
+            btnAssignLocCode.BackgroundImage = null;
+
+            Color customColor = Color.FromArgb(23, 45, 74);
+            btnAssignLocCode.BackColor = customColor;
         }
 
-        private void DgMainForm_CellContextMenuStripNeeded(object sender, DataGridViewCellContextMenuStripNeededEventArgs e)
+        private void btnAssignLocCode_MouseLeave(object sender, EventArgs e)
         {
-            int rowSelected = e.RowIndex;
-
-            if (e.RowIndex != -1 && DgMainForm.Rows[rowSelected].Selected == false)
-            {
-                DgMainForm.ClearSelection();
-                DgMainForm.Rows[rowSelected].Selected = true;
-            }
+            btnAssignLocCode.BackgroundImage = originalBackgroundImageRpt;
         }
 
-        private void btnAssignLocCode_Click(object sender, EventArgs e)
+        private void btnEmailTemp_MouseEnter(object sender, EventArgs e)
         {
-            AssignLocationCodeForm frm = new AssignLocationCodeForm();
-            frm.ShowDialog();
+            originalBackgroundImageRpt = btnEmailTemp.BackgroundImage;
+            btnEmailTemp.BackgroundImage = null;
+
+            Color customColor = Color.FromArgb(23, 45, 74);
+            btnEmailTemp.BackColor = customColor;
+        }
+
+        private void btnEmailTemp_MouseLeave(object sender, EventArgs e)
+        {
+            btnEmailTemp.BackgroundImage = originalBackgroundImageRpt;
         }
     }
 }

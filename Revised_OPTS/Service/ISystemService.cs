@@ -13,5 +13,6 @@ namespace Inventory_System.Service
         EmailAccount GetEmailAccount();
         int GetGmailPort();
         string GetGmailHost();
+        void Update(EmailTemplate email);
     }
 }

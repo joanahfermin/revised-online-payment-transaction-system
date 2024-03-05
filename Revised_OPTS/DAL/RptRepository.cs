@@ -175,7 +175,7 @@ namespace Revised_OPTS.DAL
             var query = (from rpt in getDbSet()
                          where rpt.DeletedRecord != 1
                                && (
-                                    (rpt.Status == TaxStatus.ForORUpload || rpt.UploadedBy != null) ||
+                                    (rpt.Status == TaxStatus.ForORUpload && rpt.UploadedBy != null) ||
                                     (rpt.Status == TaxStatus.ForORPickup)
                                )
                                && rpt.LocCode == null

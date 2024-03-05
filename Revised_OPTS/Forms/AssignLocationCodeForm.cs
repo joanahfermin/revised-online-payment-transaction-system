@@ -1,4 +1,6 @@
-﻿using Revised_OPTS.Model;
+﻿using Inventory_System.Utilities;
+using Revised_OPTS;
+using Revised_OPTS.Model;
 using Revised_OPTS.Service;
 using System;
 using System.Collections.Generic;
@@ -15,20 +17,20 @@ namespace Inventory_System.Forms
     public partial class AssignLocationCodeForm : Form
     {
         IRptService rptService = ServiceFactory.Instance.GetRptService();
+        private Image originalBackgroundImageNonRpt;
+        private Image originalBackgroundImageRpt;
 
         Dictionary<string, string> RPT_DG_COLUMNS = new Dictionary<string, string>
         {
-            { "TaxDec", "TDN" }, { "TaxPayerName", "TaxPayer's Name" }, { "AmountToPay", "Bill Amount" },
+            { "LocCode", "Location Code" }, { "UploadedBy", "Uploaded By" },
+            { "UploadedDate", "Uploaded Date" }, { "TaxDec", "TDN" }, { "TaxPayerName", "TaxPayer's Name" }, { "Bank", "Bank" }, { "AmountToPay", "Bill Amount" },
             { "AmountTransferred", "Transferred Amount" }, { "TotalAmountTransferred", "Total Amount Transferred" }, { "ExcessShortAmount", "Excess/Short" },
-            { "Bank", "Bank" }, { "YearQuarter", "Year" }, { "Quarter", "Quarter" },
-            /*{ "PaymentType", "Payment Type" },*/ { "BillingSelection", "Billing Selection" }, { "Status", "Status" }, { "RefNum", "Reference No." },
+            { "YearQuarter", "Year" }, { "Quarter", "Quarter" },
+            { "BillingSelection", "Billing Selection" }, { "Status", "Status" }, { "RefNum", "Reference No." },
             { "RequestingParty", "Email Address" }, { "EncodedBy", "Encoded By" }, { "EncodedDate", "Encoded Date" }, { "RPTremarks", "Remarks" },
 
             { "VerifiedBy", "VerifiedBy" }, { "PaymentDate", "Payment Date" }, { "VerifiedDate", "Verified Date" },
-            { "ValidatedBy", "Validated By" }, { "ValidatedDate", "Validated Date" }, { "UploadedBy", "Uploaded By" },
-            { "UploadedDate", "Uploaded Date" }, { "ReleasedBy", "Released By" }, { "ReleasedDate", "Released Date" },
-            { "LocCode", "Location Code" }, { "RepName", "Representative Name" }, { "ContactNumber", "Contact Number" },
-                    { "ORConfirmDate", "Receipt Confirm Date" }, { "ORAttachedDate", "Receipt Attachment Date" },
+            { "ValidatedBy", "Validated By" }, { "ValidatedDate", "Validated Date" },
         };
 
         public AssignLocationCodeForm()
@@ -53,7 +55,7 @@ namespace Inventory_System.Forms
             //DgRpt.ColumnHeadersDefaultCellStyle.BackColor = Color.DarkSalmon;
             //DgRpt.ColumnHeadersDefaultCellStyle.SelectionBackColor = Color.DarkSalmon;
         }
-        private void btnAssign_Click(object sender, EventArgs e)
+        private void btnSave_Click(object sender, EventArgs e)
         {
             if (DgRpt.Rows.Count == 0)
             {
@@ -74,19 +76,72 @@ namespace Inventory_System.Forms
                                    .ToList();
                 rptService.AssignmentLocationCode(rptIDList, locationCode);
                 RetrieveAndShowRptData();
-                MessageBox.Show("Done");
-            }
-        }
+                btnRefresh_Click_1(sender, e);
 
-        private void btnRefresh_Click(object sender, EventArgs e)
-        {
-            RetrieveAndShowRptData();
+                //Rpt rpt = rptService.Get(rptIDList.First());
+                //string firstTaxdecRecord = rpt.TaxDec;
+                //NotificationHelper.notifyUserAndRefreshRecord(firstTaxdecRecord);
+
+                //btnClose_Click(sender, e);
+            }
         }
 
         private void RetrieveAndShowRptData()
         {
             List<Rpt> rptList = rptService.ListForLocationCodeAssignment();
             ShowDataInDataGridView(RPT_DG_COLUMNS, rptList);
+        }
+
+        private void btnRefresh_Click_1(object sender, EventArgs e)
+        {
+            RetrieveAndShowRptData();
+        }
+
+        private void btnClose_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void btnRefresh_MouseEnter(object sender, EventArgs e)
+        {
+            originalBackgroundImageNonRpt = btnRefresh.BackgroundImage;
+            btnRefresh.BackgroundImage = null;
+
+            Color customColor = Color.FromArgb(23, 45, 74);
+            btnRefresh.BackColor = customColor;
+        }
+
+        private void btnRefresh_MouseLeave(object sender, EventArgs e)
+        {
+            btnRefresh.BackgroundImage = originalBackgroundImageNonRpt;
+        }
+
+        private void btnSave_MouseEnter(object sender, EventArgs e)
+        {
+            originalBackgroundImageNonRpt = btnSave.BackgroundImage;
+            btnSave.BackgroundImage = null;
+
+            Color customColor = Color.FromArgb(23, 45, 74);
+            btnSave.BackColor = customColor;
+        }
+
+        private void btnSave_MouseLeave(object sender, EventArgs e)
+        {
+            btnSave.BackgroundImage = originalBackgroundImageNonRpt;
+        }
+
+        private void btnClose_MouseEnter(object sender, EventArgs e)
+        {
+            originalBackgroundImageNonRpt = btnClose.BackgroundImage;
+            btnClose.BackgroundImage = null;
+
+            Color customColor = Color.FromArgb(23, 45, 74);
+            btnClose.BackColor = customColor;
+        }
+
+        private void btnClose_MouseLeave(object sender, EventArgs e)
+        {
+            btnClose.BackgroundImage = originalBackgroundImageNonRpt;
         }
     }
 }

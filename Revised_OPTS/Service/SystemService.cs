@@ -17,7 +17,6 @@ namespace Inventory_System.Service
 
         ISystemSettingRepository systemSettingRepository = RepositoryFactory.Instance.GetSystemSettingRepository();
 
-
         public EmailTemplate GetORUploadTemplate()
         {
             using (var dbContext = ApplicationDBContext.Create())
@@ -50,5 +49,13 @@ namespace Inventory_System.Service
             }
         }
 
+        public void Update(EmailTemplate email)
+        {
+            using (var dbContext = ApplicationDBContext.Create())
+            {
+                emailTemplateRepository.Update(email);
+                dbContext.SaveChanges();
+            }
+        }
     }
 }

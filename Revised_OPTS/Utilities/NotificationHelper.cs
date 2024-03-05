@@ -10,11 +10,10 @@ namespace Inventory_System.Utilities
     internal class NotificationHelper
     {
         //RECORD SUCCESSFULLY SAVED.
-        public void notifyUserAndRefreshRecord(string keyWord)
+        public static void notifyUserAndRefreshRecord(string keyWord)
         {
-            MessageBox.Show("Record successfully saved.");
+            MessageBox.Show("Record successfully saved.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
             MainForm.Instance.Search(keyWord);
         }
-
     }
 }
