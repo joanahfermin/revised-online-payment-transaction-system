@@ -170,7 +170,7 @@ namespace Revised_OPTS.DAL
             return query.ToList();
         }
 
-        public List<Rpt> ListForLocationCodeAssignment()
+        public List<Rpt> ListForLocationCodeAssignment(string locationCode)
         {
             var query = (from rpt in getDbSet()
                          where rpt.DeletedRecord != 1
@@ -178,7 +178,8 @@ namespace Revised_OPTS.DAL
                                     (rpt.Status == TaxStatus.ForORUpload && rpt.UploadedBy != null) ||
                                     (rpt.Status == TaxStatus.ForORPickup)
                                )
-                               && rpt.LocCode == null
+                               && 
+                               (  (locationCode.Trim().Length == 0 && rpt.LocCode == null) || (locationCode.Trim().Length>0 && rpt.LocCode == locationCode))
                          orderby rpt.ORConfirmDate ascending, rpt.ORAttachedDate ascending
                          select rpt);
             return query.ToList();

@@ -899,11 +899,11 @@ namespace Revised_OPTS.Service
             }
         }
 
-        public List<Rpt> ListForLocationCodeAssignment()
+        public List<Rpt> ListForLocationCodeAssignment(string locationCode)
         {
             using (var dbContext = ApplicationDBContext.Create())
             {
-                return rptRepository.ListForLocationCodeAssignment();
+                return rptRepository.ListForLocationCodeAssignment(locationCode);
             }
         }
 

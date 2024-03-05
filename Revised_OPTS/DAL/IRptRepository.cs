@@ -21,7 +21,7 @@ namespace Revised_OPTS.DAL
         int CountORUploadRemainingToSend(string uploadedBy);
         List<Rpt> ListORUploadRemainingToSend(string uploadedBy);
 
-        List<Rpt> ListForLocationCodeAssignment();
+        List<Rpt> ListForLocationCodeAssignment(string locationCode);
         void AssignmentLocationCode(List<long> rptIDList, string locationCode);
     }
 }

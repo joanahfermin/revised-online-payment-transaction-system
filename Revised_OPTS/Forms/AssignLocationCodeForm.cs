@@ -22,8 +22,8 @@ namespace Inventory_System.Forms
 
         Dictionary<string, string> RPT_DG_COLUMNS = new Dictionary<string, string>
         {
-            { "LocCode", "Location Code" }, { "UploadedBy", "Uploaded By" },
-            { "UploadedDate", "Uploaded Date" }, { "TaxDec", "TDN" }, { "TaxPayerName", "TaxPayer's Name" }, { "Bank", "Bank" }, { "AmountToPay", "Bill Amount" },
+            { "Bank", "Bank" }, { "UploadedBy", "Uploaded By" },
+            { "UploadedDate", "Uploaded Date" }, { "LocCode", "Location Code" }, { "TaxDec", "TDN" }, { "TaxPayerName", "TaxPayer's Name" }, { "AmountToPay", "Bill Amount" },
             { "AmountTransferred", "Transferred Amount" }, { "TotalAmountTransferred", "Total Amount Transferred" }, { "ExcessShortAmount", "Excess/Short" },
             { "YearQuarter", "Year" }, { "Quarter", "Quarter" },
             { "BillingSelection", "Billing Selection" }, { "Status", "Status" }, { "RefNum", "Reference No." },
@@ -70,7 +70,7 @@ namespace Inventory_System.Forms
             if (DialogResult.Yes == MessageBox.Show($"Are you sure? ", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question))
             {
                 String locationCode = tbLocationCode.Text.Trim();
-                List<long> rptIDList = DgRpt.Rows.Cast<DataGridViewRow>()
+                List<long> rptIDList = DgRpt.SelectedRows.Cast<DataGridViewRow>()
                                    .Where(row => row.DataBoundItem != null && row.DataBoundItem is Rpt)
                                    .Select(row => ((Rpt)row.DataBoundItem).RptID)
                                    .ToList();
@@ -88,7 +88,7 @@ namespace Inventory_System.Forms
 
         private void RetrieveAndShowRptData()
         {
-            List<Rpt> rptList = rptService.ListForLocationCodeAssignment();
+            List<Rpt> rptList = rptService.ListForLocationCodeAssignment(tbSearchLocationCode.Text);
             ShowDataInDataGridView(RPT_DG_COLUMNS, rptList);
         }
 
@@ -104,16 +104,16 @@ namespace Inventory_System.Forms
 
         private void btnRefresh_MouseEnter(object sender, EventArgs e)
         {
-            originalBackgroundImageNonRpt = btnRefresh.BackgroundImage;
-            btnRefresh.BackgroundImage = null;
+            originalBackgroundImageNonRpt = btnSearch.BackgroundImage;
+            btnSearch.BackgroundImage = null;
 
             Color customColor = Color.FromArgb(23, 45, 74);
-            btnRefresh.BackColor = customColor;
+            btnSearch.BackColor = customColor;
         }
 
         private void btnRefresh_MouseLeave(object sender, EventArgs e)
         {
-            btnRefresh.BackgroundImage = originalBackgroundImageNonRpt;
+            btnSearch.BackgroundImage = originalBackgroundImageNonRpt;
         }
 
         private void btnSave_MouseEnter(object sender, EventArgs e)
