@@ -44,8 +44,10 @@
             this.labelEnterRefNo = new System.Windows.Forms.Label();
             this.btnGenerate = new System.Windows.Forms.Button();
             this.DgReportForm = new System.Windows.Forms.DataGridView();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DgReportForm)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // btnClose
@@ -99,6 +101,7 @@
             // 
             this.panel1.BackColor = System.Drawing.Color.Transparent;
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Controls.Add(this.pictureBox1);
             this.panel1.Controls.Add(this.tbRefNo);
             this.panel1.Controls.Add(this.dtTo);
             this.panel1.Controls.Add(this.dtFrom);
@@ -112,7 +115,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1924, 130);
+            this.panel1.Size = new System.Drawing.Size(1924, 145);
             this.panel1.TabIndex = 7;
             // 
             // tbRefNo
@@ -237,7 +240,7 @@
             dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.DgReportForm.DefaultCellStyle = dataGridViewCellStyle2;
             this.DgReportForm.EnableHeadersVisualStyles = false;
-            this.DgReportForm.Location = new System.Drawing.Point(22, 151);
+            this.DgReportForm.Location = new System.Drawing.Point(22, 164);
             this.DgReportForm.Name = "DgReportForm";
             dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle3.BackColor = System.Drawing.Color.LightSalmon;
@@ -251,8 +254,18 @@
             this.DgReportForm.RowTemplate.DefaultCellStyle.SelectionForeColor = System.Drawing.Color.Black;
             this.DgReportForm.RowTemplate.Height = 25;
             this.DgReportForm.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.DgReportForm.Size = new System.Drawing.Size(1877, 885);
+            this.DgReportForm.Size = new System.Drawing.Size(1877, 847);
             this.DgReportForm.TabIndex = 208;
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.BackColor = System.Drawing.Color.Transparent;
+            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
+            this.pictureBox1.Location = new System.Drawing.Point(11, 11);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(111, 125);
+            this.pictureBox1.TabIndex = 202;
+            this.pictureBox1.TabStop = false;
             // 
             // ReportForm
             // 
@@ -267,6 +280,7 @@
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DgReportForm)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -285,5 +299,6 @@
         private Label labelDateTo;
         private TextBox tbRefNo;
         private Label labelEnterRefNo;
+        private PictureBox pictureBox1;
     }
 }
