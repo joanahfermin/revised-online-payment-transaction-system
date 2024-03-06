@@ -80,6 +80,7 @@ namespace Revised_OPTS.DAL
             List<string> regularBanks = bankRepository.GetRegularBanks().Select(p => p.BankName).ToList();
 
             return getDbSet().Where(rpt =>
+                    rpt.Status == TaxStatus.ForORUpload &&
                     rpt.ValidatedDate.HasValue &&
                     rpt.ValidatedDate.Value.Date == date.Date &&
                     regularBanks.Contains(rpt.Bank) &&
@@ -165,25 +166,30 @@ namespace Revised_OPTS.DAL
                               && rpt.Status == "FOR O.R UPLOAD"
                               && rpt.SendReceiptReady == true
                               && rpt.UploadedBy == uploadedBy
-                         orderby rpt.ORConfirmDate ascending, rpt.ORAttachedDate ascending
+                         orderby /*rpt.ORConfirmDate ascending,*/ rpt.ORAttachedDate ascending
                          select rpt).Take(5); ;
             return query.ToList();
         }
 
         public List<Rpt> ListForLocationCodeAssignment(string locationCode)
         {
+            DateTime dateTimeFromJan2024 = new DateTime(2024, 1, 1); // January 1, 2024
+            string shortDateString = dateTimeFromJan2024.ToString("MM/dd/yyyy");
+
             var query = (from rpt in getDbSet()
                          where rpt.DeletedRecord != 1
                                && (
                                     (rpt.Status == TaxStatus.ForORUpload && rpt.UploadedBy != null) ||
                                     (rpt.Status == TaxStatus.ForORPickup)
-                               )
+                                  )
+                               && (rpt.EncodedDate >= Convert.ToDateTime(shortDateString))
                                && 
-                               (  (locationCode.Trim().Length == 0 && rpt.LocCode == null) || (locationCode.Trim().Length>0 && rpt.LocCode == locationCode))
-                         orderby rpt.ORConfirmDate ascending, rpt.ORAttachedDate ascending
+                               ((locationCode.Trim().Length == 0 && rpt.LocCode == null) || (locationCode.Trim().Length > 0 && rpt.LocCode == locationCode))
+                         orderby rpt.UploadedBy ascending, rpt.ORConfirmDate ascending, rpt.ORAttachedDate ascending
                          select rpt);
             return query.ToList();
         }
+
         public void AssignmentLocationCode(List<long> rptIDList, string locationCode)
         {
             var rptEntitiesToUpdate = getDbSet().Where(r => rptIDList.Contains(r.RptID)).ToList();

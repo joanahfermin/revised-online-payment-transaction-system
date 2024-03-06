@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Net.Mail;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -77,6 +78,19 @@ namespace Inventory_System.Utilities
             if (!decimal.TryParse(tb.Text, NumberStyles.Number, CultureInfo.InvariantCulture, out decimal value))
             {
                 ep.SetError(tb, $"{propertyName} is in the wrong format.");
+            }
+        }
+
+        public static bool ValidateEmailAddressFormat(string Value)
+        {
+            try
+            {
+                MailAddress m = new MailAddress(Value);
+                return true;
+            }
+            catch (FormatException)
+            {
+                return false;
             }
         }
     }

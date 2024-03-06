@@ -37,6 +37,8 @@ namespace Inventory_System.Forms
         {
             InitializeComponent();
             RetrieveAndShowRptData();
+
+            DgRpt.CellFormatting += DgRpt_CellFormatting;
         }
 
         private void ShowDataInDataGridView(Dictionary<string, string> columnMappings, List<Rpt> rptList)
@@ -55,6 +57,16 @@ namespace Inventory_System.Forms
             //DgRpt.ColumnHeadersDefaultCellStyle.BackColor = Color.DarkSalmon;
             //DgRpt.ColumnHeadersDefaultCellStyle.SelectionBackColor = Color.DarkSalmon;
         }
+
+        private void DgRpt_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (e.Value is decimal decimalValue)
+            {
+                e.Value = decimalValue.ToString("N2");
+                e.FormattingApplied = true;
+            }
+        }
+
         private void btnSave_Click(object sender, EventArgs e)
         {
             if (DgRpt.Rows.Count == 0)
@@ -77,6 +89,7 @@ namespace Inventory_System.Forms
                 rptService.AssignmentLocationCode(rptIDList, locationCode);
                 RetrieveAndShowRptData();
                 btnRefresh_Click_1(sender, e);
+
 
                 //Rpt rpt = rptService.Get(rptIDList.First());
                 //string firstTaxdecRecord = rpt.TaxDec;

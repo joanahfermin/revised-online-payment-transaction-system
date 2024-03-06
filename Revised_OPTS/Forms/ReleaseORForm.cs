@@ -109,15 +109,14 @@ namespace Inventory_System.Forms
             string repName = textRepName.Text;
             string contactNum = textContactNum.Text;
             string releaser = textRelesedBy.Text;
-
             TextBox textbox = new TextBox();
             textbox.Text = repName;
 
             DataGridViewSelectedRowCollection selectedRows = DgRptAddUpdateForm.SelectedRows;
-
             if (selectedRows != null)
             {
                 List<Rpt> rptList = new List<Rpt>();
+                string firstTaxdec = null;
 
                 foreach (DataGridViewRow row in selectedRows)
                 {
@@ -127,7 +126,6 @@ namespace Inventory_System.Forms
                         Rpt rpt = item as Rpt;
                         rptList.Add(rpt);
                     }
-
                     if (repName.Length == 0 || contactNum.Length == 0 || releaser.Length == 0)
                     {
                         Validations.validateRequired(errorProvider1, textRepName, "Rep. Name");
@@ -135,17 +133,17 @@ namespace Inventory_System.Forms
                         Validations.validateRequired(errorProvider1, textRelesedBy, "Released By");
                         return;
                     }
-
-                    if (rptList.Count > 0)
+                }
+                if (rptList.Count > 0)
+                {
+                    DialogResult result = MessageBox.Show("Are you sure you want to update the status of the selected records?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    if (result == DialogResult.Yes)
                     {
-                        DialogResult result = MessageBox.Show("Are you sure you want to update the status of the selected records?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-
-                        if (result == DialogResult.Yes)
-                        {
-                            rptService.ReleaseReceipt(rptList, TaxStatus.Released, repName, contactNum, releaser);
-                            MessageBox.Show("Operation successfully completed.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                            DgRptAddUpdateForm.Refresh();
-                        }
+                        rptService.ReleaseReceipt(rptList, TaxStatus.Released, repName, contactNum, releaser);
+                        DgRptAddUpdateForm.Refresh();
+                        string rptListFirst = rptList[0].TaxDec.ToString();
+                        NotificationHelper.notifyUserAndRefreshRecord(rptListFirst);
+                        btnClose_Click(sender, e);
                     }
                 }
             }

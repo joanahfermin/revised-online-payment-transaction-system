@@ -185,6 +185,12 @@ namespace Revised_OPTS
                         // Assuming AmountToPay is a property in your Rpt class and Sum is a property of AmountToPay
                         sumBillAmount = (decimal)(selectedMiscRecord.AmountToBePaid ?? 0) + sumBillAmount;
                         sumTotalTransferredAmount = (decimal)(selectedMiscRecord.TransferredAmount ?? 0) + sumTotalTransferredAmount;
+
+                        if (selectedMiscRecord.MiscType == TaxTypeUtil.MISCELLANEOUS_OVR)
+                        {
+                            Clipboard.SetText(selectedMiscRecord.OPATrackingNum);
+                        }
+                        Clipboard.SetText(selectedMiscRecord.OrderOfPaymentNum);
                     }
                 }
                 tbTotalBillAmount.Text = sumBillAmount.ToString("N2");

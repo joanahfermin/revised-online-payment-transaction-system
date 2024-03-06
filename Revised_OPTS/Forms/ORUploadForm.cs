@@ -45,6 +45,7 @@ namespace Inventory_System.Forms
             InitializeCombobox();
             InitializeGrid();
             InitializeCamera();
+
             this.WindowState = FormWindowState.Maximized;
 
             dgRptList.CellFormatting += dgRptList_CellFormatting;
@@ -378,7 +379,7 @@ namespace Inventory_System.Forms
             {
                 rptService.ConfirmSendOrUpload(selectedRptIDList);
                 SearchRecords(null, null);
-                MessageBox.Show("Sent");
+                MessageBox.Show("Records will be lined up for email/receipt sending.", "Confirmation", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
     }

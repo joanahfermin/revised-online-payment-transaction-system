@@ -111,7 +111,7 @@
             this.btnClose.Location = new System.Drawing.Point(1116, 34);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(126, 73);
-            this.btnClose.TabIndex = 207;
+            this.btnClose.TabIndex = 5;
             this.btnClose.Text = "Close";
             this.btnClose.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnClose.UseVisualStyleBackColor = false;
@@ -132,7 +132,7 @@
             this.btnSaveRecord.Location = new System.Drawing.Point(926, 34);
             this.btnSaveRecord.Name = "btnSaveRecord";
             this.btnSaveRecord.Size = new System.Drawing.Size(184, 73);
-            this.btnSaveRecord.TabIndex = 208;
+            this.btnSaveRecord.TabIndex = 4;
             this.btnSaveRecord.Text = "Save Record";
             this.btnSaveRecord.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnSaveRecord.UseVisualStyleBackColor = false;
@@ -176,7 +176,7 @@
             this.textRepName.Location = new System.Drawing.Point(381, 30);
             this.textRepName.Name = "textRepName";
             this.textRepName.Size = new System.Drawing.Size(207, 26);
-            this.textRepName.TabIndex = 210;
+            this.textRepName.TabIndex = 1;
             this.textRepName.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // textContactNum
@@ -188,7 +188,7 @@
             this.textContactNum.Location = new System.Drawing.Point(381, 79);
             this.textContactNum.Name = "textContactNum";
             this.textContactNum.Size = new System.Drawing.Size(207, 26);
-            this.textContactNum.TabIndex = 211;
+            this.textContactNum.TabIndex = 2;
             this.textContactNum.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // label1
@@ -234,7 +234,7 @@
             this.textRelesedBy.Location = new System.Drawing.Point(640, 79);
             this.textRelesedBy.Name = "textRelesedBy";
             this.textRelesedBy.Size = new System.Drawing.Size(207, 26);
-            this.textRelesedBy.TabIndex = 211;
+            this.textRelesedBy.TabIndex = 3;
             this.textRelesedBy.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // errorProvider1
