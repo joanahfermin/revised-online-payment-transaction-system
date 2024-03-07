@@ -337,17 +337,8 @@ namespace Revised_OPTS
 
                 if (rptList.Count > 0)
                 {
-                    //DialogResult result = MessageBox.Show("Are you sure you want to update the status of the selected records?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-
-                    //if (result == DialogResult.Yes)
-                    //{
-                        //rptService.UpdateSelectedRecordsStatus(rptList, TaxStatus.Released);
-                        //MessageBox.Show("Operation completed successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        //DgMainForm.Refresh();
-
-                        ReleaseORForm releaseORform = new ReleaseORForm(rptList);
-                        releaseORform.Show();
-                    //}
+                    ReleaseORForm releaseORform = new ReleaseORForm(rptList);
+                    releaseORform.Show();
                 }
             }
         }
@@ -616,7 +607,6 @@ namespace Revised_OPTS
             }
         }
 
-        //all decimal columns shall have thousand separators and decimal points.
         private void DgMainForm_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
             if (e.Value is decimal decimalValue)
@@ -629,18 +619,10 @@ namespace Revised_OPTS
         public void DataGridUI()
         {
             DgMainForm.DefaultCellStyle.Font = new Font("Tahoma", 12, FontStyle.Regular);
-            //DgMainForm.BackgroundColor = Color.White;
             this.WindowState = FormWindowState.Maximized;
             //DgMainForm.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.DisplayedCells;
 
             DgMainForm.DefaultCellStyle.ForeColor = Color.Black;
-
-            //DgMainForm.ColumnHeadersDefaultCellStyle.ForeColor = Color.MidnightBlue;
-            //DgMainForm.GridColor = Color.DarkGray;
-            //DgMainForm.CellBorderStyle = DataGridViewCellBorderStyle.Single;
-            //DgMainForm.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.Raised;
-
-            //DgMainForm.DefaultCellStyle.SelectionBackColor = Color.AliceBlue;
         }
 
         //search records based on keyvalueformat.
@@ -725,11 +707,6 @@ namespace Revised_OPTS
                 DgMainForm.Columns[kvp.Key].DataPropertyName = kvp.Key;
             }
             DgMainForm.DataSource = dataList;
-
-            //if (dataList.Count == 0)
-            //{
-            //    MessageBox.Show("No data found.");
-            //}
 
             DgMainForm.ColumnHeadersDefaultCellStyle.Font = new Font("Tahoma", 12, FontStyle.Regular);
             DgMainForm.ColumnHeadersDefaultCellStyle.ForeColor = Color.Black;
