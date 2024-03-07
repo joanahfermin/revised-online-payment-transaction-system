@@ -144,17 +144,23 @@ namespace Revised_OPTS.DAL
 
         public void ConfirmSendOrUpload(List<long> rptIDList)
         {
-            var query = from rpt in getContext().Rpts
-                        where rpt.DeletedRecord != 1
-                              && rpt.Status == "FOR O.R UPLOAD"
-                              && getContext().rptPictures.Any(p => p.RptId == rpt.RptID)
-                              && rptIDList.Contains(rpt.RptID)
-                        select rpt;
-            var rptList = query.ToList();
+            //var query = from rpt in getContext().Rpts
+            //            where rpt.DeletedRecord != 1
+            //                  && rpt.Status == "FOR O.R UPLOAD"
+            //                  && getContext().rptPictures.Any(p => p.RptId == rpt.RptID)
+            //                  && rptIDList.Contains(rpt.RptID)
+            //            select rpt;
+            //var rptList = query.ToList();
 
-            foreach (var rpt in rptList)
+            //foreach (var rpt in rptList)
+            //{
+            //    rpt.SendReceiptReady = true;
+            //}
+            if (rptIDList.Count>0)
             {
-                rpt.SendReceiptReady = true;
+                var rptIDsString = string.Join(",", rptIDList);
+                var sql = $"UPDATE Jo_RPT SET SendReceiptReady = 1 WHERE RptID IN ({rptIDsString})";
+                getContext().Database.ExecuteSqlRaw(sql);
             }
         }
 
