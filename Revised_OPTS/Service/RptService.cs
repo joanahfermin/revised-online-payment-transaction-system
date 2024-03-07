@@ -919,5 +919,13 @@ namespace Revised_OPTS.Service
                 }
             }
         }
+
+        public List<Rpt> RetrieveNoName()
+        {
+            using (var dbContext = ApplicationDBContext.Create())
+            {
+                   return rptRepository.RetrieveNoName();
+            }
+        }
     }
 }

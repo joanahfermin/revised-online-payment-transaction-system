@@ -220,7 +220,7 @@ namespace Inventory_System.Forms
                 if (bus.TaxpayersName == null || bus.TaxpayersName == String.Empty)
                 {
                     foreach (BusinessMasterDetailTPN busName in retrievedNames)
-                    {             //A01              //A02
+                    {             
                         if (bus.BillNumber == busName.BillNo)
                         {
                             bus.TaxpayersName = busName.TaxpayerName;

@@ -16,10 +16,10 @@ namespace Inventory_System.DAL
             return ITDDFMUDAILY2024ApplicationDBContext.Instance.Set<BusinessMasterDetailTPN>();
         }
 
-        public BusinessMasterDetailTPN retrieveByMpNo(string mpNum)
+        public BusinessMasterDetailTPN retrieveByBillNumber(string billingNumber)
         {
-            return null;
-            //return getDbSet().Where(e => e.RefNo == mpNum).FirstOrDefault();
+            //return null;
+            return getDbSet().Where(e => billingNumber == e.BillNo).OrderByDescending(e => e.BILLDATE).FirstOrDefault();
         }
 
         List<BusinessMasterDetailTPN> IBusinessMasterDetailTPNRepository.retrieveByBillNumber(List<string> billingNumberList)

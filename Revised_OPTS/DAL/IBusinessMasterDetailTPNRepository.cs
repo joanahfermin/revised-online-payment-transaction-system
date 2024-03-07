@@ -10,7 +10,7 @@ namespace Inventory_System.DAL
 {
     internal interface IBusinessMasterDetailTPNRepository : IRepository<BusinessMasterDetailTPN>
     {
-        BusinessMasterDetailTPN retrieveByMpNo(string mpNum);
+        BusinessMasterDetailTPN retrieveByBillNumber(string billingNumber);
 
         List<BusinessMasterDetailTPN> retrieveByBillNumber(List<string> billingNumberList);
     }

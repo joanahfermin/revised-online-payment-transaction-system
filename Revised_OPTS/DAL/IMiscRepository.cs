@@ -12,6 +12,6 @@ namespace Revised_OPTS.DAL
         List<Miscellaneous> retrieveBySearchKeyword(string billNum);
         List<Miscellaneous> checkExistingRecord(Miscellaneous billNum);
         List<Miscellaneous> retrieveBySameRefNum(string refNum);
-
+        List<Miscellaneous> RetrieveNoName();
     }
 }

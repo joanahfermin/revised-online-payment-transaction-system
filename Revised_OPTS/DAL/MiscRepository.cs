@@ -52,5 +52,10 @@ namespace Revised_OPTS.DAL
             return getDbSet().Where(j => j.RefNum == refNum && j.DeletedRecord != 1)
             .OrderBy(j => j.MiscID).ToList();
         }
+
+        public List<Miscellaneous> RetrieveNoName()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

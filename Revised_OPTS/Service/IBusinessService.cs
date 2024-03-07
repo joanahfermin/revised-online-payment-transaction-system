@@ -22,5 +22,7 @@ namespace Revised_OPTS.Service
         void validateBusinessDuplicateRecord(List<Business> listOfBusToSave);
         List<Business> RetrieveBySameRefNum(string refNum);
         void DeleteAll(List<Business> busToDelete);
+        List<Business> RetrieveNoName();
+
     }
 }

@@ -1,7 +1,10 @@
+using Inventory_System.DAL;
 using Inventory_System.Exception;
 using Inventory_System.Forms;
+using Inventory_System.Model;
 using Inventory_System.Service;
 using Inventory_System.Utilities;
+using Revised_OPTS.DAL;
 using Revised_OPTS.Forms;
 using Revised_OPTS.Model;
 using Revised_OPTS.Service;
@@ -143,7 +146,6 @@ namespace Revised_OPTS
         {
             string uploadedBy = securityService.getLoginUser().DisplayName;
             tbMailToSendCount.Text = rptService.CountORUploadRemainingToSend(uploadedBy).ToString();
-
         }
 
         private void DgMainForm_SelectionChanged(object? sender, EventArgs e)

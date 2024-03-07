@@ -211,5 +211,13 @@ namespace Revised_OPTS.Service
                 }
             }
         }
+
+        public List<Business> RetrieveNoName()
+        {
+            using (var dbContext = ApplicationDBContext.Create())
+            {
+                return businessRepository.RetrieveNoName();
+            }
+        }
     }
 }

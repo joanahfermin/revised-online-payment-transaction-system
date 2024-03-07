@@ -1,6 +1,7 @@
 ﻿using Inventory_System.Forms;
 using Inventory_System.Model;
 using Inventory_System.Service;
+using Inventory_System.Utilities;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Revised_OPTS.Model;
@@ -18,6 +19,15 @@ namespace Revised_OPTS.DAL
     {
         private IBankRepository bankRepository = RepositoryFactory.Instance.GetBankRepository();
         ISecurityService securityService = ServiceFactory.Instance.GetSecurityService();
+
+        public List<Rpt> RetrieveNoName()
+        {
+            return getDbSet()
+                    .Where(jo => jo.TaxPayerName != null 
+                        && jo.TaxPayerName.Contains("NO RECORD")
+                        && jo.DeletedRecord != 1)
+                    .Take(50).ToList();
+        }
 
         public List<Rpt> checkExistingRecord(Rpt rpt)
         {

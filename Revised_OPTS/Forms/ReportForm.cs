@@ -109,7 +109,6 @@ namespace Inventory_System.Forms
         private void cbTaxType_SelectedIndexChanged(object sender, EventArgs e)
         {
             string taxType = cbTaxTypeReport.Text;
-            //DgReportForm.Rows.Clear();
             DgReportForm.Columns.Clear();
 
             if (taxType == AllTaxTypeReportUtil.COLLECTORS_REPORT)
@@ -158,6 +157,18 @@ namespace Inventory_System.Forms
         private void btnGenerate_Click(object sender, EventArgs e)
         {
             GenerateSheet();
+
+            if (tbRefNo.Text != null)
+            {
+                GenerateReportEPayment();
+            }
+        }
+
+        private void GenerateReportEPayment()
+        {
+            List<Rpt> rptListEPaymentRep = rptService.RetrieveBySameRefNum(tbRefNo.Text);
+
+
         }
 
         private void GenerateSheet(/*List<Rpt> rptToSaveList, List<Business> businessToSaveList, List<Miscellaneous> miscToSaveList*/)
@@ -265,11 +276,6 @@ namespace Inventory_System.Forms
             var worksheetPartBusiness = workbookPart.AddNewPart<WorksheetPart>();
             worksheetPartBusiness.Worksheet = new Worksheet(new SheetData());
 
-            //// Add styles to the cells
-            //WorkbookStylesPart stylePart = workbookPart.AddNewPart<WorkbookStylesPart>();
-            //stylePart.Stylesheet = GenerateStylesheet();
-            //stylePart.Stylesheet.Save();
-
             sheets.Append(new Sheet() { Id = spreadsheetDocument.WorkbookPart.GetIdOfPart(worksheetPartBusiness), SheetId = 2, Name = "BUSINESS" });
             var businessSheetData = worksheetPartBusiness.Worksheet.GetFirstChild<SheetData>();
 
@@ -332,11 +338,6 @@ namespace Inventory_System.Forms
                 // Add a WorksheetPart to the WorkbookPart
                 var worksheetPartMisc = workbookPart.AddNewPart<WorksheetPart>();
                 worksheetPartMisc.Worksheet = new Worksheet(new SheetData());
-
-                //// Add styles to the cells
-                //WorkbookStylesPart stylePart = workbookPart.AddNewPart<WorkbookStylesPart>();
-                //stylePart.Stylesheet = GenerateStylesheet();
-                //stylePart.Stylesheet.Save();
 
                 sheets.Append(new Sheet() { Id = spreadsheetDocument.WorkbookPart.GetIdOfPart(worksheetPartMisc), SheetId = sheetCounter, Name = miscType });
                 var miscSheetData = worksheetPartMisc.Worksheet.GetFirstChild<SheetData>();

@@ -21,6 +21,7 @@ namespace Revised_OPTS.Service
         List<Rpt> RetrieveForORUploadRegular(DateTime date, string validatedBy);
         List<Rpt> RetrieveBySameRefNumInUploadingEpayment(string taxdec);
         List<Rpt> RetrieveBySameRefNum(string refNum);
+        List<Rpt> RetrieveNoName();
 
         void Insert(Rpt rpt);
         void Update(Rpt rpt);

@@ -15,7 +15,9 @@ namespace Inventory_System.Model
         [Key]
         public string BillNo { get; set; }
         public string TaxpayerName { get; set; }
-        public string BusinessName { get; set; }
 
+        public string MPNo { get; set; }
+        public string BusinessName { get; set; }
+        public DateTime? BILLDATE { get; set; }
     }
 }

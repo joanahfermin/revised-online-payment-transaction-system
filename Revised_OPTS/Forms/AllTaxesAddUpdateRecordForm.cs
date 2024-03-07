@@ -283,18 +283,23 @@ namespace Revised_OPTS.Forms
         private void RetrieveTPNforBusiness()
         {
             string taxType = cbTaxType.Text;
-            Control MP_NumberTextBox = dynamicControlContainer.FindControlByName(taxType, "BillNumber");
+            Control BillNumberTextBox = dynamicControlContainer.FindControlByName(taxType, "BillNumber");
+            Control TNameTextBox = dynamicControlContainer.FindControlByName(taxType, "TaxpayersName");
+            Control MPNoTextBox = dynamicControlContainer.FindControlByName(taxType, "MP_Number");
             Control BusinessNameTextBox = dynamicControlContainer.FindControlByName(taxType, "BusinessName");
 
-            BusinessMasterDetailTPN businessRetrieveTaxpayerName = businessRetrieveTaxpayerNameRep.retrieveByMpNo(MP_NumberTextBox.Text);
+
+            BusinessMasterDetailTPN businessRetrieveTaxpayerName = businessRetrieveTaxpayerNameRep.retrieveByBillNumber(BillNumberTextBox.Text);
 
             if (businessRetrieveTaxpayerName != null)
             {
+                TNameTextBox.Text = businessRetrieveTaxpayerName.TaxpayerName;
+                MPNoTextBox.Text = businessRetrieveTaxpayerName.MPNo;
                 BusinessNameTextBox.Text = businessRetrieveTaxpayerName.BusinessName;
             }
             else
             {
-                BusinessNameTextBox.Text = Validations.NO_RETRIEVED_NAME;
+                TNameTextBox.Text = Validations.NO_RETRIEVED_NAME;
             }
 
         }

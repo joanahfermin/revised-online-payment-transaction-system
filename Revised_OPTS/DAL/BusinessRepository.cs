@@ -56,5 +56,14 @@ namespace Revised_OPTS.DAL
             return getDbSet().Where(j => j.RefNum == refNum && j.DeletedRecord == false)
             .OrderBy(j => j.BusinessID).ToList();
         }
+
+        public List<Business> RetrieveNoName()
+        {
+            return getDbSet()
+                    .Where(jo => jo.TaxpayersName != null
+                        && jo.TaxpayersName.Contains("NO RECORD")
+                        && jo.DeletedRecord != true)
+                    .Take(50).ToList();
+        }
     }
 }

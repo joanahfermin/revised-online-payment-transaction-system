@@ -34,7 +34,6 @@ namespace Inventory_System.Job
             Task.Run(() => RunAutoEmailLogic());
         }
 
-
         private async void RunAutoEmailLogic()
         {
             Console.WriteLine("RunAutoEmail");
@@ -61,7 +60,6 @@ namespace Inventory_System.Job
                 {                    
                     rptService.ChangeStatusForORPickUp(rpt);
                 }
-                //break;
             }
         }
     }

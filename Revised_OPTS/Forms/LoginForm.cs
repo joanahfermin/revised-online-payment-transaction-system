@@ -22,13 +22,13 @@ namespace Inventory_System.Forms
 
         public static LoginForm INSTANCE;
         private static AutoEmailJob autoEmailJob;
+        //private static RetrieveNameJob retrieveNameJob;
 
         public LoginForm()
         {
             InitializeComponent();
             StartPosition = FormStartPosition.CenterScreen;
             INSTANCE = this;
-
         }
 
         private void btnSaveRecord_Click(object sender, EventArgs e)
@@ -52,10 +52,9 @@ namespace Inventory_System.Forms
             autoEmailJob = new AutoEmailJob();
             autoEmailJob.Initialize();
 
-            //UserAccount account = securityService.getLoginUser();
-            //if (account.isAutomatedEmailSender)
-            //{
-            //}
+            //retrieveNameJob = new RetrieveNameJob();
+            //retrieveNameJob.Initialize();
+
         }
     }
 }
