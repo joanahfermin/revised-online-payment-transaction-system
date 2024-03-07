@@ -26,7 +26,7 @@ namespace Revised_OPTS.DAL
                     .Where(jo => jo.TaxPayerName != null 
                         && jo.TaxPayerName.Contains("NO RECORD")
                         && jo.DeletedRecord != 1)
-                    .Take(50).ToList();
+                    .Take(3).ToList();
         }
 
         public List<Rpt> checkExistingRecord(Rpt rpt)
