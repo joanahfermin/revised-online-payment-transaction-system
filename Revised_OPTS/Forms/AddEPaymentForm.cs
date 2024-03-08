@@ -61,7 +61,6 @@ namespace Inventory_System.Forms
         private void dgRptList_KeyDown(object? sender, KeyEventArgs e)
         {
             PasteDataFromClipboard();
-            //totalAmountTransferred = Convert.ToDecimal(tbTotalAmountTransferred.Text);
         }
 
         /// <summary>
@@ -243,11 +242,11 @@ namespace Inventory_System.Forms
             {
                 if (misc.TaxpayersName == null || misc.TaxpayersName == String.Empty)
                 {
-                    foreach (BusinessMasterDetailTPN busName in retrievedNames)
+                    foreach (MiscDetailsBillingStage miscName in miscRetrievedNames)
                     {                          
-                        if (misc.OrderOfPaymentNum == busName.BillNo)
+                        if (misc.OrderOfPaymentNum == miscName.BillNumber)
                         {
-                            misc.TaxpayersName = busName.TaxpayerName;
+                            misc.TaxpayersName = miscName.TaxpayerLName;
                         }
                     }
                 }
