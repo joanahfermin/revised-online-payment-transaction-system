@@ -36,6 +36,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.cbTaxTypeReport = new System.Windows.Forms.ComboBox();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.tbRefNo = new System.Windows.Forms.TextBox();
             this.dtTo = new System.Windows.Forms.DateTimePicker();
             this.dtFrom = new System.Windows.Forms.DateTimePicker();
@@ -44,10 +45,9 @@
             this.labelEnterRefNo = new System.Windows.Forms.Label();
             this.btnGenerate = new System.Windows.Forms.Button();
             this.DgReportForm = new System.Windows.Forms.DataGridView();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.DgReportForm)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DgReportForm)).BeginInit();
             this.SuspendLayout();
             // 
             // btnClose
@@ -117,6 +117,16 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1924, 145);
             this.panel1.TabIndex = 7;
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.BackColor = System.Drawing.Color.Transparent;
+            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
+            this.pictureBox1.Location = new System.Drawing.Point(11, 11);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(111, 125);
+            this.pictureBox1.TabIndex = 202;
+            this.pictureBox1.TabStop = false;
             // 
             // tbRefNo
             // 
@@ -257,16 +267,6 @@
             this.DgReportForm.Size = new System.Drawing.Size(1877, 847);
             this.DgReportForm.TabIndex = 208;
             // 
-            // pictureBox1
-            // 
-            this.pictureBox1.BackColor = System.Drawing.Color.Transparent;
-            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
-            this.pictureBox1.Location = new System.Drawing.Point(11, 11);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(111, 125);
-            this.pictureBox1.TabIndex = 202;
-            this.pictureBox1.TabStop = false;
-            // 
             // ReportForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -279,8 +279,8 @@
             this.Text = "ReportForm";
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.DgReportForm)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DgReportForm)).EndInit();
             this.ResumeLayout(false);
 
         }

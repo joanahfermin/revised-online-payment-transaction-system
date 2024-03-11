@@ -48,6 +48,7 @@ namespace Inventory_System.Forms
             this.WindowState = FormWindowState.Maximized;
 
             DgReportForm.CellFormatting += DgReportForm_CellFormatting;
+
         }
         public void InitializeReportType()
         {
@@ -75,7 +76,22 @@ namespace Inventory_System.Forms
         public void InitializeDynamicMappingUserActivity()
         {
             DynamicGridInfo[] gridInfoArray = new DynamicGridInfo[] {
-                new DynamicGridInfo{PropertyName="TaxType", Label = "Tax Type" },
+                new DynamicGridInfo{PropertyName="DisplayName", Label = "Name" },
+                new DynamicGridInfo{PropertyName="EncodedCount", Label = "Rpt Encoded Count", decimalValue = true },
+                new DynamicGridInfo{PropertyName="VerifiedCount", Label = "Rpt Verified Count", decimalValue = true },
+                new DynamicGridInfo{PropertyName="ValidatedCount", Label = "Rpt Validated Count", decimalValue = true},
+                new DynamicGridInfo{PropertyName="UploadCount", Label = "Rpt Uploaded Count", decimalValue = true },
+                new DynamicGridInfo{PropertyName="ReleasedCount", Label = "Rpt Released Count", decimalValue = true},
+                new DynamicGridInfo{PropertyName="MiscEncodedCount", Label = "Misc Encoded Count", decimalValue = true },
+                new DynamicGridInfo{PropertyName="MiscVerifiedCount", Label = "Misc Verified Count", decimalValue = true },
+                new DynamicGridInfo{PropertyName="MiscValidatedCount", Label = "Misc Validated Count", decimalValue = true},
+                new DynamicGridInfo{PropertyName="MiscReleasedCount", Label = "Misc Released Count", decimalValue = true},
+                new DynamicGridInfo{PropertyName="BusinessEncodedCount", Label = "Business Encoded Count", decimalValue = true },
+                new DynamicGridInfo{PropertyName="BusinessVerifiedCount", Label = "Business Verified Count", decimalValue = true },
+                new DynamicGridInfo{PropertyName="BusinessValidatedCount", Label = "Business Validated Count", decimalValue = true},
+
+
+
             };
             DynamicGridContainer = new DynamicGridContainer<AllTaxTypeReport>(DgReportForm, gridInfoArray, true, true);
         }
@@ -100,12 +116,26 @@ namespace Inventory_System.Forms
 
         private void dtFrom_ValueChanged(object sender, EventArgs e)
         {
-            loadCollectorsReport();
+            if (cbTaxTypeReport.Text == AllTaxTypeReportUtil.COLLECTORS_REPORT)
+            {
+                loadCollectorsReport();
+            }
+            else
+            {
+                loadUserActivityReport();
+            }
         }
 
         private void dtTo_ValueChanged(object sender, EventArgs e)
         {
-            loadCollectorsReport();
+            if (cbTaxTypeReport.Text == AllTaxTypeReportUtil.COLLECTORS_REPORT)
+            {
+                loadCollectorsReport();
+            }
+            else
+            {
+                loadUserActivityReport();
+            }
         }
 
         private void cbTaxType_SelectedIndexChanged(object sender, EventArgs e)
@@ -124,6 +154,7 @@ namespace Inventory_System.Forms
                 labelDateTo.Visible = true;
                 loadCollectorsReport();
             }
+
             else if (taxType == AllTaxTypeReportUtil.REGENERATE_EPAYMENTS)
             {
                 labelEnterRefNo.Visible = true;
@@ -134,6 +165,7 @@ namespace Inventory_System.Forms
                 dtFrom.Visible = false;
                 dtTo.Visible = false;
             }
+
             else if (taxType == AllTaxTypeReportUtil.USER_ACTIVITY)
             {
                 labelEnterRefNo.Visible = false;
@@ -151,8 +183,8 @@ namespace Inventory_System.Forms
         private void loadUserActivityReport()
         {
             InitializeDynamicMappingUserActivity();
-            List<AllTaxTypeReport> allTaxesValidated = rptService.RetrieveByValidatedDate(dtFrom.Value, dtTo.Value);
-            DgReportForm.DataSource = allTaxesValidated;
+            List<UserActivityReport> retrievedUserActivity = rptService.RetrieveAllUserActivityReport(dtFrom.Value, dtTo.Value);
+            DgReportForm.DataSource = retrievedUserActivity;
         }
 
         private void btnGenerate_Click(object sender, EventArgs e)

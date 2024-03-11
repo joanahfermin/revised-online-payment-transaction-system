@@ -211,7 +211,7 @@ namespace Revised_OPTS.Service
             }
             if (allDuplicateRpts.Count > 0)
             {
-                string allTaxdec = string.Join(", " , allDuplicateRpts.Select(t => t.TaxDec).ToHashSet());
+                string allTaxdec = string.Join(", ", allDuplicateRpts.Select(t => t.TaxDec).ToHashSet());
                 throw new DuplicateRecordException($"There is an existing record/s detected in the database. Please update or delete the old record/s. TDN = {allTaxdec}", allDuplicateRpts);
             }
         }
@@ -454,7 +454,7 @@ namespace Revised_OPTS.Service
             List<long> processedRpdIDList = new List<long>(resultList.Count);
             HashSet<string> refNumSet = rptList.Select(rpt => rpt.RefNum).ToHashSet();
 
-            foreach(string refNum in refNumSet)
+            foreach (string refNum in refNumSet)
             {
                 foreach (Rpt rpt in rptList)
                 {
@@ -547,7 +547,7 @@ namespace Revised_OPTS.Service
         {
             foreach (Rpt rpt in rptStatusList)
             {
-                if ( rpt.Status != TaxStatus.ForPaymentValidation && expectedRevertedStatus == TaxStatus.ForPaymentVerification)
+                if (rpt.Status != TaxStatus.ForPaymentValidation && expectedRevertedStatus == TaxStatus.ForPaymentVerification)
                 {
                     throw new RptException($"INCORRECT STATUS DETECTED. Please check the record(s) you are trying to revert. The record(s) you are trying to revert should have a status of '{TaxStatus.ForPaymentValidation}'. \n\n" +
                                          "Please be informed of the following CORRECT sequence of statuses:\n" +
@@ -878,7 +878,7 @@ namespace Revised_OPTS.Service
                     new[] { new SqlParameter("@FromDate", dateFrom), new SqlParameter("@ToDate", dateTo), new SqlParameter("@UserName", UserName) }).ToList();
             }
         }
-        
+
         public void ChangeStatusForORPickUp(Rpt rpt)
         {
             string UploadedBy = securityService.getLoginUser().DisplayName;
@@ -924,8 +924,33 @@ namespace Revised_OPTS.Service
         {
             using (var dbContext = ApplicationDBContext.Create())
             {
-                   return rptRepository.RetrieveNoName();
+                return rptRepository.RetrieveNoName();
+            }
+        }
+
+        public List<UserActivityReport> RetrieveAllUserActivityReport(DateTime _dateFrom, DateTime _dateTo)
+        {
+            using (var dbContext = ApplicationDBContext.Create())
+            {
+                {
+                    return dbContext.allUserActivityReports.FromSqlRaw<UserActivityReport>(
+                    "SELECT DisplayName, (SELECT COUNT(*) FROM Jo_RPT r WHERE DeletedRecord = 0 AND r.EncodedBy = u.DisplayName AND CAST(EncodedDate AS Date) >= CAST(@FromDate AS Date) AND CAST(EncodedDate AS Date) <= CAST(@ToDate AS Date)) AS EncodedCount, " +
+                    "(SELECT COUNT(*) FROM Jo_RPT r WHERE DeletedRecord = 0 AND r.VerifiedBy = u.DisplayName AND CAST(VerifiedDate AS Date) >= CAST(@FromDate AS Date) AND CAST(VerifiedDate AS Date) <= CAST(@ToDate AS Date)) AS VerifiedCount, " +
+                    "(SELECT COUNT(*) FROM Jo_RPT r WHERE DeletedRecord = 0 AND r.ValidatedBy = u.DisplayName AND CAST(ValidatedDate AS Date) >= CAST(@FromDate AS Date) AND CAST(ValidatedDate AS Date) <= CAST(@ToDate AS Date)) AS ValidatedCount, " +
+                    "(SELECT COUNT(*) FROM Jo_RPT r WHERE DeletedRecord = 0 AND r.UploadedBy = u.DisplayName AND CAST(UploadedDate AS Date) >= CAST(@FromDate AS Date) AND CAST(UploadedDate AS Date) <= CAST(@ToDate AS Date)) AS UploadCount, " +
+                    "(SELECT COUNT(*) FROM Jo_RPT r WHERE DeletedRecord = 0 AND r.ReleasedBy = u.DisplayName AND CAST(ReleasedDate AS Date) >= CAST(@FromDate AS Date) AND CAST(ReleasedDate AS Date) <= CAST(@ToDate AS Date)) AS ReleasedCount, " +
+                    "(SELECT COUNT(*) FROM Jo_MISC m WHERE DeletedRecord = 0 AND m.EncodedBy = u.DisplayName AND CAST(EncodedDate AS Date) >= CAST(@FromDate AS Date) AND CAST(EncodedDate AS Date) <= CAST(@ToDate AS Date)) AS MiscEncodedCount, " +
+                    "(SELECT COUNT(*) FROM Jo_MISC m WHERE DeletedRecord = 0 AND m.VerifiedBy = u.DisplayName AND CAST(VerifiedDate AS Date) >= CAST(@FromDate AS Date) AND CAST(VerifiedDate AS Date) <= CAST(@ToDate AS Date)) AS MiscVerifiedCount, " +
+                    "(SELECT COUNT(*) FROM Jo_MISC m WHERE DeletedRecord = 0 AND m.ValidatedBy = u.DisplayName AND CAST(ValidatedDate AS Date) >= CAST(@FromDate AS Date) AND CAST(ValidatedDate AS Date) <= CAST(@ToDate AS Date)) AS MiscValidatedCount, " +
+                    "(SELECT COUNT(*) FROM Jo_MISC m WHERE DeletedRecord = 0 AND m.ReleasedBy = u.DisplayName AND CAST(ReleasedDate AS Date) >= CAST(@FromDate AS Date) AND CAST(ReleasedDate AS Date) <= CAST(@ToDate AS Date)) AS MiscReleasedCount, " +
+                    "(SELECT COUNT(*) FROM Jo_Business b WHERE DeletedRecord = 0 AND b.EncodedBy = u.DisplayName AND CAST(EncodedDate AS Date) >= CAST(@FromDate AS Date) AND CAST(EncodedDate AS Date) <= CAST(@ToDate AS Date)) AS BusinessEncodedCount, " +
+                    "(SELECT COUNT(*) FROM Jo_Business b WHERE DeletedRecord = 0 AND b.VerifiedBy = u.DisplayName AND CAST(VerifiedDate AS Date) >= CAST(@FromDate AS Date) AND CAST(VerifiedDate AS Date) <= CAST(@ToDate AS Date)) AS BusinessVerifiedCount, " +
+                    "(SELECT COUNT(*) FROM Jo_Business b WHERE DeletedRecord = 0 AND b.ValidatedBy = u.DisplayName AND CAST(ValidatedDate AS Date) >= CAST(@FromDate AS Date) AND CAST(ValidatedDate AS Date) <= CAST(@ToDate AS Date)) AS BusinessValidatedCount " +
+                    " FROM Jo_RPT_Users u WHERE isActive = 1 ORDER BY DisplayName ASC ; ",
+                    new[] { new SqlParameter("@FromDate", _dateFrom), new SqlParameter("@ToDate", _dateTo) }).ToList();
+                }
             }
         }
     }
 }
+

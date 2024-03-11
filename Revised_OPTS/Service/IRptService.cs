@@ -43,6 +43,7 @@ namespace Revised_OPTS.Service
         void DeleteAttachedOR(long rptId);
 
         List<AllTaxTypeReport> RetrieveByValidatedDate(DateTime dateFrom, DateTime dateTo);
+        List<UserActivityReport> RetrieveAllUserActivityReport(DateTime dateFrom, DateTime dateTo);
 
         int CoundForORUploadWithPhoto(List<long> rptIDList);
         void ConfirmSendOrUpload(List<long> selectedRptIDList);
