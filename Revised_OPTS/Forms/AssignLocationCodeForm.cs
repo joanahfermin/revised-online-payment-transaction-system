@@ -90,12 +90,7 @@ namespace Inventory_System.Forms
                 RetrieveAndShowRptData();
                 btnRefresh_Click_1(sender, e);
 
-
-                //Rpt rpt = rptService.Get(rptIDList.First());
-                //string firstTaxdecRecord = rpt.TaxDec;
-                //NotificationHelper.notifyUserAndRefreshRecord(firstTaxdecRecord);
-
-                //btnClose_Click(sender, e);
+                MessageBox.Show("Operation completed successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
 
