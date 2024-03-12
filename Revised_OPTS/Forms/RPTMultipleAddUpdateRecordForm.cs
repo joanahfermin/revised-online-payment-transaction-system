@@ -77,6 +77,7 @@ namespace Inventory_System.Forms
             DgRptAddUpdateForm.RowsRemoved += DgRptAddUpdateForm_RowsRemoved;
             DgRptAddUpdateForm.RowsAdded += DgRptAddUpdateForm_RowsAdded;
             DgRptAddUpdateForm.DefaultValuesNeeded += DgRptAddUpdateForm_DefaultValuesNeeded;
+            DgRptAddUpdateForm.CellClick += DgRptAddUpdateForm_CellClick;
 
             panel1.BackColor = customColor;
             btnSaveRecord.BackColor = customColor;

@@ -37,6 +37,7 @@ namespace Inventory_System.Forms
             InitializeRptDataGridView();
             InitializeBusinessDataGridView();
             InitializeMiscDataGridView();
+            btnSaveRecord.Visible = false;
 
             DgRptAddUpdateForm.DefaultCellStyle.Font = new Font("Tahoma", 12, FontStyle.Regular);
             DgBusAddUpdateForm.DefaultCellStyle.Font = new Font("Tahoma", 12, FontStyle.Regular);
@@ -162,17 +163,17 @@ namespace Inventory_System.Forms
 
         private void btnSaveRecord_Click(object sender, EventArgs e)
         {
-            List<Rpt> listOfRptsToSave = RptDynamicGridContainer.GetData();
+            //List<Rpt> listOfRptsToSave = RptDynamicGridContainer.GetData();
 
-            try
-            {
-                rptService.UpdateAllinDuplicateRecordForm(listOfRptsToSave);
-            }
-            catch (RptException ex)
-            {
-                MessageBox.Show(ex.Message);
-                return;
-            }
+            //try
+            //{
+            //    rptService.UpdateAllinDuplicateRecordForm(listOfRptsToSave);
+            //}
+            //catch (RptException ex)
+            //{
+            //    MessageBox.Show(ex.Message);
+            //    return;
+            //}
         }
 
         private void btnSaveRecord_MouseEnter(object sender, EventArgs e)
@@ -206,6 +207,5 @@ namespace Inventory_System.Forms
         {
             this.Close();
         }
-
     }
 }

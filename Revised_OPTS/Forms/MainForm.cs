@@ -103,6 +103,10 @@ namespace Revised_OPTS
 
             ToolStripMenuItem menuItemVerifyPayment = new ToolStripMenuItem("Verify Payment");
             menuItemVerifyPayment.Click += MenuItemVerifiedPayment_Click;
+
+            ToolStripMenuItem menuItemViewImage = new ToolStripMenuItem("View Receipt");
+            menuItemViewImage.Click += MenuItemViewImage_Click;
+
             ToolStripMenuItem menuItemReleaseReceipt = new ToolStripMenuItem("Release Receipt");
             menuItemReleaseReceipt.Click += MenuItemReleaseReceipt_Click;
 
@@ -129,10 +133,33 @@ namespace Revised_OPTS
             contextMenuStrip1.Items.Add(menuItemRevertStatus);
             contextMenuStrip1.Items.Add(menuItemValidatePayment);
             contextMenuStrip1.Items.Add(menuItemVerifyPayment);
+            contextMenuStrip1.Items.Add(menuItemViewImage);
 
             DgMainForm.ContextMenuStrip = contextMenuStrip1;
 
             InitializeAutoUpdateScreenTimer();
+        }
+
+        private void MenuItemViewImage_Click(object? sender, EventArgs e)
+        {
+            DataGridViewRow selectedRow = DgMainForm.CurrentRow;
+            if (selectedRow != null)
+            {
+                Rpt rpt = selectedRow.DataBoundItem as Rpt;
+
+                long rptID = rpt.RptID;
+                RPTAttachPicture retrievedPic = rptService.getRptReceipt(rptID);
+
+                if (retrievedPic != null)
+                {
+                    ReceiptImageViewer formViewer = new ReceiptImageViewer(rptID);
+                    formViewer.Show();
+                }
+                else
+                {
+                    MessageBox.Show("No receipt attached.", "Confirmation", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
         }
 
         private void InitializeAutoUpdateScreenTimer()
