@@ -164,6 +164,8 @@ namespace Inventory_System.Forms
                 labelDateTo.Visible = false;
                 dtFrom.Visible = false;
                 dtTo.Visible = false;
+                dtFrom.Value = DateTime.Now;
+                dtTo.Value = DateTime.Now;
             }
 
             else if (taxType == AllTaxTypeReportUtil.USER_ACTIVITY)
@@ -175,6 +177,8 @@ namespace Inventory_System.Forms
                 labelDateTo.Visible = true;
                 dtFrom.Visible = true;
                 dtTo.Visible = true;
+                dtFrom.Value = DateTime.Now;
+                dtTo.Value = DateTime.Now;
 
                 loadUserActivityReport();
             }
@@ -182,6 +186,7 @@ namespace Inventory_System.Forms
 
         private void loadUserActivityReport()
         {
+            DgReportForm.Columns.Clear();
             InitializeDynamicMappingUserActivity();
             List<UserActivityReport> retrievedUserActivity = rptService.RetrieveAllUserActivityReport(dtFrom.Value, dtTo.Value);
             DgReportForm.DataSource = retrievedUserActivity;
