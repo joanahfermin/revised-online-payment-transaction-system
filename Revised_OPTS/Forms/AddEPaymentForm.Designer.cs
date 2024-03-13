@@ -37,10 +37,10 @@
             this.btnPrintReport = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.dgRptList = new System.Windows.Forms.DataGridView();
+            this.dgEpaymentList = new System.Windows.Forms.DataGridView();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dgRptList)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgEpaymentList)).BeginInit();
             this.SuspendLayout();
             // 
             // btnClose
@@ -133,13 +133,13 @@
             this.pictureBox1.TabIndex = 203;
             this.pictureBox1.TabStop = false;
             // 
-            // dgRptList
+            // dgEpaymentList
             // 
-            this.dgRptList.AllowUserToAddRows = false;
-            this.dgRptList.AllowUserToDeleteRows = false;
-            this.dgRptList.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
-            this.dgRptList.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.DisplayedCells;
-            this.dgRptList.BackgroundColor = System.Drawing.Color.White;
+            this.dgEpaymentList.AllowUserToAddRows = false;
+            this.dgEpaymentList.AllowUserToDeleteRows = false;
+            this.dgEpaymentList.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.dgEpaymentList.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.DisplayedCells;
+            this.dgEpaymentList.BackgroundColor = System.Drawing.Color.White;
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle1.BackColor = System.Drawing.Color.DarkSalmon;
             dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
@@ -147,8 +147,8 @@
             dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.LightSalmon;
             dataGridViewCellStyle1.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
             dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgRptList.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
-            this.dgRptList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgEpaymentList.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            this.dgEpaymentList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle2.BackColor = System.Drawing.Color.White;
             dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
@@ -156,11 +156,11 @@
             dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(198)))), ((int)(((byte)(247)))));
             dataGridViewCellStyle2.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
             dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgRptList.DefaultCellStyle = dataGridViewCellStyle2;
-            this.dgRptList.EnableHeadersVisualStyles = false;
-            this.dgRptList.GridColor = System.Drawing.Color.DarkGray;
-            this.dgRptList.Location = new System.Drawing.Point(12, 152);
-            this.dgRptList.Name = "dgRptList";
+            this.dgEpaymentList.DefaultCellStyle = dataGridViewCellStyle2;
+            this.dgEpaymentList.EnableHeadersVisualStyles = false;
+            this.dgEpaymentList.GridColor = System.Drawing.Color.DarkGray;
+            this.dgEpaymentList.Location = new System.Drawing.Point(12, 152);
+            this.dgEpaymentList.Name = "dgEpaymentList";
             dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle3.BackColor = System.Drawing.Color.White;
             dataGridViewCellStyle3.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
@@ -168,15 +168,15 @@
             dataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.LightBlue;
             dataGridViewCellStyle3.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
             dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgRptList.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
-            this.dgRptList.RowTemplate.DefaultCellStyle.BackColor = System.Drawing.Color.White;
-            this.dgRptList.RowTemplate.DefaultCellStyle.ForeColor = System.Drawing.Color.Black;
-            this.dgRptList.RowTemplate.DefaultCellStyle.SelectionBackColor = System.Drawing.Color.LightBlue;
-            this.dgRptList.RowTemplate.DefaultCellStyle.SelectionForeColor = System.Drawing.Color.Black;
-            this.dgRptList.RowTemplate.Height = 25;
-            this.dgRptList.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgRptList.Size = new System.Drawing.Size(1892, 846);
-            this.dgRptList.TabIndex = 208;
+            this.dgEpaymentList.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            this.dgEpaymentList.RowTemplate.DefaultCellStyle.BackColor = System.Drawing.Color.White;
+            this.dgEpaymentList.RowTemplate.DefaultCellStyle.ForeColor = System.Drawing.Color.Black;
+            this.dgEpaymentList.RowTemplate.DefaultCellStyle.SelectionBackColor = System.Drawing.Color.LightBlue;
+            this.dgEpaymentList.RowTemplate.DefaultCellStyle.SelectionForeColor = System.Drawing.Color.Black;
+            this.dgEpaymentList.RowTemplate.Height = 25;
+            this.dgEpaymentList.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgEpaymentList.Size = new System.Drawing.Size(1892, 846);
+            this.dgEpaymentList.TabIndex = 208;
             // 
             // AddEPaymentForm
             // 
@@ -184,13 +184,13 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.ClientSize = new System.Drawing.Size(1917, 1026);
-            this.Controls.Add(this.dgRptList);
+            this.Controls.Add(this.dgEpaymentList);
             this.Controls.Add(this.panel1);
             this.Name = "AddEPaymentForm";
             this.Text = "AddEPaymentForm";
             this.panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dgRptList)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgEpaymentList)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -202,6 +202,6 @@
         private Button btnPrintReport;
         private Panel panel1;
         private PictureBox pictureBox1;
-        private DataGridView dgRptList;
+        private DataGridView dgEpaymentList;
     }
 }

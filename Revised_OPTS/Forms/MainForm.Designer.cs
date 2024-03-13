@@ -292,13 +292,13 @@
             this.label4.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point);
             this.label4.ForeColor = System.Drawing.Color.White;
             this.label4.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.label4.Location = new System.Drawing.Point(254, 13);
+            this.label4.Location = new System.Drawing.Point(254, 11);
             this.label4.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
             this.label4.Name = "label4";
             this.label4.Padding = new System.Windows.Forms.Padding(10);
-            this.label4.Size = new System.Drawing.Size(418, 34);
+            this.label4.Size = new System.Drawing.Size(425, 34);
             this.label4.TabIndex = 206;
-            this.label4.Text = "*Search the unique key (RPT: TDN, BUSINES and MISC: BILL NUMBER)";
+            this.label4.Text = "*Search the unique key (RPT: TDN, BUSINESS and MISC: BILL NUMBER)";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // btnReport

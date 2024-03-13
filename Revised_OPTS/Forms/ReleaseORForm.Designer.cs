@@ -158,13 +158,13 @@
             this.label3.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.label3.ForeColor = System.Drawing.Color.White;
             this.label3.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.label3.Location = new System.Drawing.Point(185, 22);
+            this.label3.Location = new System.Drawing.Point(176, 22);
             this.label3.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
             this.label3.Name = "label3";
             this.label3.Padding = new System.Windows.Forms.Padding(10);
-            this.label3.Size = new System.Drawing.Size(190, 38);
+            this.label3.Size = new System.Drawing.Size(199, 38);
             this.label3.TabIndex = 212;
-            this.label3.Text = "Represetative Name: ";
+            this.label3.Text = "Representative Name: ";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // textRepName

@@ -194,6 +194,7 @@ namespace Revised_OPTS
                         // Assuming AmountToPay is a property in your Rpt class and Sum is a property of AmountToPay
                         sumBillAmount = (decimal)(selectedRptRecord.AmountToPay + sumBillAmount);
                         sumTotalTransferredAmount = (decimal)(selectedRptRecord.TotalAmountTransferred ?? 0) + sumTotalTransferredAmount;
+                        Clipboard.SetText(selectedRptRecord.TaxDec);
                     }
                 }
                 else if (CURRENT_RECORD_TYPE == BUSINESS_RECORD_TYPE)

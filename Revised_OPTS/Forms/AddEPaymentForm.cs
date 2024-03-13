@@ -55,10 +55,24 @@ namespace Inventory_System.Forms
             InitializeComponent();
             this.WindowState = FormWindowState.Maximized;
 
-            dgRptList.KeyUp += dgRptList_KeyDown;
+            dgEpaymentList.KeyUp += dgEpaymentList_KeyDown;;
+            dgEpaymentList.SelectionChanged += dgEpaymentList_SelectionChanged;
         }
 
-        private void dgRptList_KeyDown(object? sender, KeyEventArgs e)
+        private void dgEpaymentList_SelectionChanged(object? sender, EventArgs e)
+        {
+            DataGridViewRow selectedRow = dgEpaymentList.CurrentRow;
+            if (selectedRow != null)
+            {
+                object cellValue = selectedRow.Cells[4].Value; //COPIES THE TDN OF THE RPT ROW.
+                if (cellValue != null)
+                {
+                    Clipboard.SetText(cellValue.ToString());
+                }
+            }
+        }
+
+        private void dgEpaymentList_KeyDown(object? sender, KeyEventArgs e)
         {
             PasteDataFromClipboard();
         }
@@ -83,7 +97,7 @@ namespace Inventory_System.Forms
 
             if (rowArray.Length > 0)
             {
-                dgRptList.ClearSelection();
+                dgEpaymentList.ClearSelection();
 
                 foreach (string row in rowArray)
                 {
@@ -112,7 +126,7 @@ namespace Inventory_System.Forms
                         data.Add(ep);
                     }
                 }
-                dgRptList.DataSource = data;
+                dgEpaymentList.DataSource = data;
             }
         }
 
@@ -157,7 +171,7 @@ namespace Inventory_System.Forms
             businessToSaveList.Clear();
             miscToSaveList.Clear();
 
-            foreach (DataGridViewRow row in dgRptList.Rows)
+            foreach (DataGridViewRow row in dgEpaymentList.Rows)
             {
                 ElectronicPayment ep = (ElectronicPayment)row.DataBoundItem;
                 //RPT
