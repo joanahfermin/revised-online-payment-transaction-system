@@ -2,6 +2,7 @@
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Spreadsheet;
 using Inventory_System.Model;
+using Inventory_System.Service;
 using Inventory_System.Utilities;
 using Revised_OPTS.Model;
 using Revised_OPTS.Service;
@@ -28,10 +29,7 @@ namespace Inventory_System.Forms
         IRptService rptService = ServiceFactory.Instance.GetRptService();
         IBusinessService busService = ServiceFactory.Instance.GetBusinessService();
         IMiscService miscService = ServiceFactory.Instance.GetMiscService();
-
-        //List<Rpt> rptToSaveList = new List<Rpt>();
-        //List<Miscellaneous> miscToSaveList = new List<Miscellaneous>();
-        //List<Business> businessToSaveList = new List<Business>();
+        ISecurityService securityService = ServiceFactory.Instance.GetSecurityService();
 
         TaxUniqueKeyFormat taxUniqueKeyFormat = new TaxUniqueKeyFormat();
 
@@ -148,10 +146,14 @@ namespace Inventory_System.Forms
                 dtFrom.Visible = true;
                 dtTo.Visible = true;
 
-                labelEnterRefNo.Visible = false;
-                tbRefNo.Visible = false;
+                labelForRpt.Visible = true;
+                labelEnterShttc.Visible = true;
+                tbShttc.Visible = true;
                 labelDateFrom.Visible = true;
                 labelDateTo.Visible = true;
+                labelEnterRefNo.Visible = false;
+                tbRefNo.Visible = false;
+
                 loadCollectorsReport();
             }
 
@@ -159,7 +161,9 @@ namespace Inventory_System.Forms
             {
                 labelEnterRefNo.Visible = true;
                 tbRefNo.Visible = true;
-
+                labelEnterShttc.Visible = false;
+                labelForRpt.Visible = false;
+                tbShttc.Visible = false;
                 labelDateFrom.Visible = false;
                 labelDateTo.Visible = false;
                 dtFrom.Visible = false;
@@ -170,13 +174,16 @@ namespace Inventory_System.Forms
 
             else if (taxType == AllTaxTypeReportUtil.USER_ACTIVITY)
             {
-                labelEnterRefNo.Visible = false;
-                tbRefNo.Visible = false;
-
                 labelDateFrom.Visible = true;
                 labelDateTo.Visible = true;
                 dtFrom.Visible = true;
                 dtTo.Visible = true;
+
+                labelEnterRefNo.Visible = false;
+                tbRefNo.Visible = false;
+                labelEnterShttc.Visible = false;
+                labelForRpt.Visible = false;
+                tbShttc.Visible = false;
                 dtFrom.Value = DateTime.Now;
                 dtTo.Value = DateTime.Now;
 
@@ -249,61 +256,67 @@ namespace Inventory_System.Forms
             var sheetData = worksheetPart.Worksheet.GetFirstChild<SheetData>();
 
             // Add data to the sheet
-            sheetData.AppendChild(new Row());
-            sheetData.AppendChild(new Row());
-            sheetData.AppendChild(new Row());
-            sheetData.AppendChild(new Row());
+            var row1 = new Row();
+            row1.Append(CreateCell("C1", "REAL PROPERTY TAX"));
+            sheetData.AppendChild(row1);
 
-            var row = new Row();
-            row.Append(CreateCell("A5", ""));
+            var row2 = new Row();
+            row2.Append(CreateCell("C2", "TOTAL BILLING"));
+            row2.Append(CreateCell("D2", "TOTAL COLLECTION"));
+            row2.Append(CreateCell("E2", "EXCESS/SHORT"));
+            sheetData.AppendChild(row2);
 
-            row.Append(CreateCell("B5", "BILL NUMBER"));
-            row.Append(CreateCell("C5", "BILL AMOUNT"));
-            row.Append(CreateCell("D5", "TOTAL AMOUNT TRANSFERRED"));
-            row.Append(CreateCell("E5", "EXCESS/SHORT"));
-            row.Append(CreateCell("F5", "REMARKS"));
-            sheetData.AppendChild(row);
+            var row3 = new Row();
+            sheetData.AppendChild(row3);
 
-            int rowIndex = 6;
+            var row4 = new Row();
+            row4.Append(CreateCell("C4", "WITH SHTTC: "));
+            row4.Append(CreateCell("F4", securityService.getLoginUser().MachNo));
+            sheetData.AppendChild(row4);
+
+            var row5 = new Row();
+            decimal shttc = Convert.ToDecimal(tbShttc.Text);
+            row5.Append(CreateCell("F5", DateTime.Now.ToString()));
+            row5.Append(CreateDecimalCell("C5", shttc));
+            sheetData.AppendChild(row5);
+
+            var row6 = new Row();
+            row6.Append(CreateCell("A6", ""));
+
+            row6.Append(CreateCell("B6", "TAX DEC. NUMBER"));
+            row6.Append(CreateCell("C6", "TOTAL BILLING"));
+            row6.Append(CreateCell("D6", "TOTAL COLLECTION"));
+            row6.Append(CreateCell("E6", "EXCESS/SHORT"));
+            row6.Append(CreateCell("F6", "REMARKS"));
+            sheetData.AppendChild(row6);
+
+            int rowIndex = 7;
             int count = 1;
-            decimal totalBillAmount = 0;
-            decimal totalAmountTransferred = 0;
-            decimal totalExcessShort = 0;
 
             foreach (DataGridViewRow gridrow in DgReportForm.Rows)
             {
                 AllTaxTypeReport taxRow = (AllTaxTypeReport)gridrow.DataBoundItem;
-                //foreach (var rpt in rptToSaveList)
-                //{
+
                 if (taxRow.TaxType != "RPT")
                 {
                     continue;
                 }
-                row = new Row();
-                row.Append(CreateCell($"A{rowIndex}", count.ToString()));
-                row.Append(CreateCell($"B{rowIndex}", taxRow.BillNumber));
-                row.Append(CreateDecimalCell($"C{rowIndex}", taxRow.Billing ?? 0));
-                row.Append(CreateDecimalCell($"D{rowIndex}", taxRow.Collection ?? 0));
-                row.Append(CreateDecimalCell($"E{rowIndex}", taxRow.ExcessShort ?? 0));
-                row.Append(CreateCell($"F{rowIndex}", taxRow.Remarks));
-                sheetData.AppendChild(row);
-
-                totalBillAmount += taxRow.Billing ?? 0;
-                totalAmountTransferred += taxRow.Collection ?? 0;
-                totalExcessShort += taxRow.ExcessShort ?? 0;
+                row6 = new Row();
+                row6.Append(CreateCell($"A{rowIndex}", count.ToString()));
+                row6.Append(CreateCell($"B{rowIndex}", taxRow.BillNumber));
+                row6.Append(CreateDecimalCell($"C{rowIndex}", taxRow.Billing ?? 0));
+                row6.Append(CreateDecimalCell($"D{rowIndex}", taxRow.Collection ?? 0));
+                row6.Append(CreateDecimalCell($"E{rowIndex}", taxRow.ExcessShort ?? 0));
+                row6.Append(CreateCell($"F{rowIndex}", taxRow.Remarks));
+                sheetData.AppendChild(row6);
 
                 count++;
                 rowIndex++;
             }
-            // Add a row for the total
-            row = new Row();
-            row.Append(CreateCell($"A{rowIndex}", ""));
-            row.Append(CreateCell($"B{rowIndex}", ""));
-            row.Append(CreateDecimalCell($"C{rowIndex}", totalBillAmount));
-            row.Append(CreateDecimalCell($"D{rowIndex}", totalAmountTransferred));
-            row.Append(CreateDecimalCell($"E{rowIndex}", totalExcessShort));
-            row.Append(CreateCell($"F{rowIndex}", ""));
-            sheetData.AppendChild(row);
+            row3.Append(CreateFormulaCell("C3", "=SUM(C7:C" + (rowIndex - 1) + ") + C5"));
+            row3.Append(CreateFormulaCell("D3", "=SUM(D7:D" + (rowIndex - 1) + ")"));
+            row3.Append(CreateFormulaCell("E3", "=SUM(E7:E" + (rowIndex - 1) + ")"));
+            row3.Append(CreateCell("F3", securityService.getLoginUser().FullName));
         }
 
         private void CreateBusinessCollectorSheet(Sheets sheets, WorkbookPart workbookPart, SpreadsheetDocument spreadsheetDocument/*, List<Business> businessToSaveList*/)
@@ -370,10 +383,6 @@ namespace Inventory_System.Forms
         {
             UInt32 sheetCounter = 3;
 
-            decimal totalBilling = 0;
-            decimal totalCollection = 0;
-            decimal totalExcessShort = 0;
-
             foreach (string miscType in TaxTypeUtil.REPORT_MISC_TAX_TYPE)
             {
                 // Add a WorksheetPart to the WorkbookPart
@@ -385,34 +394,33 @@ namespace Inventory_System.Forms
                 sheetCounter++;
 
                 // Add data to the sheet
-                miscSheetData.AppendChild(new Row());
+                var miscRow1 = new Row();
+                miscRow1.Append(CreateCell("C1", "MISCELLANEOUS TAX"));
+                miscSheetData.AppendChild(miscRow1);
 
                 var miscRow2 = new Row();
-                miscRow2.Append(CreateCell("A2", ""));
-                miscRow2.Append(CreateCell("B2", ""));
                 miscRow2.Append(CreateCell("C2", "TOTAL BILLING"));
                 miscRow2.Append(CreateCell("D2", "TOTAL COLLECTION"));
                 miscRow2.Append(CreateCell("E2", "EXCESS/SHORT"));
-
                 miscSheetData.AppendChild(miscRow2);
 
                 var miscRow3 = new Row();
-                miscRow3.Append(CreateCell("A3", ""));
-                miscRow3.Append(CreateCell("B3", ""));
                 miscSheetData.AppendChild(miscRow3);
 
-                //miscSheetData.AppendChild(new Row());
-                miscSheetData.AppendChild(new Row());
+                var miscRow4 = new Row();
+                miscRow4.Append(CreateCell("F4", securityService.getLoginUser().MachNo_Misc));
+                miscSheetData.AppendChild(miscRow4);
+
                 miscSheetData.AppendChild(new Row());
 
-                var miscRow = new Row();
-                miscRow.Append(CreateCell("A6", ""));
-                miscRow.Append(CreateCell("B6", "BILL NUMBER"));
-                miscRow.Append(CreateCell("C6", "TOTAL BILLING"));
-                miscRow.Append(CreateCell("D6", "TOTAL COLLECTION"));
-                miscRow.Append(CreateCell("E6", "EXCESS/SHORT"));
-                miscRow.Append(CreateCell("F6", "REMARKS"));
-                miscSheetData.AppendChild(miscRow);
+                var miscRow6 = new Row();
+                miscRow6.Append(CreateCell("A6", ""));
+                miscRow6.Append(CreateCell("B6", "BILL NUMBER"));
+                miscRow6.Append(CreateCell("C6", "TOTAL BILLING"));
+                miscRow6.Append(CreateCell("D6", "TOTAL COLLECTION"));
+                miscRow6.Append(CreateCell("E6", "EXCESS/SHORT"));
+                miscRow6.Append(CreateCell("F6", "REMARKS"));
+                miscSheetData.AppendChild(miscRow6);
 
                 int miscRowIndex = 7;
                 int count = 1;
@@ -438,17 +446,14 @@ namespace Inventory_System.Forms
                     {
                         continue;
                     }
-
-                    //foreach (Miscellaneous misc in miscToSaveList)
-                    //{
-                    miscRow = new Row(); // Create a new row instance for each iteration
-                    miscRow.Append(CreateCell($"A{miscRowIndex}", count.ToString()));
-                    miscRow.Append(CreateCell($"B{miscRowIndex}", taxRow.BillNumber));
-                    miscRow.Append(CreateDecimalCell($"C{miscRowIndex}", taxRow.Billing ?? 0));
-                    miscRow.Append(CreateDecimalCell($"D{miscRowIndex}", taxRow.Collection ?? 0));
-                    miscRow.Append(CreateDecimalCell($"E{miscRowIndex}", taxRow.ExcessShort ?? 0));
-                    miscRow.Append(CreateCell($"F{miscRowIndex}", ""));
-                    miscSheetData.AppendChild(miscRow);
+                    miscRow6 = new Row(); // Create a new row instance for each iteration
+                    miscRow6.Append(CreateCell($"A{miscRowIndex}", count.ToString()));
+                    miscRow6.Append(CreateCell($"B{miscRowIndex}", taxRow.BillNumber));
+                    miscRow6.Append(CreateDecimalCell($"C{miscRowIndex}", taxRow.Billing ?? 0));
+                    miscRow6.Append(CreateDecimalCell($"D{miscRowIndex}", taxRow.Collection ?? 0));
+                    miscRow6.Append(CreateDecimalCell($"E{miscRowIndex}", taxRow.ExcessShort ?? 0));
+                    miscRow6.Append(CreateCell($"F{miscRowIndex}", ""));
+                    miscSheetData.AppendChild(miscRow6);
 
                     totalBillAmount += taxRow.Billing ?? 0;
                     totalAmountTransferred += taxRow.Collection ?? 0;
@@ -457,18 +462,10 @@ namespace Inventory_System.Forms
                     count++;
                     miscRowIndex++;
                 }
-                //Add a row for the total
-                miscRow = new Row();
-                miscRow.Append(CreateCell($"A{miscRowIndex}", ""));
-                miscRow.Append(CreateCell($"B{miscRowIndex}", ""));
-                miscRow.Append(CreateDecimalCell($"C{miscRowIndex}", totalBillAmount));
-                miscRow.Append(CreateDecimalCell($"D{miscRowIndex}", totalAmountTransferred));
-                miscRow.Append(CreateDecimalCell($"E{miscRowIndex}", excessShort));
-                miscSheetData.AppendChild(miscRow);
-
                 miscRow3.Append(CreateDecimalCell("C3", totalBillAmount));
                 miscRow3.Append(CreateDecimalCell("D3", totalAmountTransferred));
                 miscRow3.Append(CreateDecimalCell("E3", excessShort));
+                miscRow3.Append(CreateCell("F3", securityService.getLoginUser().FullName));
             }
         }
 
@@ -843,6 +840,20 @@ namespace Inventory_System.Forms
                 CellReference = cellReference,
                 DataType = CellValues.String,
                 CellValue = new CellValue(cellValue)
+            };
+
+            return cell;
+        }
+
+        private static Cell CreateFormulaCell(string cellReference, string formula)
+        {
+            // Create a cell with specified reference and formula
+            var cell = new Cell()
+            {
+                CellReference = cellReference,
+                DataType = CellValues.Number,
+                CellFormula = new CellFormula(formula),
+                StyleIndex = 3 // Use #,##0.00
             };
 
             return cell;
