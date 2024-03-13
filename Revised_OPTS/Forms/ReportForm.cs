@@ -369,6 +369,11 @@ namespace Inventory_System.Forms
         private void CreateMiscCollectorSheet(Sheets sheets, WorkbookPart workbookPart, SpreadsheetDocument spreadsheetDocument/*, List<Miscellaneous> miscToSaveList*/)
         {
             UInt32 sheetCounter = 3;
+
+            decimal totalBilling = 0;
+            decimal totalCollection = 0;
+            decimal totalExcessShort = 0;
+
             foreach (string miscType in TaxTypeUtil.REPORT_MISC_TAX_TYPE)
             {
                 // Add a WorksheetPart to the WorkbookPart
@@ -381,22 +386,39 @@ namespace Inventory_System.Forms
 
                 // Add data to the sheet
                 miscSheetData.AppendChild(new Row());
-                miscSheetData.AppendChild(new Row());
+
+                var miscRow2 = new Row();
+                miscRow2.Append(CreateCell("A2", ""));
+                miscRow2.Append(CreateCell("B2", ""));
+                miscRow2.Append(CreateCell("C2", "TOTAL BILLING"));
+                miscRow2.Append(CreateCell("D2", "TOTAL COLLECTION"));
+                miscRow2.Append(CreateCell("E2", "EXCESS/SHORT"));
+
+                miscSheetData.AppendChild(miscRow2);
+
+                var miscRow3 = new Row();
+                miscRow3.Append(CreateCell("A3", ""));
+                miscRow3.Append(CreateCell("B3", ""));
+                miscSheetData.AppendChild(miscRow3);
+
+                //miscSheetData.AppendChild(new Row());
                 miscSheetData.AppendChild(new Row());
                 miscSheetData.AppendChild(new Row());
 
                 var miscRow = new Row();
-                miscRow.Append(CreateCell("A5", ""));
-                miscRow.Append(CreateCell("B5", "BILL NUMBER"));
-                miscRow.Append(CreateCell("C5", "AMOUNT DUE"));
-                miscRow.Append(CreateCell("D5", "TOTAL AMOUNT TRANSFERRED"));
-                miscRow.Append(CreateCell("E5", "REMARKS"));
+                miscRow.Append(CreateCell("A6", ""));
+                miscRow.Append(CreateCell("B6", "BILL NUMBER"));
+                miscRow.Append(CreateCell("C6", "TOTAL BILLING"));
+                miscRow.Append(CreateCell("D6", "TOTAL COLLECTION"));
+                miscRow.Append(CreateCell("E6", "EXCESS/SHORT"));
+                miscRow.Append(CreateCell("F6", "REMARKS"));
                 miscSheetData.AppendChild(miscRow);
 
-                int miscRowIndex = 6;
+                int miscRowIndex = 7;
                 int count = 1;
                 decimal totalBillAmount = 0;
                 decimal totalAmountTransferred = 0;
+                decimal excessShort = 0;
 
                 foreach (DataGridViewRow gridrow in DgReportForm.Rows)
                 {
@@ -424,23 +446,29 @@ namespace Inventory_System.Forms
                     miscRow.Append(CreateCell($"B{miscRowIndex}", taxRow.BillNumber));
                     miscRow.Append(CreateDecimalCell($"C{miscRowIndex}", taxRow.Billing ?? 0));
                     miscRow.Append(CreateDecimalCell($"D{miscRowIndex}", taxRow.Collection ?? 0));
-                    miscRow.Append(CreateCell($"E{miscRowIndex}", ""));
+                    miscRow.Append(CreateDecimalCell($"E{miscRowIndex}", taxRow.ExcessShort ?? 0));
+                    miscRow.Append(CreateCell($"F{miscRowIndex}", ""));
                     miscSheetData.AppendChild(miscRow);
 
                     totalBillAmount += taxRow.Billing ?? 0;
                     totalAmountTransferred += taxRow.Collection ?? 0;
+                    excessShort += taxRow.ExcessShort ?? 0;
 
                     count++;
                     miscRowIndex++;
                 }
-                // Add a row for the total
+                //Add a row for the total
                 miscRow = new Row();
                 miscRow.Append(CreateCell($"A{miscRowIndex}", ""));
                 miscRow.Append(CreateCell($"B{miscRowIndex}", ""));
-                miscRow.Append(CreateCell($"C{miscRowIndex}", "TOTAL PAYMENT"));
+                miscRow.Append(CreateDecimalCell($"C{miscRowIndex}", totalBillAmount));
                 miscRow.Append(CreateDecimalCell($"D{miscRowIndex}", totalAmountTransferred));
-                miscRow.Append(CreateCell($"E{miscRowIndex}", ""));
+                miscRow.Append(CreateDecimalCell($"E{miscRowIndex}", excessShort));
                 miscSheetData.AppendChild(miscRow);
+
+                miscRow3.Append(CreateDecimalCell("C3", totalBillAmount));
+                miscRow3.Append(CreateDecimalCell("D3", totalAmountTransferred));
+                miscRow3.Append(CreateDecimalCell("E3", excessShort));
             }
         }
 

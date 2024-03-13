@@ -264,7 +264,7 @@
             this.DgReportForm.RowTemplate.DefaultCellStyle.SelectionForeColor = System.Drawing.Color.Black;
             this.DgReportForm.RowTemplate.Height = 25;
             this.DgReportForm.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.DgReportForm.Size = new System.Drawing.Size(1877, 847);
+            this.DgReportForm.Size = new System.Drawing.Size(1877, 823);
             this.DgReportForm.TabIndex = 208;
             // 
             // ReportForm
@@ -272,7 +272,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
-            this.ClientSize = new System.Drawing.Size(1924, 1061);
+            this.ClientSize = new System.Drawing.Size(1924, 1000);
             this.Controls.Add(this.DgReportForm);
             this.Controls.Add(this.panel1);
             this.Name = "ReportForm";
