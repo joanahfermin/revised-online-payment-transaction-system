@@ -118,7 +118,7 @@ namespace Inventory_System.Forms
             {
                 loadCollectorsReport();
             }
-            else
+            else if (cbTaxTypeReport.Text == AllTaxTypeReportUtil.USER_ACTIVITY)
             {
                 loadUserActivityReport();
             }
@@ -130,7 +130,7 @@ namespace Inventory_System.Forms
             {
                 loadCollectorsReport();
             }
-            else
+            else if (cbTaxTypeReport.Text == AllTaxTypeReportUtil.USER_ACTIVITY)
             {
                 loadUserActivityReport();
             }

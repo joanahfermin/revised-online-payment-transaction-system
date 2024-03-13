@@ -37,10 +37,13 @@
             this.cbTaxTypeReport = new System.Windows.Forms.ComboBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.tbShttc = new System.Windows.Forms.TextBox();
             this.tbRefNo = new System.Windows.Forms.TextBox();
             this.dtTo = new System.Windows.Forms.DateTimePicker();
             this.dtFrom = new System.Windows.Forms.DateTimePicker();
             this.labelDateTo = new System.Windows.Forms.Label();
+            this.labelForRpt = new System.Windows.Forms.Label();
+            this.labelEnterShttc = new System.Windows.Forms.Label();
             this.labelDateFrom = new System.Windows.Forms.Label();
             this.labelEnterRefNo = new System.Windows.Forms.Label();
             this.btnGenerate = new System.Windows.Forms.Button();
@@ -102,11 +105,14 @@
             this.panel1.BackColor = System.Drawing.Color.Transparent;
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel1.Controls.Add(this.pictureBox1);
+            this.panel1.Controls.Add(this.tbShttc);
             this.panel1.Controls.Add(this.tbRefNo);
             this.panel1.Controls.Add(this.dtTo);
             this.panel1.Controls.Add(this.dtFrom);
             this.panel1.Controls.Add(this.labelDateTo);
             this.panel1.Controls.Add(this.btnClose);
+            this.panel1.Controls.Add(this.labelForRpt);
+            this.panel1.Controls.Add(this.labelEnterShttc);
             this.panel1.Controls.Add(this.labelDateFrom);
             this.panel1.Controls.Add(this.labelEnterRefNo);
             this.panel1.Controls.Add(this.label1);
@@ -127,6 +133,17 @@
             this.pictureBox1.Size = new System.Drawing.Size(111, 125);
             this.pictureBox1.TabIndex = 202;
             this.pictureBox1.TabStop = false;
+            // 
+            // tbShttc
+            // 
+            this.tbShttc.BackColor = System.Drawing.Color.AliceBlue;
+            this.tbShttc.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.tbShttc.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.tbShttc.Location = new System.Drawing.Point(823, 82);
+            this.tbShttc.Name = "tbShttc";
+            this.tbShttc.Size = new System.Drawing.Size(236, 27);
+            this.tbShttc.TabIndex = 201;
+            this.tbShttc.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // tbRefNo
             // 
@@ -179,6 +196,32 @@
             this.labelDateTo.Size = new System.Drawing.Size(71, 19);
             this.labelDateTo.TabIndex = 1;
             this.labelDateTo.Text = "Date To:";
+            // 
+            // labelForRpt
+            // 
+            this.labelForRpt.AutoSize = true;
+            this.labelForRpt.BackColor = System.Drawing.Color.Transparent;
+            this.labelForRpt.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.labelForRpt.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point);
+            this.labelForRpt.ForeColor = System.Drawing.Color.Red;
+            this.labelForRpt.Location = new System.Drawing.Point(1065, 86);
+            this.labelForRpt.Name = "labelForRpt";
+            this.labelForRpt.Size = new System.Drawing.Size(326, 19);
+            this.labelForRpt.TabIndex = 1;
+            this.labelForRpt.Text = "(computation will reflect on RPT report only)";
+            // 
+            // labelEnterShttc
+            // 
+            this.labelEnterShttc.AutoSize = true;
+            this.labelEnterShttc.BackColor = System.Drawing.Color.Transparent;
+            this.labelEnterShttc.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.labelEnterShttc.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.labelEnterShttc.ForeColor = System.Drawing.Color.White;
+            this.labelEnterShttc.Location = new System.Drawing.Point(720, 86);
+            this.labelEnterShttc.Name = "labelEnterShttc";
+            this.labelEnterShttc.Size = new System.Drawing.Size(97, 19);
+            this.labelEnterShttc.TabIndex = 1;
+            this.labelEnterShttc.Text = "Enter Shttc: ";
             // 
             // labelDateFrom
             // 
@@ -300,5 +343,8 @@
         private TextBox tbRefNo;
         private Label labelEnterRefNo;
         private PictureBox pictureBox1;
+        private TextBox tbShttc;
+        private Label labelEnterShttc;
+        private Label labelForRpt;
     }
 }
