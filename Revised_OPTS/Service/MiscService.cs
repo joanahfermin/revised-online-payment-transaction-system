@@ -67,6 +67,8 @@ namespace Revised_OPTS.Service
 
                 validateMiscDuplicateRecord(miscList);
 
+                misc.ExcessShort = misc.TransferredAmount - misc.AmountToBePaid;
+
                 miscRepository.Update(misc);
                 dbContext.SaveChanges();
             }

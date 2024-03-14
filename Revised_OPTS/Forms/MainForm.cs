@@ -55,7 +55,7 @@ namespace Revised_OPTS
         {
             { "Business_Type", "Bus. Type" }, { "MP_Number", "M.P Number" }, { "BillNumber", "Bill Number" },
             { "TaxpayersName", "TaxPayer's Name" }, { "BusinessName", "Business Name" }, { "BillAmount", "Bill Amount" },
-            { "TotalAmount", "Transferred Amount" }, { "MiscFees", "Misc. Fees" }, { "Year", "Year" },
+            { "TotalAmount", "Transferred Amount" }, { "ExcessShort", "Excess/Short" }, { "MiscFees", "Misc. Fees" }, { "Year", "Year" },
             { "Qtrs", "Quarter" }, { "Status", "Status" }, { "PaymentChannel", "Bank" }, { "RefNum", "Reference No." },
             { "VerifiedBy", "Verified By" }, { "VerifiedDate", "Verified Date" }, { "DateOfPayment", "Payment Date" },
             { "ValidatedBy", "Validated By" }, { "ValidatedDate", "Validated Date" },

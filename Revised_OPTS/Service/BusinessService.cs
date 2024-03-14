@@ -50,6 +50,7 @@ namespace Revised_OPTS.Service
 
                 foreach (Business bus in businessList)
                 {
+                    bus.ExcessShort = bus.TotalAmount - bus.BillAmount;
                     bus.EncodedBy = securityService.getLoginUser().DisplayName;
                     bus.EncodedDate = DateTime.Now;
                     businessRepository.Insert(bus);
@@ -66,6 +67,8 @@ namespace Revised_OPTS.Service
                 businessList.Add(business);
 
                 validateBusinessDuplicateRecord(businessList);
+
+                business.ExcessShort = business.TotalAmount - business.BillAmount;
 
                 businessRepository.Update(business);
                 dbContext.SaveChanges();

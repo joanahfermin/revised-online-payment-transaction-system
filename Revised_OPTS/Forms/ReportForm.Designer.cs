@@ -144,6 +144,7 @@
             this.tbShttc.Size = new System.Drawing.Size(236, 27);
             this.tbShttc.TabIndex = 201;
             this.tbShttc.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.tbShttc.TextChanged += new System.EventHandler(this.tbShttc_TextChanged);
             // 
             // tbRefNo
             // 

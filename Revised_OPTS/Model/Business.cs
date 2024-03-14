@@ -24,6 +24,7 @@ namespace Revised_OPTS.Model
         public string? BusinessName { get; set; }
         public string? BillNumber { get; set; }
         public decimal? BillAmount { get; set; }
+        public decimal? ExcessShort { get; set; }
         public decimal? MiscFees { get; set; }
         public decimal? TotalAmount { get; set; }
         public string? Year { get; set; }

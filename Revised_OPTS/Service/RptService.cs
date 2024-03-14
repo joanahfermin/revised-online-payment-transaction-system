@@ -820,9 +820,9 @@ namespace Revised_OPTS.Service
 "    AND ValidatedBy = @UserName " +
 "    ) AS sReportView " +
 "UNION ALL " +
-"SELECT 'BUSINESS' as TaxType, BillNumber as BillNumber, Collection, Billing, 0 as ExcessShort, BussinessRemarks as Remarks, ValidatedDate, EncodedDate " +
+"SELECT 'BUSINESS' as TaxType, BillNumber as BillNumber, Collection, Billing, ExcessShort, BussinessRemarks as Remarks, ValidatedDate, EncodedDate " +
 "FROM ( " +
-"    SELECT BillNumber, BillAmount as Billing, TotalAmount as Collection, MP_Number, BussinessRemarks, ValidatedDate, EncodedDate " +
+"    SELECT BillNumber, BillAmount as Billing, TotalAmount as Collection, MP_Number, ExcessShort, BussinessRemarks, ValidatedDate, EncodedDate " +
 "    FROM Jo_Business b " +
 "    WHERE PaymentChannel in (SELECT BankName FROM Jo_RPT_Banks WHERE isEBank = 1) " +
 "    AND DeletedRecord = 0 " +
@@ -830,7 +830,7 @@ namespace Revised_OPTS.Service
 "    AND CAST(ValidatedDate AS Date) <= CAST(@ToDate AS Date) " +
 "    AND ValidatedBy = @UserName " +
 "    UNION ALL " +
-"    SELECT BillNumber, BillAmount as Billing, TotalAmount as Collection, MP_Number, BussinessRemarks, (SELECT MIN(ValidatedDate) FROM Jo_Business b2 WHERE b2.RefNum = b.RefNum) as ValidatedDate, EncodedDate " +
+"    SELECT BillNumber, BillAmount as Billing, TotalAmount as Collection, MP_Number, ExcessShort, BussinessRemarks, (SELECT MIN(ValidatedDate) FROM Jo_Business b2 WHERE b2.RefNum = b.RefNum) as ValidatedDate, EncodedDate " +
 "    FROM Jo_Business b " +
 "    WHERE PaymentChannel NOT IN (SELECT BankName FROM Jo_RPT_Banks WHERE isEBank = 1) AND RefNum IS NOT NULL " +
 "    AND DeletedRecord = 0 " +
@@ -838,7 +838,7 @@ namespace Revised_OPTS.Service
 "    AND CAST(ValidatedDate AS Date) <= CAST(@ToDate AS Date) " +
 "    AND ValidatedBy = @UserName " +
 "    UNION ALL " +
-"    SELECT BillNumber, TotalAmount as Collection, BillAmount as Billing, MP_Number, BussinessRemarks, ValidatedDate, EncodedDate " +
+"    SELECT BillNumber, TotalAmount as Collection, BillAmount as Billing, MP_Number, ExcessShort, BussinessRemarks, ValidatedDate, EncodedDate " +
 "    FROM Jo_Business b " +
 "    WHERE PaymentChannel NOT IN (SELECT BankName FROM Jo_RPT_Banks WHERE isEBank = 1) AND RefNum IS NULL " +
 "    AND DeletedRecord = 0 " +
