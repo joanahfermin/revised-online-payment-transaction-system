@@ -310,6 +310,32 @@ namespace Inventory_System.Forms
             }
         }
 
+        private void btnSend_Click(object sender, EventArgs e)
+        {
+            if (dgRptList.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("No records selected.");
+                return;
+            }
+
+            List<long> selectedRptIDList = dgRptList.SelectedRows.Cast<DataGridViewRow>().Select(row => row.DataBoundItem).OfType<Rpt>().Select(rpt => rpt.RptID).ToList();
+            int countForORUploadWithPicture = rptService.CoundForORUploadWithPhoto(selectedRptIDList);
+
+            if (countForORUploadWithPicture == 0)
+            {
+                MessageBox.Show("There is no selected row that have photo and for OR Upload");
+                return;
+            }
+
+            DialogResult result = MessageBox.Show($"{countForORUploadWithPicture}/{selectedRptIDList.Count} has receipt pictures. Are you sure you want to send the O.R(s) for {countForORUploadWithPicture} record(s)? ", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (result == DialogResult.Yes)
+            {
+                rptService.ConfirmSendOrUpload(selectedRptIDList);
+                SearchRecords(null, null);
+                MessageBox.Show("Records will be lined up for email/receipt sending.", "Confirmation", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+
         private void btnUploadReceipt_MouseEnter(object sender, EventArgs e)
         {
             originalBackgroundImageRpt = btnUploadReceipt.BackgroundImage;
@@ -355,32 +381,6 @@ namespace Inventory_System.Forms
         private void btnClose_Click(object sender, EventArgs e)
         {
             this.Close();
-        }
-
-        private void btnSend_Click(object sender, EventArgs e)
-        {
-            if (dgRptList.SelectedRows.Count == 0)
-            {
-                MessageBox.Show("No records selected.");
-                return;
-            }
-
-            List<long> selectedRptIDList = dgRptList.SelectedRows.Cast<DataGridViewRow>().Select(row => row.DataBoundItem).OfType<Rpt>().Select(rpt => rpt.RptID).ToList();
-            int countForORUploadWithPicture = rptService.CoundForORUploadWithPhoto(selectedRptIDList);
-
-            if (countForORUploadWithPicture == 0)
-            {
-                MessageBox.Show("There is no selected row that have photo and for OR Upload");
-                return;
-            }
-
-            DialogResult result = MessageBox.Show($"{countForORUploadWithPicture}/{selectedRptIDList.Count} has receipt pictures. Are you sure you want to send the O.R(s) for {countForORUploadWithPicture} record(s)? ", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-            if (result == DialogResult.Yes)
-            {
-                rptService.ConfirmSendOrUpload(selectedRptIDList);
-                SearchRecords(null, null);
-                MessageBox.Show("Records will be lined up for email/receipt sending.", "Confirmation", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
         }
     }
 }

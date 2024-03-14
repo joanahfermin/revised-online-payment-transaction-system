@@ -169,9 +169,9 @@
             // pbVideoCapture
             // 
             this.pbVideoCapture.BackColor = System.Drawing.Color.Transparent;
-            this.pbVideoCapture.Location = new System.Drawing.Point(1026, 584);
+            this.pbVideoCapture.Location = new System.Drawing.Point(1026, 762);
             this.pbVideoCapture.Name = "pbVideoCapture";
-            this.pbVideoCapture.Size = new System.Drawing.Size(875, 412);
+            this.pbVideoCapture.Size = new System.Drawing.Size(875, 234);
             this.pbVideoCapture.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pbVideoCapture.TabIndex = 12;
             this.pbVideoCapture.TabStop = false;
@@ -181,7 +181,7 @@
             this.pbReceipt.BackColor = System.Drawing.Color.Transparent;
             this.pbReceipt.Location = new System.Drawing.Point(1026, 61);
             this.pbReceipt.Name = "pbReceipt";
-            this.pbReceipt.Size = new System.Drawing.Size(875, 468);
+            this.pbReceipt.Size = new System.Drawing.Size(875, 646);
             this.pbReceipt.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pbReceipt.TabIndex = 14;
             this.pbReceipt.TabStop = false;
@@ -262,7 +262,7 @@
             this.label6.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.label6.ForeColor = System.Drawing.Color.White;
             this.label6.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.label6.Location = new System.Drawing.Point(1010, 537);
+            this.label6.Location = new System.Drawing.Point(1010, 715);
             this.label6.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
             this.label6.Name = "label6";
             this.label6.Padding = new System.Windows.Forms.Padding(10);

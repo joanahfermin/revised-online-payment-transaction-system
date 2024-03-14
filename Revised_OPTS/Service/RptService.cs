@@ -767,9 +767,13 @@ namespace Revised_OPTS.Service
                     using (var scope = new TransactionScope())
                     {
                         RPTAttachPicture existing = pictureRepository.getRptReceipt(rptId);
+
+                        Rpt rpt = rptRepository.Get(rptId);
+
                         if (existing != null)
                         {
                             pictureRepository.PhysicalDelete(existing);
+                            rpt.UploadedBy = null;
                         }
                         dbContext.SaveChanges();
                         scope.Complete();

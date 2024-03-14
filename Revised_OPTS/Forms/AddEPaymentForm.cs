@@ -560,7 +560,7 @@ namespace Inventory_System.Forms
             FontName ftn = new FontName();
             ftn.Val = "Calibri";
             FontSize ftsz = new FontSize();
-            ftsz.Val = 11;
+            ftsz.Val = 13;
             ft.FontName = ftn;
             ft.FontSize = ftsz;
             fts.Append(ft);
