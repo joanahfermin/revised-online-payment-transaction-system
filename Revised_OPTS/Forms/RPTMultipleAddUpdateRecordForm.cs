@@ -189,7 +189,7 @@ namespace Inventory_System.Forms
                 new DynamicGridInfo{PropertyName="YearQuarter", Label = "Year", decimalValue = true},
                 new DynamicGridInfo{PropertyName="Quarter", Label = "Quarter", GridType=DynamicGridType.ComboBox, ComboboxChoices = Quarter.ALL_QUARTER, isRequired=true },
                 new DynamicGridInfo{PropertyName="BillingSelection", Label = "Billing Selection", GridType=DynamicGridType.ComboBox, ComboboxChoices = BillingSelectionUtil.ALL_BILLING_SELECTION, isRequired=true },
-                new DynamicGridInfo{PropertyName="RequestingParty", Label = "Email Address" },
+                new DynamicGridInfo{PropertyName="RequestingParty", Label = "Email Address", isRequired = true },
                 new DynamicGridInfo{PropertyName="RPTremarks", Label = "Remarks"},
             };
             DynamicGridContainer = new DynamicGridContainer<Rpt>(DgRptAddUpdateForm, gridInfoArray, true, true);

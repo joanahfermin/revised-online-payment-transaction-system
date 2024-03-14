@@ -82,6 +82,7 @@ namespace Revised_OPTS
             Instance = this;
             DgMainForm.CellFormatting += DgMainForm_CellFormatting;
             DgMainForm.SelectionChanged += DgMainForm_SelectionChanged;
+            DgMainForm.RowEnter += DgMainForm_RowEnter;
 
             ContextMenuStrip contextMenuStrip1 = new ContextMenuStrip();
 
@@ -175,11 +176,25 @@ namespace Revised_OPTS
             tbMailToSendCount.Text = rptService.CountORUploadRemainingToSend(uploadedBy).ToString();
         }
 
+        private void DgMainForm_RowEnter(object sender, DataGridViewCellEventArgs e)
+        {
+            if (DgMainForm.SelectedRows.Count>0)
+            {
+                DataGridViewRow row = DgMainForm.SelectedRows[0];
+                if (CURRENT_RECORD_TYPE == RPT_RECORD_TYPE)
+                {
+                    Rpt selectedRptRecord = row.DataBoundItem as Rpt;
+                    Clipboard.SetText(selectedRptRecord.TaxDec);
+                }
+            }
+        }
+
         private void DgMainForm_SelectionChanged(object? sender, EventArgs e)
         {
             tbRecordSelected.Text = DgMainForm.SelectedRows.Count.ToString();
 
             DataGridViewSelectedRowCollection selectedRows = DgMainForm.SelectedRows;
+
             decimal sumBillAmount = 0;
             decimal sumTotalTransferredAmount = 0;
 
@@ -187,14 +202,11 @@ namespace Revised_OPTS
             {
                 if (CURRENT_RECORD_TYPE == RPT_RECORD_TYPE)
                 {
-                    //conversion of row to Rpt
                     Rpt selectedRptRecord = row.DataBoundItem as Rpt;
                     if (selectedRptRecord != null)
                     {
-                        // Assuming AmountToPay is a property in your Rpt class and Sum is a property of AmountToPay
                         sumBillAmount = (decimal)(selectedRptRecord.AmountToPay + sumBillAmount);
                         sumTotalTransferredAmount = (decimal)(selectedRptRecord.TotalAmountTransferred ?? 0) + sumTotalTransferredAmount;
-                        Clipboard.SetText(selectedRptRecord.TaxDec);
                     }
                 }
                 else if (CURRENT_RECORD_TYPE == BUSINESS_RECORD_TYPE)
@@ -202,9 +214,9 @@ namespace Revised_OPTS
                     Business selectedBusinessRecord = row.DataBoundItem as Business;
                     if (selectedBusinessRecord != null)
                     {
-                        // Assuming AmountToPay is a property in your Rpt class and Sum is a property of AmountToPay
                         sumBillAmount = (decimal)(selectedBusinessRecord.BillAmount ?? 0) + sumBillAmount;
                         sumTotalTransferredAmount = (decimal)(selectedBusinessRecord.TotalAmount ?? 0) + sumTotalTransferredAmount;
+
                     }
                 }
                 else if (CURRENT_RECORD_TYPE == MISC_RECORD_TYPE)
@@ -212,15 +224,14 @@ namespace Revised_OPTS
                     Miscellaneous selectedMiscRecord = row.DataBoundItem as Miscellaneous;
                     if (selectedMiscRecord != null)
                     {
-                        // Assuming AmountToPay is a property in your Rpt class and Sum is a property of AmountToPay
                         sumBillAmount = (decimal)(selectedMiscRecord.AmountToBePaid ?? 0) + sumBillAmount;
                         sumTotalTransferredAmount = (decimal)(selectedMiscRecord.TransferredAmount ?? 0) + sumTotalTransferredAmount;
 
-                        if (selectedMiscRecord.MiscType == TaxTypeUtil.MISCELLANEOUS_OVR)
-                        {
-                            Clipboard.SetText(selectedMiscRecord.OPATrackingNum);
-                        }
-                        Clipboard.SetText(selectedMiscRecord.OrderOfPaymentNum);
+                        //if (selectedMiscRecord.MiscType == TaxTypeUtil.MISCELLANEOUS_OVR)
+                        //{
+                        //    Clipboard.SetText(selectedMiscRecord.OPATrackingNum);
+                        //}
+                        //Clipboard.SetText(selectedMiscRecord.OrderOfPaymentNum);
                     }
                 }
                 tbTotalBillAmount.Text = sumBillAmount.ToString("N2");

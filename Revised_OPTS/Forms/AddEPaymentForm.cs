@@ -62,6 +62,7 @@ namespace Inventory_System.Forms
         private void dgEpaymentList_SelectionChanged(object? sender, EventArgs e)
         {
             DataGridViewRow selectedRow = dgEpaymentList.CurrentRow;
+            dgEpaymentList.DefaultCellStyle.SelectionBackColor = System.Drawing.Color.LightBlue; 
             if (selectedRow != null)
             {
                 object cellValue = selectedRow.Cells[4].Value; //COPIES THE TDN OF THE RPT ROW.
@@ -74,13 +75,14 @@ namespace Inventory_System.Forms
 
         private void dgEpaymentList_KeyDown(object? sender, KeyEventArgs e)
         {
-            PasteDataFromClipboard();
+            PasteDataFromClipboard(e);
+            dgEpaymentList.DefaultCellStyle.SelectionBackColor = System.Drawing.Color.LightBlue;
         }
 
         /// <summary>
         /// Transfer data from clipboard.
         /// </summary>
-        private void PasteDataFromClipboard()
+        private void PasteDataFromClipboard(KeyEventArgs e)
         {
             string dataAsString = Clipboard.GetText();
 
@@ -92,41 +94,44 @@ namespace Inventory_System.Forms
             IgnoreColumnList.Add(10);
             IgnoreColumnList.Add(11);
 
-            //For every record copied, .split splits strings into several lines. r and n = new line, RemoveEmptyEnries, kapag walang laman ang row, iignore lang nya.
-            string[] rowArray = dataAsString.Split(new Char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
-
-            if (rowArray.Length > 0)
+            if (e.KeyData == (Keys.V | Keys.Control))
             {
-                dgEpaymentList.ClearSelection();
+                //For every record copied, .split splits strings into several lines. r and n = new line, RemoveEmptyEnries, kapag walang laman ang row, iignore lang nya.
+                string[] rowArray = dataAsString.Split(new Char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
 
-                foreach (string row in rowArray)
+                if (rowArray.Length > 0)
                 {
-                    //Splits the records through TAB. \t = tab.
-                    string[] columnArray = row.Split(new char[] { '\t' });
+                    dgEpaymentList.ClearSelection();
 
-                    if (columnArray.Length >= 13)
+                    foreach (string row in rowArray)
                     {
-                        ElectronicPayment ep = new ElectronicPayment();//xxx
-                        ep.EpaymentRef = columnArray[0];
-                        ep.EpaymentTransactionRef = columnArray[1];
-                        ep.BillerRef = columnArray[2];
-                        ep.ServiceProvider = columnArray[3];
-                        ep.BillerId = columnArray[4];
-                        ep.BillerInfo1 = columnArray[5]; //YEAR
-                        ep.Quarter = Quarter.FULL_YEAR; //CREATE QUARTER BECAUSE THERE'S NO QUARTER IN THE GCASH/PAYMAYA EXCEL FILE.
-                        ep.BillerInfo2 = columnArray[6];
-                        ep.BillingSelection = BillingSelectionUtil.CLASS1; //CREATE BILLING SELECTION BECAUSE THERE'S NO B.SELECTION IN THE GCASH/PAYMAYA EXCEL FILE.
-                        ep.BillerInfo3 = columnArray[7];
-                        ep.AmountDue = Convert.ToDecimal(columnArray[9]);
+                        //Splits the records through TAB. \t = tab.
+                        string[] columnArray = row.Split(new char[] { '\t' });
 
-                        if (DateTime.TryParse(columnArray[12], out DateTime date))
+                        if (columnArray.Length >= 13)
                         {
-                            ep.Date = date;
+                            ElectronicPayment ep = new ElectronicPayment();//xxx
+                            ep.EpaymentRef = columnArray[0];
+                            ep.EpaymentTransactionRef = columnArray[1];
+                            ep.BillerRef = columnArray[2];
+                            ep.ServiceProvider = columnArray[3];
+                            ep.BillerId = columnArray[4];
+                            ep.BillerInfo1 = columnArray[5]; //YEAR
+                            ep.Quarter = Quarter.FULL_YEAR; //CREATE QUARTER BECAUSE THERE'S NO QUARTER IN THE GCASH/PAYMAYA EXCEL FILE.
+                            ep.BillerInfo2 = columnArray[6];
+                            ep.BillingSelection = BillingSelectionUtil.CLASS1; //CREATE BILLING SELECTION BECAUSE THERE'S NO B.SELECTION IN THE GCASH/PAYMAYA EXCEL FILE.
+                            ep.BillerInfo3 = columnArray[7];
+                            ep.AmountDue = Convert.ToDecimal(columnArray[9]);
+
+                            if (DateTime.TryParse(columnArray[12], out DateTime date))
+                            {
+                                ep.Date = date;
+                            }
+                            data.Add(ep);
                         }
-                        data.Add(ep);
                     }
+                    dgEpaymentList.DataSource = data;
                 }
-                dgEpaymentList.DataSource = data;
             }
         }
 
