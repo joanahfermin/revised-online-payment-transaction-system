@@ -11,6 +11,8 @@ namespace Revised_OPTS.DAL
     internal interface IRptRepository : IRepository<Rpt>
     {
         List<Rpt> retrieveBySearchKeyword(string tdn);
+        List<Rpt> retrieveBySearchKeywordForPaymentValidationOnly(string tdn);
+
         List<Rpt> retrieveBySameRefNumAndReqParty(string refNum, string reqParty);
         List<Rpt> retrieveBySameRefNum(string refNum);
         List<Rpt> checkExistingRecord(Rpt rpt);

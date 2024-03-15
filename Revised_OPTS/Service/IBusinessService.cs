@@ -11,6 +11,8 @@ namespace Revised_OPTS.Service
     {
         Business Get(object id);
         List<Business> RetrieveBySearchKeyword(string billNumber);
+        List<Business> RetrieveBySearchKeywordForPaymentValidationOnly(string billNumber);
+
 
         void Insert(List<Business> business);
         void Insert(List<Business> business, bool validate);

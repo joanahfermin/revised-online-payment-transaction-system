@@ -11,6 +11,8 @@ namespace Revised_OPTS.Service
     {
         Miscellaneous Get(object id);
         List<Miscellaneous> RetrieveBySearchKeyword(string opNum);
+        List<Miscellaneous> RetrieveBySearchKeywordForPaymentValidationOnly(string opNum);
+
 
         void Insert(List<Miscellaneous> misc);
         void Insert(List<Miscellaneous> misc, bool validate);

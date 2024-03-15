@@ -142,6 +142,30 @@ namespace Revised_OPTS.DAL
             //return  getDbSet().FromSqlRaw(sql, parameterValue).ToList();
         }
 
+        public List<Rpt> retrieveBySearchKeywordForPaymentValidationOnly(string tdn)
+        {
+            return getDbSet()
+                //SELECT * FROM Jo_RPT where TaxDec LIKE @TaxDec and DeletedRecord != 1
+                .Where(j => j.TaxDec.Contains(tdn) && j.DeletedRecord != 1 && j.Status == TaxStatus.ForPaymentValidation)
+                //UNION
+                .Union(
+                    //SELECT *FROM Jo_RPT where RefNum
+                    getDbSet()
+                        .Where(j => getDbSet()
+                            // (select RefNum FROM Jo_RPT where TaxDec LIKE @TaxDec)
+                            .Where(subJ => subJ.TaxDec.Contains(tdn))
+                            .Select(subJ => subJ.RefNum)
+                            //RefNum in (select RefNum
+                            .Contains(j.RefNum)
+                            //and DeletedRecord != 1  AND RefNum IS NOT NULL AND RefNum != ''
+                            && j.DeletedRecord != 1 && j.RefNum != null && j.RefNum != "" && j.Status == TaxStatus.ForPaymentValidation)
+                )
+                .OrderByDescending(j => j.RefNum)
+                .ThenBy(j => j.EncodedDate)
+                .ToList();
+        }
+
+
         public void ConfirmSendOrUpload(List<long> rptIDList)
         {
             //var query = from rpt in getContext().Rpts

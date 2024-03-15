@@ -10,6 +10,7 @@ namespace Revised_OPTS.DAL
     internal interface IMiscRepository : IRepository<Miscellaneous>
     {
         List<Miscellaneous> retrieveBySearchKeyword(string billNum);
+        List<Miscellaneous> retrieveBySearchKeywordForPaymentValidationOnly(string billNum);
         List<Miscellaneous> checkExistingRecord(Miscellaneous billNum);
         List<Miscellaneous> retrieveBySameRefNum(string refNum);
         List<Miscellaneous> RetrieveNoName();

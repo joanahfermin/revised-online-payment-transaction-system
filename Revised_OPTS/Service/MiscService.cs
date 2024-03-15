@@ -33,6 +33,15 @@ namespace Revised_OPTS.Service
             }
         }
 
+        public List<Miscellaneous> RetrieveBySearchKeywordForPaymentValidationOnly(string opNum)
+        {
+            using (var dbContext = ApplicationDBContext.Create())
+            {
+                return miscRepository.retrieveBySearchKeywordForPaymentValidationOnly(opNum);
+            }
+        }
+
+
         public void Insert(List<Miscellaneous> miscList)
         {
             Insert(miscList, true);

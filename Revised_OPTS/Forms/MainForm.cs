@@ -678,63 +678,89 @@ namespace Revised_OPTS
             int selectedRowCount = 0;
             int counter = 0;
 
-            foreach (DataGridViewRow row in DgMainForm.Rows)
+            if (e.KeyCode == Keys.Enter)
             {
-                if (CURRENT_RECORD_TYPE == RPT_RECORD_TYPE)
+                foreach (DataGridViewRow row in DgMainForm.Rows)
                 {
-                    Rpt selectedRptRecord = row.DataBoundItem as Rpt;
+                    if (CURRENT_RECORD_TYPE == RPT_RECORD_TYPE)
+                    {
+                        Rpt selectedRptRecord = row.DataBoundItem as Rpt;
 
-                    if (selectedRptRecord.TaxDec.Equals(searchedUniqueKey, StringComparison.OrdinalIgnoreCase))
-                    {
-                        row.Selected = true;
-                        selectedRowCount++;
-                        DgMainForm.FirstDisplayedScrollingRowIndex = counter;
+                        if (selectedRptRecord.TaxDec.Equals(searchedUniqueKey, StringComparison.OrdinalIgnoreCase))
+                        {
+                            row.Selected = true;
+                            selectedRowCount++;
+                            DgMainForm.FirstDisplayedScrollingRowIndex = counter;
+                        }
                     }
-                }
-                else if (CURRENT_RECORD_TYPE == BUSINESS_RECORD_TYPE)
-                {
-                    Business selectedBusinessRecord = row.DataBoundItem as Business;
-                    if (selectedBusinessRecord.BillNumber.Equals(searchedUniqueKey, StringComparison.OrdinalIgnoreCase))
+                    else if (CURRENT_RECORD_TYPE == BUSINESS_RECORD_TYPE)
                     {
-                        row.Selected = true;
-                        selectedRowCount++;
-                        DgMainForm.FirstDisplayedScrollingRowIndex = counter;
+                        Business selectedBusinessRecord = row.DataBoundItem as Business;
+                        if (selectedBusinessRecord.BillNumber.Equals(searchedUniqueKey, StringComparison.OrdinalIgnoreCase))
+                        {
+                            row.Selected = true;
+                            selectedRowCount++;
+                            DgMainForm.FirstDisplayedScrollingRowIndex = counter;
+                        }
                     }
-                }
-                else if (CURRENT_RECORD_TYPE == MISC_RECORD_TYPE)
-                {
-                    Miscellaneous selectedMiscRecord = row.DataBoundItem as Miscellaneous;
-                    if (selectedMiscRecord.OrderOfPaymentNum.Equals(searchedUniqueKey, StringComparison.OrdinalIgnoreCase))
+                    else if (CURRENT_RECORD_TYPE == MISC_RECORD_TYPE)
                     {
-                        row.Selected = true;
-                        selectedRowCount++;
-                        DgMainForm.FirstDisplayedScrollingRowIndex = counter;
+                        Miscellaneous selectedMiscRecord = row.DataBoundItem as Miscellaneous;
+                        if (selectedMiscRecord.OrderOfPaymentNum.Equals(searchedUniqueKey, StringComparison.OrdinalIgnoreCase))
+                        {
+                            row.Selected = true;
+                            selectedRowCount++;
+                            DgMainForm.FirstDisplayedScrollingRowIndex = counter;
+                        }
                     }
+                    counter++;
                 }
-                counter++;
+                tbRecordSelected.Text = selectedRowCount.ToString();
             }
-            tbRecordSelected.Text = selectedRowCount.ToString();
         }
 
         //retrieve records based on keyvalueformat.
         public void Search(string searchRecordinDB)
         {
-            if (SearchBusinessFormat.isTDN(searchRecordinDB))
+            if (securityService.getLoginUser().MachNo != null)
             {
-                CURRENT_RECORD_TYPE = RPT_RECORD_TYPE;
-                ShowDataInDataGridView<Rpt>(RPT_DG_COLUMNS, rptService.RetrieveBySearchKeyword(searchRecordinDB));
+                if (SearchBusinessFormat.isTDN(searchRecordinDB))
+                {
+                    CURRENT_RECORD_TYPE = RPT_RECORD_TYPE;
+                    ShowDataInDataGridView<Rpt>(RPT_DG_COLUMNS, rptService.RetrieveBySearchKeywordForPaymentValidationOnly(searchRecordinDB));
+                }
+                else if (SearchBusinessFormat.isMiscOccuPermit(searchRecordinDB) || SearchBusinessFormat.isMiscOvrTtmd(searchRecordinDB)
+                    || SearchBusinessFormat.isMiscOvrDpos(searchRecordinDB) || SearchBusinessFormat.isMiscMarket(searchRecordinDB)
+                    || SearchBusinessFormat.isMiscZoning(searchRecordinDB) || SearchBusinessFormat.isMiscLiquor(searchRecordinDB))
+                {
+                    CURRENT_RECORD_TYPE = MISC_RECORD_TYPE;
+                    ShowDataInDataGridView<Miscellaneous>(MISC_DG_COLUMNS, miscService.RetrieveBySearchKeywordForPaymentValidationOnly(searchRecordinDB));
+                }
+                else if (SearchBusinessFormat.isBusiness(searchRecordinDB))
+                {
+                    CURRENT_RECORD_TYPE = BUSINESS_RECORD_TYPE;
+                    ShowDataInDataGridView<Business>(BUSINESS_DG_COLUMNS, businessService.RetrieveBySearchKeywordForPaymentValidationOnly(searchRecordinDB));
+                }
             }
-            else if (SearchBusinessFormat.isMiscOccuPermit(searchRecordinDB) || SearchBusinessFormat.isMiscOvrTtmd(searchRecordinDB)
-                || SearchBusinessFormat.isMiscOvrDpos(searchRecordinDB) || SearchBusinessFormat.isMiscMarket(searchRecordinDB)
-                || SearchBusinessFormat.isMiscZoning(searchRecordinDB) || SearchBusinessFormat.isMiscLiquor(searchRecordinDB))
+            else
             {
-                CURRENT_RECORD_TYPE = MISC_RECORD_TYPE;
-                ShowDataInDataGridView<Miscellaneous>(MISC_DG_COLUMNS, miscService.RetrieveBySearchKeyword(searchRecordinDB));
-            }
-            else if (SearchBusinessFormat.isBusiness(searchRecordinDB))
-            {
-                CURRENT_RECORD_TYPE = BUSINESS_RECORD_TYPE;
-                ShowDataInDataGridView<Business>(BUSINESS_DG_COLUMNS, businessService.RetrieveBySearchKeyword(searchRecordinDB));
+                if (SearchBusinessFormat.isTDN(searchRecordinDB))
+                {
+                    CURRENT_RECORD_TYPE = RPT_RECORD_TYPE;
+                    ShowDataInDataGridView<Rpt>(RPT_DG_COLUMNS, rptService.RetrieveBySearchKeyword(searchRecordinDB));
+                }
+                else if (SearchBusinessFormat.isMiscOccuPermit(searchRecordinDB) || SearchBusinessFormat.isMiscOvrTtmd(searchRecordinDB)
+                    || SearchBusinessFormat.isMiscOvrDpos(searchRecordinDB) || SearchBusinessFormat.isMiscMarket(searchRecordinDB)
+                    || SearchBusinessFormat.isMiscZoning(searchRecordinDB) || SearchBusinessFormat.isMiscLiquor(searchRecordinDB))
+                {
+                    CURRENT_RECORD_TYPE = MISC_RECORD_TYPE;
+                    ShowDataInDataGridView<Miscellaneous>(MISC_DG_COLUMNS, miscService.RetrieveBySearchKeyword(searchRecordinDB));
+                }
+                else if (SearchBusinessFormat.isBusiness(searchRecordinDB))
+                {
+                    CURRENT_RECORD_TYPE = BUSINESS_RECORD_TYPE;
+                    ShowDataInDataGridView<Business>(BUSINESS_DG_COLUMNS, businessService.RetrieveBySearchKeyword(searchRecordinDB));
+                }
             }
         }
 

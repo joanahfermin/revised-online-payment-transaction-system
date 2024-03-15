@@ -96,6 +96,16 @@ namespace Revised_OPTS.Service
             }
         }
 
+        public List<Rpt> RetrieveBySearchKeywordForPaymentValidationOnly(string tdn)
+        {
+            using (var dbContext = ApplicationDBContext.Create())
+            {
+                return SpecialSort(rptRepository.retrieveBySearchKeywordForPaymentValidationOnly(tdn));
+                //return /*SpecialSort*/(rptRepository.retrieveBySearchKeyword(tdn));
+            }
+        }
+
+
         public List<Rpt> RetrieveForORUploadRegular(DateTime date, string validatedBy)
         {
             using (var dbContext = ApplicationDBContext.Create())

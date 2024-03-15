@@ -34,6 +34,15 @@ namespace Revised_OPTS.Service
             }
         }
 
+        public List<Business> RetrieveBySearchKeywordForPaymentValidationOnly(string billNumber)
+        {
+            using (var dbContext = ApplicationDBContext.Create())
+            {
+                return businessRepository.retrieveBySearchKeywordForPaymentValidationOnly(billNumber);
+            }
+        }
+
+
         public void Insert(List<Business> businessList)
         {
             Insert(businessList, true);

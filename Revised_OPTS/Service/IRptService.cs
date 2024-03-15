@@ -17,6 +17,7 @@ namespace Revised_OPTS.Service
         List<Bank> GetElectronicBanks();
 
         List<Rpt> RetrieveBySearchKeyword(string tdn);
+        List<Rpt> RetrieveBySearchKeywordForPaymentValidationOnly(string tdn);
         List<Rpt> RetrieveBySameRefNumAndReqParty(string refNum, string reqParty);
         List<Rpt> RetrieveForORUploadRegular(DateTime date, string validatedBy);
         List<Rpt> RetrieveBySameRefNumInUploadingEpayment(string taxdec);
