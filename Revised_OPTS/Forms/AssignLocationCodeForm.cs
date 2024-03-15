@@ -39,6 +39,20 @@ namespace Inventory_System.Forms
             RetrieveAndShowRptData();
 
             DgRpt.CellFormatting += DgRpt_CellFormatting;
+            DgRpt.SelectionChanged += DgRpt_SelectionChanged;
+        }
+
+        private void DgRpt_SelectionChanged(object? sender, EventArgs e)
+        {
+            DataGridViewSelectedRowCollection selectedRows = DgRpt.SelectedRows;
+
+            int count = 0;
+
+            foreach (var item in selectedRows)
+            {
+                count++;
+            }
+            tbRecordSelected.Text = count.ToString();
         }
 
         private void ShowDataInDataGridView(Dictionary<string, string> columnMappings, List<Rpt> rptList)

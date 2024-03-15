@@ -41,6 +41,8 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.tbSearchLocationCode = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.tbRecordSelected = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.DgRpt)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
@@ -222,12 +224,43 @@
             this.tbSearchLocationCode.TabIndex = 219;
             this.tbSearchLocationCode.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.BackColor = System.Drawing.Color.Transparent;
+            this.label3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.label3.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.label3.ForeColor = System.Drawing.Color.White;
+            this.label3.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.label3.Location = new System.Drawing.Point(1047, 96);
+            this.label3.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
+            this.label3.Name = "label3";
+            this.label3.Padding = new System.Windows.Forms.Padding(10);
+            this.label3.Size = new System.Drawing.Size(175, 39);
+            this.label3.TabIndex = 222;
+            this.label3.Text = "Records Selected:";
+            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // tbRecordSelected
+            // 
+            this.tbRecordSelected.BackColor = System.Drawing.Color.OldLace;
+            this.tbRecordSelected.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.tbRecordSelected.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.tbRecordSelected.ForeColor = System.Drawing.Color.Black;
+            this.tbRecordSelected.Location = new System.Drawing.Point(1228, 100);
+            this.tbRecordSelected.Name = "tbRecordSelected";
+            this.tbRecordSelected.Size = new System.Drawing.Size(60, 26);
+            this.tbRecordSelected.TabIndex = 221;
+            this.tbRecordSelected.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
             // AssignLocationCodeForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.ClientSize = new System.Drawing.Size(1787, 802);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.tbRecordSelected);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.tbSearchLocationCode);
             this.Controls.Add(this.label1);
@@ -258,5 +291,7 @@
         private Label label1;
         private Label label2;
         private TextBox tbSearchLocationCode;
+        private Label label3;
+        private TextBox tbRecordSelected;
     }
 }
