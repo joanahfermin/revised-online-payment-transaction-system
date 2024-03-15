@@ -178,13 +178,23 @@ namespace Revised_OPTS
 
         private void DgMainForm_RowEnter(object sender, DataGridViewCellEventArgs e)
         {
-            if (DgMainForm.SelectedRows.Count>0)
+            if (DgMainForm.SelectedRows.Count > 0)
             {
                 DataGridViewRow row = DgMainForm.SelectedRows[0];
                 if (CURRENT_RECORD_TYPE == RPT_RECORD_TYPE)
                 {
                     Rpt selectedRptRecord = row.DataBoundItem as Rpt;
                     Clipboard.SetText(selectedRptRecord.TaxDec);
+                }
+                else if (CURRENT_RECORD_TYPE == BUSINESS_RECORD_TYPE)
+                {
+                    Business selectedRBusRecord = row.DataBoundItem as Business;
+                    Clipboard.SetText(selectedRBusRecord.BillNumber);
+                }
+                else if (CURRENT_RECORD_TYPE == MISC_RECORD_TYPE)
+                {
+                    Miscellaneous selectedRMiscRecord = row.DataBoundItem as Miscellaneous;
+                    Clipboard.SetText(selectedRMiscRecord.OrderOfPaymentNum);
                 }
             }
         }
@@ -226,12 +236,6 @@ namespace Revised_OPTS
                     {
                         sumBillAmount = (decimal)(selectedMiscRecord.AmountToBePaid ?? 0) + sumBillAmount;
                         sumTotalTransferredAmount = (decimal)(selectedMiscRecord.TransferredAmount ?? 0) + sumTotalTransferredAmount;
-
-                        //if (selectedMiscRecord.MiscType == TaxTypeUtil.MISCELLANEOUS_OVR)
-                        //{
-                        //    Clipboard.SetText(selectedMiscRecord.OPATrackingNum);
-                        //}
-                        //Clipboard.SetText(selectedMiscRecord.OrderOfPaymentNum);
                     }
                 }
                 tbTotalBillAmount.Text = sumBillAmount.ToString("N2");
