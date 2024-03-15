@@ -61,14 +61,31 @@ namespace Inventory_System.Forms
 
         private void dgEpaymentList_SelectionChanged(object? sender, EventArgs e)
         {
+            dgEpaymentList.DefaultCellStyle.SelectionBackColor = System.Drawing.Color.LightBlue;
+
             DataGridViewRow selectedRow = dgEpaymentList.CurrentRow;
-            dgEpaymentList.DefaultCellStyle.SelectionBackColor = System.Drawing.Color.LightBlue; 
-            if (selectedRow != null)
+
+            if (selectedRow != null && selectedRow.DataBoundItem is ElectronicPayment)
             {
-                object cellValue = selectedRow.Cells[4].Value; //COPIES THE TDN OF THE RPT ROW.
-                if (cellValue != null)
+                ElectronicPayment ep = selectedRow.DataBoundItem as ElectronicPayment;
+                if (taxUniqueKeyFormat.isRPTTaxDecFormat(ep.BillerId))
                 {
-                    Clipboard.SetText(cellValue.ToString());
+                    Clipboard.SetText(ep.BillerId);
+                }
+                else if (taxUniqueKeyFormat.isOPnumberFormatBusiness(ep.BillerRef))
+                {
+                    Clipboard.SetText(ep.BillerRef);
+
+                }
+                else if (taxUniqueKeyFormat.isOPnumberFormatOccuPermit(ep.BillerRef) || taxUniqueKeyFormat.isOPnumberFormatOvrDPOS(ep.BillerRef)
+                    || taxUniqueKeyFormat.isOPnumberFormatOvrTTMD(ep.BillerRef) || taxUniqueKeyFormat.isOPnumberFormatZoning(ep.BillerRef)
+                    || taxUniqueKeyFormat.isOPnumberFormatLiquorLLRB(ep.BillerRef))
+                {
+                    Clipboard.SetText(ep.BillerRef);
+                }
+                else if (taxUniqueKeyFormat.isOPnumberFormatMarketMDAD(ep.BillerInfo3))
+                {
+                    Clipboard.SetText(ep.BillerInfo3);
                 }
             }
         }
