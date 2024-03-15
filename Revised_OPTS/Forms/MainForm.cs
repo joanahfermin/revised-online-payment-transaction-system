@@ -671,15 +671,15 @@ namespace Revised_OPTS
         //search records based on keyvalueformat.
         private void tbSearch_KeyDown(object sender, KeyEventArgs e)
         {
-            string searchedUniqueKey = tbSearch.Text;
-
-            Search(searchedUniqueKey);
-            DgMainForm.ClearSelection();
-            int selectedRowCount = 0;
-            int counter = 0;
-
             if (e.KeyCode == Keys.Enter)
             {
+                string searchedUniqueKey = tbSearch.Text;
+
+                Search(searchedUniqueKey);
+                DgMainForm.ClearSelection();
+                int selectedRowCount = 0;
+                int counter = 0;
+
                 foreach (DataGridViewRow row in DgMainForm.Rows)
                 {
                     if (CURRENT_RECORD_TYPE == RPT_RECORD_TYPE)
