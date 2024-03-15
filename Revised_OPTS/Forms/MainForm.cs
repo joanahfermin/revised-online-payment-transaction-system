@@ -679,6 +679,7 @@ namespace Revised_OPTS
                 DgMainForm.ClearSelection();
                 int selectedRowCount = 0;
                 int counter = 0;
+                bool foundSelected = false;
 
                 foreach (DataGridViewRow row in DgMainForm.Rows)
                 {
@@ -690,7 +691,11 @@ namespace Revised_OPTS
                         {
                             row.Selected = true;
                             selectedRowCount++;
-                            DgMainForm.FirstDisplayedScrollingRowIndex = counter;
+                            if (!foundSelected)
+                            {
+                                DgMainForm.FirstDisplayedScrollingRowIndex = counter;
+                                foundSelected = true;
+                            }
                         }
                     }
                     else if (CURRENT_RECORD_TYPE == BUSINESS_RECORD_TYPE)
@@ -700,7 +705,11 @@ namespace Revised_OPTS
                         {
                             row.Selected = true;
                             selectedRowCount++;
-                            DgMainForm.FirstDisplayedScrollingRowIndex = counter;
+                            if (!foundSelected)
+                            {
+                                DgMainForm.FirstDisplayedScrollingRowIndex = counter;
+                                foundSelected = true;
+                            }
                         }
                     }
                     else if (CURRENT_RECORD_TYPE == MISC_RECORD_TYPE)
@@ -710,7 +719,12 @@ namespace Revised_OPTS
                         {
                             row.Selected = true;
                             selectedRowCount++;
-                            DgMainForm.FirstDisplayedScrollingRowIndex = counter;
+                            if (!foundSelected)
+                            {
+                                DgMainForm.FirstDisplayedScrollingRowIndex = counter;
+                                foundSelected = true;
+                            }
+
                         }
                     }
                     counter++;
