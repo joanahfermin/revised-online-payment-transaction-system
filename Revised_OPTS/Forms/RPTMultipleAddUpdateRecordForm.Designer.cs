@@ -70,7 +70,7 @@
             this.label1.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point);
             this.label1.ForeColor = System.Drawing.Color.White;
             this.label1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.label1.Location = new System.Drawing.Point(561, 68);
+            this.label1.Location = new System.Drawing.Point(322, 26);
             this.label1.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
             this.label1.Name = "label1";
             this.label1.Padding = new System.Windows.Forms.Padding(10);
@@ -126,7 +126,7 @@
             this.btnClose.ForeColor = System.Drawing.Color.White;
             this.btnClose.Image = ((System.Drawing.Image)(resources.GetObject("btnClose.Image")));
             this.btnClose.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnClose.Location = new System.Drawing.Point(1605, 43);
+            this.btnClose.Location = new System.Drawing.Point(751, 46);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(126, 73);
             this.btnClose.TabIndex = 5;
@@ -146,7 +146,7 @@
             this.btnSaveRecord.ForeColor = System.Drawing.Color.White;
             this.btnSaveRecord.Image = ((System.Drawing.Image)(resources.GetObject("btnSaveRecord.Image")));
             this.btnSaveRecord.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnSaveRecord.Location = new System.Drawing.Point(1415, 43);
+            this.btnSaveRecord.Location = new System.Drawing.Point(561, 46);
             this.btnSaveRecord.Name = "btnSaveRecord";
             this.btnSaveRecord.Size = new System.Drawing.Size(184, 73);
             this.btnSaveRecord.TabIndex = 6;
