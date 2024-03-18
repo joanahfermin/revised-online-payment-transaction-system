@@ -42,7 +42,7 @@ namespace Revised_OPTS
             { "AmountTransferred", "Transferred Amount" }, { "TotalAmountTransferred", "Total Amount Transferred" }, { "ExcessShortAmount", "Excess/Short" },
             { "Bank", "Bank" }, { "YearQuarter", "Year" }, { "Quarter", "Quarter" },
             /*{ "PaymentType", "Payment Type" },*/ { "BillingSelection", "Billing Selection" }, { "Status", "Status" }, { "RefNum", "Reference No." },
-            { "RequestingParty", "Email Address" }, { "EncodedBy", "Encoded By" }, { "EncodedDate", "Encoded Date" }, { "RPTremarks", "Remarks" },
+            { "RequestingParty", "Email Address" }, { "RPTremarks", "Remarks" }, { "EncodedBy", "Encoded By" }, { "EncodedDate", "Encoded Date" }, 
 
             { "VerifiedBy", "VerifiedBy" }, { "PaymentDate", "Payment Date" }, { "VerifiedDate", "Verified Date" },
             { "ValidatedBy", "Validated By" }, { "ValidatedDate", "Validated Date" }, { "UploadedBy", "Uploaded By" },
@@ -56,11 +56,11 @@ namespace Revised_OPTS
             { "Business_Type", "Bus. Type" }, { "MP_Number", "M.P Number" }, { "BillNumber", "Bill Number" },
             { "TaxpayersName", "TaxPayer's Name" }, { "BusinessName", "Business Name" }, { "BillAmount", "Bill Amount" },
             { "TotalAmount", "Transferred Amount" }, { "ExcessShort", "Excess/Short" }, { "MiscFees", "Misc. Fees" }, { "Year", "Year" },
-            { "Qtrs", "Quarter" }, { "Status", "Status" }, { "PaymentChannel", "Bank" }, { "RefNum", "Reference No." },
+            { "Qtrs", "Quarter" }, { "Status", "Status" }, { "PaymentChannel", "Bank" }, { "RefNum", "Reference No." }, { "BussinessRemarks", "Remarks" },
             { "VerifiedBy", "Verified By" }, { "VerifiedDate", "Verified Date" }, { "DateOfPayment", "Payment Date" },
             { "ValidatedBy", "Validated By" }, { "ValidatedDate", "Validated Date" },
             { "TransmittedBy", "Transmitted By" }, { "TransmittedDate", "Transmitted Date" }, { "RequestingParty", "Email Address" },
-            { "EncodedDate", "Encoded Date" }, { "BussinessRemarks", "Remarks" }, { "EncodedBy", "Encoded By" },
+            { "EncodedDate", "Encoded Date" }, { "EncodedBy", "Encoded By" },
             { "ContactNumber", "Contact Number" }, { "UploadedBy", "Uploaded By" }, { "UploadedDate", "Uploaded Date" },
                      { "ReleasedBy", "Released By" }, { "ReleasedDate", "Released Date" }, { "RepName", "Representative Name" }, { "RepContactNumber", "Rep. Contact Number" },
         };
@@ -69,9 +69,9 @@ namespace Revised_OPTS
         {
             { "MiscType", "Misc Type" }, { "TaxpayersName", "TaxPayer's Name" }, { "OrderOfPaymentNum", "O.P Number" }, { "OPATrackingNum", "OPA Tracking No." },
             { "AmountToBePaid", "Bill Amount" }, { "TransferredAmount", "Transferred Amount" }, { "ExcessShort", "Excess/Short" }, { "Status", "Status" },
-            { "ModeOfPayment", "Bank" }, { "PaymentDate", "Payment Date" },{ "VerifiedBy", "Verified By" }, { "VerifiedDate", "Verified Date" }, { "ValidatedBy", "Validated By" },
+            { "ModeOfPayment", "Bank" }, { "PaymentDate", "Payment Date" }, { "Remarks", "Remarks" }, { "VerifiedBy", "Verified By" }, { "VerifiedDate", "Verified Date" }, { "ValidatedBy", "Validated By" },
             { "ValidatedDate", "Validated Date" }, { "RequestingParty", "Email Address" }, { "RefNum", "Reference No." },
-            { "EncodedDate", "Encoded Date" }, { "EncodedBy", "Encoded By" }, { "Remarks", "Remarks" }, { "ReleasedBy", "Released By" },
+            { "EncodedDate", "Encoded Date" }, { "EncodedBy", "Encoded By" }, { "ReleasedBy", "Released By" },
             { "ReleasedDate", "Released Date" }, { "RepName", "Representative Name" }, { "ContactNumber", "Contact Number" },
         };
 
@@ -681,55 +681,62 @@ namespace Revised_OPTS
                 int counter = 0;
                 bool foundSelected = false;
 
-                foreach (DataGridViewRow row in DgMainForm.Rows)
+                if (DgMainForm.Rows.Count > 0)
                 {
-                    if (CURRENT_RECORD_TYPE == RPT_RECORD_TYPE)
+                    foreach (DataGridViewRow row in DgMainForm.Rows)
                     {
-                        Rpt selectedRptRecord = row.DataBoundItem as Rpt;
+                        if (CURRENT_RECORD_TYPE == RPT_RECORD_TYPE)
+                        {
+                            Rpt selectedRptRecord = row.DataBoundItem as Rpt;
 
-                        if (selectedRptRecord.TaxDec.Equals(searchedUniqueKey, StringComparison.OrdinalIgnoreCase))
-                        {
-                            row.Selected = true;
-                            selectedRowCount++;
-                            if (!foundSelected)
+                            if (selectedRptRecord.TaxDec.Equals(searchedUniqueKey, StringComparison.OrdinalIgnoreCase))
                             {
-                                DgMainForm.FirstDisplayedScrollingRowIndex = counter;
-                                foundSelected = true;
+                                row.Selected = true;
+                                selectedRowCount++;
+                                if (!foundSelected)
+                                {
+                                    DgMainForm.FirstDisplayedScrollingRowIndex = counter;
+                                    foundSelected = true;
+                                }
                             }
                         }
-                    }
-                    else if (CURRENT_RECORD_TYPE == BUSINESS_RECORD_TYPE)
-                    {
-                        Business selectedBusinessRecord = row.DataBoundItem as Business;
-                        if (selectedBusinessRecord.BillNumber.Equals(searchedUniqueKey, StringComparison.OrdinalIgnoreCase))
+                        else if (CURRENT_RECORD_TYPE == BUSINESS_RECORD_TYPE)
                         {
-                            row.Selected = true;
-                            selectedRowCount++;
-                            if (!foundSelected)
+                            Business selectedBusinessRecord = row.DataBoundItem as Business;
+                            if (selectedBusinessRecord.BillNumber.Equals(searchedUniqueKey, StringComparison.OrdinalIgnoreCase))
                             {
-                                DgMainForm.FirstDisplayedScrollingRowIndex = counter;
-                                foundSelected = true;
+                                row.Selected = true;
+                                selectedRowCount++;
+                                if (!foundSelected)
+                                {
+                                    DgMainForm.FirstDisplayedScrollingRowIndex = counter;
+                                    foundSelected = true;
+                                }
                             }
                         }
-                    }
-                    else if (CURRENT_RECORD_TYPE == MISC_RECORD_TYPE)
-                    {
-                        Miscellaneous selectedMiscRecord = row.DataBoundItem as Miscellaneous;
-                        if (selectedMiscRecord.OrderOfPaymentNum.Equals(searchedUniqueKey, StringComparison.OrdinalIgnoreCase))
+                        else if (CURRENT_RECORD_TYPE == MISC_RECORD_TYPE)
                         {
-                            row.Selected = true;
-                            selectedRowCount++;
-                            if (!foundSelected)
+                            Miscellaneous selectedMiscRecord = row.DataBoundItem as Miscellaneous;
+                            if (selectedMiscRecord.OrderOfPaymentNum.Equals(searchedUniqueKey, StringComparison.OrdinalIgnoreCase))
                             {
-                                DgMainForm.FirstDisplayedScrollingRowIndex = counter;
-                                foundSelected = true;
-                            }
+                                row.Selected = true;
+                                selectedRowCount++;
+                                if (!foundSelected)
+                                {
+                                    DgMainForm.FirstDisplayedScrollingRowIndex = counter;
+                                    foundSelected = true;
+                                }
 
+                            }
                         }
+                        counter++;
                     }
-                    counter++;
+                    tbRecordSelected.Text = selectedRowCount.ToString();
                 }
-                tbRecordSelected.Text = selectedRowCount.ToString();
+                else
+                {
+                    MessageBox.Show("No record found.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
             }
         }
 
