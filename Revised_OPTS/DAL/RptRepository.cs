@@ -193,15 +193,15 @@ namespace Revised_OPTS.DAL
             if (rptIDList.Count > 0)
             {
                 var rptIDsString = string.Join(",", rptIDList);
-                if (Status == TaxStatus.ForPaymentVerification)
+                if (Status == TaxStatus.ForPaymentValidation)
                 {
                     getContext().Database.ExecuteSqlRaw(
-                        $"UPDATE Jo_RPT SET Status = @Status, VerifiedBy = @VerifiedBy, VerifiedDate = @VerifiedDate  WHERE RptID IN ({rptIDsString})", 
+                        $"UPDATE Jo_RPT SET Status = @Status, VerifiedBy = @VerifiedBy, VerifiedDate = @VerifiedDate  WHERE RptID IN ({rptIDsString})",
                         new SqlParameter("@Status", Status),
                         new SqlParameter("@VerifiedBy", Displayname),
                         new SqlParameter("@VerifiedDate", Date));
-
-                } else if (Status == TaxStatus.ForPaymentValidation)
+                }
+                else if (Status == TaxStatus.ForORUpload)
                 {
                     getContext().Database.ExecuteSqlRaw(
                         $"UPDATE Jo_RPT SET Status = @Status, ValidatedBy = @ValidatedBy, ValidatedDate = @ValidatedDate  WHERE RptID IN ({rptIDsString})",

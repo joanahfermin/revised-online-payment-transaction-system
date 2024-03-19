@@ -451,7 +451,8 @@ namespace Revised_OPTS
                         rptService.RevertSelectedRecordStatus(rptList, selectedStatusInSubMenuItemText);
                         businessService.RevertSelectedRecordStatus(businessList);
                         miscService.RevertSelectedRecordStatus(miscList);
-                        DgMainForm.Refresh();
+                        //DgMainForm.Refresh();
+                        Search();
                         MessageBox.Show("Operation completed successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                 }
@@ -534,7 +535,8 @@ namespace Revised_OPTS
                         businessService.UpdateSelectedRecordsStatus(businessList, TaxStatus.ForTransmittal);
                         miscService.UpdateSelectedRecordsStatus(miscList, TaxStatus.ForORUpload);
                         MessageBox.Show("Operation completed successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        DgMainForm.Refresh();
+                        //DgMainForm.Refresh();
+                        Search();
                     }
                 }
             }
@@ -610,7 +612,8 @@ namespace Revised_OPTS
                         businessService.UpdateSelectedRecordsStatus(businessList, TaxStatus.ForPaymentValidation);
                         miscService.UpdateSelectedRecordsStatus(miscList, TaxStatus.ForPaymentValidation);
                         MessageBox.Show("Operation completed successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        DgMainForm.Refresh();
+                        //DgMainForm.Refresh();
+                        Search();
                     }
                 }
             }
@@ -668,75 +671,81 @@ namespace Revised_OPTS
             DgMainForm.DefaultCellStyle.ForeColor = Color.Black;
         }
 
+        private void Search()
+        {
+            string searchedUniqueKey = tbSearch.Text;
+
+            Search(searchedUniqueKey);
+            DgMainForm.ClearSelection();
+            int selectedRowCount = 0;
+            int counter = 0;
+            bool foundSelected = false;
+
+            if (DgMainForm.Rows.Count > 0)
+            {
+                foreach (DataGridViewRow row in DgMainForm.Rows)
+                {
+                    if (CURRENT_RECORD_TYPE == RPT_RECORD_TYPE)
+                    {
+                        Rpt selectedRptRecord = row.DataBoundItem as Rpt;
+
+                        if (selectedRptRecord.TaxDec.Contains(searchedUniqueKey, StringComparison.OrdinalIgnoreCase))
+                        {
+                            row.Selected = true;
+                            selectedRowCount++;
+                            if (!foundSelected)
+                            {
+                                DgMainForm.FirstDisplayedScrollingRowIndex = counter;
+                                foundSelected = true;
+                            }
+                        }
+                    }
+                    else if (CURRENT_RECORD_TYPE == BUSINESS_RECORD_TYPE)
+                    {
+                        Business selectedBusinessRecord = row.DataBoundItem as Business;
+                        if (selectedBusinessRecord.BillNumber.Contains(searchedUniqueKey, StringComparison.OrdinalIgnoreCase))
+                        {
+                            row.Selected = true;
+                            selectedRowCount++;
+                            if (!foundSelected)
+                            {
+                                DgMainForm.FirstDisplayedScrollingRowIndex = counter;
+                                foundSelected = true;
+                            }
+                        }
+                    }
+                    else if (CURRENT_RECORD_TYPE == MISC_RECORD_TYPE)
+                    {
+                        Miscellaneous selectedMiscRecord = row.DataBoundItem as Miscellaneous;
+                        if (selectedMiscRecord.OrderOfPaymentNum.Contains(searchedUniqueKey, StringComparison.OrdinalIgnoreCase))
+                        {
+                            row.Selected = true;
+                            selectedRowCount++;
+                            if (!foundSelected)
+                            {
+                                DgMainForm.FirstDisplayedScrollingRowIndex = counter;
+                                foundSelected = true;
+                            }
+
+                        }
+                    }
+                    counter++;
+                }
+                tbRecordSelected.Text = selectedRowCount.ToString();
+            }
+            else
+            {
+                MessageBox.Show("No record found.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+
+        }
+
         //search records based on keyvalueformat.
         private void tbSearch_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
             {
-                string searchedUniqueKey = tbSearch.Text;
-
-                Search(searchedUniqueKey);
-                DgMainForm.ClearSelection();
-                int selectedRowCount = 0;
-                int counter = 0;
-                bool foundSelected = false;
-
-                if (DgMainForm.Rows.Count > 0)
-                {
-                    foreach (DataGridViewRow row in DgMainForm.Rows)
-                    {
-                        if (CURRENT_RECORD_TYPE == RPT_RECORD_TYPE)
-                        {
-                            Rpt selectedRptRecord = row.DataBoundItem as Rpt;
-
-                            if (selectedRptRecord.TaxDec.Contains(searchedUniqueKey, StringComparison.OrdinalIgnoreCase))
-                            {
-                                row.Selected = true;
-                                selectedRowCount++;
-                                if (!foundSelected)
-                                {
-                                    DgMainForm.FirstDisplayedScrollingRowIndex = counter;
-                                    foundSelected = true;
-                                }
-                            }
-                        }
-                        else if (CURRENT_RECORD_TYPE == BUSINESS_RECORD_TYPE)
-                        {
-                            Business selectedBusinessRecord = row.DataBoundItem as Business;
-                            if (selectedBusinessRecord.BillNumber.Contains(searchedUniqueKey, StringComparison.OrdinalIgnoreCase))
-                            {
-                                row.Selected = true;
-                                selectedRowCount++;
-                                if (!foundSelected)
-                                {
-                                    DgMainForm.FirstDisplayedScrollingRowIndex = counter;
-                                    foundSelected = true;
-                                }
-                            }
-                        }
-                        else if (CURRENT_RECORD_TYPE == MISC_RECORD_TYPE)
-                        {
-                            Miscellaneous selectedMiscRecord = row.DataBoundItem as Miscellaneous;
-                            if (selectedMiscRecord.OrderOfPaymentNum.Contains(searchedUniqueKey, StringComparison.OrdinalIgnoreCase))
-                            {
-                                row.Selected = true;
-                                selectedRowCount++;
-                                if (!foundSelected)
-                                {
-                                    DgMainForm.FirstDisplayedScrollingRowIndex = counter;
-                                    foundSelected = true;
-                                }
-
-                            }
-                        }
-                        counter++;
-                    }
-                    tbRecordSelected.Text = selectedRowCount.ToString();
-                }
-                else
-                {
-                    MessageBox.Show("No record found.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
+                Search();
             }
         }
 
