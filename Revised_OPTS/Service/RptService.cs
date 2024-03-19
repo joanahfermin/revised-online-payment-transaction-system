@@ -809,7 +809,7 @@ namespace Revised_OPTS.Service
                     "SELECT * FROM ( " +
 "SELECT 'RPT' as TaxType, TaxDec as BillNumber, Collection, Billing, ExcessShort, RPTremarks as Remarks, ValidatedDate, EncodedDate " +
 "FROM ( " +
-"    SELECT TaxDec, AmountToPay as Billing, AmountTransferred as Collection,  0 as ExcessShort, RPTremarks, ValidatedDate, RPTID, EncodedDate " +
+"    SELECT TaxDec, AmountToPay as Billing, TotalAmountTransferred as Collection,  0 as ExcessShort, RPTremarks, ValidatedDate, RPTID, EncodedDate " +
 "    FROM Jo_RPT r " +
 "    WHERE Bank in (SELECT BankName FROM Jo_RPT_Banks WHERE isEBank = 1) " +
 "    AND DeletedRecord = 0 " +
@@ -825,7 +825,7 @@ namespace Revised_OPTS.Service
 "    AND CAST(ValidatedDate AS Date) <= CAST(@ToDate AS Date) " +
 "    AND ValidatedBy = @UserName " +
 "    UNION ALL " +
-"    SELECT TaxDec, TotalAmountTransferred as Collection, AmountToPay as Billing, ExcessShortAmount as ExcessShort, RPTremarks, ValidatedDate, RPTID, EncodedDate " +
+"    SELECT TaxDec, AmountToPay as Billing, TotalAmountTransferred as Collection, ExcessShortAmount as ExcessShort, RPTremarks, ValidatedDate, RPTID, EncodedDate " +
 "    FROM Jo_RPT r " +
 "    WHERE Bank NOT IN (SELECT BankName FROM Jo_RPT_Banks WHERE isEBank = 1) AND RefNum IS NULL " +
 "    AND DeletedRecord = 0 " +
