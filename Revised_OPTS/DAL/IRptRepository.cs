@@ -22,6 +22,7 @@ namespace Revised_OPTS.DAL
 
         int CoundForORUploadWithPhoto(List<long> rptIDList);
         void ConfirmSendOrUpload(List<long> rptIDList);
+        void UpdateStatus(List<long> rptIDList, string Status, string Displayname, DateTime Date);
         int CountORUploadRemainingToSend(string uploadedBy);
         List<Rpt> ListORUploadRemainingToSend(string uploadedBy);
 

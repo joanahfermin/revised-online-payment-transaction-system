@@ -523,35 +523,28 @@ namespace Revised_OPTS.Service
             {
                 using (var scope = new TransactionScope())
                 {
-                    foreach (Rpt rpt in rptList)
-                    {
-                        if (rpt.Status == TaxStatus.ForPaymentVerification)
-                        {
-                            rpt.Status = status;
-                            rpt.VerifiedBy = securityService.getLoginUser().DisplayName;
-                            rpt.VerifiedDate = DateTime.Now;
-                            rptRepository.Update(rpt);
-                        }
-                        else if (rpt.Status == TaxStatus.ForPaymentValidation)
-                        {
-                            rpt.Status = status;
-                            rpt.ValidatedBy = securityService.getLoginUser().DisplayName;
-                            rpt.ValidatedDate = DateTime.Now;
-                            rptRepository.Update(rpt);
-                        }
-                        else if (rpt.Status == TaxStatus.ForORUpload || rpt.Status == TaxStatus.ForORPickup)
-                        {
-                            rpt.Status = status;
-                            rpt.ReleasedBy = securityService.getLoginUser().DisplayName;
-                            rpt.ReleasedDate = DateTime.Now;
-                            rptRepository.Update(rpt);
-                        }
-                    }
+                    List<long> rptIDList = rptList.Select(rpt => rpt.RptID).ToList();
+                    rptRepository.UpdateStatus(rptIDList, status, securityService.getLoginUser().DisplayName, DateTime.Now);
+
+
+                    //foreach (Rpt rpt in rptList)
+                    //{
+                    //    if (rpt.Status == TaxStatus.ForPaymentVerification || rpt.Status == TaxStatus.ForPaymentValidation || rpt.Status == TaxStatus.ForORUpload || rpt.Status == TaxStatus.ForORPickup)
+                    //    {
+                    //        rpt.Status = status;
+                    //        rpt.VerifiedBy = securityService.getLoginUser().DisplayName;
+                    //        rpt.VerifiedDate = DateTime.Now;
+                    //        rptRepository.Update(rpt);
+                    //    }
+                    //}
+
+
                     dbContext.SaveChanges();
                     scope.Complete();
                 }
             }
         }
+
 
         public void CheckRevertStatus(List<Rpt> rptStatusList, string expectedRevertedStatus)
         {

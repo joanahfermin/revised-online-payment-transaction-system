@@ -188,6 +188,30 @@ namespace Revised_OPTS.DAL
             }
         }
 
+        public void UpdateStatus(List<long> rptIDList, string Status, string Displayname, DateTime Date)
+        {
+            if (rptIDList.Count > 0)
+            {
+                var rptIDsString = string.Join(",", rptIDList);
+                if (Status == TaxStatus.ForPaymentVerification)
+                {
+                    getContext().Database.ExecuteSqlRaw(
+                        $"UPDATE Jo_RPT SET Status = @Status, VerifiedBy = @VerifiedBy, VerifiedDate = @VerifiedDate  WHERE RptID IN ({rptIDsString})", 
+                        new SqlParameter("@Status", Status),
+                        new SqlParameter("@VerifiedBy", Displayname),
+                        new SqlParameter("@VerifiedDate", Date));
+
+                } else if (Status == TaxStatus.ForPaymentValidation)
+                {
+                    getContext().Database.ExecuteSqlRaw(
+                        $"UPDATE Jo_RPT SET Status = @Status, ValidatedBy = @ValidatedBy, ValidatedDate = @ValidatedDate  WHERE RptID IN ({rptIDsString})",
+                        new SqlParameter("@Status", Status),
+                        new SqlParameter("@ValidatedBy", Displayname),
+                        new SqlParameter("@ValidatedDate", Date));
+                }
+            }
+        }
+
         public int CountORUploadRemainingToSend(string uploadedBy)
         {
             var query = from rpt in getDbSet()
