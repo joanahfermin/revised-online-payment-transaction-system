@@ -55,6 +55,7 @@
             this.tbMailToSendCount = new System.Windows.Forms.TextBox();
             this.btnAssignLocCode = new System.Windows.Forms.Button();
             this.btnEmailTemp = new System.Windows.Forms.Button();
+            this.btnRelease = new System.Windows.Forms.Button();
             this.MainDGRightClick.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DgMainForm)).BeginInit();
@@ -431,13 +432,31 @@
             this.btnEmailTemp.MouseEnter += new System.EventHandler(this.btnEmailTemp_MouseEnter);
             this.btnEmailTemp.MouseLeave += new System.EventHandler(this.btnEmailTemp_MouseLeave);
             // 
+            // btnRelease
+            // 
+            this.btnRelease.BackColor = System.Drawing.Color.Transparent;
+            this.btnRelease.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnRelease.BackgroundImage")));
+            this.btnRelease.FlatAppearance.BorderSize = 0;
+            this.btnRelease.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnRelease.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.btnRelease.Image = ((System.Drawing.Image)(resources.GetObject("btnRelease.Image")));
+            this.btnRelease.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.btnRelease.Location = new System.Drawing.Point(1706, 5);
+            this.btnRelease.Name = "btnRelease";
+            this.btnRelease.Size = new System.Drawing.Size(98, 94);
+            this.btnRelease.TabIndex = 202;
+            this.btnRelease.Text = "Releasing";
+            this.btnRelease.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.btnRelease.UseVisualStyleBackColor = false;
+            this.btnRelease.Click += new System.EventHandler(this.btnRelease_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Gainsboro;
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
-            this.ClientSize = new System.Drawing.Size(1817, 758);
+            this.ClientSize = new System.Drawing.Size(1880, 758);
             this.Controls.Add(this.btnAssignLocCode);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.tbMailToSendCount);
@@ -456,6 +475,7 @@
             this.Controls.Add(this.tbTotalAmountTransferred);
             this.Controls.Add(this.tbSearch);
             this.Controls.Add(this.btnReport);
+            this.Controls.Add(this.btnRelease);
             this.Controls.Add(this.btnEmailTemp);
             this.Controls.Add(this.btnORUpload);
             this.ForeColor = System.Drawing.Color.White;
@@ -494,5 +514,6 @@
         private TextBox tbMailToSendCount;
         private Button btnAssignLocCode;
         private Button btnEmailTemp;
+        private Button btnRelease;
     }
 }

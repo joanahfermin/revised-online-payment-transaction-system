@@ -130,7 +130,7 @@ namespace Revised_OPTS
 
             contextMenuStrip1.Items.Add(menuItemDelete);
             contextMenuStrip1.Items.Add(menuItemEdit);
-            contextMenuStrip1.Items.Add(menuItemReleaseReceipt);
+            //contextMenuStrip1.Items.Add(menuItemReleaseReceipt);
             contextMenuStrip1.Items.Add(menuItemRevertStatus);
             contextMenuStrip1.Items.Add(menuItemValidatePayment);
             contextMenuStrip1.Items.Add(menuItemVerifyPayment);
@@ -900,6 +900,12 @@ namespace Revised_OPTS
             new AllTaxesAddUpdateRecordForm().Show();
         }
 
+        private void btnRelease_Click(object sender, EventArgs e)
+        {
+            ReleaseORForm releaseOrForm = new ReleaseORForm();
+            releaseOrForm.Show();
+        }
+
         private void btnAddNewRecord_MouseEnter(object sender, EventArgs e)
         {
             originalBackgroundImageNonRpt = btnNonRptAddNewRecord.BackgroundImage;
@@ -1022,5 +1028,6 @@ namespace Revised_OPTS
         {
             btnEmailTemp.BackgroundImage = originalBackgroundImageRpt;
         }
+
     }
 }
