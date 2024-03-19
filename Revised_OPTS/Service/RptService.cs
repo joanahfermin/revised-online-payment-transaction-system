@@ -807,9 +807,9 @@ namespace Revised_OPTS.Service
 
                 return dbContext.allTaxTypeReports.FromSqlRaw<AllTaxTypeReport>(
                     "SELECT * FROM ( " +
-"SELECT 'RPT' as TaxType, TaxDec as BillNumber, Collection, Billing, ExcessShort, RPTremarks as Remarks, ValidatedDate, EncodedDate " +
+"SELECT 'RPT' as TaxType, TaxDec as BillNumber, Collection, Billing, ExcessShort, RPTremarks as Remarks, VerifiedDate, EncodedDate " +
 "FROM ( " +
-"    SELECT TaxDec, AmountToPay as Billing, TotalAmountTransferred as Collection,  0 as ExcessShort, RPTremarks, ValidatedDate, RPTID, EncodedDate " +
+"    SELECT TaxDec, AmountToPay as Billing, TotalAmountTransferred as Collection,  0 as ExcessShort, RPTremarks, VerifiedDate, RPTID, EncodedDate " +
 "    FROM Jo_RPT r " +
 "    WHERE Bank in (SELECT BankName FROM Jo_RPT_Banks WHERE isEBank = 1) " +
 "    AND DeletedRecord = 0 " +
@@ -817,7 +817,7 @@ namespace Revised_OPTS.Service
 "    AND CAST(ValidatedDate AS Date) <= CAST(@ToDate AS Date) " +
 "    AND ValidatedBy = @UserName " +
 "    UNION ALL " +
-"    SELECT TaxDec, AmountToPay as Billing, TotalAmountTransferred as Collection, ExcessShortAmount as ExcessShort, RPTremarks, (SELECT MIN(ValidatedDate) FROM Jo_RPT r2 WHERE r2.RefNum = r.RefNum) as ValidatedDate, RPTID, EncodedDate " +
+"    SELECT TaxDec, AmountToPay as Billing, TotalAmountTransferred as Collection, ExcessShortAmount as ExcessShort, RPTremarks, (SELECT MIN(VerifiedDate) FROM Jo_RPT r2 WHERE r2.RefNum = r.RefNum) as VerifiedDate, RPTID, EncodedDate " +
 "    FROM Jo_RPT r " +
 "    WHERE Bank NOT IN (SELECT BankName FROM Jo_RPT_Banks WHERE isEBank = 1) AND RefNum IS NOT NULL " +
 "    AND DeletedRecord = 0 " +
@@ -825,7 +825,7 @@ namespace Revised_OPTS.Service
 "    AND CAST(ValidatedDate AS Date) <= CAST(@ToDate AS Date) " +
 "    AND ValidatedBy = @UserName " +
 "    UNION ALL " +
-"    SELECT TaxDec, AmountToPay as Billing, TotalAmountTransferred as Collection, ExcessShortAmount as ExcessShort, RPTremarks, ValidatedDate, RPTID, EncodedDate " +
+"    SELECT TaxDec, AmountToPay as Billing, TotalAmountTransferred as Collection, ExcessShortAmount as ExcessShort, RPTremarks, VerifiedDate, RPTID, EncodedDate " +
 "    FROM Jo_RPT r " +
 "    WHERE Bank NOT IN (SELECT BankName FROM Jo_RPT_Banks WHERE isEBank = 1) AND RefNum IS NULL " +
 "    AND DeletedRecord = 0 " +
@@ -834,9 +834,9 @@ namespace Revised_OPTS.Service
 "    AND ValidatedBy = @UserName " +
 "    ) AS sReportView " +
 "UNION ALL " +
-"SELECT 'BUSINESS' as TaxType, BillNumber as BillNumber, Collection, Billing, ExcessShort, BussinessRemarks as Remarks, ValidatedDate, EncodedDate " +
+"SELECT 'BUSINESS' as TaxType, BillNumber as BillNumber, Collection, Billing, ExcessShort, BussinessRemarks as Remarks, VerifiedDate, EncodedDate " +
 "FROM ( " +
-"    SELECT BillNumber, BillAmount as Billing, TotalAmount as Collection, MP_Number, ExcessShort, BussinessRemarks, ValidatedDate, EncodedDate " +
+"    SELECT BillNumber, BillAmount as Billing, TotalAmount as Collection, MP_Number, ExcessShort, BussinessRemarks, VerifiedDate, EncodedDate " +
 "    FROM Jo_Business b " +
 "    WHERE PaymentChannel in (SELECT BankName FROM Jo_RPT_Banks WHERE isEBank = 1) " +
 "    AND DeletedRecord = 0 " +
@@ -844,7 +844,7 @@ namespace Revised_OPTS.Service
 "    AND CAST(ValidatedDate AS Date) <= CAST(@ToDate AS Date) " +
 "    AND ValidatedBy = @UserName " +
 "    UNION ALL " +
-"    SELECT BillNumber, BillAmount as Billing, TotalAmount as Collection, MP_Number, ExcessShort, BussinessRemarks, (SELECT MIN(ValidatedDate) FROM Jo_Business b2 WHERE b2.RefNum = b.RefNum) as ValidatedDate, EncodedDate " +
+"    SELECT BillNumber, BillAmount as Billing, TotalAmount as Collection, MP_Number, ExcessShort, BussinessRemarks, (SELECT MIN(VerifiedDate) FROM Jo_Business b2 WHERE b2.RefNum = b.RefNum) as VerifiedDate, EncodedDate " +
 "    FROM Jo_Business b " +
 "    WHERE PaymentChannel NOT IN (SELECT BankName FROM Jo_RPT_Banks WHERE isEBank = 1) AND RefNum IS NOT NULL " +
 "    AND DeletedRecord = 0 " +
@@ -852,7 +852,7 @@ namespace Revised_OPTS.Service
 "    AND CAST(ValidatedDate AS Date) <= CAST(@ToDate AS Date) " +
 "    AND ValidatedBy = @UserName " +
 "    UNION ALL " +
-"    SELECT BillNumber, TotalAmount as Collection, BillAmount as Billing, MP_Number, ExcessShort, BussinessRemarks, ValidatedDate, EncodedDate " +
+"    SELECT BillNumber, TotalAmount as Collection, BillAmount as Billing, MP_Number, ExcessShort, BussinessRemarks, VerifiedDate, EncodedDate " +
 "    FROM Jo_Business b " +
 "    WHERE PaymentChannel NOT IN (SELECT BankName FROM Jo_RPT_Banks WHERE isEBank = 1) AND RefNum IS NULL " +
 "    AND DeletedRecord = 0 " +
@@ -861,9 +861,9 @@ namespace Revised_OPTS.Service
 "    AND ValidatedBy = @UserName " +
 ") AS BusinessReportView " +
 "UNION ALL " +
-"SELECT 'MISC' as TaxType, OrderOfPaymentNum as BillNumber, Collection, Billing, ExcessShort, Remarks, ValidatedDate, EncodedDate " +
+"SELECT 'MISC' as TaxType, OrderOfPaymentNum as BillNumber, Collection, Billing, ExcessShort, Remarks, VerifiedDate, EncodedDate " +
 "FROM ( " +
-"    SELECT OrderOfPaymentNum, AmountToBePaid as Billing, TransferredAmount as Collection, ExcessShort, Remarks, ValidatedDate, EncodedDate " +
+"    SELECT OrderOfPaymentNum, AmountToBePaid as Billing, TransferredAmount as Collection, ExcessShort, Remarks, VerifiedDate, EncodedDate " +
 "    FROM Jo_MISC m " +
 "    WHERE ModeOfPayment in (SELECT BankName FROM Jo_RPT_Banks WHERE isEBank = 1) " +
 "    AND DeletedRecord = 0 " +
@@ -871,7 +871,7 @@ namespace Revised_OPTS.Service
 "    AND CAST(ValidatedDate AS Date) <= CAST(@ToDate AS Date) " +
 "    AND ValidatedBy = @UserName " +
 "    UNION ALL " +
-"    SELECT OrderOfPaymentNum, TransferredAmount as Collection, AmountToBePaid as Billing, ExcessShort, Remarks, (SELECT MIN(ValidatedDate) FROM Jo_MISC m2 WHERE m2.RefNum = m.RefNum) as ValidatedDate, EncodedDate " +
+"    SELECT OrderOfPaymentNum, TransferredAmount as Collection, AmountToBePaid as Billing, ExcessShort, Remarks, (SELECT MIN(VerifiedDate) FROM Jo_MISC m2 WHERE m2.RefNum = m.RefNum) as VerifiedDate, EncodedDate " +
 "    FROM Jo_MISC m " +
 "    WHERE ModeOfPayment NOT IN (SELECT BankName FROM Jo_RPT_Banks WHERE isEBank = 1) AND RefNum IS NOT NULL " +
 "    AND DeletedRecord = 0 " +
@@ -879,7 +879,7 @@ namespace Revised_OPTS.Service
 "    AND CAST(ValidatedDate AS Date) <= CAST(@ToDate AS Date) " +
 "    AND ValidatedBy = @UserName " +
 "    UNION ALL " +
-"    SELECT OrderOfPaymentNum, TransferredAmount as Collection, AmountToBePaid as Billing, ExcessShort, Remarks, ValidatedDate, EncodedDate " +
+"    SELECT OrderOfPaymentNum, TransferredAmount as Collection, AmountToBePaid as Billing, ExcessShort, Remarks, VerifiedDate, EncodedDate " +
 "    FROM Jo_MISC m " +
 "    WHERE ModeOfPayment NOT IN (SELECT BankName FROM Jo_RPT_Banks WHERE isEBank = 1) AND RefNum IS NULL " +
 "    AND DeletedRecord = 0 " +
@@ -888,7 +888,7 @@ namespace Revised_OPTS.Service
 "    AND ValidatedBy = @UserName " +
 ") AS MiscReportView " +
 ") AS AllReportView " +
-"ORDER BY ValidatedDate, EncodedDate;",
+"ORDER BY VerifiedDate, EncodedDate;",
                     new[] { new SqlParameter("@FromDate", dateFrom), new SqlParameter("@ToDate", dateTo), new SqlParameter("@UserName", UserName) }).ToList();
             }
         }

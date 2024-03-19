@@ -27,32 +27,32 @@ namespace Inventory_System.Forms
         private DynamicGridContainer<Rpt> RptDynamicGridContainer;
         private long RptID = 0;
 
-        public ReleaseORForm()
-        {
-            InitializeComponent();
-            InitializeRptDataGridView();
-
-            //RptDynamicGridContainer.PopulateData(rptList);
-
-            DgRptAddUpdateForm.DefaultCellStyle.Font = new Font("Tahoma", 12, FontStyle.Regular);
-            this.WindowState = FormWindowState.Maximized;
-
-            DgRptAddUpdateForm.SelectionChanged += DgRptAddUpdateForm_SelectionChanged;
-        }
-
-
-        //public ReleaseORForm(List<Rpt> rptList)
+        //public ReleaseORForm()
         //{
         //    InitializeComponent();
         //    InitializeRptDataGridView();
 
-        //    RptDynamicGridContainer.PopulateData(rptList);
+        //    //RptDynamicGridContainer.PopulateData(rptList);
 
         //    DgRptAddUpdateForm.DefaultCellStyle.Font = new Font("Tahoma", 12, FontStyle.Regular);
         //    this.WindowState = FormWindowState.Maximized;
 
         //    DgRptAddUpdateForm.SelectionChanged += DgRptAddUpdateForm_SelectionChanged;
         //}
+
+
+        public ReleaseORForm(List<Rpt> rptList)
+        {
+            InitializeComponent();
+            InitializeRptDataGridView();
+
+            RptDynamicGridContainer.PopulateData(rptList);
+
+            DgRptAddUpdateForm.DefaultCellStyle.Font = new Font("Tahoma", 12, FontStyle.Regular);
+            this.WindowState = FormWindowState.Maximized;
+
+            DgRptAddUpdateForm.SelectionChanged += DgRptAddUpdateForm_SelectionChanged;
+        }
 
         private void DgRptAddUpdateForm_SelectionChanged(object? sender, EventArgs e)
         {

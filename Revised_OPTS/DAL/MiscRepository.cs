@@ -55,7 +55,7 @@ namespace Revised_OPTS.DAL
 
             return getDbSet()
             //SELECT * FROM Jo_RPT where TaxDec LIKE @TaxDec and DeletedRecord != 1
-                .Where(j => j.OrderOfPaymentNum.Contains(billNum) && j.DeletedRecord != 1 && j.Status == TaxStatus.ForPaymentValidation)
+                .Where(j => j.OrderOfPaymentNum.Contains(billNum) && j.DeletedRecord != 1 /*&& j.Status == TaxStatus.ForPaymentValidation*/)
             //UNION
                 .Union(
             //SELECT *FROM Jo_RPT where RefNum

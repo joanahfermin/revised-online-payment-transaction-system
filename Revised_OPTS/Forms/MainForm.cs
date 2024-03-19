@@ -902,8 +902,8 @@ namespace Revised_OPTS
 
         private void btnRelease_Click(object sender, EventArgs e)
         {
-            ReleaseORForm releaseOrForm = new ReleaseORForm();
-            releaseOrForm.Show();
+            //ReleaseORForm releaseOrForm = new ReleaseORForm();
+            //releaseOrForm.Show();
         }
 
         private void btnAddNewRecord_MouseEnter(object sender, EventArgs e)
