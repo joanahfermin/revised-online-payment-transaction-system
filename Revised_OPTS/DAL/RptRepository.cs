@@ -139,7 +139,7 @@ namespace Revised_OPTS.DAL
             //          "UNION SELECT *FROM Jo_RPT where RefNum in (select RefNum FROM Jo_RPT where TaxDec LIKE @TaxDec) " +
             //          "and DeletedRecord != 1  AND RefNum IS NOT NULL AND RefNum != '' order by RefNum desc, EncodedDate asc";
 
-            //return  getDbSet().FromSqlRaw(sql, parameterValue).ToList();
+            //return getDbSet().FromSqlRaw(sql, parameterValue).ToList();
         }
 
         public List<Rpt> retrieveBySearchKeywordForPaymentValidationOnly(string tdn)

@@ -689,7 +689,7 @@ namespace Revised_OPTS
                         {
                             Rpt selectedRptRecord = row.DataBoundItem as Rpt;
 
-                            if (selectedRptRecord.TaxDec.Equals(searchedUniqueKey, StringComparison.OrdinalIgnoreCase))
+                            if (selectedRptRecord.TaxDec.Contains(searchedUniqueKey, StringComparison.OrdinalIgnoreCase))
                             {
                                 row.Selected = true;
                                 selectedRowCount++;
@@ -703,7 +703,7 @@ namespace Revised_OPTS
                         else if (CURRENT_RECORD_TYPE == BUSINESS_RECORD_TYPE)
                         {
                             Business selectedBusinessRecord = row.DataBoundItem as Business;
-                            if (selectedBusinessRecord.BillNumber.Equals(searchedUniqueKey, StringComparison.OrdinalIgnoreCase))
+                            if (selectedBusinessRecord.BillNumber.Contains(searchedUniqueKey, StringComparison.OrdinalIgnoreCase))
                             {
                                 row.Selected = true;
                                 selectedRowCount++;
@@ -717,7 +717,7 @@ namespace Revised_OPTS
                         else if (CURRENT_RECORD_TYPE == MISC_RECORD_TYPE)
                         {
                             Miscellaneous selectedMiscRecord = row.DataBoundItem as Miscellaneous;
-                            if (selectedMiscRecord.OrderOfPaymentNum.Equals(searchedUniqueKey, StringComparison.OrdinalIgnoreCase))
+                            if (selectedMiscRecord.OrderOfPaymentNum.Contains(searchedUniqueKey, StringComparison.OrdinalIgnoreCase))
                             {
                                 row.Selected = true;
                                 selectedRowCount++;
