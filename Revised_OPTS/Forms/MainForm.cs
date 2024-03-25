@@ -130,7 +130,7 @@ namespace Revised_OPTS
 
             contextMenuStrip1.Items.Add(menuItemDelete);
             contextMenuStrip1.Items.Add(menuItemEdit);
-            //contextMenuStrip1.Items.Add(menuItemReleaseReceipt);
+            contextMenuStrip1.Items.Add(menuItemReleaseReceipt);
             contextMenuStrip1.Items.Add(menuItemRevertStatus);
             contextMenuStrip1.Items.Add(menuItemValidatePayment);
             contextMenuStrip1.Items.Add(menuItemVerifyPayment);

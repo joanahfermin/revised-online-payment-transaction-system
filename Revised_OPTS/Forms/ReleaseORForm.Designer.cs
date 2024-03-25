@@ -45,8 +45,6 @@
             this.label2 = new System.Windows.Forms.Label();
             this.textRelesedBy = new System.Windows.Forms.TextBox();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
-            this.SearchLabel = new System.Windows.Forms.Label();
-            this.tbSearch = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.DgRptAddUpdateForm)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbReceipt)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -110,7 +108,7 @@
             this.btnClose.ForeColor = System.Drawing.Color.White;
             this.btnClose.Image = ((System.Drawing.Image)(resources.GetObject("btnClose.Image")));
             this.btnClose.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnClose.Location = new System.Drawing.Point(1123, 29);
+            this.btnClose.Location = new System.Drawing.Point(1115, 36);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(126, 73);
             this.btnClose.TabIndex = 5;
@@ -131,7 +129,7 @@
             this.btnSaveRecord.ForeColor = System.Drawing.Color.White;
             this.btnSaveRecord.Image = ((System.Drawing.Image)(resources.GetObject("btnSaveRecord.Image")));
             this.btnSaveRecord.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnSaveRecord.Location = new System.Drawing.Point(933, 29);
+            this.btnSaveRecord.Location = new System.Drawing.Point(925, 36);
             this.btnSaveRecord.Name = "btnSaveRecord";
             this.btnSaveRecord.Size = new System.Drawing.Size(184, 73);
             this.btnSaveRecord.TabIndex = 4;
@@ -160,7 +158,7 @@
             this.label3.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.label3.ForeColor = System.Drawing.Color.White;
             this.label3.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.label3.Location = new System.Drawing.Point(128, 64);
+            this.label3.Location = new System.Drawing.Point(142, 36);
             this.label3.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
             this.label3.Name = "label3";
             this.label3.Padding = new System.Windows.Forms.Padding(10);
@@ -175,7 +173,7 @@
             this.textRepName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.textRepName.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.textRepName.ForeColor = System.Drawing.Color.Black;
-            this.textRepName.Location = new System.Drawing.Point(140, 104);
+            this.textRepName.Location = new System.Drawing.Point(154, 76);
             this.textRepName.Name = "textRepName";
             this.textRepName.Size = new System.Drawing.Size(207, 26);
             this.textRepName.TabIndex = 1;
@@ -187,7 +185,7 @@
             this.textContactNum.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.textContactNum.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.textContactNum.ForeColor = System.Drawing.Color.Black;
-            this.textContactNum.Location = new System.Drawing.Point(385, 104);
+            this.textContactNum.Location = new System.Drawing.Point(399, 76);
             this.textContactNum.Name = "textContactNum";
             this.textContactNum.Size = new System.Drawing.Size(207, 26);
             this.textContactNum.TabIndex = 2;
@@ -201,7 +199,7 @@
             this.label1.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.label1.ForeColor = System.Drawing.Color.White;
             this.label1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.label1.Location = new System.Drawing.Point(373, 64);
+            this.label1.Location = new System.Drawing.Point(387, 36);
             this.label1.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
             this.label1.Name = "label1";
             this.label1.Padding = new System.Windows.Forms.Padding(10);
@@ -218,7 +216,7 @@
             this.label2.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.label2.ForeColor = System.Drawing.Color.White;
             this.label2.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.label2.Location = new System.Drawing.Point(620, 64);
+            this.label2.Location = new System.Drawing.Point(634, 36);
             this.label2.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
             this.label2.Name = "label2";
             this.label2.Padding = new System.Windows.Forms.Padding(10);
@@ -233,7 +231,7 @@
             this.textRelesedBy.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.textRelesedBy.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.textRelesedBy.ForeColor = System.Drawing.Color.Black;
-            this.textRelesedBy.Location = new System.Drawing.Point(632, 104);
+            this.textRelesedBy.Location = new System.Drawing.Point(646, 76);
             this.textRelesedBy.Name = "textRelesedBy";
             this.textRelesedBy.Size = new System.Drawing.Size(207, 26);
             this.textRelesedBy.TabIndex = 3;
@@ -245,43 +243,12 @@
             this.errorProvider1.ContainerControl = this;
             this.errorProvider1.Icon = ((System.Drawing.Icon)(resources.GetObject("errorProvider1.Icon")));
             // 
-            // SearchLabel
-            // 
-            this.SearchLabel.AutoSize = true;
-            this.SearchLabel.BackColor = System.Drawing.Color.Transparent;
-            this.SearchLabel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.SearchLabel.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.SearchLabel.ForeColor = System.Drawing.Color.White;
-            this.SearchLabel.Image = ((System.Drawing.Image)(resources.GetObject("SearchLabel.Image")));
-            this.SearchLabel.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.SearchLabel.Location = new System.Drawing.Point(132, 18);
-            this.SearchLabel.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
-            this.SearchLabel.Name = "SearchLabel";
-            this.SearchLabel.Padding = new System.Windows.Forms.Padding(10);
-            this.SearchLabel.Size = new System.Drawing.Size(125, 39);
-            this.SearchLabel.TabIndex = 214;
-            this.SearchLabel.Text = "       Search:";
-            this.SearchLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // tbSearch
-            // 
-            this.tbSearch.BackColor = System.Drawing.Color.AliceBlue;
-            this.tbSearch.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.tbSearch.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.tbSearch.Location = new System.Drawing.Point(263, 24);
-            this.tbSearch.Name = "tbSearch";
-            this.tbSearch.Size = new System.Drawing.Size(445, 27);
-            this.tbSearch.TabIndex = 213;
-            this.tbSearch.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
             // ReleaseORForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.ClientSize = new System.Drawing.Size(1924, 1004);
-            this.Controls.Add(this.SearchLabel);
-            this.Controls.Add(this.tbSearch);
             this.Controls.Add(this.textRepName);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.textRelesedBy);
@@ -318,7 +285,5 @@
         private Label label2;
         private TextBox textRelesedBy;
         private ErrorProvider errorProvider1;
-        private Label SearchLabel;
-        private TextBox tbSearch;
     }
 }

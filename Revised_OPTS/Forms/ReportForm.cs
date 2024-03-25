@@ -319,7 +319,7 @@ namespace Inventory_System.Forms
                 count++;
                 rowIndex++;
             }
-            row3.Append(CreateFormulaCell("C3", "=SUM(C7:C" + (rowIndex - 1) + ") + (E3)"));
+            row3.Append(CreateFormulaCell("C3", "=SUM(C7:C" + (rowIndex - 1) + ")"));
             row3.Append(CreateFormulaCell("D3", "=SUM(D7:D" + (rowIndex - 1) + ") + C5"));
             row3.Append(CreateFormulaCell("E3", "=SUM(E7:E" + (rowIndex - 1) + ")"));
             row3.Append(CreateCell("F3", securityService.getLoginUser().FullName));
