@@ -97,28 +97,11 @@ namespace Revised_OPTS.Service
                         business.VerifiedDate = null;
                         businessRepository.Update(business);
                     }
-                    else if (business.Status == TaxStatus.ForORUpload)
+                    else if (business.Status == TaxStatus.ForTransmittal)
                     {
                         business.Status = TaxStatus.ForPaymentValidation;
                         business.ValidatedBy = null;
                         business.ValidatedDate = null;
-                        businessRepository.Update(business);
-                    }
-                    else if (business.Status == TaxStatus.ForORPickup)
-                    {
-                        //TO DO: DELETE THE UPLOADED PHOTO ONCE THE STATUS IS REVERTED.
-                        business.Status = TaxStatus.ForPaymentValidation;
-                        business.UploadedBy = null;
-                        business.UploadedDate = null;
-                        businessRepository.Update(business);
-                    }
-                    else if (business.Status == TaxStatus.Released)
-                    {
-                        business.Status = TaxStatus.ForORPickup;
-                        business.ReleasedBy = null;
-                        business.ReleasedDate = null;
-                        //business.RepName = null;
-                        //business.RepContactNumber = null;
                         businessRepository.Update(business);
                     }
                 }
@@ -215,7 +198,7 @@ namespace Revised_OPTS.Service
                 {
                     foreach (Business bus in busToDelete)
                     {
-                        bus.DeletedRecord = false;
+                        bus.DeletedRecord = true;
                         businessRepository.Update(bus);
                     }
                     dbContext.SaveChanges();

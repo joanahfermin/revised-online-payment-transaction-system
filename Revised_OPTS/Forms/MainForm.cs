@@ -332,13 +332,27 @@ namespace Revised_OPTS
         private void MenuItemDelete_Click(object? sender, EventArgs e)
         {
             DataGridViewSelectedRowCollection selectedRow = DgMainForm.SelectedRows;
+
             if (selectedRow != null && selectedRow.Count > 0)
             {
-                Rpt selectedRptRecord = selectedRow[0].DataBoundItem as Rpt;
-                if (selectedRptRecord.RefNum != null)
+                //Rpt selectedRptRecord = selectedRow[0].DataBoundItem as Rpt;
+                //Business selectedBusRecord = selectedRow[0].DataBoundItem as Business;
+                //Miscellaneous selectedMiscRecord = selectedRow[0].DataBoundItem as Miscellaneous;
+
+                object selectedRecord = selectedRow[0].DataBoundItem as object;
+
+                if (selectedRecord is Rpt)
                 {
-                    new RPTMultipleAddUpdateRecordForm(selectedRptRecord.RefNum, selectedRptRecord.RequestingParty).Show();
-                    MessageBox.Show("Right-click the record you want to delete to navigate the action you want to perform.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    Rpt selectedRptRecord = selectedRow[0].DataBoundItem as Rpt;
+                    if (selectedRptRecord.RefNum != null)
+                    {
+                        new RPTMultipleAddUpdateRecordForm(selectedRptRecord.RefNum, selectedRptRecord.RequestingParty).Show();
+                        MessageBox.Show("Right-click the record you want to delete to navigate the action you want to perform.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Please be informed that you cannot delete one or two more record(s) within this reference number. You can only do that in RPT because it is not yet implemented on Business and Miscellaneous. Please delete ALL records first then RE-PASTE the correct data.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
         }
@@ -752,6 +766,8 @@ namespace Revised_OPTS
         //retrieve records based on keyvalueformat.
         public void Search(string searchRecordinDB)
         {
+            string searchKeyWord = tbSearch.Text;
+
             if (securityService.getLoginUser().MachNo != null)
             {
                 if (SearchBusinessFormat.isTDN(searchRecordinDB))
@@ -778,6 +794,18 @@ namespace Revised_OPTS
                 {
                     CURRENT_RECORD_TYPE = RPT_RECORD_TYPE;
                     ShowDataInDataGridView<Rpt>(RPT_DG_COLUMNS, rptService.RetrieveBySearchKeyword(searchRecordinDB));
+                }
+                else if (SearchBusinessFormat.isEmailAdd(searchRecordinDB))
+                {
+                    if (checkSearchByEmailAdd.Checked)
+                    {
+                        CURRENT_RECORD_TYPE = RPT_RECORD_TYPE;
+                        ShowDataInDataGridView<Rpt>(RPT_DG_COLUMNS, rptService.RetrieveBySearchKeywordEmailAddress(searchRecordinDB));
+                    }
+                    else
+                    {
+                        MessageBox.Show("Please check/uncheck the 'Search by Email Address' to search key value you are trying to look up.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
                 }
                 else if (SearchBusinessFormat.isMiscOccuPermit(searchRecordinDB) || SearchBusinessFormat.isMiscOvrTtmd(searchRecordinDB)
                     || SearchBusinessFormat.isMiscOvrDpos(searchRecordinDB) || SearchBusinessFormat.isMiscMarket(searchRecordinDB)

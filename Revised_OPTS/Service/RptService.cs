@@ -87,6 +87,15 @@ namespace Revised_OPTS.Service
             }
         }
 
+        public List<Rpt> RetrieveBySearchKeywordEmailAddress(string tdn)
+        {
+            using (var dbContext = ApplicationDBContext.Create())
+            {
+                return SpecialSort(rptRepository.retrieveBySearchKeywordEmailAddress(tdn));
+                //return /*SpecialSort*/(rptRepository.retrieveBySearchKeyword(tdn));
+            }
+        }
+
         public List<Rpt> RetrieveBySearchKeyword(string tdn)
         {
             using (var dbContext = ApplicationDBContext.Create())
@@ -632,6 +641,8 @@ namespace Revised_OPTS.Service
                             rpt.Status = expectedRevertedStatus;
                             rpt.UploadedBy = null;
                             rpt.UploadedDate = null;
+                            rpt.LocCode = null;
+                            rpt.SendReceiptReady = false;
                             rptRepository.Update(rpt);
                         }
                         else if (rpt.Status == TaxStatus.Released)

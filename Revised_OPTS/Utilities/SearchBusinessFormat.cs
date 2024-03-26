@@ -10,6 +10,12 @@ namespace Inventory_System.Utilities
 {
     internal class SearchBusinessFormat
     {
+        public static bool isEmailAdd(string eAdd)
+        {
+            Regex re = new Regex(BusinessFormat.EMAIL_FORMAT);
+            return re.IsMatch(eAdd.Trim());
+        }
+
         public static bool isTDN(string rpt)
         {
             Regex re = new Regex(BusinessFormat.TAXDEC_FORMAT);
@@ -59,6 +65,10 @@ namespace Inventory_System.Utilities
         public static string GetTaxTypeFromFormat(string taxType)
         {
             if (isTDN(taxType))
+            {
+                return TaxTypeUtil.REALPROPERTYTAX;
+            }
+            else if (isEmailAdd(taxType))
             {
                 return TaxTypeUtil.REALPROPERTYTAX;
             }

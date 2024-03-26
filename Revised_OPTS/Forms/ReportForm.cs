@@ -390,7 +390,7 @@ namespace Inventory_System.Forms
                 bussinessRowIndex++;
             }
             // Add a row for the total
-            busRow3.Append(CreateFormulaCell("C3", "=SUM(D7:C" + (bussinessRowIndex - 1) + ") + E3" ));
+            busRow3.Append(CreateFormulaCell("C3", "=SUM(D7:C" + (bussinessRowIndex - 1) + ")" ));
             busRow3.Append(CreateFormulaCell("D3", "=SUM(C7:D" + (bussinessRowIndex - 1) + ")"));
             busRow3.Append(CreateFormulaCell("E3", "=SUM(E7:E" + (bussinessRowIndex - 1) + ")" ));
             busRow3.Append(CreateCell("F3", securityService.getLoginUser().FullName));
@@ -483,7 +483,7 @@ namespace Inventory_System.Forms
                     miscRowIndex++;
                 }
                 // Add a row for the total
-                miscRow3.Append(CreateFormulaCell("C3", "=SUM(C7:C" + (miscRowIndex - 1) + ")+ E3 "));
+                miscRow3.Append(CreateFormulaCell("C3", "=SUM(C7:C" + (miscRowIndex - 1) + ")"));
                 miscRow3.Append(CreateFormulaCell("D3", "=SUM(D7:D" + (miscRowIndex - 1) + ")"));
                 miscRow3.Append(CreateFormulaCell("E3", "=SUM(E7:E" + (miscRowIndex - 1) + ")"));
                 miscRow3.Append(CreateCell("F3", securityService.getLoginUser().FullName));

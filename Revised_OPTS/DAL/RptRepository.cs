@@ -110,6 +110,17 @@ namespace Revised_OPTS.DAL
             return query.Count();
         }
 
+        public List<Rpt> retrieveBySearchKeywordEmailAddress(string eAdd)
+        {
+            return getDbSet()
+                .Where(r => r.RequestingParty.Contains(eAdd) &&
+                (r.Status == "FOR O.R UPLOAD" || r.Status == "FOR O.R PICK UP") &&
+                r.DeletedRecord != 1)
+                    .OrderByDescending(r => r.RefNum)
+                    .ThenBy(r => r.EncodedDate).ToList();
+        }
+
+
         public List<Rpt> retrieveBySearchKeyword(string tdn)
         {
             return getDbSet()
