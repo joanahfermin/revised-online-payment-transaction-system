@@ -17,6 +17,9 @@ namespace Inventory_System.Model
         public decimal? ExcessShort { get; set; }
         public string? Remarks { get; set; }
 
+        public decimal? MiscFees { get; set; }
+
+
         public object Clone()
         {
             return this.MemberwiseClone();

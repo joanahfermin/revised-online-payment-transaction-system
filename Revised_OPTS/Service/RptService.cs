@@ -896,7 +896,7 @@ namespace Revised_OPTS.Service
                 //                    new[] { new SqlParameter("@FromDate", dateFrom), new SqlParameter("@ToDate", dateTo), new SqlParameter("@UserName", UserName) }).ToList();
                 List<AllTaxTypeReport> list1 = dbContext.allTaxTypeReports.FromSqlRaw<AllTaxTypeReport>(
 
-                "SELECT 'RPT' as TaxType, TaxDec as BillNumber, Collection, Billing, ExcessShort, RPTremarks as Remarks, ValidatedDate, EncodedDate " +
+                "SELECT 'RPT' as TaxType, TaxDec as BillNumber, Collection, Billing, ExcessShort, RPTremarks as Remarks, ValidatedDate, EncodedDate, 0.00 AS MiscFees " +
                 "FROM ( " +
                 "    SELECT TaxDec, AmountToPay as Billing, TotalAmountTransferred as Collection,  0 as ExcessShort, RPTremarks, ValidatedDate, RPTID, EncodedDate " +
                 "    FROM Jo_RPT r " +
@@ -926,9 +926,9 @@ namespace Revised_OPTS.Service
 
 
                 List<AllTaxTypeReport> list2 = dbContext.allTaxTypeReports.FromSqlRaw<AllTaxTypeReport>(
-                "SELECT 'BUSINESS' as TaxType, BillNumber as BillNumber, Collection, Billing, ExcessShort, BussinessRemarks as Remarks, VerifiedDate, EncodedDate " +
+                "SELECT 'BUSINESS' as TaxType, BillNumber as BillNumber, Collection, Billing, ExcessShort, BussinessRemarks as Remarks, VerifiedDate, EncodedDate, MiscFees " +
                 "FROM ( " +
-                "    SELECT BillNumber, BillAmount as Billing, TotalAmount as Collection, MP_Number, ExcessShort, BussinessRemarks, VerifiedDate, EncodedDate " +
+                "    SELECT BillNumber, TotalAmount as Collection, BillAmount as Billing, MP_Number, ExcessShort, BussinessRemarks, VerifiedDate, EncodedDate, MiscFees " +
                 "    FROM Jo_Business b " +
                 "    WHERE PaymentChannel in (SELECT BankName FROM Jo_RPT_Banks WHERE isEBank = 1) " +
                 "    AND DeletedRecord = 0 " +
@@ -936,7 +936,7 @@ namespace Revised_OPTS.Service
                 "    AND CAST(ValidatedDate AS Date) <= CAST(@ToDate AS Date) " +
                 "    AND ValidatedBy = @UserName " +
                 "    UNION ALL " +
-                "    SELECT BillNumber, BillAmount as Billing, TotalAmount as Collection, MP_Number, ExcessShort, BussinessRemarks, (SELECT MIN(VerifiedDate) FROM Jo_Business b2 WHERE b2.RefNum = b.RefNum) as VerifiedDate, EncodedDate " +
+                "    SELECT BillNumber, TotalAmount as Collection, BillAmount as Billing, MP_Number, ExcessShort, BussinessRemarks, (SELECT MIN(VerifiedDate) FROM Jo_Business b2 WHERE b2.RefNum = b.RefNum) as VerifiedDate, EncodedDate,MiscFees " +
                 "    FROM Jo_Business b " +
                 "    WHERE PaymentChannel NOT IN (SELECT BankName FROM Jo_RPT_Banks WHERE isEBank = 1) AND RefNum IS NOT NULL " +
                 "    AND DeletedRecord = 0 " +
@@ -944,7 +944,7 @@ namespace Revised_OPTS.Service
                 "    AND CAST(ValidatedDate AS Date) <= CAST(@ToDate AS Date) " +
                 "    AND ValidatedBy = @UserName " +
                 "    UNION ALL " +
-                "    SELECT BillNumber, TotalAmount as Collection, BillAmount as Billing, MP_Number, ExcessShort, BussinessRemarks, VerifiedDate, EncodedDate " +
+                "    SELECT BillNumber, TotalAmount as Collection, BillAmount as Billing, MP_Number, ExcessShort, BussinessRemarks, VerifiedDate, EncodedDate,MiscFees " +
                 "    FROM Jo_Business b " +
                 "    WHERE PaymentChannel NOT IN (SELECT BankName FROM Jo_RPT_Banks WHERE isEBank = 1) AND RefNum IS NULL " +
                 "    AND DeletedRecord = 0 " +
@@ -955,7 +955,7 @@ namespace Revised_OPTS.Service
                                     new[] { new SqlParameter("@FromDate", dateFrom), new SqlParameter("@ToDate", dateTo), new SqlParameter("@UserName", UserName) }).ToList();
 
                 List<AllTaxTypeReport> list3 = dbContext.allTaxTypeReports.FromSqlRaw<AllTaxTypeReport>(
-                "SELECT 'MISC' as TaxType, OrderOfPaymentNum as BillNumber, Collection, Billing, ExcessShort, Remarks, VerifiedDate, EncodedDate " +
+                "SELECT 'MISC' as TaxType, OrderOfPaymentNum as BillNumber, Collection, Billing, ExcessShort, Remarks, VerifiedDate, EncodedDate, 0.00 AS MiscFees " +
                 "FROM ( " +
                 "    SELECT OrderOfPaymentNum, AmountToBePaid as Billing, TransferredAmount as Collection, ExcessShort, Remarks, VerifiedDate, EncodedDate " +
                 "    FROM Jo_MISC m " +

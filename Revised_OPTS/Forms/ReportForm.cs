@@ -363,7 +363,8 @@ namespace Inventory_System.Forms
             busRow6.Append(CreateCell("B6", "BILL NUMBER"));
             busRow6.Append(CreateCell("C6", "TOTAL COLLECTION"));
             busRow6.Append(CreateCell("D6", "TOTAL BILLING"));
-            busRow6.Append(CreateCell("E6", "REMARKS"));
+            busRow6.Append(CreateCell("E6", "EXCESS/SHORT"));
+            busRow6.Append(CreateCell("F6", "MISC. FEES"));
             businessSheetData.AppendChild(busRow6);
 
             int bussinessRowIndex = 7;
@@ -383,15 +384,15 @@ namespace Inventory_System.Forms
                 busRow6.Append(CreateDecimalCell($"C{bussinessRowIndex}", taxRow.Collection ?? 0));
                 busRow6.Append(CreateDecimalCell($"D{bussinessRowIndex}", taxRow.Billing ?? 0));
                 busRow6.Append(CreateDecimalCell($"E{bussinessRowIndex}", taxRow.ExcessShort ?? 0));
-                busRow6.Append(CreateCell($"F{bussinessRowIndex}", taxRow.Remarks));
+                busRow6.Append(CreateDecimalCell($"F{bussinessRowIndex}", taxRow.MiscFees ?? 0));
                 businessSheetData.AppendChild(busRow6);
 
                 count++;
                 bussinessRowIndex++;
             }
             // Add a row for the total
-            busRow3.Append(CreateFormulaCell("C3", "=SUM(D7:C" + (bussinessRowIndex - 1) + ")" ));
-            busRow3.Append(CreateFormulaCell("D3", "=SUM(C7:D" + (bussinessRowIndex - 1) + ")"));
+            busRow3.Append(CreateFormulaCell("C3", "=SUM(C7:C" + (bussinessRowIndex - 1) + ")" ));
+            busRow3.Append(CreateFormulaCell("D3", "=SUM(D7:D" + (bussinessRowIndex - 1) + ")"));
             busRow3.Append(CreateFormulaCell("E3", "=SUM(E7:E" + (bussinessRowIndex - 1) + ")" ));
             busRow3.Append(CreateCell("F3", securityService.getLoginUser().FullName));
         }
